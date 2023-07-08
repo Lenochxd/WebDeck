@@ -1,0 +1,194 @@
+{
+    "settings": {
+        "ear-soundboard": "true",
+        "mp3_method": "vlc",
+        "show-console": "false",
+        "dev-mode": "false",
+        "spotify-api": {
+            "USERNAME": "",
+            "CLIENT_ID": "",
+            "CLIENT_SECRET": ""
+        }
+    },
+    "front": {
+        "theme": "theme1.css",
+        "background": "",
+        "show-names": "true",
+        "names-color": "#b3b3b3",
+        "computer-usage-reload-time": "3000",
+        "height": "4",
+        "width": "8",
+        "buttons": {
+            "index": [
+                {
+                    "name": "Folder 1",
+                    "position": "a1",
+                    "image": "folder.png",
+                    "image_size": "70%",
+                    "message": "/folder folder1"
+                },
+                {
+                    "name": "Spotify",
+                    "position": "a2",
+                    "image": "spotify.png",
+                    "image_size": "70%",
+                    "message": "/folder spotify"
+                },
+                {
+                    "name": "Fullscreen",
+                    "position": "a3",
+                    "image": "fullscreen2.png",
+                    "image_size": "50%",
+                    "message": "/fullscreen"
+                },
+                {
+                    "name": "Refresh",
+                    "position": "a4",
+                    "image": "reload.png",
+                    "image_size": "50%",
+                    "message": "/reload"
+                },
+                {
+                    "name": "ETEINDRE ECRANS",
+                    "position": "a5",
+                    "image": "screensaver.png",
+                    "image_size": "100%",
+                    "message": "/screensaver"
+                },
+                {
+                    "name": "ETEINDRE ECRANS FULL",
+                    "position": "a6",
+                    "image": "screensaver-full.png",
+                    "image_size": "50%",
+                    "message": "/screensaver full"
+                },
+                {
+                    "name": "RE ALLUMER ECRANS",
+                    "position": "a7",
+                    "image": "computer-screen.svg",
+                    "image_size": "50%",
+                    "message": "/screensaver off"
+                },
+                {
+                    "name": "restart explorer",
+                    "position": "b3",
+                    "image": "https://www.sordum.org/wp-content/uploads/2020/01/restart_explorer.png",
+                    "image_size": "80%",
+                    "message": "/restartexplorer"
+                },
+                {
+                    "VOID": "VOID"
+                },
+                {
+                    "name": "button pious",
+                    "position": "c7",
+                    "image": "D:\\Images\\jop3.png",
+                    "image_size": "100%",
+                    "message": "/openfile D:\\Images\\jop3.png"
+                },
+                {
+                    "name": "Config",
+                    "position": "d1",
+                    "image": "",
+                    "image_size": "90%",
+                    "background-color": "91a2ff",
+                    "message": "/open-config"
+                },
+                {
+                    "name": "Color picker",
+                    "position": "d4",
+                    "image": "eyedropper.svg",
+                    "image_size": "50%",
+                    "color": "#fff",
+                    "background-color": "#2e2e2e",
+                    "message": "/colorpicker lang:fr"
+                },
+                {
+                    "name": "GPU usage",
+                    "position": "d5",
+                    "image": "",
+                    "image_size": "100%",
+                    "color": "#fff",
+                    "background-color": "#2e2e2e",
+                    "message": "/usage 'GPU USAGE' usage_dict['gpus']['GPU1']['utilization_percent']"
+                },
+                {
+                    "name": "RAM USAGE",
+                    "position": "d6",
+                    "image": "",
+                    "image_size": "100%",
+                    "message": "/usage 'RAM%' usage_dict['memory']['usage_percent']"
+                },
+                {
+                    "name": "disk E usage",
+                    "position": "d7",
+                    "image": "",
+                    "image_size": "100%",
+                    "message": "/usage 'disque E' usage_dict['disks']['E']['total_gb']"
+                },
+                {
+                    "name": "Cpu usage",
+                    "position": "d8",
+                    "image": "",
+                    "image_size": "100%",
+                    "color": "#fff",
+                    "background-color": "#2e2e2e",
+                    "message": "/usage 'CPU USAGE' usage_dict['cpu']['usage_percent']"
+                }
+            ],
+            "folder1": [
+                {
+                    "name": "back to index",
+                    "image": "folder.png",
+                    "image_size": "70%",
+                    "message": "/folder index"
+                }
+            ],
+            "spotify": [
+                {
+                    "name": "Retour",
+                    "position": "a1",
+                    "image": "back10.svg",
+                    "image_size": "110%",
+                    "message": "/folder index"
+                },
+                {
+                    "name": "Previous",
+                    "position": "a6",
+                    "image": "skip-start-fill.svg",
+                    "image_size": "100%",
+                    "background-color": "#1ed664",
+                    "message": "/soundcontrol previous"
+                },
+                {
+                    "name": "Play/Pause",
+                    "position": "a7",
+                    "image": "playpause.png",
+                    "image_size": "100%",
+                    "background-color": "#1ed664",
+                    "message": "/soundcontrol playpause"
+                },
+                {
+                    "name": "Next",
+                    "position": "a8",
+                    "image": "skip-end-fill.svg",
+                    "image_size": "100%",
+                    "background-color": "#1ed664",
+                    "message": "/soundcontrol next"
+                },
+                {
+                    "name": "Mute",
+                    "position": "d8",
+                    "image": "volume-mute.png",
+                    "image_size": "100%",
+                    "background-color": "#1ed664",
+                    "message": "/soundcontrol mute"
+                }
+            ]
+        }
+    },
+    "url": {
+        "ip": "0.0.0.0",
+        "port": 5000
+    }
+}
