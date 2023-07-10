@@ -1,0 +1,2068 @@
+<html>
+  <head>
+    <title>WebDeck</title>
+    <link rel="stylesheet" href="static/themes/{{config['front']['theme']}}">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="icon" href="static\files\icon.ico"/>
+    <meta charset="UTF-8">
+
+
+    <style>
+      label, input { display:block; }
+      input.text { margin-bottom:12px; width:95%; padding: .4em; }
+      fieldset { padding:0; border:0; margin-top:25px; }
+      h1 { font-size: 1.2em; margin: .6em 0; }
+      div#users-contain { width: 350px; margin: 20px 0; }
+      div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+      div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+      .ui-dialog .ui-state-error { padding: .3em; }
+      .validateTips { border: 1px solid transparent; padding: 0.3em; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    {% set black_theme = '' %}
+    {% if config['front']['black-theme'] == 'true' %}
+      {% set black_theme = ' black-theme' %}
+    {% endif %}
+
+    {#
+      total_boxes = int(config["front"]["width"]) * int(config["front"]["height"])
+      while len(folder_content) < total_boxes:
+          folder_content.append({"VOID": "VOID"})
+    #}
+
+
+    {# {% set total_boxes = int(config["front"]["width"]) * int(config["front"]["height"]) %}
+    {% for folder_id, value in config["front"]["buttons"].items() %}
+
+
+      {% for _ in range(total_boxes) %}
+        {% if config["front"]["buttons"][folder_id]|length < total_boxes %}
+          {% set config = config["front"]["buttons"][folder_id].append({"VOID": "VOID"}) %}
+    
+        {% endif %}
+      {% endfor %}
+      
+
+
+    
+    {% endfor %} #}
+
+  </head>
+  <body>
+    <div id="loading-screen">
+      <p>Chargement...</p>
+    </div>
+
+
+    {% if config["settings"]["show-console"].lower() == "true" %}
+      <form id="form">
+        <label style="color: white;">Console:</label><br>
+        <input type="text" class="message {{black_theme}}"><br>
+        <button type="submit">Submit</button>
+      </form>
+    {% endif %}
+
+    <!--
+    <p id="print1">_</p>
+    <p id="print2">_</p>
+    -->
+
+    <style>
+      
+      {% if config["front"]["background"] and not config["front"]["background"].strip() == "" %}
+        body, div.fakeform-container {
+          {% if '.' in config["front"]["background"] %}
+            background-image: url("static/files/background-image")!important;
+            background-size: cover;
+            background-color: transparent;
+          {% else %}
+            background-color: {{config["front"]["background"]}}!important;
+            background-image: none;
+          {% endif %}
+        }
+      {% endif %}
+      
+      {% for folder_id, value in config["front"]["buttons"].items() %}
+        {% for button_config in config["front"]["buttons"][folder_id] %}
+          {% if 'background-color' in button_config.keys() %}
+            @keyframes animation-{{ button_config['background-color'].replace('#','') }} {
+              100% {background-color: #{{ button_config['background-color'].replace('#','') }};}
+              100% {background-color: none;}
+            }
+            .button-{{ button_config['background-color'].replace('#','') }}, .button-{{ button_config['background-color'].replace('#','') }}:focus {
+              background-color: #{{ button_config['background-color'].replace('#','') }};
+              box-shadow: #{{ button_config['background-color'].replace('#','') }} 0 1px 3px 0;
+              color: rgba(0, 0, 0, 0.85);
+            }
+            .button-{{ button_config['background-color'].replace('#','') }}:hover {
+              transform: translateY(-1px);
+              animation-name: animation-{{ button_config['background-color'].replace('#','') }};
+              animation-duration: 1s;
+            } 
+            .button-{{ button_config['background-color'].replace('#','') }}:active {
+              background-color: #{{ button_config['background-color'].replace('#','') }};
+              border-color: rgba(0, 0, 0, 0.15);
+              box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+              color: rgba(0, 0, 0, 0.65);
+              transform: translateY(0);
+            }
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </style>
+
+    <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
+      Open folder: 
+      {% for folder_id, value in config["front"]["buttons"].items() %}
+        <button class="EditorButtons-Folder" id="" onclick="folder_{{ folder_id }}()">
+          {{ folder_id }}
+        </button>
+      {% endfor %}
+    </div>
+
+    {% for folder_id, value in config["front"]["buttons"].items() %}
+      <div id="folder-{{ folder_id }}" class="buttons-center">
+        <div id="folder-{{ folder_id }}" class="all-buttons">
+        
+          {% for button_config in config["front"]["buttons"][folder_id] %}
+            {% set button_id = loop.index0 %}
+            {% set onclick = 'type=submit' %}
+
+            {% if 'VOID' in button_config %}
+              <div class="void form-{{ button_id }}">
+                <div class="checkbox" style="display: none;"></div>
+                <div class="add-button" add_FOLDER="{{ folder_id }}" add_ID="{{ button_id }}" style="display: none; top: 40.3675;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            {% else %}
+            
+              <form class="form-{{ button_id }}" id="form">
+                <div class="container-editmode">
+                  <div class="edit-button" style="display: none;">
+                    <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="Edit / Edit_Pencil_01">
+                      <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+                    </svg>
+                  </div>
+                  <div class="delete-button" style="display: none;">
+                    <svg fill="#000000" width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.8,16l5.5-5.5c0.8-0.8,0.8-2,0-2.8l0,0C24,7.3,23.5,7,23,7c-0.5,0-1,0.2-1.4,0.6L16,13.2l-5.5-5.5  c-0.8-0.8-2.1-0.8-2.8,0C7.3,8,7,8.5,7,9.1s0.2,1,0.6,1.4l5.5,5.5l-5.5,5.5C7.3,21.9,7,22.4,7,23c0,0.5,0.2,1,0.6,1.4  C8,24.8,8.5,25,9,25c0.5,0,1-0.2,1.4-0.6l5.5-5.5l5.5,5.5c0.8,0.8,2.1,0.8,2.8,0c0.8-0.8,0.8-2.1,0-2.8L18.8,16z"/>
+                    </svg>
+                  </div>
+                </div>
+                
+                <input type="hidden" class="message {{black_theme}}" value="{{ button_config['message'] }}">
+                <div class="checkbox" style="display: none;"></div>
+                
+                {% set class = "button" %}
+                {% if 'background-color' in config["front"]["buttons"][folder_id][button_id].keys() %}
+                  {% set class = class + ' button-'+button_config['background-color'].replace('#','') %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/fullscreen' %}
+                  {% set class = class + " fullscreen-btn" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom in' %}
+                  {% set class = class + " zoom-in-btn" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom out' %}
+                  {% set class = class + " zoom-out-btn" %}
+                  {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div expand' %}
+                  {% set class = class + " expand-btn" %}
+                  {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div shrink' %}
+                  {% set class = class + " shrink-btn" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-out' %}
+                  {% set class = class + " box-zoom-out" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-in' %}
+                  {% set class = class + " box-zoom-in" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-dezoom' %}
+                  {% set class = class + " dezoom-btn" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-zoom' %}
+                  {% set class = class + " zoom-btn" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-modal' %}
+                  {% set class = class + " open-config-modal" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config' %}
+                  {% set class = class + " open-config-modal" %}
+                {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config-modal' %}
+                  {% set class = class + " open-config-modal" %}
+                {% endif %}
+
+                {% if button_config["message"].startswith("/folder") %}
+                  {% set onclick = 'onclick="' + 'folder_' + button_config['message'].replace('/folder ', '') + '()" onclickhandler="' + 'folder_' + button_config['message'].replace('/folder ', '') + '()"' %}
+                  <div class="swapMode-open-folder" {{ onclick }} style="display: none;">
+                    Open Folder
+                  </div>
+                {% endif %}
+
+                {% set fill = '' %}
+                  {% if 'color' in config["front"]["buttons"][folder_id][button_id].keys() %}
+                    {% if config["front"]["buttons"][folder_id][button_id]["color"] == 'invert' %}
+                      {% set fill = 'filter: invert(1)' %}
+                    {% else %}
+                      {% set fill = 'fill:'+ config["front"]["buttons"][folder_id][button_id]["color"] +';'+' color:'+ config["front"]["buttons"][folder_id][button_id]["color"] +';' %}
+                    {% endif %}
+                  {% endif %}
+                {% if config["front"]["buttons"][folder_id][button_id]["image"] == "" or not config["front"]["buttons"][folder_id][button_id]["image"] %}
+                
+                  <button {{ onclick }} class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                    <!--|||||||||||||||||||||||-->
+                    {% set usage_dict = {"cpu":{"usage_percent":0.0},"memory":{"total_gb":0.0,"used_gb":0.0,"available_gb":0.0,"usage_percent":0.0},"disks":{"C":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"D":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"E":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"F":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0}},"network":{"bytes_sent":0,"bytes_recv":0},"gpus":{"0":{"name":"GPU_NAME","memory_used":0.0,"memory_total":0.0,"utilization_percent":0.0}}} %}
+                    {% if button_config['message'].startswith('/usage') %}
+                      {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
+                      {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
+                      {% if button_config['message'].split()[1] %}
+                        <div class="usage">
+                          <div class="usage-title {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
+                            {{ name }}
+                          </div>
+                          {% set usage_value = '-' %}
+                          <div class="usage-value {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
+                            {{ usage_value }}
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                    <!--|||||||||||||||||||||||-->
+                  </button>
+                {% else %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["image"].startswith('http') %}
+                    {% set imagelink = config["front"]["buttons"][folder_id][button_id]["image"] %}
+                  {% elif ':' in config["front"]["buttons"][folder_id][button_id]["image"] %}
+                    {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
+                  {% elif config["front"]["buttons"][folder_id][button_id]["image"].startswith('**uploaded/') %}
+                    {% set imagelink = "static/files/images/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                  {% else %}
+                    {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
+                  {% endif %}
+                  
+                  <button {{ onclick }} class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                      {% if imagelink.endswith('.svg') %}
+                        {{ open(imagelink).read().replace('<svg ','<svg style="width:' + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
+                      {% else %}
+                        <img src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
+                          width: {{ 112 * (int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) / 100) + 3 }}px;
+                          {{fill}}"
+                        >
+                      {% endif %}
+                    
+                    <!--|||||||||||||||||||||||-->
+                    {% set usage_dict = {"cpu":{"usage_percent":0.0},"memory":{"total_gb":0.0,"used_gb":0.0,"available_gb":0.0,"usage_percent":0.0},"disks":{"C":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"D":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"E":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"F":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0}},"network":{"bytes_sent":0,"bytes_recv":0},"gpus":{"0":{"name":"GPU_NAME","memory_used":0.0,"memory_total":0.0,"utilization_percent":0.0}}} %}
+                    {% if button_config['message'].startswith('/usage') %}
+                      {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
+                      {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
+                      {% if button_config['message'].split()[1] %}
+                        <div class="usage">
+                          <div class="usage-title {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
+                            {{ name }}
+                          </div>
+                          {# {% set usage_value = eval(path.replace("'",'"'), {'usage_dict': usage_dict}) %} #}
+                          {% set usage_value = "-" %}
+                          <div class="usage-value {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
+                            {{ usage_value }}
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                    <!--|||||||||||||||||||||||-->
+                  </button>
+                {% endif %}
+                {% if config["front"]["show-names"].lower() == "true" %}
+                  {% set buttontext_style = ''%}
+                  {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
+                    {% set buttontext_style = 'style="color:'+config["front"]["names-color"]+';"'%}
+                  {% endif %}
+                  <p class="buttontext" {{buttontext_style}}>
+                    {{ button_config['name'] }}
+                  </p>
+                {% endif %}
+              </form>
+            
+              
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+
+
+    <div id="EditorButtons" style="display: none; position: fixed; bottom: 16; left: 0;">
+      <button class="" id="SaveExitEditorButton">Save and exit editor mode</button>
+      <button class="" id="exitEditorButton">[E] Don't save and exit</button>
+      
+      <button class="" id="swapEditorButton">[S] Swap 2 Buttons</button>
+    </div>
+
+
+    <div class="modal-container {{black_theme}}">
+      <div class="modal-content {{black_theme}}">
+
+        <div class="modal-header bold">
+          <h1 class="config-modal">Configuration</h1>
+          <div class="modal-close">
+            <svg class="config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="modal-main">
+
+          <div id="config-container" class="{{black_theme}}">
+
+            <button class="modal-button" id="editorButton">[E] Enter editor mode</button>
+            <form id="config-form" class="config-form">
+              <div class="setting-category settings">
+                <h1 class="config-title">Settings</h1>
+
+                <div class="setting language">
+                  <label for="language">Language</label>
+                  <input class="{{black_theme}}" type="text" id="language" name="settings.language" {% if not config['settings']['language'].strip() == ''%}value="{{config['settings']['language']}}"{% endif %}>  
+                </div>
+
+                <div class="setting spotify-api">
+                  <label for="spotify">Spotify API</label>
+                  <ul>
+                    <li>
+                      <label for="spotify-USERNAME">Username</label>
+                      <input class="{{black_theme}}" type="text" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%}value="{{config['settings']['spotify-api']['USERNAME']}}"{% endif %}>
+                      
+                      <label for="spotify-CLIENT_ID">Client ID</label>
+                      <input class="{{black_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify-api.CLIENT_ID" {% if not config['settings']['spotify-api']['CLIENT_ID'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_ID']}}"{% endif %}>
+                      
+                      <label for="spotify-CLIENT_SECRET">Client Secret</label>
+                      <div class="password-container">
+                        <input class="{{black_theme}}" type="password" id="spotify-CLIENT_SECRET" name="settings.spotify-api.CLIENT_SECRET" {% if not config['settings']['spotify-api']['CLIENT_SECRET'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_SECRET']}}"{% endif %}>
+                        <span class="show-password" onclick="togglePasswordVisibility()"></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                
+                <div class="setting ear-soundboard">
+                  <p>Ear Soundboard</p>
+                  <label for="ear-soundboard" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                
+              </div>
+              
+              <div class="setting-category visuals">
+                <h1 class="config-title">Visuals</h1>
+
+                <div class="setting gridsize">
+                  <p>Grid-size</p>
+                  <div class="gridsize-container">
+                    <div class="gridsize-height">
+                      <label for="gridsize-height">height</label>
+                      <input min="1" pattern="[0-9]*"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                        class="{{black_theme}}" type="number" id="gridsize-height" name="front.height" {% if not config['front']['height'].strip() == ''%}value="{{config['front']['height']}}"{% endif %}>
+                    </div>
+
+                    <div class="gridsize-width">
+                      <label for="gridsize-width">width</label>
+                      <input min="1" pattern="[0-9]*"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                        class="{{black_theme}}" type="number" id="gridsize-width" name="front.width" {% if not config['front']['width'].strip() == ''%}value="{{config['front']['width']}}"{% endif %}>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="setting theme">
+                  <label for="theme">Theme</label>
+                  <select id="theme" name="front.theme">
+                    {% for theme in themes %}
+                      <option value="{{theme}}" {% if config['front']['theme'].lower() == theme %}selected{% endif %}>{{theme}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="setting black-theme">
+                  <p>Black theme</p>
+                  <label for="black-theme" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="black-theme" name="front.black-theme" {% if config['front']['black-theme'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                
+                
+                <div class="setting show-names">
+                  <p>Show button names</p>
+                  <label for="show-names"  class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="show-names" name="front.show-names" {% if config['front']['show-names'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="setting-category experimental">
+                <h1 class="config-title">Experimental</h1>
+                
+                <div class="setting usage-reload-time">
+                  <label for="usage-reload-time">Usage buttons reload time (ms)</label>
+                  <input required class="{{black_theme}}" type="number" min="0" pattern="[0-9]*"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                    id="usage-reload-time" name="front.computer-usage-reload-time"
+                    {% if not config['front']['computer-usage-reload-time'].strip() == '' %}
+                      value="{{ config['front']['computer-usage-reload-time'] }}"
+                    {% else %}
+                      value="3000"
+                    {% endif %}
+                  >  
+                </div>
+                
+                <div class="setting mp3_method">
+                  <label for="mp3_method">MP3 method (if "ear soundboard" does not work)</label>
+                  <select id="mp3_method" name="settings.mp3_method">
+                    <option value="vlc" {% if config['settings']['mp3_method'].lower() == 'vlc' %}selected{% endif %}>VLC</option>
+                    <option value="pygame" {% if config['settings']['mp3_method'].lower() == 'pygame' %}selected{% endif %}>Pygame</option>
+                  </select>
+                </div>
+
+                <div class="setting show-console">
+                  <p>Show console</p>
+                  <label for="show-console" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="show-console" name="settings.show-console" {% if config['settings']['show-console'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+              
+              <input type="submit" value="Save" class="modal-button save-config {{black_theme}}">
+            </form>
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="addbutton-modal-container {{black_theme}}">
+      <div class="addbutton-modal-content {{black_theme}}" id="addbutton-modal-content">
+
+        <div class="addbutton-modal-header bold">
+          <h1 class="addbutton-modal">Add a button</h1>
+          <div class="addbutton-modal-close">
+            <svg class="addbutton-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="addbutton-modal-main">
+          <br id="addbuton-container" class="{{black_theme}}">
+
+            
+            <div class="all-commands {{black_theme}}">
+              {% for category, category_value in commands.items() %}
+                <button class="dropdown-btn {{black_theme}}" dropdown-category="{{category}}">{{category}}</button>
+                <div class="dropdown-container">
+                  {% set arg_modal_ID1 = loop.index0 %}
+                  {% for command, command_value in category_value.items() %}
+                    {% set arg_modal_ID = str(arg_modal_ID1) + "X" + str(loop.index0) %}
+                    {# {{ mdebug(command) }} #}
+                    <div class="dropdown-item-container">
+                      {% set command_name = command %}
+                      {% if command_value["name"] %}
+                        {% if command_value["name"][config.settings.language] %}
+                          {% set command_name = command_value["name"][config.settings.language] %}
+                        {% elif command_value["name"]["en"] %}
+                          {% set command_name = command_value["name"][config.settings.language] %}
+                        {% elif command_value["name"][0] %}
+                          {% set command_name = command_value["name"][0] %}
+                        {% endif %}
+                      {% endif %}
+                      {% set command_desc = "" %}
+                      {% if command_value["description"] %}
+                        {% if command_value["description"][config.settings.language] %}
+                          {% set command_desc = command_value["description"][config.settings.language] %}
+                        {% elif command_value["description"]["en"] %}
+                          {% set command_desc = command_value["description"][config.settings.language] %}
+                        {% elif command_value["description"][0] %}
+                          {% set command_desc = command_value["description"][0] %}
+                        {% endif %}
+                      {% endif %}
+                      {% set command_id = command_value["command"] %}
+
+                      {% if command_value["description"] %}
+                        <div class="addbutton-description"> <p>{{command_desc}} </p></div>
+                      {% endif %}
+
+                      {% if not command_value["TYPE"] == "multiple" %}
+                        
+                        {# <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}" onclick="argsInput('commands[\'{{category}}\'][\'{{command}}\']')" > {{command_name}} </button> #}
+                        <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                      
+                        {% include 'addbutton_modal.jinja' %}
+
+                      {% else %}
+                        {# si type = multiple #}
+
+                        {% if command_value["name"] %}
+                          {% if command_value["name"][config.settings.language] %}
+                            {% set command = command_value["name"][config.settings.language] %}
+                          {% elif command_value["name"]["en"] %}
+                            {% set command = command_value["name"][config.settings.language] %}
+                          {% elif command_value["name"][0] %}
+                            {% set command = command_value["name"][0] %}
+                          {% endif %}
+                        {% endif %}
+
+                        {% set command_values = command_value["commands"] %}
+                        <button class="dropdown-btn {{black_theme}}" dropdown-category="{{command}}">{{command}}</button>
+                        <div class="dropdown-container">
+                          <div class="dropdown-item-container">
+                            {% for command_value in command_values %}
+                              {% set arg_modal_ID = str(arg_modal_ID) + "X" + str(loop.index0) %}
+                              {% set command = command_value["command"].replace('/','') %}
+                              {# {{ mdebug(command) }} #}
+                              {% set command_name = command %}
+                              {% if command_value["name"] %}
+                                {% if command_value["name"][config.settings.language] %}
+                                  {% set command_name = command_value["name"][config.settings.language] %}
+                                {% elif command_value["name"]["en"] %}
+                                  {% set command_name = command_value["name"][config.settings.language] %}
+                                {% elif command_value["name"][0] %}
+                                  {% set command_name = command_value["name"][0] %}
+                                {% endif %}
+                              {% endif %}
+                              {% set command_desc = "" %}
+                              {% if command_value["description"] %}
+                                {% if command_value["description"][config.settings.language] %}
+                                  {% set command_desc = command_value["description"][config.settings.language] %}
+                                {% elif command_value["description"]["en"] %}
+                                  {% set command_desc = command_value["description"][config.settings.language] %}
+                                {% elif command_value["description"][0] %}
+                                  {% set command_desc = command_value["description"][0] %}
+                                {% endif %}
+                              {% endif %}
+                              {% set command_id = command_value["command"] %}
+                              {% if command_value["description"] %}
+                                <div class="addbutton-description"> <p>{{command_desc}} </p></div>
+                              {% endif %}
+                              
+                              <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                              
+                              {% include 'addbutton_modal.jinja' %}
+
+
+                            {% endfor %}
+                          </div>
+                        </div>
+
+
+
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+
+
+            <script>
+              // dropdown dans add a button
+
+              var dropdown = document.getElementsByClassName("dropdown-btn");
+              var i;
+
+              for (let i = 0; i < dropdown.length; i++) {
+                (function(index) {
+                  dropdown[index].addEventListener("click", function() {
+                    if (!(dropdown[index].classList.contains("final-btn") || dropdown[index].classList.contains("no-dropdown"))) {
+                      this.classList.toggle("active");
+                    }
+                    var dropdownContent = this.nextElementSibling;
+                    try {
+                      if (dropdownContent.style.display === "block") {
+                        if (!dropdownContent.classList.contains("addbutton-description")) {
+                          dropdownContent.style.display = "none";
+                        }
+                      } else {
+                        dropdownContent.style.display = "block";
+                      }
+                    } catch (error) {
+                      // Ne rien faire (pass)
+                    }
+                  });
+                })(i);
+              }
+              
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script src="static/js/socketio.js"></script>
+
+    <script type="text/javascript">
+      const biggest_folder = "{{ biggest_folder }}";
+
+      if (window.location !== window.parent.location) {
+          console.log("La page est chargée dans un iframe.");
+          var goFullscreen = window.parent.goFullscreenIFRAME;
+      } else {
+          console.log("La page n'est pas chargée dans un iframe.");
+          function goFullscreen() {
+            var element = document.documentElement; // L'élément à mettre en mode plein écran
+          
+            if (element.requestFullscreen) {
+              element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) { /* Safari */
+              element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { /* IE11 */
+              element.msRequestFullscreen();
+            }
+          }
+      }
+
+      {% for folder_id, value in config["front"]["buttons"].items() %}
+      function folder_{{ folder_id }}() {
+        // console.log("{{folder_id}} opened")
+        {% for folder_id2, value in config["front"]["buttons"].items() %}
+        {% if folder_id2 == folder_id %}
+        document.getElementById('folder-{{ folder_id2 }}').classList.remove('invisible');
+        {% else %}
+        document.getElementById('folder-{{ folder_id2 }}').classList.add('invisible');
+        {% endif %}
+        {% endfor %}
+      }
+      {% endfor %}
+
+      function togglePasswordVisibility() {
+        var motDePasseInput = document.getElementById("spotify-CLIENT_SECRET");
+        var showPasswordIcon = document.querySelector(".show-password");
+      
+        if (motDePasseInput.type === "password") {
+          motDePasseInput.type = "text";
+          showPasswordIcon.classList.add("active");
+        } else {
+          motDePasseInput.type = "password";
+          showPasswordIcon.classList.remove("active");
+        }
+      }
+
+
+      let config = {};
+      let tempEditorConfig = {};
+
+      function get_config() {
+        fetch('/get_config')
+        .then(function(response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+            }
+          })
+        .then(function(configData) {
+            let config = configData;
+          })
+        .catch(function(error) {
+            console.error(error);
+          });
+      }
+
+
+      function auto_resize() {
+        folder_{{biggest_folder}}();
+        const div = document.querySelector('#folder-{{biggest_folder}}');
+        let currentZoom = 1;
+
+        currentZoom = currentZoom - 3;
+        let larg = 100 / currentZoom;
+        let long = 100 / currentZoom;
+        document.body.style.transformOrigin = "left top";
+        document.body.style.transform = "scale(" + currentZoom + ")";
+        document.body.style.width = `${larg}%`;
+        document.body.style.height = `${long}%`;
+
+        while (true) {
+          const rect = div.getBoundingClientRect();
+          if (!(rect.right > window.innerWidth || rect.bottom > window.innerHeight)) {
+            //console.log('La div ne dépasse pas de l\'écran à droite ou en bas !');
+            currentZoom = currentZoom + 0.1; // ici tu peux mettre 0.1 si c'est trop long
+            let larg = 100 / currentZoom;
+            let long = 100 / currentZoom;
+            document.body.style.transformOrigin = "left top";
+            document.body.style.transform = "scale(" + currentZoom + ")";
+            document.body.style.width = `${larg}%`; //pour etre sur que ça s'adapte à la taille de l'écran
+            document.body.style.height = `${long}%`;
+          } else {
+              folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+            break;
+          }
+        }
+        while (true) {
+          const rect = div.getBoundingClientRect();
+          if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
+            //console.log('La div dépasse de l\'écran à droite ou en bas !');
+            currentZoom = currentZoom - 0.05; // ici tu peux mettre 0.1 si c'est trop long
+            let larg = 100 / currentZoom;
+            let long = 100 / currentZoom;
+            document.body.style.transformOrigin = "left top"; //tu peux changer center top mais après ça marche moins
+            document.body.style.transform = "scale(" + currentZoom + ")";
+            document.body.style.width = `${larg}%`;
+            document.body.style.height = `${long}%`;
+          } else {
+              folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+            break;
+          }
+        }
+      }
+
+      window.addEventListener('load', function() {
+        folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+        auto_resize();
+        // SOCKET CONNECTION
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+          console.log('Connected');
+        });
+
+        socket.on('json_data', function(data) {
+          console.log(data.message);
+        });
+
+        const usageValueDivs = document.querySelectorAll('.usage-value');
+        if (usageValueDivs.length > 0) {
+          setInterval(function() {
+            //console.log('interval');
+            // Récupérer tous les formulaires avec un champ input qui commence par "/usage" et contient "cpu usage_percent"
+            var forms = document.querySelectorAll('form');
+            const messages = [];
+
+            // Récupérer les messages de chaque formulaire
+            forms.forEach(form => {
+              const messageElement = form.querySelector('.message');
+              if (messageElement) {
+                const message = messageElement.value;
+                messages.push({ form: form, message: message });
+              }
+            });
+
+
+            // Effectuer une requête fetch pour tous les messages et mettre à jour les éléments DOM correspondants
+            fetch('/usage', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ messages: messages })
+            })
+              .then(response => response.json())
+              .then(usage_dict => {
+                // console.log(typeof(usage_dict));
+                // console.log(usage_dict);
+                forms.forEach(form => {
+                  const divElements = document.querySelectorAll('.usage-value');
+                  divElements.forEach(divElement => {
+                    const otherClass = divElement.classList[1];
+                    if (otherClass !== undefined) {
+                      try {
+                        let newValue
+                        if (otherClass.includes('percent')) {
+                          newValue = eval(otherClass) + '%';
+                        } else if (otherClass.includes('_gb')) {
+                          newValue = eval(otherClass) + ' gb';
+                        } else if (otherClass.includes('_mb')) {
+                          newValue = eval(otherClass) + ' mb';
+                        } else if (otherClass.includes('bytes')) {
+                          newValue = eval(otherClass) + ' bytes';
+                        } else {
+                          newValue = eval(otherClass);
+                        }
+                        if (!newValue.includes('undefined')) {
+                          divElement.innerHTML = newValue
+                        }
+                      } catch (error) {
+                        return
+                      }
+                    }
+                  });
+                });
+              })
+              .catch(error => console.error(error));
+          }, {{ config['front']['computer-usage-reload-time'] }} );
+              }
+            });
+
+      document.addEventListener("DOMContentLoaded", function() {
+
+        // =========== EDITORMODE ======== START
+        var buttons = document.querySelectorAll('.createbutton_submit');
+        
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                fetch('/save_buttons_only', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tempEditorConfig)
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                })
+                .then(function(response) {
+                    if (response.success) {
+                        console.log('Les paramètres ont été enregistrés avec succès.');
+                    } else {
+                        console.log('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error.message);
+                });
+            });
+        });
+
+        var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
+        var isMouseOverOpenFolder = false;
+        
+        for (var i = 0; i < openFolderDivs.length; i++) {
+          openFolderDivs[i].addEventListener('mouseover', function() {
+            isMouseOverOpenFolder = true;
+          });
+          openFolderDivs[i].addEventListener('mouseout', function() {
+            setTimeout(function() {
+              isMouseOverOpenFolder = false;
+            }, 150); // 150 millisecondes = 0,15 seconde
+          });
+        }
+        
+        var forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (swapMode === 1) {
+                    // Empêchez l'envoi du formulaire par défaut
+                    event.preventDefault();
+                }
+            });
+        });
+
+        // Récupérer les éléments nécessaires
+        const folderIndex = document.getElementById('folder-index');
+        let editorMode = 0;
+        let ifModif = 0;
+        let swapMode = 0;
+        var savedOnClicks = {};
+        var swapChanges = [];
+        var swapUNChanges = [];
+        console.log(`swapChanges: ${swapChanges}`);
+      
+        // Fonction pour afficher la boîte de dialogue de confirmation d'ajout
+        function showAddConfirmation(event) {
+            // if (confirm("Souhaitez-vous vraiment ajouter ce bouton ?")) {
+            //     // L'utilisateur a confirmé
+            //     // Effectuer ici l'action d'ajout du bouton
+            //     console.log("Le bouton a été ajouté.");
+            //     ifModif = 1;
+            // }
+            console.log("Le bouton est en train d'être ajouté");
+        }
+      
+        // Fonction pour afficher la boîte de dialogue de confirmation de suppression
+        function showDeleteConfirmation(event) {
+            if (editorMode === 1 && confirm("Souhaitez-vous vraiment supprimer ce bouton ?")) {
+                ifModif = 1;
+      
+                let closest_form = event.target.closest('form#form');
+                if (closest_form === null) {
+                    closest_form = event.target.closest('div.void');
+                }
+                const voidDiv = document.createElement('div');
+                voidDiv.classList.add('void');
+                const addButtonDiv = document.createElement('div');
+                addButtonDiv.classList.add('add-button');
+                addButtonDiv.style.display = 'flex';
+                addButtonDiv.style.top = '40.3675';
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                svg.setAttribute('width', '20');
+                svg.setAttribute('height', '20');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M12 4v16m8-8H4');
+                path.setAttribute('stroke', 'currentColor');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('stroke-linecap', 'round');
+                path.setAttribute('stroke-linejoin', 'round');
+      
+                svg.appendChild(path);
+                addButtonDiv.appendChild(svg);
+                voidDiv.appendChild(addButtonDiv);
+      
+                const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
+                const formClass = closest_form.className;
+                const formClassMatch = formClass.match(/form-(\d+)/);
+                const formNumber = formClassMatch ? formClassMatch[1] : '';
+                const formIndex = parseInt(formNumber) - 1;
+                console.log(`${parentId} > ${formNumber}`);
+      
+                tempEditorConfig.front.buttons[parentId][formNumber] = {
+                    "VOID": "VOID"
+                };
+      
+                closest_form.parentNode.replaceChild(voidDiv, closest_form);
+      
+                console.log("Le bouton a été supprimé.");
+                console.log(tempEditorConfig);
+            }
+        }
+      
+        function showEditWindow(event) {
+            ifModif = 1;
+            console.log('edit pressé');
+        }
+      
+        let swapFirstBtn = 0;
+        let swapSecondBtn = 0;
+        function swapButton(event) {
+            if (editorMode === 1 && swapMode === 1 && !isMouseOverOpenFolder) {
+                let closest_form = event.target.closest('form#form');
+                if (closest_form === null) {
+                    closest_form = event.target.closest('div.void');
+                }
+                const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
+                const formClass = closest_form.className;
+                const formClassMatch = formClass.match(/form-(\d+)/);
+                const formNumber = formClassMatch ? formClassMatch[1] : '';
+                const formIndex = parseInt(formNumber) - 1;
+                
+                const checkbox = closest_form.querySelector('div.checkbox');
+                if (swapFirstBtn === 0) {
+                    // enregistrer le premier btn
+                    swapFirstBtn = `${parentId};;;${formNumber}`;
+                    console.log(`1: ${swapFirstBtn}\n2: ${swapSecondBtn}`);
+                    if (checkbox !== null) {
+                      checkbox.classList.add('checkbox-checked');
+                    }
+                } else if (swapSecondBtn === 0) {
+                    // enregistrer le second btn si le premier est déjà enregistré
+                    if (swapFirstBtn === `${parentId};;;${formNumber}`) {
+                        swapFirstBtn = 0;
+                        console.log(`1: ${swapFirstBtn}\n2: ${swapSecondBtn}`);
+                        if (checkbox !== null) {
+                          checkbox.classList.remove('checkbox-checked');
+                        }
+                    } else {
+                        if (checkbox !== null) {
+                          checkbox.classList.add('checkbox-checked');
+                        }
+                        swapSecondBtn = `${parentId};;;${formNumber}`;
+                        if (swapFirstBtn !== 0) {
+                            // both btns are selected
+                            console.log("both btns are selected");
+                            const [parentId1, formNumber1] = swapFirstBtn.split(";;;");
+                            const [parentId2, formNumber2] = swapSecondBtn.split(";;;");
+      
+                            // Get the form elements
+                            const form1 = document.querySelector(`#folder-${parentId1} .form-${formNumber1}`);
+                            const form2 = document.querySelector(`#folder-${parentId2} .form-${formNumber2}`);
+      
+                            // Get the parent elements
+                            const parent1 = form1.parentNode;
+                            const parent2 = form2.parentNode;
+      
+                            // Swap the forms
+                            const temp = document.createElement('div');
+                            temp.innerHTML = form1.innerHTML;
+                            // Copier le contenu de form2 vers form1
+                            form1.innerHTML = form2.innerHTML;
+                            // Copier le contenu du temporaire (contenant le contenu initial de form1) vers form2
+                            form2.innerHTML = temp.innerHTML;
+      
+                            // refresh les boutons del et edit après déplacement
+                            let editButtonElements = document.querySelectorAll('.edit-button');
+                            let deleteButtonElements = document.querySelectorAll('.delete-button');
+                            for (let i = 0; i < editButtonElements.length; i++) {
+                                editButtonElements[i].addEventListener('click', showEditWindow);
+                            }
+                            for (let i = 0; i < deleteButtonElements.length; i++) {
+                                deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
+                            }
+
+                            let tempValue = tempEditorConfig.front.buttons[parentId1][formNumber1];
+                            tempEditorConfig.front.buttons[parentId1][formNumber1] = tempEditorConfig.front.buttons[parentId2][formNumber2];
+                            tempEditorConfig.front.buttons[parentId2][formNumber2] = tempValue;
+
+                            // Reset the variables
+                            const checkboxDivs = document.querySelectorAll('div.checkbox');
+                            checkboxDivs.forEach(
+                              div => div.classList.remove('checkbox-checked')
+                            );
+                            
+                            swapChanges.push(`${parentId1};;;${formNumber1} > ${parentId2};;;${formNumber2}`);
+                            console.log(`swapChanges: ${swapChanges}`);
+
+                            swapFirstBtn = 0;
+                            swapSecondBtn = 0;
+                            console.log(`sucessfully swapped ${parentId1};;;${formNumber1} to ${parentId2};;;${formNumber2}`);
+                            ifModif = 1;
+                        }
+                        console.log(`1: ${swapFirstBtn}\n2: ${swapSecondBtn}`);
+                    }
+                }
+                else {
+                    // means that both buttons are selected and the swap didnt worked
+                    console.log("if you see this, it means my code is REALLY really bad. But it works, I hope.")
+                }
+            }
+        }
+      
+      
+      
+        // Ajouter la classe CSS pour la croix lors de la modification de editorMode
+        function toggleEditorMode() {
+            let addButtonElements = document.querySelectorAll('.add-button');
+            let editButtonElements = document.querySelectorAll('.edit-button');
+            let deleteButtonElements = document.querySelectorAll('.delete-button');
+            // Fonction pour gérer la visibilité des divs "add-button"
+            for (let i = 0; i < addButtonElements.length; i++) {
+                addButtonElements[i].style.display = editorMode === 0 ? 'none' : 'flex';
+            }
+            for (let i = 0; i < editButtonElements.length; i++) {
+                editButtonElements[i].style.display = editorMode === 0 ? 'none' : 'flex';
+            }
+            for (let i = 0; i < deleteButtonElements.length; i++) {
+                deleteButtonElements[i].style.display = editorMode === 0 ? 'none' : 'flex';
+            }
+            EditorButtons.style.display = editorMode === 0 ? 'none' : 'block';
+            EditorButtonsFolders.style.display = editorMode === 0 ? 'none' : 'block';
+        }
+        function hideEditorPartially() {
+          let editButtonElements = document.querySelectorAll('.edit-button');
+          let deleteButtonElements = document.querySelectorAll('.delete-button');
+          let addButtonElements = document.querySelectorAll('.add-button');
+          for (let i = 0; i < addButtonElements.length; i++) {
+              addButtonElements[i].style.display = 'none'
+          }
+          for (let i = 0; i < editButtonElements.length; i++) {
+              editButtonElements[i].style.display = 'none'
+          }
+          for (let i = 0; i < deleteButtonElements.length; i++) {
+              deleteButtonElements[i].style.display = 'none'
+          }
+        }
+        function showEditorPartially() {
+          let editButtonElements = document.querySelectorAll('.edit-button');
+          let deleteButtonElements = document.querySelectorAll('.delete-button');
+          let addButtonElements = document.querySelectorAll('.add-button');
+          for (let i = 0; i < addButtonElements.length; i++) {
+              addButtonElements[i].style.display = 'flex'
+          }
+          for (let i = 0; i < editButtonElements.length; i++) {
+              editButtonElements[i].style.display = 'flex'
+          }
+          for (let i = 0; i < deleteButtonElements.length; i++) {
+              deleteButtonElements[i].style.display = 'flex'
+          }
+        }
+      
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton editorButton
+        editorButton.addEventListener('click', function () {
+            editorMode = editorMode === 0 ? 1 : 0;
+            toggleEditorMode();
+            editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+            console.log('La valeur de editorMode a été modifiée :', editorMode);
+            if (editorMode === 1) {
+                fetch('/get_config')
+                    .then(function (response) {
+                        let tempEditorConfig = {}; // Déclarer tempEditorConfig
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                        }
+                    })
+                    .then(function (configData) {
+                        // Utilisez les données de configuration retournées
+                        tempEditorConfig = configData;
+                        // console.log(tempEditorConfig);
+                    })
+                    .catch(function (error) {
+                        // Gérez les erreurs ici
+                        console.error(error);
+                    });
+            } else {
+              if (ifModif === 1) {
+                console.log(`swapChanges ${swapChanges}`);
+                // while (swapChanges.length > 0) {
+                //   console.log(swapChanges.length);
+                //   undoSwap()
+                // }
+                location.reload();
+              }
+              editorMode = 0;
+              swapMode = 0;
+              showEditorPartially()
+              swapEditorButton.textContent = '[S] Swap 2 Buttons'
+              swapFirstBtn = 0;
+              swapSecondBtn = 0;
+              swapChanges = []
+              console.log(`swapChanges: ${swapChanges}`);
+              toggleEditorMode();
+              editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+              console.log('La valeur de editorMode a été modifiée :', editorMode);
+            }
+        });
+      
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
+        const exitEditorButton = document.getElementById('exitEditorButton');
+        exitEditorButton.addEventListener('click', function () {
+          if (ifModif === 1) {
+            console.log(`swapChanges ${swapChanges}`);
+            // while (swapChanges.length > 0) {
+            //   console.log(swapChanges.length);
+            //   undoSwap()
+            // }
+            location.reload();
+          }
+          editorMode = 0;
+          swapMode = 0;
+          showEditorPartially()
+          swapEditorButton.textContent = '[S] Swap 2 Buttons'
+          swapFirstBtn = 0;
+          swapSecondBtn = 0;
+          swapChanges = []
+          console.log(`swapChanges: ${swapChanges}`);
+          toggleEditorMode();
+          editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+          console.log('La valeur de editorMode a été modifiée :', editorMode);
+        });
+      
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton SaveExitEditorButton
+        const SaveExitEditorButton = document.getElementById('SaveExitEditorButton');
+        SaveExitEditorButton.addEventListener('click', function () {
+            editorMode = 0;
+            swapMode = 0;
+            showEditorPartially()
+            swapEditorButtonFunction()
+            swapEditorButton.textContent = '[S] Swap 2 Buttons'
+            swapFirstBtn = 0;
+            swapSecondBtn = 0;
+            swapChanges = []
+            console.log(`swapChanges: ${swapChanges}`);
+            toggleEditorMode();
+            if (ifModif === 1) {
+                fetch('/save_buttons_only', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tempEditorConfig)
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        // Le serveur a enregistré les données avec succès
+                        return response.json();
+                    } else {
+                        // Le serveur a retourné une erreur
+                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                })
+                .then(function(response) {
+                    if (response.success) {
+                        // Le serveur a enregistré les données avec succès
+                        alert('Les paramètres ont été enregistrés avec succès.');
+                        location.reload();
+                    } else {
+                        // Le serveur a retourné une erreur
+                        alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                })
+                .catch(function(error) {
+                    // Une erreur s'est produite
+                    alert(error.message);
+                });
+            }
+            console.log('La valeur de editorMode a été modifiée :', editorMode);
+        });
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
+        function swapEditorButtonFunction(event) {
+          swapMode = swapMode === 0 ? 1 : 0;
+          swapEditorButton.textContent = swapMode === 0 ? '[S] Swap 2 Buttons' : '[S] Stop Swap Mode';
+          swapFirstBtn = 0;
+          swapSecondBtn = 0;
+          console.log('La valeur de swapMode a été modifiée :', swapMode);
+
+          var checkboxDivs = document.querySelectorAll('div.checkbox');
+          var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
+          if (editorMode === 1 && swapMode === 1) {
+            swapEditorButton.textContent = '[S] Stop Swap Mode';
+            hideEditorPartially()
+            // afficher swapMode-open-folder
+            for (var i = 0; i < openFolderDivs.length; i++) {
+              openFolderDivs[i].style.display = 'inline-flex';
+            }
+            for (var i = 0; i < checkboxDivs.length; i++) {
+              checkboxDivs[i].style.display = 'block';
+            }
+
+            // retirer le onclick
+            var buttons = document.getElementsByTagName('button');
+          
+            for (var i = 0; i < buttons.length; i++) {
+              if (!buttons[i].classList.contains('EditorButtons-Folder')) {
+                var button = buttons[i];
+                var onclickAttr = button.getAttribute('onclick');
+                var onclickHandlerAttr = button.getAttribute('onclickhandler');
+            
+                // Stocker temporairement l'attribut onclick dans l'objet savedOnClicks en utilisant l'attribut onclickhandler comme clé
+                if (onclickHandlerAttr) {
+                  savedOnClicks[onclickHandlerAttr] = onclickAttr;
+                }
+            
+                // Supprimer l'attribut onclick
+                button.removeAttribute('onclick');
+              }
+            }
+          } else {
+            swapEditorButton.textContent = '[S] Swap 2 Buttons';
+            swapMode = 0;
+            showEditorPartially()
+
+            var checkboxDivs = document.querySelectorAll('div.checkbox');
+            var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
+            // masquer swapMode-open-folder
+            for (var i = 0; i < openFolderDivs.length; i++) {
+              openFolderDivs[i].style.display = 'none';
+            }
+            // masquer checkbox
+            for (var i = 0; i < checkboxDivs.length; i++) {
+              checkboxDivs[i].style.display = 'none';
+            }
+
+            // Réappliquer les attributs onclick en fonction de l'emplacement du bouton
+            var buttons = document.getElementsByTagName('button');
+          
+            for (var i = 0; i < buttons.length; i++) {
+              if (!buttons[i].classList.contains('EditorButtons-Folder')) {
+                var button = buttons[i];
+                var onclickHandlerAttr = button.getAttribute('onclickhandler');
+                var savedOnClick = savedOnClicks[onclickHandlerAttr];
+            
+                // Vérifier si un attribut onclick est sauvegardé pour le bouton actuel
+                if (savedOnClick) {
+                  // Réappliquer l'attribut onclick depuis savedOnClicks
+                  button.setAttribute('onclick', savedOnClick);
+                }
+              }
+            }
+            swapChanges = []
+            console.log(`swapChanges: ${swapChanges}`);
+          }
+        }
+
+        function undoSwap() {
+          let lastChange = swapChanges[swapChanges.length - 1];
+          console.log(`All changes: ${swapChanges}`)
+          console.log(`Last change: ${lastChange}`)
+          
+          if (lastChange === undefined) {
+            alert("There are no changes to undo.")
+          } else {
+
+          
+
+            let [swapFirstBtn, swapSecondBtn] = lastChange.split(" > ");
+            const [parentId1, formNumber1] = swapFirstBtn.split(";;;");
+            const [parentId2, formNumber2] = swapSecondBtn.split(";;;");
+            
+            // Get the form elements
+            const form1 = document.querySelector(`#folder-${parentId1} .form-${formNumber1}`);
+            const form2 = document.querySelector(`#folder-${parentId2} .form-${formNumber2}`);
+            
+            // Get the parent elements
+            const parent1 = form1.parentNode;
+            const parent2 = form2.parentNode;
+            
+            // Swap the forms
+            const temp = document.createElement('div');
+            temp.innerHTML = form1.innerHTML;
+            // Copier le contenu de form2 vers form1
+            form1.innerHTML = form2.innerHTML;
+            // Copier le contenu du temporaire (contenant le contenu initial de form1) vers form2
+            form2.innerHTML = temp.innerHTML;
+            
+            // refresh les boutons del et edit après déplacement
+            let editButtonElements = document.querySelectorAll('.edit-button');
+            let deleteButtonElements = document.querySelectorAll('.delete-button');
+            for (let i = 0; i < editButtonElements.length; i++) {
+                editButtonElements[i].addEventListener('click', showEditWindow);
+            }
+            for (let i = 0; i < deleteButtonElements.length; i++) {
+                deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
+            }
+            let tempValue = tempEditorConfig.front.buttons[parentId1][formNumber1];
+            tempEditorConfig.front.buttons[parentId1][formNumber1] = tempEditorConfig.front.buttons[parentId2][formNumber2];
+            tempEditorConfig.front.buttons[parentId2][formNumber2] = tempValue;
+            // Reset the variables
+            const checkboxDivs = document.querySelectorAll('div.checkbox');
+            checkboxDivs.forEach(
+              div => div.classList.remove('checkbox-checked')
+            );
+            
+            swapChanges.splice(-1)
+            swapUNChanges.push(`${parentId1};;;${formNumber1} > ${parentId2};;;${formNumber2}`);
+
+            console.log(`swapUNChanges: ${swapChanges}`);
+            swapFirstBtn = 0;
+            swapSecondBtn = 0;
+            console.log(`sucessfully unswapped ${parentId1};;;${formNumber1} to ${parentId2};;;${formNumber2}`);
+            ifModif = 1;
+          }
+        }
+
+        function undoUNSwap() {
+          let lastChange = swapUNChanges[swapUNChanges.length - 1];
+          console.log(`All changes: ${swapUNChanges}`)
+          console.log(`Last change: ${lastChange}`)
+          
+          if (lastChange === undefined) {
+            alert("There are no changes to undo.")
+          } else {
+
+          
+
+            let [swapFirstBtn, swapSecondBtn] = lastChange.split(" > ");
+            const [parentId1, formNumber1] = swapFirstBtn.split(";;;");
+            const [parentId2, formNumber2] = swapSecondBtn.split(";;;");
+            
+            // Get the form elements
+            const form1 = document.querySelector(`#folder-${parentId1} .form-${formNumber1}`);
+            const form2 = document.querySelector(`#folder-${parentId2} .form-${formNumber2}`);
+            
+            // Get the parent elements
+            const parent1 = form1.parentNode;
+            const parent2 = form2.parentNode;
+            
+            // Swap the forms
+            const temp = document.createElement('div');
+            temp.innerHTML = form1.innerHTML;
+            // Copier le contenu de form2 vers form1
+            form1.innerHTML = form2.innerHTML;
+            // Copier le contenu du temporaire (contenant le contenu initial de form1) vers form2
+            form2.innerHTML = temp.innerHTML;
+            
+            // refresh les boutons del et edit après déplacement
+            let editButtonElements = document.querySelectorAll('.edit-button');
+            let deleteButtonElements = document.querySelectorAll('.delete-button');
+            for (let i = 0; i < editButtonElements.length; i++) {
+                editButtonElements[i].addEventListener('click', showEditWindow);
+            }
+            for (let i = 0; i < deleteButtonElements.length; i++) {
+                deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
+            }
+            let tempValue = tempEditorConfig.front.buttons[parentId1][formNumber1];
+            tempEditorConfig.front.buttons[parentId1][formNumber1] = tempEditorConfig.front.buttons[parentId2][formNumber2];
+            tempEditorConfig.front.buttons[parentId2][formNumber2] = tempValue;
+            // Reset the variables
+            const checkboxDivs = document.querySelectorAll('div.checkbox');
+            checkboxDivs.forEach(
+              div => div.classList.remove('checkbox-checked')
+            );
+            
+            swapUNChanges.splice(-1)
+            swapChanges.push(`${parentId1};;;${formNumber1} > ${parentId2};;;${formNumber2}`);
+
+            swapFirstBtn = 0;
+            swapSecondBtn = 0;
+            console.log(`sucessfully unswapped ${parentId1};;;${formNumber1} to ${parentId2};;;${formNumber2}`);
+            ifModif = 1;
+          }
+        }
+
+        const swapEditorButton = document.getElementById('swapEditorButton');
+        swapEditorButton.addEventListener('click', swapEditorButtonFunction);
+
+        document.addEventListener('keydown', function(event) {
+          if (is_modal_opened === 0) {
+            
+            if (event.key === 'e') {
+              editorMode = editorMode === 0 ? 1 : 0;
+              toggleEditorMode();
+              editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+              console.log('La valeur de editorMode a été modifiée :', editorMode);
+              if (editorMode === 1) {
+                fetch('/get_config')
+                  .then(function (response) {
+                    let tempEditorConfig = {}; // Déclarer tempEditorConfig
+                    if (response.ok) {
+                      return response.json();
+                    } else {
+                      throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                    }
+                  })
+                  .then(function (configData) {
+                    // Utilisez les données de configuration retournées
+                    tempEditorConfig = configData; // Stockez les données JSON dans la variable "configData"
+                  })
+                  .catch(function (error) {
+                    // Gérez les erreurs ici
+                    console.error(error);
+                  });
+              } else {
+                if (ifModif === 1) {
+                  console.log(`swapChanges ${swapChanges}`);
+                  // while (swapChanges.length > 0) {
+                  //   console.log(swapChanges.length);
+                  //   undoSwap()
+                  // }
+                  location.reload();
+                }
+                swapEditorButtonFunction()
+                editorMode = 0;
+                toggleEditorMode();
+                editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+                console.log('La valeur de editorMode a été modifiée :', editorMode);
+              }
+            }
+            if (editorMode === 1) {
+              if (event.key === 's') {
+                swapEditorButtonFunction()
+              }
+              if (event.key === 'z' && event.ctrlKey && swapMode === 1) {
+                console.log('Ctrl + Z');
+                undoSwap()
+              }
+              if (event.ctrlKey && event.shiftKey && event.key === 'Z' && swapMode === 1) {
+                console.log('Ctrl + Shift + Z');
+                undoUNSwap()
+              }
+              if (event.key === 'y' && event.ctrlKey && swapMode === 1) {
+                console.log('Ctrl + Y');
+                undoUNSwap()
+              }
+            }
+            let modal = document.querySelector('.modal-container');
+            if (event.key === 'Escape' && modal.style.opacity === '1') {
+              console.log('Esc (closed modal)');
+              hide_modal()
+            }
+            if (event.key === 'c' || event.key === 'm') {
+              if (modal.style.opacity !== '1') {
+                console.log('M or C (opened config modal)');
+                show_modal()
+              } else {
+                console.log('M or C (closed config modal)');
+                hide_modal()
+              }
+            }
+          }
+        });
+      
+
+        const EditorButtons = document.getElementById('EditorButtons');
+        const EditorButtonsFolders = document.getElementById('EditorButtons-Folders');
+      
+        let addButtonElements = document.querySelectorAll('.add-button');
+        let editButtonElements = document.querySelectorAll('.edit-button');
+        let deleteButtonElements = document.querySelectorAll('.delete-button');
+      
+        var AllButtons1 = document.querySelectorAll('form#form');
+        var AllButtons2 = document.querySelectorAll('div.void');
+        var AllButtons = Array.from(AllButtons1).concat(Array.from(AllButtons2));
+      
+        // Ajouter un gestionnaire d'événement pour le clic sur le bouton +
+        for (let i = 0; i < addButtonElements.length; i++) {
+            addButtonElements[i].addEventListener('click', showAddConfirmation);
+        }
+        // Ajouter un gestionnaire d'événement pour le clic sur le bouton edit
+        for (let i = 0; i < editButtonElements.length; i++) {
+            editButtonElements[i].addEventListener('click', showEditWindow);
+        }
+        // Ajouter un gestionnaire d'événement pour le clic sur le bouton delete
+        for (let i = 0; i < deleteButtonElements.length; i++) {
+            deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
+        }
+        // Ajouter un gestionnaire d'événement pour le clic sur le bouton swap
+        for (let i = 0; i < AllButtons.length; i++) {
+            AllButtons[i].addEventListener('click', swapButton);
+        }
+
+        // =========== EDITORMODE ======== END
+
+
+        var loadingScreen = document.getElementById("loading-screen");
+        setTimeout(function() {
+          loadingScreen.classList.add("hidden");
+          setTimeout(function() {
+            loadingScreen.remove();
+          }, 1000);
+        }, 1000);
+        
+        
+
+        // ?modal=show ?config=show
+        const urlParams = new URLSearchParams(window.location.search);
+        const modalParam = urlParams.get('config');
+        if (modalParam === 'show') {
+          let modal = document.querySelector('.modal-container');
+          modal.style.opacity = '1';
+          modal.style.display = 'block';
+        }
+
+        var forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+          form.addEventListener('submit', function(event) {
+            event.preventDefault();
+        
+            if (editorMode === 1 && swapMode === 1) {
+              return; // Empêche l'envoi du formulaire par défaut
+            }
+        
+            const messageElement = form.querySelector('.message');
+            if (!messageElement) {
+              if (form.classList.contains('config-form')) {
+                  
+                console.log('sending config-form...');
+          
+                var config_dataTemp = {};
+                var inputs = document.querySelectorAll('#config-form input, #config-form select');
+                inputs.forEach(function(input) {
+                  var name = input.name;
+                  var value;
+                  if (input.type === 'checkbox') {
+                    value = input.checked ? 'true' : 'false';
+                  } else {
+                    value = input.value;
+                    if (input.id === 'language') {
+                      value = value.toLowerCase();
+                    }
+                  }
+                  config_dataTemp[name] = value;
+                });
+                
+          
+                console.log(config_dataTemp);
+          
+                let config_data = {};
+          
+                for (let key in config_dataTemp) {
+                  if (key === "") continue; // Ignorer la clé sans nom
+          
+                  let keys = key.split(".");
+                  let obj = config_data;
+          
+                  for (let i = 0; i < keys.length; i++) {
+                    if (!obj.hasOwnProperty(keys[i])) {
+                      obj[keys[i]] = {};
+                    }
+          
+                    if (i === keys.length - 1) {
+                      obj[keys[i]] = config_dataTemp[key];
+                    }
+          
+                    obj = obj[keys[i]];
+                  }
+                }
+          
+                console.log(config_data);
+          
+                fetch('/save_config', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(config_data)
+                })
+                  .then(function(response) {
+                    if (response.ok) {
+                      return response.json();
+                    } else {
+                      throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                  })
+                  .then(function(response) {
+                    if (response.success) {
+                      alert('Les paramètres ont été enregistrés avec succès.');
+                    } else {
+                      alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                  })
+                  .catch(function(error) {
+                    alert(error.message);
+                  });
+              }
+            } else {
+              const message = messageElement.value;
+              if (!message.startsWith("/usage") && !message.startsWith("/reload") && !message.startsWith("/folder")) {
+                fetch('/send-data', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ message: message })
+                })
+                  .then(response => response.json())
+                  .then(data => console.log(data))
+                  .catch(error => console.error(error));
+              } else if (message.startsWith("/reload") && swapMode !== 1) {
+                console.log('reloading...');
+                location.reload();
+              } else {
+                fetch('/usage', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ message: message })
+                })
+                  .then(response => response.json())
+                  .then(usage_dict => {
+                    const divElements = document.querySelectorAll('.usage-value');
+                    divElements.forEach(divElement => {
+                      const otherClass = divElement.classList[1];
+                      if (otherClass !== undefined) {
+                        try {
+                          let newValue;
+                          if (otherClass.includes('percent')) {
+                            newValue = eval(otherClass) + '%';
+                          } else if (otherClass.includes('_gb')) {
+                            newValue = eval(otherClass) + ' gb';
+                          } else if (otherClass.includes('_mb')) {
+                            newValue = eval(otherClass) + ' mb';
+                          } else if (otherClass.includes('bytes')) {
+                            newValue = eval(otherClass) + ' bytes';
+                          } else {
+                            newValue = eval(otherClass);
+                          }
+                          if (!newValue.includes('undefined')) {
+                            divElement.innerHTML = newValue;
+                          }
+                        } catch (error) {
+                          return;
+                        }
+                      }
+                    });
+                  })
+                  .catch(error => console.error(error));
+              }
+            }
+          });
+        });
+        
+
+
+
+        // Sélectionner tous les boutons qui ont la classe open-config-modal
+        let open_modal_buttons = document.querySelectorAll(".open-config-modal");
+
+        // Sélectionner le conteneur de la modal
+        let modal = document.querySelector(".modal-container");
+
+        // Sélectionner le bouton de fermeture de la modal
+        let modal_close_button = document.querySelector(".modal-close");
+
+        function show_modal() {
+          modal.style.opacity = "100%";
+          modal.style.display = "block";
+        }
+        function hide_modal() {
+          let intervalId = setInterval(function() {
+            let currentOpacity = parseFloat(getComputedStyle(modal).opacity);
+            if (currentOpacity <= 0) {
+              // L'animation est terminée, cacher la modal
+              clearInterval(intervalId);
+              setTimeout(function() {
+                modal.style.display = "none";
+              }, 100); // Attendre avant de cacher la modal
+              return;
+            }
+            modal.style.opacity = (currentOpacity - 3.5).toFixed(2);
+          }, 10); // Répéter toutes les 0.01s (10ms)
+        }
+
+        // Ajouter un écouteur d'événement sur chaque bouton pour ouvrir la modal
+        for (let button of open_modal_buttons) {
+          button.addEventListener("click", function() {
+            if (swapMode !== 1) {
+              show_modal();
+            }
+          });
+        }
+
+        // Ajouter un écouteur d'événement sur le bouton de fermeture pour fermer la modal
+        modal_close_button.addEventListener("click", function() {
+          hide_modal();
+        });
+
+        // Ajouter un écouteur d'événement sur la modal pour la fermer en cliquant en dehors
+        modal.addEventListener("click", function(event) {
+          if (event.target === modal) {
+            hide_modal();
+          }
+        });
+        
+
+        
+        // Sélectionner tous les boutons qui ont la classe open-config-modal
+        let open_modal_addbutton = document.querySelectorAll("div.add-button");
+
+        // Sélectionner le conteneur de la modal
+        let addbutton_modal = document.querySelector(".addbutton-modal-container");
+
+        // Sélectionner le bouton de fermeture de la modal
+        let addbutton_modal_close_button = document.querySelector(".addbutton-modal-close");
+
+        let is_modal_opened = 0;
+
+        function show_addbutton_modal(addFolder, addId) {
+          addbutton_modal.style.opacity = "100%";
+          addbutton_modal.style.display = "block";
+          is_modal_opened = 1;
+          document.querySelector('#addbutton-modal-content').setAttribute('add_FOLDER', addFolder);
+          document.querySelector('#addbutton-modal-content').setAttribute('add_ID', addId);
+        }
+        function hide_addbutton_modal() {
+          document.querySelector('#addbutton-modal-content').removeAttribute('add_ID');
+          document.querySelector('#addbutton-modal-content').removeAttribute('add_FOLDER');
+          let intervalId = setInterval(function() {
+            let currentOpacity = parseFloat(getComputedStyle(addbutton_modal).opacity);
+            if (currentOpacity <= 0) {
+              // L'animation est terminée, cacher la modal
+              clearInterval(intervalId);
+              setTimeout(function() {
+                addbutton_modal.style.display = "none";
+              }, 100); // Attendre avant de cacher la modal
+              return;
+            }
+            addbutton_modal.style.opacity = (currentOpacity - 3.5).toFixed(2);
+          }, 10); // Répéter toutes les 0.01s (10ms)
+          is_modal_opened = 0;
+        }
+
+        // Ajouter un écouteur d'événement sur chaque bouton pour ouvrir la modal addbutton
+        for (let button of open_modal_addbutton) {
+          button.addEventListener("click", function() {
+            if (swapMode !== 1) {
+              var addIdValue = button.getAttribute('add_ID');
+              var addFolderValue = button.getAttribute('add_FOLDER');
+              show_addbutton_modal(addFolderValue, addIdValue);
+            }
+          });
+        }
+
+        // Ajouter un écouteur d'événement sur le bouton de fermeture pour fermer la modal addbutton
+        addbutton_modal_close_button.addEventListener("click", function() {
+          hide_addbutton_modal();
+        });
+
+        // Ajouter un écouteur d'événement sur la modal addbutton pour la fermer en cliquant en dehors
+        addbutton_modal.addEventListener("click", function(event) {
+          if (event.target === addbutton_modal) {
+            hide_addbutton_modal();
+          }
+        });
+
+
+
+        // Sélectionner tous les boutons qui ont la classe open-config-modal
+        let open_modal_addbutton_args = document.querySelectorAll("button.no-dropdown");
+        
+        // Sélectionner le conteneur de chaque modal
+        let addbutton_args_modal_containers = document.querySelectorAll(".addbutton-modal-container-args");
+        let addbutton_args_modal = addbutton_args_modal_containers
+        
+        // Sélectionner le bouton de fermeture de la modal
+        let addbutton_args_modal_close_buttons = document.querySelectorAll(".addbutton-modal-close-args");
+        
+
+        function show_addbutton_args_modal(modalId) {
+          let modal = document.getElementById("modal-container-" + modalId);
+          if (modal) {
+            modal.style.opacity = "100%";
+            modal.style.display = "block";
+            is_modal_opened = 1;
+          }
+        }
+        
+        function hide_addbutton_args_modal() {
+          let intervalId = setInterval(function() {
+          let currentOpacity = parseFloat(getComputedStyle(addbutton_args_modal[0]).opacity);
+          if (currentOpacity <= 0) {
+            // L'animation est terminée, cacher la modal
+            clearInterval(intervalId);
+            setTimeout(function() {
+              for (let element of addbutton_args_modal) {
+                let modalId = element.getAttribute("arg_modal_ID");
+                let modal = document.getElementById("modal-container-" + modalId);
+                if (modal) {
+                  element.style.display = "none";
+                }
+              }
+            }, 100); // Attendre avant de cacher la modal
+              return;
+            }
+            for (let element of addbutton_args_modal) {
+              element.style.opacity = (currentOpacity - 3.5).toFixed(2);
+            }
+          }, 10); // Répéter toutes les 0.01s (10ms)
+        }
+        
+        // Ajouter des écouteurs d'événements sur chaque bouton pour ouvrir la modal correspondante
+        open_modal_addbutton_args.forEach(function(button) {
+          button.addEventListener("click", function() {
+            let modalId = button.getAttribute("arg_modal_ID");
+            if (swapMode !== 1) {
+              show_addbutton_args_modal(modalId);
+            }
+          });
+        });
+        
+        
+        // Ajouter des écouteurs d'événements sur chaque modal pour la fermer en cliquant en dehors
+        addbutton_args_modal_containers.forEach(function(modalContainer) {
+          let modalId = modalContainer.getAttribute("id").split("-").pop();
+        
+          // Ajouter un événement de clic à la div modal-container
+          modalContainer.addEventListener("click", function(event) {
+            if (event.target === modalContainer) {
+              hide_addbutton_args_modal();
+            }
+          });
+        });
+        
+        // Ajouter des écouteurs d'événements sur chaque bouton de fermeture
+        addbutton_args_modal_close_buttons.forEach(function(close_button) {
+          close_button.addEventListener("click", function() {
+            hide_addbutton_args_modal();
+          });
+        });
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // fullscreen
+        
+        const fullscreenBtn = document.querySelector('.fullscreen-btn');
+        const zoomInBtn = document.querySelector('.zoom-in-btn');
+        const zoomOutBtn = document.querySelector('.zoom-out-btn');
+        const buttonsCenter = document.querySelector('.buttons-center');
+        const shrinkBtn = document.querySelector('.shrink-btn');
+        const expandBtn = document.querySelector('.expand-btn');
+        const dezoomBtn = document.querySelector('.dezoom-btn');
+        const zoomBtn = document.querySelector('.zoom-btn');
+        fullscreenBtn.addEventListener('click', () => {
+          if (document.fullscreenEnabled && swapMode === 0 ) {
+            if (document.fullscreenElement) {
+              document.exitFullscreen();
+            } else {
+              goFullscreen()
+            }
+            auto_resize();
+          } else {
+            console.log('Fullscreen mode not supported');
+          }
+        });
+
+
+        try {
+          let scale = 1;
+          zoomInBtn.addEventListener('click', () => {
+            if (swapMode !== 1) {
+              scale += 0.1;
+              document.documentElement.style.transform = `scale(${scale})`;
+            }
+          });
+        } catch (error) {}
+
+        try {
+          zoomOutBtn.addEventListener('click', () => {
+            if (swapMode !== 1) {
+              scale -= 0.1;
+              document.documentElement.style.transform = `scale(${scale})`;
+            }
+          });
+        } catch (error) {}
+
+        try {
+          shrinkBtn.addEventListener('click', () => {
+            if (swapMode !== 1) {
+              const currentMargin = parseInt(getComputedStyle(buttonsCenter).marginLeft);
+              buttonsCenter.style.marginLeft = `${currentMargin + 1}px`;
+              buttonsCenter.style.marginRight = `${currentMargin + 1}px`;
+            }
+          });
+        } catch (error) {}
+
+        try {
+          expandBtn.addEventListener('click', () => {
+            if (swapMode !== 1) {
+              const currentMargin = parseInt(getComputedStyle(buttonsCenter).marginLeft);
+              buttonsCenter.style.marginLeft = `${currentMargin - 1}px`;
+              buttonsCenter.style.marginRight = `${currentMargin - 1}px`;
+            }
+          });
+        } catch (error) {}
+
+
+        const cols = '{{config["front"]["width"]}}';
+        const rows = '{{config["front"]["height"]}}';
+
+        // Convertir les parties en nombres entiers
+        const maxRows = parseInt(rows);
+        const maxCols = parseInt(cols);
+
+        // Récupérer la taille d'une petite div
+        const smallDiv = document.querySelector('.form-0');
+        const smallDivStyles = getComputedStyle(smallDiv);
+        const smallDivWidth = parseInt(smallDivStyles.width) + parseInt(smallDivStyles.paddingLeft) + parseInt(smallDivStyles.paddingRight);
+        const smallDivHeight = parseInt(smallDivStyles.height) + parseInt(smallDivStyles.paddingTop) + parseInt(smallDivStyles.paddingBottom);
+
+        // Calculer la limite de la grande div en fonction de la taille de la petite div
+        const maxDivs = maxRows * maxCols;
+        const maxWidth = maxCols * smallDivWidth + 10;
+
+        // Récupérer la grande div et modifier sa largeur avec les marges
+        const bigDivs = document.querySelectorAll('[id^="folder-"].buttons-center');
+        bigDivs.forEach((bigDiv) => {
+          bigDiv.style.maxWidth = `${maxWidth}px`;
+        });
+
+        // REDIMENTIONNER LES DIVS POUR S'AJUSTER A LA TAILLE DE L'ECRAN
+
+        var currentZoom = 1;
+
+        try {
+          dezoomBtn.addEventListener('click', () => {
+            if (swapMode !== 1) {
+              currentZoom = currentZoom - 0.05; // ici tu peux mettre 0.1 si c'est trop long
+              let larg = 100 / currentZoom;
+              let long = 100 / currentZoom;
+              document.body.style.transformOrigin = "left top"; //tu peux changer center top mais après ça marche moins
+              document.body.style.transform = "scale(" + currentZoom + ")";
+              document.body.style.width = `${larg}%`;
+              document.body.style.height = `${long}%`;
+            }
+          });
+        } catch (error) {}
+
+        try {
+          zoomBtn.addEventListener('click', () => {
+            if (swapMode !== 1) {
+              currentZoom = currentZoom + 0.05; // ici tu peux mettre 0.1 si c'est trop long
+              let larg = 100 / currentZoom;
+              let long = 100 / currentZoom;
+              document.body.style.transformOrigin = "left top";
+              document.body.style.transform = "scale(" + currentZoom + ")";
+              document.body.style.width = `${larg}%`; //pour etre sur que ça s'adapte à la taille de l'écran
+              document.body.style.height = `${long}%`;
+            }
+          });
+        } catch (error) {}
+
+        addEventListener("resize", (event) => {});
+        onresize = (event) => {
+          auto_resize();
+        };
+
+        /* Empêcher le défilement */
+        document.addEventListener('touchmove', function(e) {
+          if (!e.target.closest('.modal-content')) {
+            e.preventDefault();
+          }
+        }, { passive: false }); // Empêcher le défilement sur les appareils mobiles
+
+        // document.addEventListener('wheel', function(e) {
+        //   e.preventDefault();
+        // }); // Empêcher le défilement sur les ordinateurs
+
+
+
+
+
+
+
+
+
+
+
+        // Get the button element in the form
+        //onst button = form.querySelector('.button');
+
+        //  let buttonClicked = false;
+        //  // Définissez une fonction qui vérifie l'état de l'événement touchend
+        //  function checkTouchEnd() {
+        //    if (buttonClicked) {
+        //      button.classList.add('activee');
+        //      console.log("added")
+        //    }
+        //    else {
+        //      button.classList.remove('activee');
+        //      console.log("removed")
+        //    }
+        //  }
+        //  // Utilisez setInterval pour exécuter la fonction toutes les 0,1 secondes
+        //  setInterval(checkTouchEnd, 300);
+
+
+        const print1 = document.getElementById('print1');
+        const print2 = document.getElementById('print2');
+
+        //  // Add the mousedown event handler
+        //  button.addEventListener('mousedown', function() {
+        //    print2.innerHTML = 'mouseup: not active';
+        //  });
+
+        //  // Add the mouseup event handler
+        //  button.addEventListener('mouseup', function() {
+        //    print2.innerHTML = 'mouseup: active';
+        //  });
+
+        //  
+        //  // Add the touchstart event handler
+        //  button.addEventListener('touchstart', function() {
+        //    buttonClicked = true;
+        //    print1.innerHTML = 'touchstart: active';
+        //  });
+
+        //  // Add the touchend event handler
+        //  button.addEventListener('touchend', function() {
+        //    buttonClicked = false;
+        //    print1.innerHTML = 'touchstart: not active';
+        //  });
+
+      });
+
+    </script>
+    
+  </body>
+</html>
