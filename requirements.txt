@@ -26,7 +26,3 @@ flask_sslify
 deepdiff==6.3.0
 pystray
 tk
-
-
-google-assistant-sdk
-click==8.1.3
