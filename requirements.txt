@@ -22,7 +22,6 @@ gputil
 wmi
 spotipy
 simple-websocket
-flask_sslify
 deepdiff==6.3.0
 pystray
 tk
