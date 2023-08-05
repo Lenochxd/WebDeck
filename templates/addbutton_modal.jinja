@@ -1,0 +1,642 @@
+<div class="addbutton-modal-container-args {{black_theme}}" id="modal-container-{{ arg_modal_ID }}" arg_modal_ID="{{ arg_modal_ID }}">
+  <div class="addbutton-modal-content-args {{black_theme}}">
+
+    <div class="addbutton-modal-header-args bold modal-container-{{ arg_modal_ID }}">
+      <h1 class="addbutton-modal-args">Configure your button: {{command_name}}</h1>
+      <div class="addbutton-modal-close-args">
+        <svg class="addbutton-args-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="addbutton-modal-main-args">
+      <div id="config-container" class="{{black_theme}}">
+      
+        <form class="args-form" arg_modal_ID="{{ arg_modal_ID }}">
+          
+          <div class="args-container {{black_theme}}" arg_modal_ID="{{ arg_modal_ID }}">
+        
+            {% for arg in command_value["args"] %}
+              
+              {% if arg[config.settings.language] %}
+                {% set arg_name = arg[config.settings.language] %}
+              {% elif arg["en"] %}
+                {% set arg_name = arg["en"] %}
+              {% else %}
+                {% set arg_name = "arg_name is missing!" %}
+              {% endif %}
+              {% if "input" in arg['TYPE'] %}
+                
+                <div class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
+                  
+                  <label for="{{ arg_name }}_{{arg_modal_ID}}">{{ arg_name }}:</label>
+                  {% if "webdeck_foldername" in arg['TYPE'] %}
+                    {# lister tous les dossiers #}
+                    <div class="webdeck_foldername_ALL">
+                      {% for key in config["front"]["buttons"] %}
+                        <div class="webdeck_foldername">
+                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" required>
+                          <label for="{{ key }}">{{ key }}</label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% elif "file" in arg['TYPE'] %}
+                    <input class="{{black_theme}}" type="file" name="{{file}}" required>
+                  {% elif "url" in arg['TYPE'] %}
+                    <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
+                            placeholder="https://example.com" required>
+                  {% elif "number" in arg['TYPE'] %}
+                    {% set string_list = arg['TYPE'].split(" ") %}
+                    {% set number_list = [] %}
+                    {% for i in string_list %}
+                      {% if i.startswith('number') %}
+                        {% set number_list = eval(i.replace('number', '')) %}
+                        {% set min = number_list[0] %}
+                        {% set max = number_list[1] %}
+                        {% if min.startswith('-') or max.startswith('-') %}
+                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                        {% else %}
+                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% elif "text-windowsapp" in arg['TYPE'] %}
+                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
+                  {% elif "longtext" in arg['TYPE'] %}
+                    <textarea class="{{black_theme}} name="{{file}}" rows="5" cols="33" required></textarea>
+                  {% elif "text" in arg['TYPE'] %}
+                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
+                  {% elif "dropdown" in arg['TYPE'] %}
+                    {# lister toutes les options #}
+                    <select name="{{file}}" required>
+                      {% for option in arg['options'] %}
+                        {% if option[config.settings.language] %}
+                          {% set option_name = option[config.settings.language] %}
+                        {% elif arg["en"] %}
+                          {% set option_name = option["en"] %}
+                        {% else %}
+                          {% set option_name = "option_name is missing!" %}
+                        {% endif %}
+                        <option value="{{ option['ID'] }}"> {{ option_name }} </option>
+                      {% endfor %}
+                    </select>
+                  {% endif %}
+                </div>
+                {% if "webdeck_foldername" in arg['TYPE'] %}
+                  <div class="webdeck_foldername_div">
+                    <form id="webdeck_foldername_form">
+                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="Folder name" required>
+                      <button id="submitButton" type="submit">Create a folder</button>
+                    </form>
+                      
+                    <script>
+                      document.getElementById("submitButton").addEventListener("click", function(event) {
+                        event.preventDefault(); // Empêche le comportement par défaut du bouton
+                      
+                        // Récupérer la valeur du champ "folderName"
+                        var folderName = document.getElementById("folderName").value;
+                        if (folderName.trim() !== '') {
+                        
+                          // Créer un objet JSON avec la valeur
+                          var parent_folder_id = document.querySelector('.buttons-center:not(.invisible)');
+                          const parent_folder = parent_folder_id.id.replace(/^folder-/, '');
+              
+                          var data = {
+                            "name": folderName,
+                            "parent_folder": parent_folder
+                            };
+                          console.log(data)
+                        
+                          // Envoyer la requête POST avec les données JSON
+                          fetch("/create_folder", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(data)
+                          })
+                          .then(function(response) {
+                            if (response.ok) {
+                              return response.json(); // Convertir la réponse en JSON
+                            } else {
+                              console.log("Une erreur s'est produite lors de la création du dossier.");
+                            }
+                          })
+                          .then(function(data) {
+                            if (data && data.hasOwnProperty('success')) {
+                              if (data.success) {
+                                // Faire quelque chose si la valeur de "success" est True
+                                console.log("Dossier créé avec succès !");
+              
+                                // Sélectionnez toutes les divs avec la classe "webdeck_foldername_ALL"
+                                var divs = document.querySelectorAll('.webdeck_foldername_ALL');
+                                
+                                divs.forEach(function(div) {
+                                  // Créez un élément div
+                                  var newDiv = document.createElement('div');
+                                  newDiv.setAttribute('class', 'webdeck_foldername');
+                                
+                                  // Créez un élément input
+                                  var input = document.createElement('input');
+                                  input.setAttribute('type', 'radio');
+                                  input.setAttribute('name', 'file');
+                                  input.setAttribute('value', folderName);
+                                  input.setAttribute('required', '');
+                                
+                                  // Créez un élément label
+                                  var label = document.createElement('label');
+                                  label.setAttribute('for', folderName);
+                                  label.textContent = folderName;
+                                
+                                  // Ajoutez l'input et le label à la div dans l'ordre inversé
+                                  newDiv.appendChild(input);
+                                  newDiv.appendChild(label);
+                                
+                                  // Ajoutez la div nouvellement créée à la div parent
+                                  div.appendChild(newDiv);
+                                });
+                                
+                                
+                              } else {
+                                // Faire quelque chose si la valeur de "success" est False
+                                console.log("La création du dossier a échoué car le dossier existe déjà.");
+              
+                              }
+                            }
+                          })
+                          .catch(function(error) {
+                            console.log("Erreur : " + error);
+                          });
+                          
+                        }
+                      });
+                    </script>
+                  </div>
+                {% endif %}
+              {% elif "choice" in arg['TYPE'] %}
+                
+                <div class="choices_ALL">
+                  <label for="choice">Choisissez une option :</label><br>
+                  {% for choice in arg['options'] %}
+                    {% if choice[config.settings.language] %}
+                      {% set choice_name = choice[config.settings.language] %}
+                    {% elif arg["en"] %}
+                      {% set choice_name = choice["en"] %}
+                    {% else %}
+                      {% set choice_name = "choice_name is missing!" %}
+                    {% endif %}
+                    <div class="choice">
+                      <input class="choice {{black_theme}}" type="radio" id="none" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
+                      <label for="{{ choice_name }}">{{ choice_name }}</label>
+                    </div>
+                    
+                    <div style="display: none;" class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
+                      {# <h2> {{ choice_name }} </h2> #}
+                      {% if "webdeck_foldername" in arg['TYPE'] %}
+                        {# lister tous les dossiers #}
+                        <div class="webdeck_foldername_ALL">
+                          {% for key in config["front"]["buttons"] %}
+                            <div class="webdeck_foldername">
+                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" required>
+                              <label for="{{ key }}">{{ key }}</label>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% elif "file" in choice['TYPE'] %}
+                        <input class="{{black_theme}}" type="file" name="{{file}}" required>
+                      {% elif "url" in choice['TYPE'] %}
+                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
+                          placeholder="https://example.com" required>
+                      {% elif "number" in arg['TYPE'] %}
+                        {% set string_list = arg['TYPE'].split(" ") %}
+                        {% set number_list = [] %}
+                        {% for i in string_list %}
+                          {% if i.startswith('number') %}
+                            {% set number_list = eval(i.replace('number', '')) %}
+                            {% set min = number_list[0] %}
+                            {% set max = number_list[1] %}
+                            {% if min.startswith('-') or max.startswith('-') %}
+                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                            {% else %}
+                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      {% elif "text-windowsapp" in choice['TYPE'] %}
+                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
+                      {% elif "longtext" in choice['TYPE'] %}
+                        <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33"></textarea>
+                      {% elif "text" in choice['TYPE'] %}
+                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
+                      {% elif "dropdown" in choice['TYPE'] %}
+                        {# lister toutes les options #}
+                        <select name="{{file}}" required>
+                          {% for option in choice['options'] %}
+                            {% if option[config.settings.language] %}
+                              {% set option_name = option[config.settings.language] %}
+                            {% elif choice["en"] %}
+                              {% set option_name = option["en"] %}
+                            {% else %}
+                              {% set option_name = "option_name is missing!" %}
+                            {% endif %}
+                            <option value="{{ option['ID'] }}"> {{ option_name }} </option>
+                          {% endfor %}
+                        </select>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+                <script>
+                  {# const arg_options_{{arg_modal_ID}} = {{arg['options']}} #}
+                  function showArg_{{arg_modal_ID}}(argId) {
+                    var elements_{{arg_modal_ID}} = document.querySelectorAll('div.arg_container[arg_modal_ID="{{arg_modal_ID}}"]:not([arg_id="{{argId}}"])');
+                  
+                    elements_{{arg_modal_ID}}.forEach(function(element) {
+                      if (element.getAttribute('arg_id') === argId) {
+                        element.style.display = 'block'; // Afficher les éléments avec arg_id=argId
+                      } else {
+                        element.style.display = 'none'; // Cacher les autres éléments
+                      }
+                    });
+                  }
+                  
+                  
+                </script>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {# configuration du style: #}
+          
+          {% if command_value["style"] %}
+            {% if command_value["style"]["image"] %}
+            {% endif %}
+          {% endif %}
+          {% if command_value["args"]|length > 0 %}
+            <div class="editorStyle-bar {{black_theme}}"></div>
+          {% endif %}
+          <div class="editorStyle">
+            <div class="fakeform-container {{black_theme}}">
+              <div class="fakeform">
+                {% if command_value["style"] %}
+                  {% set fill = '' %}
+                    {% if 'color' in command_value["style"].keys() %}
+                      {% if command_value["style"]["color"] == 'invert' %}
+                        {% set fill = 'filter: invert(1)' %}
+                      {% else %}
+                        {% set fill = 'fill:'+ command_value["style"]["color"] +';'+' color:'+ command_value["style"]["color"] +';' %}
+                      {% endif %}
+                    {% endif %}
+                  {% set class = "button" %}
+                  {% if command_value["style"]["image"] == "" or not command_value["style"]["image"] %}
+                    <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                      <img id="button-image_{{arg_modal_ID}}"  draggable="false" alt="" style="
+                        width: {{ 112*(50/100) + 3}}px;">
+                    </button>
+                  {% else %}
+                    {% if command_value["style"]["image"].startswith('http') %}
+                      {% set imagelink = command_value["style"]["image"] %}
+                    {% elif ':' in command_value["style"]["image"] %}
+                      {% set imagelink = "static/files/images/" + command_value["style"]["image"].split('\\')[-1] %}
+                    {% elif command_value["style"]["image"].startswith('**uploaded/') %}
+                      {% set imagelink = "static/files/images/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                    {% else %}
+                      {% set imagelink = "static/files/images/" + command_value["style"]["image"] %}
+                    {% endif %}
+                    
+                    <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                        {# {% if imagelink.endswith('.svg') %}
+                          {{ open(imagelink).read().replace('<svg','<svg id="button-image_{{arg_modal_ID}}" style="width:' + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
+                        {% else %} #}
+                          <img id="button-image_{{arg_modal_ID}}" src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
+                            width: {{ 112*(int(command_value['style']['image_size'].replace('%', '')) /100) + 3}}px;
+                            {{fill}}"
+                          >
+                        {# {% endif %} #}
+                      
+                    </button>
+                  {% endif %}
+                  {# {% if config["front"]["show-names"].lower() == "true" %} #}
+                    {% set buttontext_style = ''%}
+                    {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
+                      {% set buttontext_style = 'style="color:' + config["front"]["names-color"] + ';"'%}
+                    {% endif %}
+                    <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" {{buttontext_style}}>
+                      {% set button_name = "" %}
+                      {% if command_value["style"]["name"] %}
+                        {% if command_value["style"]["name"] is string %}
+                          {% set button_name = command_value["style"]["name"] %}
+                        {% elif command_value["style"]["name"][config.settings.language] %}
+                          {% set button_name = command_value["style"]["name"][config.settings.language] %}
+                        {% elif command_value["style"]["name"]["en"] %}
+                          {% set button_name = command_value["style"]["name"][config.settings.language] %}
+                        {% elif command_value["style"]["name"][0] %}
+                          {% set button_name = command_value["style"]["name"][0] %}
+                        {% endif %}
+                      {% endif %}
+                      {{ button_name }}
+                    </p>
+                  {# {% endif %} #}
+                
+                {% else %}
+                    <button type="button" class="button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                      <img id="button-image_{{arg_modal_ID}}"  draggable="false" alt="" style="
+                        width: {{ 112*(50/100) + 3}}px;">
+                    </button>
+                    
+                    <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" >
+                      {% set button_name = "Button name" %}
+                      {{ button_name }}
+                    </p>
+                {% endif %}
+              </div>
+            </div>
+            {# edit le style #}
+            <div class="inputs_container">
+              <label for="image-input_{{arg_modal_ID}}">Image:</label>
+              <input type="file" id="image-input_{{arg_modal_ID}}" class="{{black_theme}}">
+              
+              <div class="slider-container">
+                <label for="image-size-slider_{{arg_modal_ID}}">Image Size:</label>
+                <input type="range" id="image-size-slider_{{arg_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="75" step="1">
+                <input type="number" id="image-size-value_{{arg_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="75">
+                %
+              </div>
+              
+              <label for="background-color-input_{{arg_modal_ID}}">Background Color:</label>
+              <div class="background-color-input-container">
+                <input type="color" class="background-color-input {{black_theme}}" id="background-color-input_{{arg_modal_ID}}">
+                <input type="text" id="background-color-hex_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="Background Color (HEX)">
+              </div>
+              
+              <label for="button-text-input_{{arg_modal_ID}}">Button Text:</label>
+              <input type="text" id="button-text-input_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
+            </div>
+            
+          </div>
+          
+          
+          <input type="submit" value="Envoyer" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
+          <script type="text/javascript">
+              {% if command_value["style"] %}
+                  var button_{{arg_modal_ID}} = {{command_value["style"]}};
+              {% else %}
+                  var button_{{arg_modal_ID}} = {};
+              {% endif %}
+              button_{{arg_modal_ID}}.name = "{{ button_name }}";
+              
+              var image_{{arg_modal_ID}} = document.getElementById('button-image_{{arg_modal_ID}}');
+              var imageSizeSlider_{{arg_modal_ID}} = document.getElementById('image-size-slider_{{arg_modal_ID}}');
+              var imageSizeValue_{{arg_modal_ID}} = document.getElementById('image-size-value_{{arg_modal_ID}}');
+              
+              imageSizeSlider_{{arg_modal_ID}}.addEventListener('input', function() {
+                  var imageSize = this.value;
+                  var parsedValue = parseInt(imageSize);
+              
+                  // Mettre à jour la taille de l'image en fonction de la valeur du slider
+                  var calculatedSize = 112 * (parsedValue / 100) + 3;
+                  image_{{arg_modal_ID}}.style.width = calculatedSize + 'px';
+              
+                  // Mettre à jour la valeur du span pour l'affichage visuel
+                  imageSizeValue_{{arg_modal_ID}}.value = parsedValue;
+              
+                  // Mettre à jour la valeur de taille dans l'objet "button"
+                  button_{{arg_modal_ID}}.image_size = `${parsedValue}%`;
+              });
+              
+              imageSizeValue_{{arg_modal_ID}}.addEventListener('input', function(event) {
+                  var newValue = imageSizeValue_{{arg_modal_ID}}.value;
+                  var parsedValue = parseInt(newValue);
+              
+                  // Vérifier si la valeur saisie est un nombre valide
+                  if (!isNaN(parsedValue)) {
+                      // Mettre à jour la valeur du slider pour l'affichage visuel
+                      imageSizeSlider_{{arg_modal_ID}}.value = parsedValue;
+              
+                      // Mettre à jour la taille de l'image en fonction de la valeur du slider
+                      var calculatedSize = 112 * (parsedValue / 100) + 3;
+                      image_{{arg_modal_ID}}.style.width = calculatedSize + 'px';
+              
+                      // Mettre à jour la valeur de taille dans l'objet "button"
+                      button_{{arg_modal_ID}}.image_size = `${parsedValue}%`;
+                  }
+              
+                  // Empêcher l'événement d'entrée par défaut pour éviter l'ajout de caractères indésirables
+                  event.preventDefault();
+              });
+              
+              imageSizeValue_{{arg_modal_ID}}.addEventListener('keypress', function(event) {
+                  var charCode = event.which ? event.which : event.keyCode;
+              
+                  // Vérifier si le caractère saisi est un chiffre (0-9)
+                  if (charCode < 48 || charCode > 57) {
+                      // Empêcher l'ajout du caractère indésirable
+                      event.preventDefault();
+                  }
+              });
+              
+              
+              var buttonElement_{{arg_modal_ID}} = document.getElementById('button-element_{{arg_modal_ID}}');
+              var buttonBackgroundColorInput_{{arg_modal_ID}} = document.getElementById('background-color-input_{{arg_modal_ID}}');
+              var buttonBackgroundColorHex_{{arg_modal_ID}} = document.getElementById('background-color-hex_{{arg_modal_ID}}');
+              
+              buttonBackgroundColorInput_{{arg_modal_ID}}.addEventListener('input', function() {
+                var colorValue = this.value;
+                var hexValue = normalizeHexValue(colorValue);
+                buttonBackgroundColorInput_{{arg_modal_ID}}.value = hexValue;
+                buttonBackgroundColorHex_{{arg_modal_ID}}.value = hexValue;
+                button_{{arg_modal_ID}}['background-color'] = hexValue;
+                buttonElement_{{arg_modal_ID}}.style.backgroundColor = hexValue;
+                buttonElement_{{arg_modal_ID}}.style.boxShadow = "0 0 5px " + hexValue;
+              });
+              
+              buttonBackgroundColorHex_{{arg_modal_ID}}.addEventListener('input', function() {
+                var hexValue = this.value;
+                var normalizedHexValue = normalizeHexValue(hexValue);
+                buttonBackgroundColorInput_{{arg_modal_ID}}.value = normalizedHexValue;
+                buttonBackgroundColorHex_{{arg_modal_ID}}.value = normalizedHexValue;
+                button_{{arg_modal_ID}}['background-color'] = normalizedHexValue;
+                buttonElement_{{arg_modal_ID}}.style.backgroundColor = normalizedHexValue;
+                buttonElement_{{arg_modal_ID}}.style.boxShadow = "0 0 5px " + normalizedHexValue;
+              });
+              
+              function normalizeHexValue(value) {
+                if (value.charAt(0) !== '#') {
+                  value = '#' + value;
+                }
+                return value;
+              }
+          
+              document.getElementById('image-input_{{arg_modal_ID}}').addEventListener('change', function() {
+                  var input_{{arg_modal_ID}} = this;
+          
+                  if (input_{{arg_modal_ID}}.files && input_{{arg_modal_ID}}.files[0]) {
+                      var reader_{{arg_modal_ID}} = new FileReader();
+          
+                      reader_{{arg_modal_ID}}.onloadend = function() {
+                          image_{{arg_modal_ID}}.setAttribute('src', reader_{{arg_modal_ID}}.result);
+          
+                          var formData_{{arg_modal_ID}} = new FormData();
+                          formData_{{arg_modal_ID}}.append('image', input_{{arg_modal_ID}}.files[0]);
+          
+                          fetch('/upload_image', {
+                              method: 'POST',
+                              body: formData_{{arg_modal_ID}}
+                          })
+                          .then(response => response.json())
+                          .then(data => {
+                              if (data.success) {
+                                  var fileName_{{arg_modal_ID}} = input_{{arg_modal_ID}}.files[0].name;
+                                  console.log('Image envoyée avec succès ! Nom du fichier :', fileName_{{arg_modal_ID}});
+                                  // Faire quelque chose avec le nom du fichier
+                                  button_{{arg_modal_ID}}.image = "**uploaded/" + fileName_{{arg_modal_ID}};
+                              } else {
+                                  console.error('Erreur lors de l\'envoi de l\'image:', data.message);
+                                  // Faire quelque chose si l'envoi a échoué
+                              }
+                          })
+                          .catch(error => {
+                              console.error('Erreur lors de l\'envoi de l\'image :', error);
+                              // Faire quelque chose si une erreur s'est produite lors de la requête
+                          });
+                      };
+          
+                      reader_{{arg_modal_ID}}.readAsDataURL(input_{{arg_modal_ID}}.files[0]);
+                  }
+              });
+          
+              var buttonText_{{arg_modal_ID}} = document.getElementById('button-text-input_{{arg_modal_ID}}');
+              var buttonPreview_{{arg_modal_ID}} = document.getElementById('button-text-preview_{{arg_modal_ID}}');
+          
+              buttonText_{{arg_modal_ID}}.addEventListener('input', function() {
+                  var text_{{arg_modal_ID}} = this.value;
+                  buttonPreview_{{arg_modal_ID}}.textContent = text_{{arg_modal_ID}};
+                  button_{{arg_modal_ID}}.name = text_{{arg_modal_ID}};
+              });
+              
+              function buttonCommand_{{arg_modal_ID}}(argModalID_{{arg_modal_ID}}, command_{{arg_modal_ID}}, from_{{arg_modal_ID}}, event) {
+                  if (argModalID_{{arg_modal_ID}} === "NONE") {
+                      var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}};
+                  } else {
+                      event.preventDefault(); // Prevent the form from submitting
+          
+                      var form_{{arg_modal_ID}} = document.querySelector('form[arg_modal_ID="' + argModalID_{{arg_modal_ID}} + '"]'); // Get the form element with the specified arg_modal_ID
+                      var inputs_{{arg_modal_ID}} = form_{{arg_modal_ID}}.querySelectorAll('input, select, textarea'); // Get all input, select, and textarea elements within the form
+          
+                      var values_{{arg_modal_ID}} = Array.from(inputs_{{arg_modal_ID}}).filter(function(input_{{arg_modal_ID}}) {
+                          // Exclude inputs with "display:none" in parent's style
+                          var parent_{{arg_modal_ID}} = input_{{arg_modal_ID}}.parentElement;
+                          if (parent_{{arg_modal_ID}} && window.getComputedStyle(parent_{{arg_modal_ID}}).display === 'none') {
+                              return false;
+                          }
+          
+                          // Exclude inputs with "choice" class
+                          if (input_{{arg_modal_ID}}.classList.contains('choice')) {
+                              return false;
+                          }
+                          // Exclude inputs within divs with "editorStyle" class or "webdeck_foldername_div" class
+                          var ancestorDivs_{{arg_modal_ID}} = input_{{arg_modal_ID}}.closest('.editorStyle, .webdeck_foldername_div');
+                          if (ancestorDivs_{{arg_modal_ID}}) {
+                              return false;
+                          }
+          
+                          return true;
+                      }).map(function(input_{{arg_modal_ID}}) {
+                          if (input_{{arg_modal_ID}}.tagName === 'SELECT') {
+                              var selectedOption_{{arg_modal_ID}} = input_{{arg_modal_ID}}.options[input_{{arg_modal_ID}}.selectedIndex]; // Get the selected option
+                              return selectedOption_{{arg_modal_ID}}.value; // Extract the value of the selected option
+                          } else if (input_{{arg_modal_ID}}.type === 'radio' || input_{{arg_modal_ID}}.type === 'checkbox') {
+                              if (input_{{arg_modal_ID}}.checked) {
+                                  return input_{{arg_modal_ID}}.value; // Extract the value if the radio or checkbox is checked
+                              } else {
+                                  return ''; // Return an empty string if the radio or checkbox is not checked
+                              }
+                          } else if (input_{{ arg_modal_ID }}.type === 'submit' || input_{{ arg_modal_ID }}.type === 'button') {
+                            return ''; // Return an empty string for submit buttons and buttons
+                          } else {
+                              return input_{{ arg_modal_ID }}.value; // Extract the value from the input element
+                          }
+                      }).filter(function(value_{{arg_modal_ID}}) {
+                          return value_{{arg_modal_ID}} !== ''; // Filter out empty values
+                      });
+          
+                      var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}} + ' ' + values_{{arg_modal_ID}}.join(' '); // Concatenate the command and values
+          
+                      // Reset the form if needed
+                      // form_{{arg_modal_ID}}.reset();
+                  }
+          
+          
+                  button_{{arg_modal_ID}}.message = commandString_{{arg_modal_ID}};
+          
+                  if (from_{{arg_modal_ID}} === "add") {
+                      console.log('buttonCommand received, from: add');
+                      var element = document.querySelector('#addbutton-modal-content');
+                      var location_Folder = element.getAttribute('add_FOLDER');
+                      var location_Id = element.getAttribute('add_ID');
+                      var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
+                      
+                      fetch('/get_config')
+                        .then(function(response) {
+                          if (response.ok) {
+                            return response.json();
+                          } else {
+                            throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                          }
+                        })
+                        .then(function(configData) {
+                          tempEditorConfig = configData;
+                          tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{arg_modal_ID}}; 
+                          return fetch('/save_buttons_only', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(tempEditorConfig)
+                          });
+                        })
+                        .then(function(response) {
+                          if (response.ok) {
+                            return response.json();
+                          } else {
+                            throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                          }
+                        })
+                        .then(function(response) {
+                          if (response.success) {
+                            alert('Les paramètres ont été enregistrés avec succès.');
+                            location.reload();
+                          } else {
+                            throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                          }
+                        })
+                        .catch(function(error) {
+                          alert(error.message);
+                        });
+                      
+                      element.removeAttribute('add_ID');
+                      element.removeAttribute('add_FOLDER');
+                      
+                      
+                      
+                      
+          
+                  } else if (from_{{arg_modal_ID}} === "edit") {
+                      console.log('buttonCommand recieved, from: edit');
+                  }
+                  console.log(button_{{arg_modal_ID}});
+              }
+              document.getElementById('{{arg_modal_ID}}_submit').addEventListener('click', function(event) {
+                  setTimeout(function() {
+                      buttonCommand_{{arg_modal_ID}}('{{ arg_modal_ID }}', '{{command_id}}', 'add', event);
+                  }, 1000);
+              });
+              
+          </script>
+          
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
