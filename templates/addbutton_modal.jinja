@@ -64,7 +64,7 @@
                   {% elif "text-windowsapp" in arg['TYPE'] %}
                     <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
                   {% elif "longtext" in arg['TYPE'] %}
-                    <textarea class="{{black_theme}} name="{{file}}" rows="5" cols="33" required></textarea>
+                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" required></textarea>
                   {% elif "text" in arg['TYPE'] %}
                     <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
                   {% elif "dropdown" in arg['TYPE'] %}
