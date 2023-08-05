@@ -120,6 +120,7 @@
         <div id="folder-{{ folder_id }}" class="all-buttons">
           {% set edit_modal_ID1 = loop.index0 %}
           {% for button_config in config["front"]["buttons"][folder_id] %}
+            {% set edit_modal_ID = str(edit_modal_ID1) + "X" + str(loop.index0) %}
             {% set button_id = loop.index0 %}
             {% set onclick = 'type=submit' %}
 
@@ -134,9 +135,9 @@
               </div>
             {% else %}
             
-              <form class="form-{{ button_id }}" id="form">
+              <form class="form-{{ button_id }} " id="form">
                 <div class="container-editmode">
-                  <div class="edit-button" style="display: none;">
+                  <div class="edit-button" style="display: none;" edit_modal_ID="{{ edit_modal_ID }}">
                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="Edit / Edit_Pencil_01">
                       <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
                     </svg>
@@ -146,12 +147,8 @@
                         <path d="M18.8,16l5.5-5.5c0.8-0.8,0.8-2,0-2.8l0,0C24,7.3,23.5,7,23,7c-0.5,0-1,0.2-1.4,0.6L16,13.2l-5.5-5.5  c-0.8-0.8-2.1-0.8-2.8,0C7.3,8,7,8.5,7,9.1s0.2,1,0.6,1.4l5.5,5.5l-5.5,5.5C7.3,21.9,7,22.4,7,23c0,0.5,0.2,1,0.6,1.4  C8,24.8,8.5,25,9,25c0.5,0,1-0.2,1.4-0.6l5.5-5.5l5.5,5.5c0.8,0.8,2.1,0.8,2.8,0c0.8-0.8,0.8-2.1,0-2.8L18.8,16z"/>
                     </svg>
                   </div>
-
-                  {% set edit_modal_ID = str(edit_modal_ID1) + "X" + str(loop.index0) %}
-                  {% include 'editbutton_modal.jinja' %}
-
-
                 </div>
+
                 
                 <input type="hidden" class="message {{black_theme}}" value="{{ button_config['message'] }}">
                 <div class="checkbox" style="display: none;"></div>
@@ -285,6 +282,7 @@
                     {{ button_config['name'] }}
                   </p>
                 {% endif %}
+                {% include 'editbutton_modal.jinja' %}
               </form>
             
               
@@ -450,26 +448,6 @@
       </div>
     </div>
 
-    
-    {# <div class="editbutton-modal-container {{black_theme}}">
-      <div class="editbutton-modal-content {{black_theme}}" id="editbutton-modal-content">
-
-        <div class="editbutton-modal-header bold">
-          <h1 class="editbutton-modal">Edit a button</h1>
-          <div class="editbutton-modal-close">
-            <svg class="editbutton-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-            </svg>
-          </div>
-        </div>
-          <div class="editbutton-modal-main">
-            <br id="editbutton-container" class="{{black_theme}}">
-
-
-          </div>
-        </div>
-      </div>
-    </div>  #}
 
     <div class="addbutton-modal-container {{black_theme}}">
       <div class="addbutton-modal-content {{black_theme}}" id="addbutton-modal-content">
@@ -1824,25 +1802,26 @@
         
         function hide_addbutton_args_modal() {
           let intervalId = setInterval(function() {
-          let currentOpacity = parseFloat(getComputedStyle(addbutton_args_modal[0]).opacity);
-          if (currentOpacity <= 0) {
-            // L'animation est terminée, cacher la modal
-            clearInterval(intervalId);
-            setTimeout(function() {
-              for (let element of addbutton_args_modal) {
-                let modalId = element.getAttribute("arg_modal_ID");
-                let modal = document.getElementById("modal-container-" + modalId);
-                if (modal) {
-                  element.style.display = "none";
+            let currentOpacity = parseFloat(getComputedStyle(addbutton_args_modal[0]).opacity);
+            if (currentOpacity <= 0) {
+              // L'animation est terminée, cacher la modal
+              clearInterval(intervalId);
+              setTimeout(function() {
+                for (let element of addbutton_args_modal) {
+                  let modalId = element.getAttribute("arg_modal_ID");
+                  let modal = document.getElementById("modal-container-" + modalId);
+                  if (modal) {
+                    element.style.display = "none";
+                  }
                 }
+              }, 100); // Attendre avant de cacher la modal
+                return;
               }
-            }, 100); // Attendre avant de cacher la modal
-              return;
-            }
-            for (let element of addbutton_args_modal) {
-              element.style.opacity = (currentOpacity - 3.5).toFixed(2);
-            }
-          }, 10); // Répéter toutes les 0.01s (10ms)
+              for (let element of addbutton_args_modal) {
+                element.style.opacity = (currentOpacity - 3.5).toFixed(2);
+              }
+            }, 10); // Répéter toutes les 0.01s (10ms)
+          is_addbutton_modal_opened = 0;
         }
         
         // Ajouter des écouteurs d'événements sur chaque bouton pour ouvrir la modal correspondante
@@ -1878,81 +1857,17 @@
 
 
 
-
-        // Sélectionner tous les boutons qui ont la classe open-config-modal
-        let open_modal_editbutton = document.querySelectorAll("div.edit-button");
-
-        // Sélectionner le conteneur de la modal
-        let editbutton_modal = document.querySelector(".editbutton-modal-container");
-
-        // Sélectionner le bouton de fermeture de la modal
-        let editbutton_modal_close_button = document.querySelector(".editbutton-modal-close");
-
+        // Initialize a variable to keep track of the opened modal
         let is_editbutton_modal_opened = 0;
-
-        function show_editbutton_modal(addFolder, addId) {
-          editbutton_modal.style.opacity = "100%";
-          editbutton_modal.style.display = "block";
-          is_editbutton_modal_opened = 1;
-          document.querySelector('#editbutton-modal-content').setAttribute('add_FOLDER', addFolder);
-          document.querySelector('#editbutton-modal-content').setAttribute('add_ID', addId);
-        }
-        function hide_editbutton_modal() {
-          document.querySelector('#editbutton-modal-content').removeAttribute('add_ID');
-          document.querySelector('#editbutton-modal-content').removeAttribute('add_FOLDER');
-          let intervalId = setInterval(function() {
-            let currentOpacity = parseFloat(getComputedStyle(editbutton_modal).opacity);
-            if (currentOpacity <= 0) {
-              // L'animation est terminée, cacher la modal
-              clearInterval(intervalId);
-              setTimeout(function() {
-                editbutton_modal.style.display = "none";
-              }, 100); // Attendre avant de cacher la modal
-              return;
-            }
-            editbutton_modal.style.opacity = (currentOpacity - 3.5).toFixed(2);
-          }, 10); // Répéter toutes les 0.01s (10ms)
-          is_editbutton_modal_opened = 0;
-        }
-
-        // Ajouter un écouteur d'événement sur chaque bouton pour ouvrir la modal editbutton
-        for (let button of open_modal_editbutton) {
-          button.addEventListener("click", function() {
-            if (swapMode !== 1) {
-              var addIdValue = button.getAttribute('add_ID');
-              var addFolderValue = button.getAttribute('add_FOLDER');
-              show_editbutton_modal(addFolderValue, addIdValue);
-            }
-          });
-        }
-
-        // Ajouter un écouteur d'événement sur le bouton de fermeture pour fermer la modal editbutton
-        editbutton_modal_close_button.addEventListener("click", function() {
-          hide_editbutton_modal();
-        });
-
-        // Ajouter un écouteur d'événement sur la modal editbutton pour la fermer en cliquant en dehors
-        editbutton_modal.addEventListener("click", function(event) {
-          if (event.target === editbutton_modal) {
-            hide_editbutton_modal();
-          }
-        });
-
-
-
-        // Sélectionner tous les boutons qui ont la classe open-config-modal
-        let open_modal_editbutton_args = document.querySelectorAll("button.no-dropdown");
         
-        // Sélectionner le conteneur de chaque modal
-        let editbutton_args_modal_containers = document.querySelectorAll(".editbutton-modal-container-args");
-        let editbutton_args_modal = editbutton_args_modal_containers
+        // Select all buttons that have the class "edit-button"
+        const open_modal_editbutton = document.querySelectorAll(".edit-button");
         
-        // Sélectionner le bouton de fermeture de la modal
-        let editbutton_args_modal_close_buttons = document.querySelectorAll(".editbutton-modal-close-args");
+        // Select all modal containers
+        const editbutton_modal_containers = document.querySelectorAll(".editbutton-modal-container");
         
-
-        function show_editbutton_args_modal(modalId) {
-          let modal = document.getElementById("modal-container-" + modalId);
+        function show_editbutton_modal(modalId) {
+          const modal = document.getElementById("edit-modal-container-" + modalId);
           if (modal) {
             modal.style.opacity = "100%";
             modal.style.display = "block";
@@ -1960,66 +1875,56 @@
           }
         }
         
-        function hide_editbutton_args_modal() {
-          let intervalId = setInterval(function() {
-          let currentOpacity = parseFloat(getComputedStyle(editbutton_args_modal[0]).opacity);
-          if (currentOpacity <= 0) {
-            // L'animation est terminée, cacher la modal
-            clearInterval(intervalId);
-            setTimeout(function() {
-              for (let element of editbutton_args_modal) {
-                let modalId = element.getAttribute("arg_modal_ID");
-                let modal = document.getElementById("modal-container-" + modalId);
-                if (modal) {
-                  element.style.display = "none";
+        function hide_editbutton_modal(modalId) {
+          console.log(modalId);
+          const editbutton_modal = document.getElementById("edit-modal-container-" + modalId);
+          if (editbutton_modal) {
+            let intervalId = setInterval(function() {
+              let currentOpacity = parseFloat(getComputedStyle(editbutton_modal).opacity);
+              if (currentOpacity <= 0) {
+                // L'animation est terminée, cacher la modal
+                clearInterval(intervalId);
+                setTimeout(function() {
+                  editbutton_modal.style.display = "none";
+                }, 100); // Attendre avant de cacher la modal
+                  return;
                 }
-              }
-            }, 100); // Attendre avant de cacher la modal
-              return;
-            }
-            for (let element of editbutton_args_modal) {
-              element.style.opacity = (currentOpacity - 3.5).toFixed(2);
-            }
-          }, 10); // Répéter toutes les 0.01s (10ms)
+                editbutton_modal.style.opacity = (currentOpacity - 3.5).toFixed(2);
+              }, 10); // Répéter toutes les 0.01s (10ms)
+            is_editbutton_modal_opened = 0;
+          }
         }
-        
-        // Ajouter des écouteurs d'événements sur chaque bouton pour ouvrir la modal correspondante
-        open_modal_editbutton_args.forEach(function(button) {
-          button.addEventListener("click", function() {
-            let modalId = button.getAttribute("arg_modal_ID");
-            if (swapMode !== 1) {
-              show_editbutton_args_modal(modalId);
+
+        // Add event listeners to each button to open the corresponding modal
+        open_modal_editbutton.forEach(function (button) {
+          button.addEventListener("click", function () {
+            if (is_editbutton_modal_opened === 0) {
+              const modalId = button.getAttribute("edit_modal_id");
+              show_editbutton_modal(modalId);
             }
           });
         });
         
+        // Add event listeners to each modal container to close the modal when clicked outside
+        editbutton_modal_containers.forEach(function (modalContainer) {
+          const modalId = modalContainer.getAttribute("edit_modal_id");
         
-        // Ajouter des écouteurs d'événements sur chaque modal pour la fermer en cliquant en dehors
-        editbutton_args_modal_containers.forEach(function(modalContainer) {
-          let modalId = modalContainer.getAttribute("id").split("-").pop();
-        
-          // Ajouter un événement de clic à la div modal-container
-          modalContainer.addEventListener("click", function(event) {
+          modalContainer.addEventListener("click", function (event) {
             if (event.target === modalContainer) {
-              hide_editbutton_args_modal();
+              hide_editbutton_modal(modalId);
             }
           });
         });
         
-        // Ajouter des écouteurs d'événements sur chaque bouton de fermeture
-        editbutton_args_modal_close_buttons.forEach(function(close_button) {
-          close_button.addEventListener("click", function() {
-            hide_editbutton_args_modal();
+        // Add event listeners to each close button
+        const editbutton_modal_close_buttons = document.querySelectorAll(".editbutton-modal-close");
+        editbutton_modal_close_buttons.forEach(function (close_button) {
+          close_button.addEventListener("click", function () {
+            const modalId = close_button.closest(".editbutton-modal-container").getAttribute("edit_modal_id");
+            hide_editbutton_modal(modalId);
           });
         });
-
         
-
-
-
-
-
-
 
 
 
