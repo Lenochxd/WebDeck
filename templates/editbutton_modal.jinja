@@ -1,21 +1,3 @@
-
-{% set button_command = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
-
-{% set command_name = None %}
-{% set command_value = None %}
-
-{% for category, commands_name in commands.items() %}
-  {% for command_name, command in commands_name.items() %}
-    {% if command['command'] %}
-      {% if button_command.lower().startswith(command['command'].lower()) %}
-        {% set command_name = command_name %}
-        {% set command_value = command %}
-      {% endif %}
-    {% endif %}
-  {% endfor %}
-{% endfor %}
-
-
 <div class="editbutton-modal-container {{black_theme}}" id="edit-modal-container-{{ edit_modal_ID }}" edit_modal_ID="{{ edit_modal_ID }}">
   <div class="editbutton-modal-content {{black_theme}}">
 
@@ -31,7 +13,7 @@
     <div class="editbutton-modal-main">
       <div id="config-container" class="{{black_theme}}">
       
-        <form class="args-form" edit_modal_ID="{{ edit_modal_ID }}">
+        <form class="args-form" edit_modal_ID="{{ edit_modal_ID }}" novalidate>
           
           <div class="args-container {{black_theme}}" edit_modal_ID="{{ edit_modal_ID }}">
         
@@ -54,16 +36,16 @@
                     <div class="webdeck_foldername_ALL">
                       {% for key in config["front"]["buttons"] %}
                         <div class="webdeck_foldername">
-                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" required>
+                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
                           <label for="{{ key }}">{{ key }}</label>
                         </div>
                       {% endfor %}
                     </div>
                   {% elif "file" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" required>
+                    <input class="{{black_theme}}" type="file" name="{{file}}" >
                   {% elif "url" in arg['TYPE'] %}
                     <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                            placeholder="https://example.com" required>
+                            placeholder="https://example.com" >
                   {% elif "number" in arg['TYPE'] %}
                     {% set string_list = arg['TYPE'].split(" ") %}
                     {% set number_list = [] %}
@@ -73,21 +55,21 @@
                         {% set min = number_list[0] %}
                         {% set max = number_list[1] %}
                         {% if min.startswith('-') or max.startswith('-') %}
-                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
                         {% else %}
-                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
                         {% endif %}
                       {% endif %}
                     {% endfor %}
                   {% elif "text-windowsapp" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
+                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
                   {% elif "longtext" in arg['TYPE'] %}
-                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" required></textarea>
+                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
                   {% elif "text" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
+                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
                   {% elif "dropdown" in arg['TYPE'] %}
                     {# lister toutes les options #}
-                    <select name="{{file}}" required>
+                    <select name="{{file}}" >
                       {% for option in arg['options'] %}
                         {% if option[config.settings.language] %}
                           {% set option_name = option[config.settings.language] %}
@@ -103,8 +85,8 @@
                 </div>
                 {% if "webdeck_foldername" in arg['TYPE'] %}
                   <div class="webdeck_foldername_div">
-                    <form id="webdeck_foldername_form">
-                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="Folder name" required>
+                    <form id="webdeck_foldername_form" novalidate>
+                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="New folder name" >
                       <button id="submitButton" type="submit">Create a folder</button>
                     </form>
                       
@@ -216,16 +198,16 @@
                         <div class="webdeck_foldername_ALL">
                           {% for key in config["front"]["buttons"] %}
                             <div class="webdeck_foldername">
-                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" required>
+                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
                               <label for="{{ key }}">{{ key }}</label>
                             </div>
                           {% endfor %}
                         </div>
                       {% elif "file" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" required>
+                        <input class="{{black_theme}}" type="file" name="{{file}}" >
                       {% elif "url" in choice['TYPE'] %}
                         <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                          placeholder="https://example.com" required>
+                          placeholder="https://example.com" >
                       {% elif "number" in arg['TYPE'] %}
                         {% set string_list = arg['TYPE'].split(" ") %}
                         {% set number_list = [] %}
@@ -235,21 +217,21 @@
                             {% set min = number_list[0] %}
                             {% set max = number_list[1] %}
                             {% if min.startswith('-') or max.startswith('-') %}
-                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
                             {% else %}
-                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
                             {% endif %}
                           {% endif %}
                         {% endfor %}
                       {% elif "text-windowsapp" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
+                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
                       {% elif "longtext" in choice['TYPE'] %}
                         <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33"></textarea>
                       {% elif "text" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
+                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
                       {% elif "dropdown" in choice['TYPE'] %}
                         {# lister toutes les options #}
-                        <select name="{{file}}" required>
+                        <select name="{{file}}" >
                           {% for option in choice['options'] %}
                             {% if option[config.settings.language] %}
                               {% set option_name = option[config.settings.language] %}
@@ -285,49 +267,45 @@
             {% endfor %}
           </div>
           {# configuration du style: #}
-          
-          {% if command_value["style"] %}
-            {% if command_value["style"]["image"] %}
-            {% endif %}
-          {% endif %}
+        
           {% if command_value["args"]|length > 0 %}
             <div class="editorStyle-bar {{black_theme}}"></div>
           {% endif %}
           <div class="editorStyle">
             <div class="fakeform-container {{black_theme}}">
               <div class="fakeform">
-                {% if command_value["style"] %}
+                {% if button_settings %}
                   {% set fill = '' %}
-                    {% if 'color' in command_value["style"].keys() %}
-                      {% if command_value["style"]["color"] == 'invert' %}
+                    {% if 'color' in button_settings.keys() %}
+                      {% if button_settings["color"] == 'invert' %}
                         {% set fill = 'filter: invert(1)' %}
                       {% else %}
-                        {% set fill = 'fill:'+ command_value["style"]["color"] +';'+' color:'+ command_value["style"]["color"] +';' %}
+                        {% set fill = 'fill:'+ button_settings["color"] +';'+' color:'+ button_settings["color"] +';' %}
                       {% endif %}
                     {% endif %}
                   {% set class = "button" %}
-                  {% if command_value["style"]["image"] == "" or not command_value["style"]["image"] %}
+                  {% if button_settings["image"] == "" or not button_settings["image"] %}
                     <button type="button" id="button-element_{{edit_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      <img id="button-image_{{edit_modal_ID}}"  draggable="false" alt="" style="
+                      <img id="button-image_{{edit_modal_ID}}" draggable="false" alt="" style="
                         width: {{ 112*(50/100) + 3}}px;">
                     </button>
                   {% else %}
-                    {% if command_value["style"]["image"].startswith('http') %}
-                      {% set imagelink = command_value["style"]["image"] %}
-                    {% elif ':' in command_value["style"]["image"] %}
-                      {% set imagelink = "static/files/images/" + command_value["style"]["image"].split('\\')[-1] %}
-                    {% elif command_value["style"]["image"].startswith('**uploaded/') %}
+                    {% if button_settings["image"].startswith('http') %}
+                      {% set imagelink = button_settings["image"] %}
+                    {% elif ':' in button_settings["image"] %}
+                      {% set imagelink = "static/files/images/" + button_settings["image"].split('\\')[-1] %}
+                    {% elif button_settings["image"].startswith('**uploaded/') %}
                       {% set imagelink = "static/files/images/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
-                      {% set imagelink = "static/files/images/" + command_value["style"]["image"] %}
+                      {% set imagelink = "static/files/images/" + button_settings["image"] %}
                     {% endif %}
                     
                     <button type="button" id="button-element_{{edit_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                         {# {% if imagelink.endswith('.svg') %}
-                          {{ open(imagelink).read().replace('<svg','<svg id="button-image_{{edit_modal_ID}}" style="width:' + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
+                          {{ open(imagelink).read().replace('<svg','<svg id="button-image_{{edit_modal_ID}}" style="width:' + str(112*(int(button_settings["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(button_settings["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
                         {% else %} #}
                           <img id="button-image_{{edit_modal_ID}}" src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
-                            width: {{ 112*(int(command_value['style']['image_size'].replace('%', '')) /100) + 3}}px;
+                            width: {{ 112*(int(button_settings['image_size'].replace('%', '')) /100) + 3}}px;
                             {{fill}}"
                           >
                         {# {% endif %} #}
@@ -341,7 +319,17 @@
                     {% endif %}
                     <p class="buttontext" id="button-text-preview_{{edit_modal_ID}}" {{buttontext_style}}>
                       {% set button_name = "" %}
-                      {% if command_value["style"]["name"] %}
+                      {% if "name" in button_settings.keys() and not button_settings['name'].strip() == "" %}
+                        {% if button_settings["name"] is string %}
+                          {% set button_name = button_settings["name"] %}
+                        {% elif button_settings["name"][config.settings.language] %}
+                          {% set button_name = button_settings["name"][config.settings.language] %}
+                        {% elif button_settings["name"]["en"] %}
+                          {% set button_name = button_settings["name"][config.settings.language] %}
+                        {% elif button_settings["name"][0] %}
+                          {% set button_name = button_settings["name"][0] %}
+                        {% endif %}
+                      {% else %}
                         {% if command_value["style"]["name"] is string %}
                           {% set button_name = command_value["style"]["name"] %}
                         {% elif command_value["style"]["name"][config.settings.language] %}
@@ -358,7 +346,7 @@
                 
                 {% else %}
                     <button type="button" class="button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      <img id="button-image_{{edit_modal_ID}}"  draggable="false" alt="" style="
+                      <img id="button-image_{{edit_modal_ID}}" draggable="false" alt="" style="
                         width: {{ 112*(50/100) + 3}}px;">
                     </button>
                     
@@ -388,7 +376,11 @@
               </div>
               
               <label for="button-text-input_{{edit_modal_ID}}">Button Text:</label>
-              <input type="text" id="button-text-input_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
+              {% if "name" in button_settings.keys() and not button_settings['name'].strip() == "" %}
+                <input type="text" id="button-text-input_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}" value="{{ button_name }}">
+              {% else %}
+                <input type="text" id="button-text-input_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
+              {% endif %}
             </div>
             
           </div>
@@ -396,8 +388,8 @@
           
           <input type="submit" value="Envoyer" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
-              {% if command_value["style"] %}
-                  var button_{{edit_modal_ID}} = {{command_value["style"]}};
+              {% if button_settings %}
+                  var button_{{edit_modal_ID}} = {{button_settings}};
               {% else %}
                   var button_{{edit_modal_ID}} = {};
               {% endif %}
