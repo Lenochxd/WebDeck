@@ -13,7 +13,7 @@
     <div class="addbutton-modal-main-args">
       <div id="config-container" class="{{black_theme}}">
       
-        <form class="args-form" arg_modal_ID="{{ arg_modal_ID }}">
+        <form class="args-form" arg_modal_ID="{{ arg_modal_ID }}" novalidate>
           
           <div class="args-container {{black_theme}}" arg_modal_ID="{{ arg_modal_ID }}">
         
@@ -36,16 +36,16 @@
                     <div class="webdeck_foldername_ALL">
                       {% for key in config["front"]["buttons"] %}
                         <div class="webdeck_foldername">
-                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" required>
+                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
                           <label for="{{ key }}">{{ key }}</label>
                         </div>
                       {% endfor %}
                     </div>
                   {% elif "file" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" required>
+                    <input class="{{black_theme}}" type="file" name="{{file}}" >
                   {% elif "url" in arg['TYPE'] %}
                     <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                            placeholder="https://example.com" required>
+                            placeholder="https://example.com" >
                   {% elif "number" in arg['TYPE'] %}
                     {% set string_list = arg['TYPE'].split(" ") %}
                     {% set number_list = [] %}
@@ -55,21 +55,21 @@
                         {% set min = number_list[0] %}
                         {% set max = number_list[1] %}
                         {% if min.startswith('-') or max.startswith('-') %}
-                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
                         {% else %}
-                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
                         {% endif %}
                       {% endif %}
                     {% endfor %}
                   {% elif "text-windowsapp" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
+                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
                   {% elif "longtext" in arg['TYPE'] %}
-                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" required></textarea>
+                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
                   {% elif "text" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
+                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
                   {% elif "dropdown" in arg['TYPE'] %}
                     {# lister toutes les options #}
-                    <select name="{{file}}" required>
+                    <select name="{{file}}" >
                       {% for option in arg['options'] %}
                         {% if option[config.settings.language] %}
                           {% set option_name = option[config.settings.language] %}
@@ -85,8 +85,8 @@
                 </div>
                 {% if "webdeck_foldername" in arg['TYPE'] %}
                   <div class="webdeck_foldername_div">
-                    <form id="webdeck_foldername_form">
-                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="Folder name" required>
+                    <form id="webdeck_foldername_form" novalidate>
+                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="New folder name" >
                       <button id="submitButton" type="submit">Create a folder</button>
                     </form>
                       
@@ -198,16 +198,16 @@
                         <div class="webdeck_foldername_ALL">
                           {% for key in config["front"]["buttons"] %}
                             <div class="webdeck_foldername">
-                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" required>
+                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
                               <label for="{{ key }}">{{ key }}</label>
                             </div>
                           {% endfor %}
                         </div>
                       {% elif "file" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" required>
+                        <input class="{{black_theme}}" type="file" name="{{file}}" >
                       {% elif "url" in choice['TYPE'] %}
                         <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                          placeholder="https://example.com" required>
+                          placeholder="https://example.com" >
                       {% elif "number" in arg['TYPE'] %}
                         {% set string_list = arg['TYPE'].split(" ") %}
                         {% set number_list = [] %}
@@ -217,21 +217,21 @@
                             {% set min = number_list[0] %}
                             {% set max = number_list[1] %}
                             {% if min.startswith('-') or max.startswith('-') %}
-                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
                             {% else %}
-                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" required>
+                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
                             {% endif %}
                           {% endif %}
                         {% endfor %}
                       {% elif "text-windowsapp" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" required>
+                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
                       {% elif "longtext" in choice['TYPE'] %}
                         <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33"></textarea>
                       {% elif "text" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" required>
+                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
                       {% elif "dropdown" in choice['TYPE'] %}
                         {# lister toutes les options #}
-                        <select name="{{file}}" required>
+                        <select name="{{file}}" >
                           {% for option in choice['options'] %}
                             {% if option[config.settings.language] %}
                               {% set option_name = option[config.settings.language] %}
@@ -268,10 +268,6 @@
           </div>
           {# configuration du style: #}
           
-          {% if command_value["style"] %}
-            {% if command_value["style"]["image"] %}
-            {% endif %}
-          {% endif %}
           {% if command_value["args"]|length > 0 %}
             <div class="editorStyle-bar {{black_theme}}"></div>
           {% endif %}
@@ -290,7 +286,7 @@
                   {% set class = "button" %}
                   {% if command_value["style"]["image"] == "" or not command_value["style"]["image"] %}
                     <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      <img id="button-image_{{arg_modal_ID}}"  draggable="false" alt="" style="
+                      <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="
                         width: {{ 112*(50/100) + 3}}px;">
                     </button>
                   {% else %}
@@ -340,7 +336,7 @@
                 
                 {% else %}
                     <button type="button" class="button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      <img id="button-image_{{arg_modal_ID}}"  draggable="false" alt="" style="
+                      <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="
                         width: {{ 112*(50/100) + 3}}px;">
                     </button>
                     
