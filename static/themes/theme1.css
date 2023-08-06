@@ -373,8 +373,10 @@ div.fakeform-container.black-theme {
 }
 
 .modal-content p, .addbutton-modal-content p, .addbutton-modal-content-args p, .editbutton-modal-content p {
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 12px;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  text-align: center;
+  line-height: 1.4;
   margin-top: 0;
 }
 
