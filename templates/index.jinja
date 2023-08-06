@@ -120,7 +120,7 @@
         <div id="folder-{{ folder_id }}" class="all-buttons">
           {% set edit_modal_ID1 = loop.index0 %}
           {% for button_config in config["front"]["buttons"][folder_id] %}
-            {% set edit_modal_ID = str(edit_modal_ID1) + "X" + str(loop.index0) %}
+            {% set edit_modal_ID = "e" + str(edit_modal_ID1) + "X" + str(loop.index0) %}
             {% set button_id = loop.index0 %}
             {% set onclick = 'type=submit' %}
 
@@ -282,7 +282,33 @@
                     {{ button_config['name'] }}
                   </p>
                 {% endif %}
-                {% include 'editbutton_modal.jinja' %}
+                
+
+                {% set button_command = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
+                {% set button_settings = config["front"]["buttons"][folder_id][button_id] %}
+
+                {% set command_name = None %}
+                {% set command_value = None %}
+
+                {% set is_done = False %}
+                {% for category, commands_name in commands.items() %}
+                  {% if is_done == False %}
+                    {% for command_name, command in commands_name.items() %}
+                      {% if is_done == False %}
+                        {% if command['command'] %}
+                          {% if button_command.lower().startswith(command['command'].lower()) %}
+                            {% set is_done = False %}
+                            {% set command_name = command_name %}
+                            {% set command_value = command %}
+                            {% include 'editbutton_modal.jinja' %}
+                          {% endif %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+
+
               </form>
             
               
@@ -1089,7 +1115,7 @@
             if (editorMode === 1) {
                 fetch('/get_config')
                     .then(function (response) {
-                        let tempEditorConfig = {}; // Déclarer tempEditorConfig
+                        let tempEditorConfig = {};
                         if (response.ok) {
                             return response.json();
                         } else {
@@ -1097,12 +1123,10 @@
                         }
                     })
                     .then(function (configData) {
-                        // Utilisez les données de configuration retournées
                         tempEditorConfig = configData;
                         // console.log(tempEditorConfig);
                     })
                     .catch(function (error) {
-                        // Gérez les erreurs ici
                         console.error(error);
                     });
             } else {
