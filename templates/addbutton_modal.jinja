@@ -372,7 +372,7 @@
           </div>
           
           
-          <input type="submit" value="Envoyer" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
+          <input type="submit" value="Save" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
               {% if command_value["style"] %}
                   var button_{{arg_modal_ID}} = {{command_value["style"]}};
@@ -510,7 +510,7 @@
                   button_{{arg_modal_ID}}.name = text_{{arg_modal_ID}};
               });
               
-              function buttonCommand_{{arg_modal_ID}}(argModalID_{{arg_modal_ID}}, command_{{arg_modal_ID}}, from_{{arg_modal_ID}}, event) {
+              function buttonCommand_{{arg_modal_ID}}(argModalID_{{arg_modal_ID}}, command_{{arg_modal_ID}}, event) {
                   if (argModalID_{{arg_modal_ID}} === "NONE") {
                       var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}};
                   } else {
@@ -565,66 +565,58 @@
           
                   button_{{arg_modal_ID}}.message = commandString_{{arg_modal_ID}};
           
-                  if (from_{{arg_modal_ID}} === "add") {
-                      console.log('buttonCommand received, from: add');
-                      var element = document.querySelector('#addbutton-modal-content');
-                      var location_Folder = element.getAttribute('add_FOLDER');
-                      var location_Id = element.getAttribute('add_ID');
-                      var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
-                      
-                      fetch('/get_config')
-                        .then(function(response) {
-                          if (response.ok) {
-                            return response.json();
-                          } else {
-                            throw new Error('Une erreur est survenue lors du chargement des paramètres.');
-                          }
-                        })
-                        .then(function(configData) {
-                          tempEditorConfig = configData;
-                          tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{arg_modal_ID}}; 
-                          return fetch('/save_buttons_only', {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(tempEditorConfig)
-                          });
-                        })
-                        .then(function(response) {
-                          if (response.ok) {
-                            return response.json();
-                          } else {
-                            throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                          }
-                        })
-                        .then(function(response) {
-                          if (response.success) {
-                            alert('Les paramètres ont été enregistrés avec succès.');
-                            location.reload();
-                          } else {
-                            throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                          }
-                        })
-                        .catch(function(error) {
-                          alert(error.message);
-                        });
-                      
-                      element.removeAttribute('add_ID');
-                      element.removeAttribute('add_FOLDER');
-                      
-                      
-                      
-                      
-          
-                  } else if (from_{{arg_modal_ID}} === "edit") {
-                      console.log('buttonCommand recieved, from: edit');
-                  }
+                  console.log('buttonCommand received, from: add');
+                  var element = document.querySelector('#addbutton-modal-content');
+                  var location_Folder = element.getAttribute('add_FOLDER');
+                  var location_Id = element.getAttribute('add_ID');
+                  var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
+                  
+                  fetch('/get_config')
+                    .then(function(response) {
+                      if (response.ok) {
+                        return response.json();
+                      } else {
+                        throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                      }
+                    })
+                    .then(function(configData) {
+                      tempEditorConfig = configData;
+                      tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{arg_modal_ID}}; 
+                      return fetch('/save_buttons_only', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(tempEditorConfig)
+                      });
+                    })
+                    .then(function(response) {
+                      if (response.ok) {
+                        return response.json();
+                      } else {
+                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                      }
+                    })
+                    .then(function(response) {
+                      if (response.success) {
+                        alert('Les paramètres ont été enregistrés avec succès.');
+                        location.reload();
+                      } else {
+                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                      }
+                    })
+                    .catch(function(error) {
+                      alert(error.message);
+                    });
+                  
+                  element.removeAttribute('add_ID');
+                  element.removeAttribute('add_FOLDER');
+                
                   console.log(button_{{arg_modal_ID}});
               }
               document.getElementById('{{arg_modal_ID}}_submit').addEventListener('click', function(event) {
                   setTimeout(function() {
-                      buttonCommand_{{arg_modal_ID}}('{{ arg_modal_ID }}', '{{command_id}}', 'add', event);
+                      buttonCommand_{{arg_modal_ID}}('{{ arg_modal_ID }}', '{{command_id}}', event);
                   }, 1000);
               });
               

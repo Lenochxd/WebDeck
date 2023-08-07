@@ -363,16 +363,28 @@
               <input type="file" id="image-input_{{edit_modal_ID}}" class="{{black_theme}}">
               
               <div class="slider-container">
+                {% set default_size = '75' %}
+                {% if button_settings['image_size'] and not button_settings['image_size'].strip() == '' %}
+                  {% set default_size = button_settings['image_size'].strip().replace('%','') %}
+                {% endif %}
                 <label for="image-size-slider_{{edit_modal_ID}}">Image Size:</label>
-                <input type="range" id="image-size-slider_{{edit_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="75" step="1">
-                <input type="number" id="image-size-value_{{edit_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="75">
+                <input type="range" id="image-size-slider_{{edit_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="{{default_size}}" step="1">
+                <input type="number" id="image-size-value_{{edit_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="{{default_size}}">
                 %
               </div>
               
               <label for="background-color-input_{{edit_modal_ID}}">Background Color:</label>
               <div class="background-color-input-container">
-                <input type="color" class="background-color-input {{black_theme}}" id="background-color-input_{{edit_modal_ID}}">
-                <input type="text" id="background-color-hex_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="Background Color (HEX)">
+                {% set default_bgcolor = '' %}
+                {% if button_settings['background-color'] and not button_settings['background-color'].strip() == '' %}
+                  {% if button_settings['background-color'].strip().startswith('#') %}
+                    {% set default_bgcolor = 'value="' + button_settings['background-color'].strip() + '"' %}
+                  {% else %}
+                    {% set default_bgcolor = 'value="#' + button_settings['background-color'].strip() + '"' %}
+                  {% endif %}
+                {% endif %}
+                  <input type="color" class="background-color-input {{black_theme}}" id="background-color-input_{{edit_modal_ID}}" {{default_bgcolor}}>
+                  <input type="text" id="background-color-hex_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="Background Color (HEX)" {{default_bgcolor}}>
               </div>
               
               <label for="button-text-input_{{edit_modal_ID}}">Button Text:</label>
@@ -386,7 +398,7 @@
           </div>
           
           
-          <input type="submit" value="Envoyer" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
+          <input type="submit" value="Save" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
               {% if button_settings %}
                   var button_{{edit_modal_ID}} = {{button_settings}};
@@ -524,7 +536,7 @@
                   button_{{edit_modal_ID}}.name = text_{{edit_modal_ID}};
               });
               
-              function buttonCommand_{{edit_modal_ID}}(argModalID_{{edit_modal_ID}}, command_{{edit_modal_ID}}, from_{{edit_modal_ID}}, event) {
+              function buttonCommand_{{edit_modal_ID}}(argModalID_{{edit_modal_ID}}, command_{{edit_modal_ID}}, event) {
                   if (argModalID_{{edit_modal_ID}} === "NONE") {
                       var commandString_{{edit_modal_ID}} = command_{{edit_modal_ID}};
                   } else {
@@ -579,66 +591,58 @@
           
                   button_{{edit_modal_ID}}.message = commandString_{{edit_modal_ID}};
           
-                  if (from_{{edit_modal_ID}} === "add") {
-                      console.log('buttonCommand received, from: add');
-                      var element = document.querySelector('#editbutton-modal-content');
-                      var location_Folder = element.getAttribute('add_FOLDER');
-                      var location_Id = element.getAttribute('add_ID');
-                      var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
-                      
-                      fetch('/get_config')
-                        .then(function(response) {
-                          if (response.ok) {
-                            return response.json();
-                          } else {
-                            throw new Error('Une erreur est survenue lors du chargement des paramètres.');
-                          }
-                        })
-                        .then(function(configData) {
-                          tempEditorConfig = configData;
-                          tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{edit_modal_ID}}; 
-                          return fetch('/save_buttons_only', {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(tempEditorConfig)
-                          });
-                        })
-                        .then(function(response) {
-                          if (response.ok) {
-                            return response.json();
-                          } else {
-                            throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                          }
-                        })
-                        .then(function(response) {
-                          if (response.success) {
-                            alert('Les paramètres ont été enregistrés avec succès.');
-                            location.reload();
-                          } else {
-                            throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                          }
-                        })
-                        .catch(function(error) {
-                          alert(error.message);
-                        });
-                      
-                      element.removeAttribute('add_ID');
-                      element.removeAttribute('add_FOLDER');
-                      
-                      
-                      
-                      
-          
-                  } else if (from_{{edit_modal_ID}} === "edit") {
-                      console.log('buttonCommand recieved, from: edit');
-                  }
+                  console.log('buttonCommand received, from: edit');
+                  var element = document.querySelector('#editbutton-modal-content');
+                  var location_Folder = element.getAttribute('add_FOLDER');
+                  var location_Id = element.getAttribute('add_ID');
+                  var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
+                  
+                  fetch('/get_config')
+                    .then(function(response) {
+                      if (response.ok) {
+                        return response.json();
+                      } else {
+                        throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                      }
+                    })
+                    .then(function(configData) {
+                      tempEditorConfig = configData;
+                      tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{edit_modal_ID}}; 
+                      return fetch('/save_buttons_only', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(tempEditorConfig)
+                      });
+                    })
+                    .then(function(response) {
+                      if (response.ok) {
+                        return response.json();
+                      } else {
+                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                      }
+                    })
+                    .then(function(response) {
+                      if (response.success) {
+                        alert('Les paramètres ont été enregistrés avec succès.');
+                        location.reload();
+                      } else {
+                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                      }
+                    })
+                    .catch(function(error) {
+                      alert(error.message);
+                    });
+                  
+                  element.removeAttribute('add_ID');
+                  element.removeAttribute('add_FOLDER');
+                  
                   console.log(button_{{edit_modal_ID}});
               }
               document.getElementById('{{edit_modal_ID}}_submit').addEventListener('click', function(event) {
                   setTimeout(function() {
-                      buttonCommand_{{edit_modal_ID}}('{{ edit_modal_ID }}', '{{command_id}}', 'add', event);
+                      buttonCommand_{{edit_modal_ID}}('{{ edit_modal_ID }}', '{{command_id}}', event);
                   }, 1000);
               });
               
