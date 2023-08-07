@@ -11,266 +11,20 @@
     </div>
 
     <div class="editbutton-modal-main">
-      <div id="config-container" class="{{black_theme}}">
+      <div class="config-container {{black_theme}}">
       
         <form class="args-form" edit_modal_ID="{{ edit_modal_ID }}" novalidate>
-          
+          <!--
           <div class="args-container {{black_theme}}" edit_modal_ID="{{ edit_modal_ID }}">
-        
-            {% for arg in command_value["args"] %}
-              
-              {% if arg[config.settings.language] %}
-                {% set arg_name = arg[config.settings.language] %}
-              {% elif arg["en"] %}
-                {% set arg_name = arg["en"] %}
-              {% else %}
-                {% set arg_name = "arg_name is missing!" %}
-              {% endif %}
-              {% if "input" in arg['TYPE'] %}
-                
-                <div class="arg_container" edit_modal_ID="{{ edit_modal_ID }}" arg_id="{{ loop.index0 }}">
-                  
-                  <label for="{{ arg_name }}_{{edit_modal_ID}}">{{ arg_name }}:</label>
-                  {% if "webdeck_foldername" in arg['TYPE'] %}
-                    {# lister tous les dossiers #}
-                    <div class="webdeck_foldername_ALL">
-                      {% for key in config["front"]["buttons"] %}
-                        <div class="webdeck_foldername">
-                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
-                          <label for="{{ key }}">{{ key }}</label>
-                        </div>
-                      {% endfor %}
-                    </div>
-                  {% elif "file" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" >
-                  {% elif "url" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                            placeholder="https://example.com" >
-                  {% elif "number" in arg['TYPE'] %}
-                    {% set string_list = arg['TYPE'].split(" ") %}
-                    {% set number_list = [] %}
-                    {% for i in string_list %}
-                      {% if i.startswith('number') %}
-                        {% set number_list = eval(i.replace('number', '')) %}
-                        {% set min = number_list[0] %}
-                        {% set max = number_list[1] %}
-                        {% if min.startswith('-') or max.startswith('-') %}
-                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
-                        {% else %}
-                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
-                        {% endif %}
-                      {% endif %}
-                    {% endfor %}
-                  {% elif "text-windowsapp" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
-                  {% elif "longtext" in arg['TYPE'] %}
-                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
-                  {% elif "text" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
-                  {% elif "dropdown" in arg['TYPE'] %}
-                    {# lister toutes les options #}
-                    <select name="{{file}}" >
-                      {% for option in arg['options'] %}
-                        {% if option[config.settings.language] %}
-                          {% set option_name = option[config.settings.language] %}
-                        {% elif arg["en"] %}
-                          {% set option_name = option["en"] %}
-                        {% else %}
-                          {% set option_name = "option_name is missing!" %}
-                        {% endif %}
-                        <option value="{{ option['ID'] }}"> {{ option_name }} </option>
-                      {% endfor %}
-                    </select>
-                  {% endif %}
-                </div>
-                {% if "webdeck_foldername" in arg['TYPE'] %}
-                  <div class="webdeck_foldername_div">
-                    <form id="webdeck_foldername_form" novalidate>
-                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="New folder name" >
-                      <button id="submitButton" type="submit">Create a folder</button>
-                    </form>
-                      
-                    <script>
-                      document.getElementById("submitButton").addEventListener("click", function(event) {
-                        event.preventDefault(); // Empêche le comportement par défaut du bouton
-                      
-                        // Récupérer la valeur du champ "folderName"
-                        var folderName = document.getElementById("folderName").value;
-                        if (folderName.trim() !== '') {
-                        
-                          // Créer un objet JSON avec la valeur
-                          var parent_folder_id = document.querySelector('.buttons-center:not(.invisible)');
-                          const parent_folder = parent_folder_id.id.replace(/^folder-/, '');
-              
-                          var data = {
-                            "name": folderName,
-                            "parent_folder": parent_folder
-                            };
-                          console.log(data)
-                        
-                          // Envoyer la requête POST avec les données JSON
-                          fetch("/create_folder", {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(data)
-                          })
-                          .then(function(response) {
-                            if (response.ok) {
-                              return response.json(); // Convertir la réponse en JSON
-                            } else {
-                              console.log("Une erreur s'est produite lors de la création du dossier.");
-                            }
-                          })
-                          .then(function(data) {
-                            if (data && data.hasOwnProperty('success')) {
-                              if (data.success) {
-                                // Faire quelque chose si la valeur de "success" est True
-                                console.log("Dossier créé avec succès !");
-              
-                                // Sélectionnez toutes les divs avec la classe "webdeck_foldername_ALL"
-                                var divs = document.querySelectorAll('.webdeck_foldername_ALL');
-                                
-                                divs.forEach(function(div) {
-                                  // Créez un élément div
-                                  var newDiv = document.createElement('div');
-                                  newDiv.setAttribute('class', 'webdeck_foldername');
-                                
-                                  // Créez un élément input
-                                  var input = document.createElement('input');
-                                  input.setAttribute('type', 'radio');
-                                  input.setAttribute('name', 'file');
-                                  input.setAttribute('value', folderName);
-                                  input.setAttribute('required', '');
-                                
-                                  // Créez un élément label
-                                  var label = document.createElement('label');
-                                  label.setAttribute('for', folderName);
-                                  label.textContent = folderName;
-                                
-                                  // Ajoutez l'input et le label à la div dans l'ordre inversé
-                                  newDiv.appendChild(input);
-                                  newDiv.appendChild(label);
-                                
-                                  // Ajoutez la div nouvellement créée à la div parent
-                                  div.appendChild(newDiv);
-                                });
-                                
-                                
-                              } else {
-                                // Faire quelque chose si la valeur de "success" est False
-                                console.log("La création du dossier a échoué car le dossier existe déjà.");
-              
-                              }
-                            }
-                          })
-                          .catch(function(error) {
-                            console.log("Erreur : " + error);
-                          });
-                          
-                        }
-                      });
-                    </script>
-                  </div>
-                {% endif %}
-              {% elif "choice" in arg['TYPE'] %}
-                
-                <div class="choices_ALL">
-                  <label for="choice">Choisissez une option :</label><br>
-                  {% for choice in arg['options'] %}
-                    {% if choice[config.settings.language] %}
-                      {% set choice_name = choice[config.settings.language] %}
-                    {% elif arg["en"] %}
-                      {% set choice_name = choice["en"] %}
-                    {% else %}
-                      {% set choice_name = "choice_name is missing!" %}
-                    {% endif %}
-                    <div class="choice">
-                      <input class="choice {{black_theme}}" type="radio" id="none" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{edit_modal_ID}}('{{ loop.index0 }}')">
-                      <label for="{{ choice_name }}">{{ choice_name }}</label>
-                    </div>
-                    
-                    <div style="display: none;" class="arg_container" edit_modal_ID="{{ edit_modal_ID }}" arg_id="{{ loop.index0 }}">
-                      {# <h2> {{ choice_name }} </h2> #}
-                      {% if "webdeck_foldername" in arg['TYPE'] %}
-                        {# lister tous les dossiers #}
-                        <div class="webdeck_foldername_ALL">
-                          {% for key in config["front"]["buttons"] %}
-                            <div class="webdeck_foldername">
-                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
-                              <label for="{{ key }}">{{ key }}</label>
-                            </div>
-                          {% endfor %}
-                        </div>
-                      {% elif "file" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" >
-                      {% elif "url" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                          placeholder="https://example.com" >
-                      {% elif "number" in arg['TYPE'] %}
-                        {% set string_list = arg['TYPE'].split(" ") %}
-                        {% set number_list = [] %}
-                        {% for i in string_list %}
-                          {% if i.startswith('number') %}
-                            {% set number_list = eval(i.replace('number', '')) %}
-                            {% set min = number_list[0] %}
-                            {% set max = number_list[1] %}
-                            {% if min.startswith('-') or max.startswith('-') %}
-                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
-                            {% else %}
-                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                      {% elif "text-windowsapp" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
-                      {% elif "longtext" in choice['TYPE'] %}
-                        <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33"></textarea>
-                      {% elif "text" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
-                      {% elif "dropdown" in choice['TYPE'] %}
-                        {# lister toutes les options #}
-                        <select name="{{file}}" >
-                          {% for option in choice['options'] %}
-                            {% if option[config.settings.language] %}
-                              {% set option_name = option[config.settings.language] %}
-                            {% elif choice["en"] %}
-                              {% set option_name = option["en"] %}
-                            {% else %}
-                              {% set option_name = "option_name is missing!" %}
-                            {% endif %}
-                            <option value="{{ option['ID'] }}"> {{ option_name }} </option>
-                          {% endfor %}
-                        </select>
-                      {% endif %}
-                    </div>
-                  {% endfor %}
-                </div>
-                <script>
-                  {# const arg_options_{{edit_modal_ID}} = {{arg['options']}} #}
-                  function showArg_{{edit_modal_ID}}(argId) {
-                    var elements_{{edit_modal_ID}} = document.querySelectorAll('div.arg_container[edit_modal_ID="{{edit_modal_ID}}"]:not([arg_id="{{argId}}"])');
-                  
-                    elements_{{edit_modal_ID}}.forEach(function(element) {
-                      if (element.getAttribute('arg_id') === argId) {
-                        element.style.display = 'block'; // Afficher les éléments avec arg_id=argId
-                      } else {
-                        element.style.display = 'none'; // Cacher les autres éléments
-                      }
-                    });
-                  }
-                  
-                  
-                </script>
-              {% endif %}
-            {% endfor %}
+            future maj
           </div>
+          
+
           {# configuration du style: #}
         
           {% if command_value["args"]|length > 0 %}
             <div class="editorStyle-bar {{black_theme}}"></div>
-          {% endif %}
+          {% endif %}-->
           <div class="editorStyle">
             <div class="fakeform-container {{black_theme}}">
               <div class="fakeform">
@@ -536,13 +290,13 @@
                   button_{{edit_modal_ID}}.name = text_{{edit_modal_ID}};
               });
               
-              function buttonCommand_{{edit_modal_ID}}(argModalID_{{edit_modal_ID}}, command_{{edit_modal_ID}}, event) {
-                  if (argModalID_{{edit_modal_ID}} === "NONE") {
+              function buttonCommand_{{edit_modal_ID}}(editModalID_{{edit_modal_ID}}, command_{{edit_modal_ID}}, event) {
+                  if (editModalID_{{edit_modal_ID}} === "NONE") {
                       var commandString_{{edit_modal_ID}} = command_{{edit_modal_ID}};
                   } else {
                       event.preventDefault(); // Prevent the form from submitting
           
-                      var form_{{edit_modal_ID}} = document.querySelector('form[edit_modal_ID="' + argModalID_{{edit_modal_ID}} + '"]'); // Get the form element with the specified edit_modal_ID
+                      var form_{{edit_modal_ID}} = document.querySelector('form[edit_modal_ID="' + editModalID_{{edit_modal_ID}} + '"]'); // Get the form element with the specified edit_modal_ID
                       var inputs_{{edit_modal_ID}} = form_{{edit_modal_ID}}.querySelectorAll('input, select, textarea'); // Get all input, select, and textarea elements within the form
           
                       var values_{{edit_modal_ID}} = Array.from(inputs_{{edit_modal_ID}}).filter(function(input_{{edit_modal_ID}}) {
@@ -592,9 +346,9 @@
                   button_{{edit_modal_ID}}.message = commandString_{{edit_modal_ID}};
           
                   console.log('buttonCommand received, from: edit');
-                  var element = document.querySelector('#editbutton-modal-content');
-                  var location_Folder = element.getAttribute('add_FOLDER');
-                  var location_Id = element.getAttribute('add_ID');
+
+                  var location_Folder = "{{edit_modal_ID}}".replace('e','').split('X')[0];
+                  var location_Id = "{{edit_modal_ID}}".replace('e','').split('X')[1];
                   var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
                   
                   fetch('/get_config')
@@ -607,7 +361,9 @@
                     })
                     .then(function(configData) {
                       tempEditorConfig = configData;
+                      console.log(tempEditorConfig['front']['buttons'][location_Folder][location_Id]);
                       tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{edit_modal_ID}}; 
+                      console.log(button_{{edit_modal_ID}});
                       return fetch('/save_buttons_only', {
                         method: 'POST',
                         headers: {
@@ -634,9 +390,6 @@
                     .catch(function(error) {
                       alert(error.message);
                     });
-                  
-                  element.removeAttribute('add_ID');
-                  element.removeAttribute('add_FOLDER');
                   
                   console.log(button_{{edit_modal_ID}});
               }

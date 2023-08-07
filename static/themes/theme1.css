@@ -317,7 +317,7 @@ h1.config-title {
   margin-bottom: 7px;
 }
 
-form#form, div.fakeform {
+form.form, div.fakeform {
   width: 132px;
   height: 153.79px;
   
@@ -407,7 +407,7 @@ form#config-form {
 }
 
 /* style pour le conteneur principal */
-#config-container, #addbutton-container, #args-container, #editbutton-container {
+.config-container, .addbutton-container {
   width: 80%;
   margin: auto;
   padding: 20px;
@@ -416,7 +416,7 @@ form#config-form {
   box-shadow: 0 0 10px #ccc;
   margin-top: 20px;
 }
-#config-container.black-theme, #addbutton-container.black-theme, #args-container.black-theme, #editbutton-container.black-theme {
+.config-container.black-theme, .addbutton-container.black-theme {
   border: 1px solid #232323!important;
   box-shadow: 0 0 10px #000000!important;
 }
@@ -670,8 +670,8 @@ form.selected {
   color: rgb(0, 0, 0);
   font-weight: bold;
   text-align: center;
-  margin-top: 2px;
-  margin-left: 2.5px;
+  margin-top: 3px;
+  margin-left: 2px;
 }
 
 

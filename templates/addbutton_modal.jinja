@@ -11,7 +11,7 @@
     </div>
 
     <div class="addbutton-modal-main-args">
-      <div id="config-container" class="{{black_theme}}">
+      <div class="config-container {{black_theme}}">
       
         <form class="args-form" arg_modal_ID="{{ arg_modal_ID }}" novalidate>
           
@@ -187,7 +187,7 @@
                       {% set choice_name = "choice_name is missing!" %}
                     {% endif %}
                     <div class="choice">
-                      <input class="choice {{black_theme}}" type="radio" id="none" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
+                      <input class="choice {{black_theme}}" type="radio" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
                       <label for="{{ choice_name }}">{{ choice_name }}</label>
                     </div>
                     
