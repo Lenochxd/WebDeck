@@ -50,7 +50,7 @@
 
 
     {% if config["settings"]["show-console"].lower() == "true" %}
-      <form id="form">
+      <form class="form">
         <label style="color: white;">Console:</label><br>
         <input type="text" class="message {{black_theme}}"><br>
         <button type="submit">Submit</button>
@@ -135,7 +135,7 @@
               </div>
             {% else %}
             
-              <form class="form-{{ button_id }} " id="form">
+              <form class="form-{{ button_id }} form">
                 <div class="container-editmode">
                   <div class="edit-button" style="display: none;" edit_modal_ID="{{ edit_modal_ID }}">
                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="Edit / Edit_Pencil_01">
@@ -289,23 +289,17 @@
 
                 {% set command_name = None %}
                 {% set command_value = None %}
-
-                {% set is_done = False %}
-                {% for category, commands_name in commands.items() %}
-                  {% if is_done == False %}
-                    {% for command_name, command in commands_name.items() %}
-                      {% if is_done == False %}
-                        {% if command['command'] %}
-                          {% if button_command.lower().startswith(command['command'].lower()) %}
-                            {% set is_done = False %}
-                            {% set command_name = command_name %}
-                            {% set command_value = command %}
-                            {% include 'editbutton_modal.jinja' %}
-                          {% endif %}
-                        {% endif %}
+                
+                {% for category, commands_name in commands.items() if command_value == None %}
+                  {% for command_name_, command in commands_name.items() if command_value == None %}
+                    {% if command['command'] %}
+                      {% if button_command.lower().split()[0].strip() == command['command'].lower().strip() %}
+                        {% set command_name = command_name_ %}
+                        {% set command_value = command %}
+                        {% include 'editbutton_modal.jinja' %}
                       {% endif %}
-                    {% endfor %}
-                  {% endif %}
+                    {% endif %}
+                  {% endfor %}
                 {% endfor %}
 
 
@@ -341,7 +335,7 @@
 
         <div class="modal-main">
 
-          <div id="config-container" class="{{black_theme}}">
+          <div class="config-container {{black_theme}}">
 
             <button class="modal-button" id="editorButton">[E] Enter editor mode</button>
             <form id="config-form" class="config-form">
@@ -488,7 +482,7 @@
         </div>
 
         <div class="addbutton-modal-main">
-          <br id="addbutton-container" class="{{black_theme}}">
+          <br class="addbutton-container {{black_theme}}">
 
             
             <div class="all-commands {{black_theme}}">
@@ -912,8 +906,8 @@
         function showDeleteConfirmation(event) {
             if (editorMode === 1 && confirm("Souhaitez-vous vraiment supprimer ce bouton ?")) {
                 ifModif = 1;
-      
-                let closest_form = event.target.closest('form#form');
+
+                let closest_form = event.target.closest('form.form');
                 if (closest_form === null) {
                     closest_form = event.target.closest('div.void');
                 }
@@ -946,7 +940,8 @@
                 const formIndex = parseInt(formNumber) - 1;
                 console.log(`${parentId} > ${formNumber}`);
       
-                tempEditorConfig.front.buttons[parentId][formNumber] = {
+                console.log(tempEditorConfig.front); // JSP POURQUOI MAIS sans ce console.log ça fonctionne pas (???????????)
+                tempEditorConfig['front']['buttons'][parentId][formNumber] = {
                     "VOID": "VOID"
                 };
       
@@ -966,7 +961,7 @@
         let swapSecondBtn = 0;
         function swapButton(event) {
             if (editorMode === 1 && swapMode === 1 && !isMouseOverOpenFolder) {
-                let closest_form = event.target.closest('form#form');
+                let closest_form = event.target.closest('form.form');
                 if (closest_form === null) {
                     closest_form = event.target.closest('div.void');
                 }
@@ -1029,9 +1024,9 @@
                                 deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
                             }
 
-                            let tempValue = tempEditorConfig.front.buttons[parentId1][formNumber1];
-                            tempEditorConfig.front.buttons[parentId1][formNumber1] = tempEditorConfig.front.buttons[parentId2][formNumber2];
-                            tempEditorConfig.front.buttons[parentId2][formNumber2] = tempValue;
+                            let tempValue = tempEditorConfig['front']['buttons'][parentId1][formNumber1];
+                            tempEditorConfig['front']['buttons'][parentId1][formNumber1] = tempEditorConfig['front']['buttons'][parentId2][formNumber2];
+                            tempEditorConfig['front']['buttons'][parentId2][formNumber2] = tempValue;
 
                             // Reset the variables
                             const checkboxDivs = document.querySelectorAll('div.checkbox');
@@ -1189,7 +1184,7 @@
             swapChanges = []
             console.log(`swapChanges: ${swapChanges}`);
             toggleEditorMode();
-            if (ifModif === 1) {
+            if (ifModif === 1 || swapChanges.length !== 0) {
                 fetch('/save_buttons_only', {
                     method: 'POST',
                     headers: {
@@ -1339,9 +1334,9 @@
             for (let i = 0; i < deleteButtonElements.length; i++) {
                 deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
             }
-            let tempValue = tempEditorConfig.front.buttons[parentId1][formNumber1];
-            tempEditorConfig.front.buttons[parentId1][formNumber1] = tempEditorConfig.front.buttons[parentId2][formNumber2];
-            tempEditorConfig.front.buttons[parentId2][formNumber2] = tempValue;
+            let tempValue = tempEditorConfig['front']['buttons'][parentId1][formNumber1];
+            tempEditorConfig['front']['buttons'][parentId1][formNumber1] = tempEditorConfig['front']['buttons'][parentId2][formNumber2];
+            tempEditorConfig['front']['buttons'][parentId2][formNumber2] = tempValue;
             // Reset the variables
             const checkboxDivs = document.querySelectorAll('div.checkbox');
             checkboxDivs.forEach(
@@ -1399,9 +1394,9 @@
             for (let i = 0; i < deleteButtonElements.length; i++) {
                 deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
             }
-            let tempValue = tempEditorConfig.front.buttons[parentId1][formNumber1];
-            tempEditorConfig.front.buttons[parentId1][formNumber1] = tempEditorConfig.front.buttons[parentId2][formNumber2];
-            tempEditorConfig.front.buttons[parentId2][formNumber2] = tempValue;
+            let tempValue = tempEditorConfig['front']['buttons'][parentId1][formNumber1];
+            tempEditorConfig['front']['buttons'][parentId1][formNumber1] = tempEditorConfig['front']['buttons'][parentId2][formNumber2];
+            tempEditorConfig['front']['buttons'][parentId2][formNumber2] = tempValue;
             // Reset the variables
             const checkboxDivs = document.querySelectorAll('div.checkbox');
             checkboxDivs.forEach(
@@ -1505,7 +1500,7 @@
         let editButtonElements = document.querySelectorAll('.edit-button');
         let deleteButtonElements = document.querySelectorAll('.delete-button');
       
-        var AllButtons1 = document.querySelectorAll('form#form');
+        var AllButtons1 = document.querySelectorAll('form.form');
         var AllButtons2 = document.querySelectorAll('div.void');
         var AllButtons = Array.from(AllButtons1).concat(Array.from(AllButtons2));
       
