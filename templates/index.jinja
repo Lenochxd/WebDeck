@@ -779,46 +779,50 @@
 
 
             // Effectuer une requête fetch pour tous les messages et mettre à jour les éléments DOM correspondants
-            fetch('/usage', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ messages: messages })
-            })
-              .then(response => response.json())
-              .then(usage_dict => {
-                // console.log(typeof(usage_dict));
-                // console.log(usage_dict);
-                forms.forEach(form => {
-                  const divElements = document.querySelectorAll('.usage-value');
-                  divElements.forEach(divElement => {
-                    const otherClass = divElement.classList[1];
-                    if (otherClass !== undefined) {
-                      try {
-                        let newValue
-                        if (otherClass.includes('percent')) {
-                          newValue = eval(otherClass) + '%';
-                        } else if (otherClass.includes('_gb')) {
-                          newValue = eval(otherClass) + ' gb';
-                        } else if (otherClass.includes('_mb')) {
-                          newValue = eval(otherClass) + ' mb';
-                        } else if (otherClass.includes('bytes')) {
-                          newValue = eval(otherClass) + ' bytes';
-                        } else {
-                          newValue = eval(otherClass);
-                        }
-                        if (!newValue.includes('undefined')) {
-                          divElement.innerHTML = newValue
-                        }
-                      } catch (error) {
-                        return
-                      }
-                    }
-                  });
-                });
+            try {
+              fetch('/usage', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ messages: messages })
               })
-              .catch(error => console.error(error));
+                .then(response => response.json())
+                .then(usage_dict => {
+                  // console.log(typeof(usage_dict));
+                  // console.log(usage_dict);
+                  forms.forEach(form => {
+                    const divElements = document.querySelectorAll('.usage-value');
+                    divElements.forEach(divElement => {
+                      const otherClass = divElement.classList[1];
+                      if (otherClass !== undefined) {
+                        try {
+                          let newValue
+                          if (otherClass.includes('percent')) {
+                            newValue = eval(otherClass) + '%';
+                          } else if (otherClass.includes('_gb')) {
+                            newValue = eval(otherClass) + ' gb';
+                          } else if (otherClass.includes('_mb')) {
+                            newValue = eval(otherClass) + ' mb';
+                          } else if (otherClass.includes('bytes')) {
+                            newValue = eval(otherClass) + ' bytes';
+                          } else {
+                            newValue = eval(otherClass);
+                          }
+                          if (!newValue.includes('undefined')) {
+                            divElement.innerHTML = newValue
+                          }
+                        } catch (error) {
+                          return
+                        }
+                      }
+                    });
+                  });
+                })
+                .catch(error => console.error(error));
+            } catch (e) {
+              console.log(e.message);
+            }
           }, {{ config['front']['computer-usage-reload-time'] }} );
               }
             });
