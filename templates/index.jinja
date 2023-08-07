@@ -629,6 +629,7 @@
 
 
     <script src="static/js/socketio.js"></script>
+    {# <script src="https://cdn.socket.io/4.3.2/socket.io.esm.min.js"></script> #}
 
     <script type="text/javascript">
       const biggest_folder = "{{ biggest_folder }}";
@@ -749,16 +750,6 @@
       window.addEventListener('load', function() {
         folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
         auto_resize();
-        // SOCKET CONNECTION
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-        socket.on('connect', function() {
-          console.log('Connected');
-        });
-
-        socket.on('json_data', function(data) {
-          console.log(data.message);
-        });
 
         const usageValueDivs = document.querySelectorAll('.usage-value');
         if (usageValueDivs.length > 0) {
@@ -1547,6 +1538,17 @@
           modal.style.display = 'block';
         }
 
+        // SOCKET CONNECTION
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+      
+        socket.on('connect', function() {
+          console.log('Connected');
+        });
+      
+        socket.on('json_data', function(data) {
+          console.log(data.message);
+        });
+
         var forms = document.querySelectorAll('form');
         forms.forEach(form => {
           form.addEventListener('submit', function(event) {
@@ -1632,16 +1634,17 @@
             } else {
               const message = messageElement.value;
               if (!message.startsWith("/usage") && !message.startsWith("/reload") && !message.startsWith("/folder")) {
-                fetch('/send-data', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ message: message })
-                })
-                  .then(response => response.json())
-                  .then(data => console.log(data))
-                  .catch(error => console.error(error));
+                // fetch('/send-data', {
+                //   method: 'POST',
+                //   headers: {
+                //     'Content-Type': 'application/json'
+                //   },
+                //   body: JSON.stringify({ message: message })
+                // })
+                //   .then(response => response.json())
+                //   .then(data => console.log(data))
+                //   .catch(error => console.error(error));
+                socket.emit('message_from_socket', message);
               } else if (message.startsWith("/reload") && swapMode !== 1) {
                 console.log('reloading...');
                 location.reload();
