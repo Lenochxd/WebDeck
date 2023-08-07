@@ -1,0 +1,946 @@
+{
+  "Webdeck": {
+    "Fullscreen": {
+      "command": "/fullscreen",
+      "args": [],
+      "name": {
+        "en": "Fullscreen",
+        "fr": "Plein écran"
+      },
+      "description": {
+        "en": "Enables or disables full screen mode on the device",
+        "fr": "Active ou désactive le mode plein écran sur l'appareil"
+      },
+      "style": {
+        "image": "fullscreen2.png",
+        "image_size": "50%",
+        "name": {
+          "en": "Fullscreen",
+          "fr": "Plein écran"
+        }
+      }
+    },
+    "Reload page": {
+      "command": "/reload",
+      "args": [],
+      "name": {
+        "en": "Reload page",
+        "fr": "Recharger la page"
+      },
+      "style": {
+        "image": "reload.png",
+        "image_size": "50%",
+        "name": "Reload"
+      }
+    },
+    "Open a folder": {
+      "command": "/folder",
+      "args": [
+        {
+          "TYPE": "input webdeck_foldername",
+          "fr": "Nom du dossier",
+          "en": "Folder name"
+        }
+      ],
+      "name": {
+        "en": "Open a folder",
+        "fr": "Ouvrir un dossier"
+      },
+      "description": {
+        "en": "Opens the specified webdeck folder",
+        "fr": "Ouvre le dossier spécifié du webdeck"
+      },
+      "style": {
+        "image": "folder.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Open folder",
+          "fr": "Ouvrir le dossier"
+        }
+      }
+    },
+    "Config": {
+      "command": "/open-config",
+      "args": [],
+      "name": {
+        "en": "Configuration",
+        "fr": "Configuration"
+      },
+      "description": {
+        "en": "Open settings menu",
+        "fr": "Ouvre le menu des paramètres"
+      },
+      "style": {
+        "image": "settings2.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Settings",
+          "fr": "Paramètres"
+        }
+      }
+    }
+  },
+  "System": {
+    "Volume": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "Volume control",
+        "fr": "Contrôle du volume"
+      },
+      "description": {
+        "en": "Manage system volume",
+        "fr": "Gérer le volume du système"
+      },
+      "commands": [
+        {
+          "command": "/volume +",
+          "args": [
+            {
+              "TYPE": "NONE",
+              "en": "Increase by 1",
+              "fr": "Augmente de 1"
+            },
+            {
+              "TYPE": "input number['1','100']",
+              "en": "Increase by ...",
+              "fr": "Augmente de ..."
+            }
+          ],
+          "name": {
+            "en": "Increase volume",
+            "fr": "Augmenter le volume"
+          },
+          "description": {
+            "en": "Increase computer volume",
+            "fr": "Augmente le volume de l'ordinateur"
+          },
+          "style": {
+            "image": "volume-up.svg",
+            "image_size": "75%",
+            "name": {
+              "en": "Increase volume",
+              "fr": "Augmenter le volume"
+            }
+          }
+        },
+        {
+          "command": "/volume -",
+          "args": [
+            {
+              "TYPE": "NONE",
+              "en": "Decrease by 1",
+              "fr": "Diminue de 1"
+            },
+            {
+              "TYPE": "input number['1','100']",
+              "en": "Decrease by ...",
+              "fr": "Diminue de ..."
+            }
+          ],
+          "name": {
+            "en": "Decrease volume",
+            "fr": "Diminuer le volume"
+          },
+          "description": {
+            "en": "Decrease computer volume",
+            "fr": "Baisse le volume de l'ordinateur"
+          },
+          "style": {
+            "image": "volume-down.svg",
+            "image_size": "75%",
+            "name": {
+              "en": "Decrease volume",
+              "fr": "Diminuer le volume"
+            }
+          }
+        },
+        {
+          "command": "/volume set",
+          "args": [
+            {
+              "TYPE": "input number['0','100']",
+              "en": "Set to ...",
+              "fr": "Mettre à ..."
+            }
+          ],
+          "name": {
+            "en": "Set volume",
+            "fr": "Modifier le volume"
+          },
+          "description": {
+            "en": "Set computer volume",
+            "fr": "Modifie le volume de l'ordinateur"
+          },
+          "style": {
+            "image": "sound.png",
+            "image_size": "75%",
+            "name": {
+              "en": "Set volume",
+              "fr": "Modifier le volume"
+            }
+          }
+        },
+        {
+          "command": "/soundcontrol mute",
+          "args": [],
+          "name": {
+            "en": "Mute the volume",
+            "fr": "Couper le volume"
+          },
+          "description": {
+            "en": "Mute computer volume",
+            "fr": "Coupe le volume deu système"
+          },
+          "style": {
+            "image": "volume-mute.svg",
+            "image_size": "75%",
+            "name": {
+              "en": "Mute the volume",
+              "fr": "Couper le volume"
+            }
+          }
+        }
+      ]
+    },
+    "Media control": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "Media control",
+        "fr": "Contrôle des médias"
+      },
+      "description": {
+        "en": "Manage system media",
+        "fr": "Gérer les médias du système"
+      },
+      "commands": [
+        {
+          "command": "/mediacontrol previous",
+          "args": [],
+          "name": {
+            "en": "Previous",
+            "fr": "Retour"
+          },
+          "description": {
+            "en": "Play the previous sound",
+            "fr": "Joue le son précédent"
+          }
+        },
+        {
+          "command": "/mediacontrol playpause",
+          "args": [],
+          "name": {
+            "en": "Play/pause toggle",
+            "fr": "Basculer play/pause"
+          }
+        },
+        {
+          "command": "/mediacontrol next",
+          "args": [],
+          "name": {
+            "en": "Skip",
+            "fr": "Skip"
+          },
+          "description": {
+            "en": "Skip the actual song",
+            "fr": "Joue le son suivant"
+          }
+        }
+      ]
+    },
+    "Open": {
+      "command": "/start",
+      "args": [
+        {
+          "TYPE": "input file",
+          "fr": "Emplacement du fichier",
+          "en": "File location"
+        }
+      ],
+      "name": {
+        "en": "Open ...",
+        "fr": "Ouvrir ..."
+      },
+      "description": {
+        "en": "Open the specified file or software",
+        "fr": "Ouvre le fichier ou logiciel spécifié"
+      },
+      "style": {
+        "name": {
+          "en": "Open",
+          "fr": "Ouvrir"
+        }
+      }
+    },
+    "Open a website": {
+      "command": "/start",
+      "args": [
+        {
+          "TYPE": "input url",
+          "en": "url"
+        }
+      ],
+      "name": {
+        "en": "Open a website",
+        "fr": "Ouvrir une page Web"
+      },
+      "style": {
+        "name": {
+          "en": "Open website",
+          "fr": "Ouvrir la page web"
+        }
+      }
+    },
+    "Lock session": {
+      "command": "/locksession",
+      "args": [],
+      "name": {
+        "en": "Lock session",
+        "fr": "Verrouiller la session"
+      },
+      "style": {
+        "image": "lock-session.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Lock session",
+          "fr": "Verrouiller la session"
+        }
+      }
+    },
+    "ScreenSaver": {
+      "command": "/screensaver",
+      "args": [
+        {
+          "TYPE": "input dropdown",
+          "en": "Screen saver",
+          "fr": "Écran de veille",
+          "options": [
+            {
+              "ID": "NONE",
+              "en": "Enable screen saver",
+              "fr": "Activer l'écran de veille"
+            },
+            {
+              "ID": "full",
+              "en": "Enable full screen saver",
+              "fr": "Activer l'écran de veille complet"
+            },
+            {
+              "ID": "off",
+              "en": "Disable screen saver",
+              "fr": "Désactive l'écran de veille"
+            }
+          ]
+        }
+      ],
+      "name": {
+        "en": "ScreenSaver",
+        "fr": "Écran de veille"
+      },
+      "style": {
+        "image": "screensaver-full.png",
+        "image_size": "50%",
+        "name": {
+          "en": "ScreenSaver",
+          "fr": "Écran de veille"
+        }
+      }
+    },
+    "Restart explorer": {
+      "command": "/restartexplorer",
+      "args": [],
+      "name": {
+        "en": "Restart explorer",
+        "fr": "Redémarrer l'explorateur de fichiers"
+      },
+      "style": {
+        "image": "restart_explorer.png",
+        "image_size": "80%",
+        "name": {
+          "en": "Restart explorer",
+          "fr": "Redémarrer l'explorateur de fichiers"
+        }
+      }
+    },
+    "SuperAltF4": {
+      "command": "/superAltF4",
+      "args": [],
+      "name": {
+        "en": "SuperAltF4",
+        "fr": "SuperAltF4"
+      },
+      "description": {
+        "en": "Force close the foreground window",
+        "fr": "Ferme de force la fenêtre au premier plan"
+      },
+      "style": {
+        "image": "altf4.png",
+        "image_size": "75%",
+        "name": "Super Alt+F4"
+      }
+    },
+    "Kill a task": {
+      "command": "/kill",
+      "args": [
+        {
+          "TYPE": "input text-windowsapp",
+          "en": "Task (app.exe)",
+          "fr": "Tache (app.exe)"
+        }
+      ],
+      "name": {
+        "en": "Kill a task",
+        "fr": "Tuer une tâche"
+      },
+      "style": {
+        "name": {
+          "en": "Kill task",
+          "fr": "Tuer la tâche"
+        }
+      }
+    },
+    "Restart a task": {
+      "command": "/restart",
+      "args": [
+        {
+          "TYPE": "input text-windowsapp",
+          "en": "Task (app.exe)",
+          "fr": "Tache (app.exe)"
+        }
+      ],
+      "name": {
+        "en": "Restart a task",
+        "fr": "Redémarrer une application"
+      },
+      "style": {
+        "name": {
+          "en": "Restart task",
+          "fr": "Redémarrer l'application"
+        }
+      }
+    },
+    "Execute python code": {
+      "command": "/exec",
+      "args": [
+        {
+          "TYPE": "input longtext",
+          "en": "Python code",
+          "fr": "Code Python"
+        }
+      ],
+      "name": {
+        "en": "Execute python code",
+        "fr": "Exécuter du code python"
+      },
+      "description": {
+        "en": "Execute python code from the webdeck program",
+        "fr": "Exécute du code python depuis le programme du webdeck"
+      },
+      "style": {
+        "image": "execpython.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Execute python code",
+          "fr": "Exécuter le code python"
+        }
+      }
+    },
+    "Execute batch code": {
+      "command": "/batch",
+      "args": [
+        {
+          "TYPE": "input longtext",
+          "en": "Batch code",
+          "fr": "Code batch"
+        }
+      ],
+      "name": {
+        "en": "Execute batch code",
+        "fr": "Exécuter du batch"
+      },
+      "description": {
+        "en": "Execute batch from the webdeck program",
+        "fr": "Exécute du batch depuis le programme du webdeck"
+      },
+      "style": {
+        "name": {
+          "en": "Execute batch code",
+          "fr": "Exécuter le code batch"
+        }
+      }
+    }
+  },
+  "Text": {
+    "Press a key": {
+      "command": "/key",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Key"
+        }
+      ],
+      "name": {
+        "en": "Keyboard key",
+        "fr": "Touche du clavier"
+      },
+      "style": {
+        "image": "key.png",
+        "image_size": "75%",
+        "name": {
+          "en": "Press key",
+          "fr": "Presser la touche"
+        }
+      }
+    },
+    "Write text": {
+      "command": "/write",
+      "args": [
+        {
+          "TYPE": "input longtext",
+          "en": "Text"
+        }
+      ],
+      "name": {
+        "en": "Text",
+        "fr": "Texte"
+      },
+      "description": {
+        "en": "Write text instantly",
+        "fr": "Écrire du texte instantanément"
+      },
+      "style": {
+        "image": "write.png",
+        "image_size": "75%",
+        "name": {
+          "en": "Write text",
+          "fr": "Écrire le texte"
+        }
+      }
+    },
+    "Write text and press Enter": {
+      "command": "/writeandsend",
+      "args": [
+        {
+          "TYPE": "input longtext",
+          "en": "Text"
+        }
+      ],
+      "name": {
+        "en": "Write text and press Enter",
+        "fr": "Écrit et envoie"
+      },
+      "description": {
+        "en": "Write text instantly and press Enter",
+        "fr": "Écrit du texte instantanément et presse Entrée"
+      },
+      "style": {
+        "image": "write.png",
+        "image_size": "75%",
+        "name": {
+          "en": "Write text (then enter)",
+          "fr": "Écrire le texte (et envoyer)"
+        }
+      }
+    },
+    "Speech recognition": {
+      "command": "/speechrecognition",
+      "args": [],
+      "name": {
+        "en": "Speech recognition",
+        "fr": "Reconnaissance vocale"
+      },
+      "description": {
+        "en": "Activate Windows speech recognition to write while speaking",
+        "fr": "Active la reconnaissance vocale de Windows pour écrire en parlant"
+      },
+      "style": {
+        "image": "speech-recognition.png",
+        "image_size": "55%",
+        "name": {
+          "en": "Speech recognition",
+          "fr": "Reconnaissance vocale"
+        }
+      }
+    },
+    "Copy": {
+      "command": "/copy",
+      "args": [
+        {
+          "TYPE": "choice",
+          "en": "Option",
+          "fr": "Option",
+          "options": [
+            {
+              "TYPE": "NONE",
+              "en": "Copy (ctrl+c)",
+              "fr": "Copier (ctrl+c)"
+            },
+            {
+              "TYPE": "input text",
+              "en": "Copy text in the clipboard",
+              "fr": "Copie le texte voulu dans le presse-papier"
+            }
+          ]
+        }
+      ],
+      "name": {
+        "en": "Copy",
+        "fr": "Copier"
+      },
+      "style": {
+        "image": "copy.png",
+        "image_size": "100%",
+        "name": {
+          "en": "Copy",
+          "fr": "Copier"
+        }
+      }
+    },
+    "Paste": {
+      "command": "/paste",
+      "args": [
+        {
+          "TYPE": "choice",
+          "en": "Option",
+          "fr": "Option",
+          "options": [
+            {
+              "TYPE": "NONE",
+              "en": "Paste (ctrl+v)",
+              "fr": "Coller (ctrl+v)"
+            },
+            {
+              "TYPE": "input text",
+              "en": "Paste text",
+              "fr": "Colle le texte voulu"
+            }
+          ]
+        }
+      ],
+      "name": {
+        "en": "Paste",
+        "fr": "Coller"
+      },
+      "style": {
+        "image": "paste.png",
+        "image_size": "75%",
+        "name": {
+          "en": "Paste",
+          "fr": "Coller"
+        }
+      }
+    },
+    "Cut (ctrl+x)": {
+      "command": "/cut",
+      "args": [],
+      "name": {
+        "en": "Cut (ctrl+x)",
+        "fr": "Couper (ctrl+x)"
+      },
+      "style": {
+        "image": "cut.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Cut",
+          "fr": "Couper"
+        }
+      }
+    },
+    "Open clipboard": {
+      "command": "/clipboard",
+      "args": [],
+      "name": {
+        "en": "Open clipboard",
+        "fr": "Ouvrir le presse-papier"
+      },
+      "style": {
+        "image": "clipboard.png",
+        "image_size": "75%",
+        "name": {
+          "en": "Clipboard",
+          "fr": "Presse-papier"
+        }
+      }
+    },
+    "Clear clipboard": {
+      "command": "/clearclipboard",
+      "args": [],
+      "name": {
+        "en": "Clear clipboard",
+        "fr": "Supprimer le presse-papier"
+      },
+      "description": {
+        "en": "",
+        "fr": "Supprime l'historique presse-papier"
+      },
+      "style": {
+        "image": "clipboard-clear.png",
+        "image_size": "75%",
+        "name": {
+          "en": "Clear clipboard",
+          "fr": "Supprime tout le presse-papier"
+        }
+      }
+    }
+  },
+  "Spotify": {
+    "Volume (ONLY WITH SPOTIFY PREMIUM)": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "Spotify volume control",
+        "fr": "Volume de spotify"
+      },
+      "description": {
+        "en": "Manage spotify volume (ONLY WITH SPOTIFY PREMIUM)",
+        "fr": "Gérer le volume de spotify (SEULEMENT AVEC SPOTIFY PRENIUM)"
+      },
+      "commands": [
+        {
+          "command": "/spotify volume +",
+          "args": [
+            {
+              "TYPE": "NONE",
+              "en": "Increase by 1",
+              "fr": "Augmente de 1"
+            },
+            {
+              "TYPE": "input number['1','100']",
+              "en": "Increase by ...",
+              "fr": "Augmente de ..."
+            }
+          ],
+          "name": {
+            "en": "Increase volume",
+            "fr": "Augmenter le volume"
+          },
+          "description": {
+            "en": "Increase spotiy volume",
+            "fr": "Augmente le volume de spotify"
+          },
+          "style": {
+            "image": "volume-up.svg",
+            "image_size": "75%",
+            "name": {
+              "en": "Increase volume",
+              "fr": "Augmenter le volume"
+            }
+          }
+        },
+        {
+          "command": "/spotify volume -",
+          "args": [
+            {
+              "TYPE": "NONE",
+              "en": "Decrease by 1",
+              "fr": "Diminue de 1"
+            },
+            {
+              "TYPE": "input number['1','100']",
+              "en": "Decrease by ...",
+              "fr": "Diminue de ..."
+            }
+          ],
+          "name": {
+            "en": "Decrease volume",
+            "fr": "Diminuer le volume"
+          },
+          "description": {
+            "en": "Decrease spotify volume",
+            "fr": "Baisse le volume de spotify"
+          },
+          "style": {
+            "image": "volume-down.svg",
+            "image_size": "75%",
+            "name": {
+              "en": "Decrease volume",
+              "fr": "Diminuer le volume"
+            }
+          }
+        },
+        {
+          "command": "/spotify volume set",
+          "args": [
+            {
+              "TYPE": "input number['0','100']",
+              "en": "Set to ...",
+              "fr": "Mettre à ..."
+            }
+          ],
+          "name": {
+            "en": "Set volume",
+            "fr": "Modifier le volume"
+          },
+          "description": {
+            "en": "Set spotify volume",
+            "fr": "Modifie le volume de spotify"
+          },
+          "style": {
+            "image": "sound.png",
+            "image_size": "75%",
+            "name": {
+              "en": "Set volume",
+              "fr": "Modifier le volume"
+            }
+          }
+        },
+        {
+          "command": "/soundcontrol mute",
+          "args": [],
+          "name": {
+            "en": "Mute the volume",
+            "fr": "Couper le volume"
+          },
+          "description": {
+            "en": "Mute computer volume",
+            "fr": "Coupe le volume du système"
+          },
+          "style": {
+            "image": "volume-mute.svg",
+            "image_size": "75%",
+            "name": {
+              "en": "Mute the volume",
+              "fr": "Couper le volume"
+            }
+          }
+        }
+      ]
+    },
+    "Like the played song": {
+      "command": "/spotify likesong",
+      "args": [],
+      "name": {
+        "en": "Add song to favorites",
+        "fr": "Ajouter le son en favoris"
+      },
+      "description": {
+        "en": "Add the sound currently playing on spotify to favorites",
+        "fr": "Mettre le son actuellement joué sur spotify en favoris"
+      }
+    },
+    "Save the played album": {
+      "command": "/spotify likealbum",
+      "args": [],
+      "name": {
+        "en": "Save the played album",
+        "fr": "Ajouter l'album en favoris"
+      },
+      "description": {
+        "en": "Add the currently playing album on spotify to favorites",
+        "fr": "Mettre l'album actuellement joué dans les albums favoris"
+      }
+    },
+    "Add current song to a playlist (removes if already)": {
+      "command": "/spotify add_or_remove",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Playlist name",
+          "fr": "Nom de la playlist"
+        }
+      ],
+      "name": {
+        "en": "Add or remove from playlist",
+        "fr": "Ajoute ou retire le son dans la playlist"
+      },
+      "description": {
+        "en": "Add current song to a playlist (removes if already)",
+        "fr": "Ajouter le son actuellement joué à la playlist et le retire si il y est déjà"
+      },
+      "style": {
+        "image": "add-to-playlist5.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Add or remove",
+          "fr": "Ajouter dans la playlist"
+        }
+      }
+    },
+    "Add current song to a playlist (do not remove if already)": {
+      "command": "/spotify add_to_playlist",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Playlist name",
+          "fr": "Nom de la playlist"
+        }
+      ],
+      "name": {
+        "en": "Add to playlist",
+        "fr": "Ajouter à la playlist"
+      },
+      "description": {
+        "en": "Add current song to the specified playlist",
+        "fr": "Ajouter le son actuellement joué à la playlist"
+      },
+      "style": {
+        "image": "add-to-playlist5.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Add to playlist",
+          "fr": "Ajouter dans la playlist"
+        }
+      }
+    },
+    "Remove current song from a playlist": {
+      "command": "/spotify remove_from_playlist",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Playlist name",
+          "fr": "Nom de la playlist"
+        }
+      ],
+      "name": {
+        "en": "Remove from playlist",
+        "fr": "Retirer de la playlist"
+      },
+      "description": {
+        "en": "Removes the current song from the specified playlist",
+        "fr": "Retire le son actuellement joué d'une playlist"
+      },
+      "style": {
+        "image": "remove-from-playlist.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Remove from playlist",
+          "fr": "Retirer de la playlist"
+        }
+      }
+    },
+    "Follow current played artist (unfollow if already)": {
+      "command": "/spotify follow_or_unfollow_artist",
+      "args": [],
+      "name": {
+        "en": "Follow or unfollow artist",
+        "fr": "Suivre ou ne plus suivre l'artiste"
+      },
+      "description": {
+        "en": "Follow or unfollow the artist of the currently played song",
+        "fr": "Suivre ou ne plus suivre l'artiste du son actuellement joué"
+      }
+    },
+    "Follow current played artist (doesn't unfollow if already)": {
+      "command": "/spotify follow_artist",
+      "args": [],
+      "name": {
+        "en": "Follow artist",
+        "fr": "Suivre l'artiste"
+      },
+      "description": {
+        "en": "Follow the artist of the currently played song",
+        "fr": "Suivre l'artiste du son actuellement joué"
+      }
+    },
+    "Unfollow current played artist": {
+      "command": "/spotify unfollow_artist",
+      "args": [],
+      "name": {
+        "en": "Unfollow artist",
+        "fr": "Ne plus suivre l'artiste"
+      },
+      "description": {
+        "en": "Unfollow the artist of the currently played song",
+        "fr": "Ne plus suivre l'artiste du son actuellement joué"
+      }
+    }
+  }
+}
