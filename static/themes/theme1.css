@@ -394,6 +394,9 @@ form#config-form {
 .setting {
   margin-bottom: 15px;
   margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 #config-form > div.setting-category.settings > div.setting.spotify-api {
   margin-bottom: 25px;
@@ -861,6 +864,7 @@ div.setting > p {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  font-size: 16;
 }
 
 /* The switch - the box around the slider */
