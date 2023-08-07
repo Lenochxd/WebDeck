@@ -1,20 +1,22 @@
-# import base64
+# Standard library imports
+import time
+import asyncio
+import subprocess
+import shutil
+import copy
+import re
+import sys
+import random
+import json
+import urllib.request
+import zipfile
+import os
+
+# Third-party library imports
 import requests
 import spotipy
 import spotipy.util as util
 from spotipy.oauth2 import SpotifyOAuth
-
-import time
-import numpy as np
-import bisect
-
-from ctypes import cast, POINTER, wintypes, WinDLL, Structure, c_char
-import ctypes
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
-import comtypes
-import math
-
 from deepdiff import DeepDiff
 from uuid import UUID
 import pygetwindow as gw
@@ -26,22 +28,10 @@ import pyautogui as keyboard
 import keyboard as keyboard2
 import webcolors
 import pyaudio
-from asyncio import sleep
-import asyncio
-import subprocess
-import shutil
-from shutil import copyfile
-import copy #deepcopy
-import pyperclip
-import re
-import sys
-import random
 from flask import Flask, request, jsonify, render_template, redirect, Blueprint
 from flask_socketio import SocketIO, emit
 from flask_minify import Minify
-import json
-import urllib.request
-import zipfile
+import pyperclip
 import win32api
 import win32con
 import win32gui
@@ -49,9 +39,18 @@ import win32com.client
 from win10toast import ToastNotifier
 import sounddevice as sd
 import psutil
-from psutil import *
 import GPUtil
-import os
+
+# Numerical and scientific libraries
+import numpy as np
+import bisect
+from ctypes import cast, POINTER, wintypes, WinDLL, Structure, c_char
+import ctypes
+from comtypes import CLSCTX_ALL
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
+import comtypes
+import math
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 os.add_dll_directory(os.getcwd())
 
@@ -354,7 +353,7 @@ with open('colors.json', 'r', encoding="utf-8") as f:
     try:
         data = json.load(f)
     except Exception:
-        copyfile(f"static/files/colorsbcp.json", "colors.json")
+        copyfile("static/files/colorsbcp.json", "colors.json")
         with open('colors.json', 'r', encoding="utf-8") as f:
             data = json.load(f)
 
@@ -497,13 +496,12 @@ def find_color(hex_code, colors):
 def get_color_distance(hex_code1, hex_code2):
     rgb1 = webcolors.hex_to_rgb(hex_code1)
     rgb2 = webcolors.hex_to_rgb(hex_code2)
-    return sum([(a - b) ** 2 for a, b in zip(rgb1, rgb2)])
+    return sum((a - b) ** 2 for a, b in zip(rgb1, rgb2))
 
 
 def translate(word, target_language):
     # Séparer les mots par des espaces avant chaque majuscule
-    word = ''.join([' '+i if i.isupper() else i for i in word]).strip()
-
+    word = ''.join([f' {i}' if i.isupper() else i for i in word]).strip()
     if word == "Discord" or target_language.upper() == "EN":
         result = word
     else:
@@ -595,14 +593,6 @@ def set_speakers_by_name(speakers_name):
 #                      stdout=subprocess.PIPE,
 #                      stderr=subprocess.STDOUT)
 # stdout_data, stderr_data = p2.communicate(input=bytes(f"aaaaaaaaaaaaaaa", 'utf-8'))
-
-@socketio.on('connect')
-def test_connect():
-    print('Client connected')
-
-@socketio.event
-def send(data):
-    socketio.emit('json_data', data)
 
 
 def has_at_least_5_minutes_difference(timestamp1, timestamp2):
@@ -974,27 +964,30 @@ def create_folder():
         print(folders_to_create)    
         return jsonify({'success': False})
     
-        
+    
 
-@app.route('/send-data', methods=['POST'])
-def send_data():
+@socketio.event
+def send(data):
+    socketio.emit('json_data', data)
+    
+@socketio.on('connect')
+def socketio_connect():
+    print('Client connected')
+
+#@app.route('/send-data', methods=['POST'])
+@socketio.on('message_from_socket')
+def send_data(message):
 
     try:
         os.remove('temp/mic-temp')
     except:
         pass
 
-    data = request.get_json()
-    # Do something with the name and age values received from the JavaScript client
-    response_data = {"status": "success"}
-    # print(response_data) # {'status': 'success'}
-    # print(jsonify(response_data)) # <Response 21 bytes [200 OK]>
-    print2(data)
-
-    message = data["message"]
-    # Print the received message
-    if not message.replace(" ", "").replace("\n", "").replace("\r", "") == "":
-        print2(message)
+    # data = request.get_json()
+    # message = data["message"]
+    
+    if not message.strip().replace("\n", "").replace("\r", "") == "":
+        print('command recieved: ' + message)
     if message.startswith("/debug-send"):
         data = {'message': 'Hello, world!'}
         data = json.loads(message.replace("'",'"').replace("/debug-send",""))
@@ -1019,11 +1012,7 @@ def send_data():
             # si il est stoque directement dans static/files/sounds et pas dans C:\example
             sound_file = f"static/files/sounds/{sound_file}"
 
-        print2("ok0")
-
-        print2("ok1")
         if config['settings']["ear-soundboard"].lower() == "true":
-            print2("ok2")
             if "v=" in message:
                 sound_file = re.search(
                     r'/playsound (.+?) v=', message).group(1)
@@ -1611,7 +1600,7 @@ def send_data():
         keyboard.hotkey('win', 'v')
 
 
-    return jsonify(response_data)
+    return jsonify({"status": "success"})
 
 
 async def playsound(sound_file, sound_volume):
