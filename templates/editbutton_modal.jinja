@@ -293,20 +293,21 @@
               
               function buttonCommand_{{edit_modal_ID}}(editModalID_{{edit_modal_ID}}, command_{{edit_modal_ID}}, event) {
                   if (editModalID_{{edit_modal_ID}} === "NONE") {
-                      var commandString_{{edit_modal_ID}} = command_{{edit_modal_ID}};
+                    var commandString_{{edit_modal_ID}} = command_{{edit_modal_ID}};
                   } else {
-                      event.preventDefault(); // Prevent the form from submitting
+                    event.preventDefault(); // Prevent the form from submitting
           
+                    try {
                       var form_{{edit_modal_ID}} = document.querySelector('form[edit_modal_ID="' + editModalID_{{edit_modal_ID}} + '"]'); // Get the form element with the specified edit_modal_ID
                       var inputs_{{edit_modal_ID}} = form_{{edit_modal_ID}}.querySelectorAll('input, select, textarea'); // Get all input, select, and textarea elements within the form
-          
+            
                       var values_{{edit_modal_ID}} = Array.from(inputs_{{edit_modal_ID}}).filter(function(input_{{edit_modal_ID}}) {
                           // Exclude inputs with "display:none" in parent's style
                           var parent_{{edit_modal_ID}} = input_{{edit_modal_ID}}.parentElement;
                           if (parent_{{edit_modal_ID}} && window.getComputedStyle(parent_{{edit_modal_ID}}).display === 'none') {
                               return false;
                           }
-          
+            
                           // Exclude inputs with "choice" class
                           if (input_{{edit_modal_ID}}.classList.contains('choice')) {
                               return false;
@@ -316,7 +317,7 @@
                           if (ancestorDivs_{{edit_modal_ID}}) {
                               return false;
                           }
-          
+            
                           return true;
                       }).map(function(input_{{edit_modal_ID}}) {
                           if (input_{{edit_modal_ID}}.tagName === 'SELECT') {
@@ -336,11 +337,14 @@
                       }).filter(function(value_{{edit_modal_ID}}) {
                           return value_{{edit_modal_ID}} !== ''; // Filter out empty values
                       });
-          
+            
                       var commandString_{{edit_modal_ID}} = command_{{edit_modal_ID}} + ' ' + values_{{edit_modal_ID}}.join(' '); // Concatenate the command and values
-          
+                      
                       // Reset the form if needed
                       // form_{{edit_modal_ID}}.reset();
+                    } catch (e) {
+                      var commandString_{{edit_modal_ID}} = '{{button_settings["message"]}}'
+                    }
                   }
           
           
@@ -348,57 +352,47 @@
           
                   console.log('buttonCommand received, from: edit');
 
-                  var location_Folder = "{{edit_modal_ID}}".replace('e','').split('X')[0];
-                  var location_Id = "{{edit_modal_ID}}".replace('e','').split('X')[1];
-                  var tempEditorConfig = {}; // Déclarer tempEditorConfig en dehors de la première promesse
+                  var final_button = {
+                    "location_Folder": "{{edit_modal_ID}}".replace('e','').split('X')[0],
+                    "location_Id": "{{edit_modal_ID}}".replace('e','').split('X')[1],
+                    "content": button_{{edit_modal_ID}}
+                  };
                   
-                  fetch('/get_config')
-                    .then(function(response) {
-                      if (response.ok) {
-                        return response.json();
-                      } else {
-                        throw new Error('Une erreur est survenue lors du chargement des paramètres.');
-                      }
-                    })
-                    .then(function(configData) {
-                      tempEditorConfig = configData;
-                      console.log(tempEditorConfig['front']['buttons'][location_Folder][location_Id]);
-                      tempEditorConfig['front']['buttons'][location_Folder][location_Id] = button_{{edit_modal_ID}}; 
-                      console.log(button_{{edit_modal_ID}});
-                      return fetch('/save_buttons_only', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(tempEditorConfig)
-                      });
-                    })
-                    .then(function(response) {
-                      if (response.ok) {
-                        return response.json();
-                      } else {
-                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                      }
-                    })
-                    .then(function(response) {
-                      if (response.success) {
-                        alert('Les paramètres ont été enregistrés avec succès.');
-                        location.reload();
-                      } else {
-                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                      }
-                    })
-                    .catch(function(error) {
-                      alert(error.message);
-                    });
+                  fetch('/save_single_button', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(final_button)
+                  })
+                  .then(function(response) {
+                    if (response.ok) {
+                      return response.json();
+                    } else {
+                      throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                  })
+                  .then(function(response) {
+                    if (response.success) {
+                      alert('Les paramètres ont été enregistrés avec succès.');
+                      location.reload();
+                    } else {
+                      throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    }
+                  })
+                  .catch(function(error) {
+                    alert(error.message);
+                  });
                   
                   console.log(button_{{edit_modal_ID}});
               }
               document.getElementById('{{edit_modal_ID}}_submit').addEventListener('click', function(event) {
-                  setTimeout(function() {
-                      buttonCommand_{{edit_modal_ID}}('{{ edit_modal_ID }}', '{{command_id}}', event);
-                  }, 1000);
+                setTimeout(function() {
+                  buttonCommand_{{edit_modal_ID}}('{{ edit_modal_ID }}', '{{command_id}}', event);
+                }, 1000);
               });
+
+                  
               
           </script>
           
