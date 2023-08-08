@@ -301,14 +301,14 @@
                     {% endif %}
                     
                     <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                        {# {% if imagelink.endswith('.svg') %}
-                          {{ open(imagelink).read().replace('<svg','<svg id="button-image_{{arg_modal_ID}}" style="width:' + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
-                        {% else %} #}
+                        {% if imagelink.endswith('.svg') %}
+                          {{ open(imagelink).read().replace('<svg','<svg id="button-image_' + arg_modal_ID + '" style="width:' + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
+                        {% else %}
                           <img id="button-image_{{arg_modal_ID}}" src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
                             width: {{ 112*(int(command_value['style']['image_size'].replace('%', '')) /100) + 3}}px;
                             {{fill}}"
                           >
-                        {# {% endif %} #}
+                        {% endif %}
                       
                     </button>
                   {% endif %}
@@ -392,6 +392,11 @@
                   // Mettre à jour la taille de l'image en fonction de la valeur du slider
                   var calculatedSize = 112 * (parsedValue / 100) + 3;
                   image_{{arg_modal_ID}}.style.width = calculatedSize + 'px';
+                  if (image_{{arg_modal_ID}}.tagName === 'svg') {
+                    image_{{arg_modal_ID}}.style.height = calculatedSize + 'px';
+                    image_{{arg_modal_ID}}.height = calculatedSize + 'px';
+                    image_{{arg_modal_ID}}.width = calculatedSize + 'px';
+                  }
               
                   // Mettre à jour la valeur du span pour l'affichage visuel
                   imageSizeValue_{{arg_modal_ID}}.value = parsedValue;
@@ -412,6 +417,11 @@
                       // Mettre à jour la taille de l'image en fonction de la valeur du slider
                       var calculatedSize = 112 * (parsedValue / 100) + 3;
                       image_{{arg_modal_ID}}.style.width = calculatedSize + 'px';
+                      if (image_{{arg_modal_ID}}.tagName === 'svg') {
+                        image_{{arg_modal_ID}}.style.height = calculatedSize + 'px';
+                        image_{{arg_modal_ID}}.height = calculatedSize + 'px';
+                        image_{{arg_modal_ID}}.width = calculatedSize + 'px';
+                      }
               
                       // Mettre à jour la valeur de taille dans l'objet "button"
                       button_{{arg_modal_ID}}.image_size = `${parsedValue}%`;
