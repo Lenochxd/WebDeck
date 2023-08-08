@@ -283,27 +283,27 @@
                   </p>
                 {% endif %}
                 
-
-                {% set button_command = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
-                {% set button_settings = config["front"]["buttons"][folder_id][button_id] %}
-
-                {% set command_name = None %}
-                {% set command_value = None %}
-                
-                {% for category, commands_name in commands.items() if command_value == None %}
-                  {% for command_name_, command in commands_name.items() if command_value == None %}
-                    {% if command['command'] %}
-                      {% if button_command.lower().split()[0].strip() == command['command'].lower().strip() %}
-                        {% set command_name = command_name_ %}
-                        {% set command_value = command %}
-                        {% include 'editbutton_modal.jinja' %}
-                      {% endif %}
-                    {% endif %}
-                  {% endfor %}
-                {% endfor %}
-
-
               </form>
+
+              {% set button_command = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
+              {% set button_settings = config["front"]["buttons"][folder_id][button_id] %}
+
+              {% for category, commands_name in commands.items() if command_value == None %}
+                {% for command_name_, command in commands_name.items() if command_value == None %}
+                  {% if command['command'] %}
+                    {% if button_command.lower().split()[0].strip() == command['command'].lower().strip() %}
+                      {% set command_name = command_name_ %}
+                      {% set command_value = command %}
+                      {% include 'editbutton_modal.jinja' %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+
+              {% if command_value is not defined %}
+                {% set command_value = button_settings %}
+                {% include 'editbutton_modal.jinja' %}
+              {% endif %}
             
               
             {% endif %}
@@ -352,14 +352,14 @@
                   <ul>
                     <li>
                       <label for="spotify-USERNAME">Username</label>
-                      <input class="{{black_theme}}" type="text" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%}value="{{config['settings']['spotify-api']['USERNAME']}}"{% endif %}>
+                      <input class="spotify-setting {{black_theme}}" type="text" class="spotify-setting" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%}value="{{config['settings']['spotify-api']['USERNAME']}}"{% endif %}>
                       
                       <label for="spotify-CLIENT_ID">Client ID</label>
-                      <input class="{{black_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify-api.CLIENT_ID" {% if not config['settings']['spotify-api']['CLIENT_ID'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_ID']}}"{% endif %}>
+                      <input class="spotify-setting {{black_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify-api.CLIENT_ID" {% if not config['settings']['spotify-api']['CLIENT_ID'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_ID']}}"{% endif %}>
                       
                       <label for="spotify-CLIENT_SECRET">Client Secret</label>
                       <div class="password-container">
-                        <input class="{{black_theme}}" type="password" id="spotify-CLIENT_SECRET" name="settings.spotify-api.CLIENT_SECRET" {% if not config['settings']['spotify-api']['CLIENT_SECRET'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_SECRET']}}"{% endif %}>
+                        <input class="spotify-setting {{black_theme}}" type="password"id="spotify-CLIENT_SECRET" name="settings.spotify-api.CLIENT_SECRET" {% if not config['settings']['spotify-api']['CLIENT_SECRET'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_SECRET']}}"{% endif %}>
                         <span class="show-password" onclick="togglePasswordVisibility()"></span>
                       </div>
                     </li>
@@ -710,51 +710,42 @@
 
 
       function auto_resize() {
-        folder_{{biggest_folder}}();
+        folder_{{biggest_folder}}();  // Appel initial à la fonction folder_{{biggest_folder}}
         const div = document.querySelector('#folder-{{biggest_folder}}');
         let currentZoom = 1;
 
-        currentZoom = currentZoom - 3;
-        let larg = 100 / currentZoom;
-        let long = 100 / currentZoom;
-        document.body.style.transformOrigin = "left top";
-        document.body.style.transform = "scale(" + currentZoom + ")";
-        document.body.style.width = `${larg}%`;
-        document.body.style.height = `${long}%`;
+        function applyZoom(newZoom) {
+          currentZoom = newZoom;
+          const scalePercentage = 100 / currentZoom;
+          document.body.style.transformOrigin = "left top";
+          document.body.style.transform = `scale(${currentZoom})`;
+          document.body.style.width = `${scalePercentage}%`;
+          document.body.style.height = `${scalePercentage}%`;
+        }
 
         while (true) {
           const rect = div.getBoundingClientRect();
           if (!(rect.right > window.innerWidth || rect.bottom > window.innerHeight)) {
-            //console.log('La div ne dépasse pas de l\'écran à droite ou en bas !');
-            currentZoom = currentZoom + 0.1;
-            let larg = 100 / currentZoom;
-            let long = 100 / currentZoom;
-            document.body.style.transformOrigin = "left top";
-            document.body.style.transform = "scale(" + currentZoom + ")";
-            document.body.style.width = `${larg}%`; //pour etre sur que ça s'adapte à la taille de l'écran
-            document.body.style.height = `${long}%`;
+            currentZoom += 0.1;
+            applyZoom(currentZoom);
           } else {
-              folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+            folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
             break;
           }
         }
+
         while (true) {
           const rect = div.getBoundingClientRect();
           if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
-            //console.log('La div dépasse de l\'écran à droite ou en bas !');
-            currentZoom = currentZoom - 0.05;
-            let larg = 100 / currentZoom;
-            let long = 100 / currentZoom;
-            document.body.style.transformOrigin = "left top"; //tu peux changer center top mais après ça marche moins
-            document.body.style.transform = "scale(" + currentZoom + ")";
-            document.body.style.width = `${larg}%`;
-            document.body.style.height = `${long}%`;
+            currentZoom -= 0.05;
+            applyZoom(currentZoom);
           } else {
-              folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+            folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
             break;
           }
         }
       }
+
 
       window.addEventListener('load', function() {
         folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
