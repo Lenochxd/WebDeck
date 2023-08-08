@@ -469,6 +469,10 @@ textarea.black-theme {
   color: white!important;
   opacity: 1;
 }
+input[type="text"].spotify-setting,
+input[type="password"].spotify-setting {
+  width: 400px;
+}
 
 .password-container {
   position: relative;
@@ -901,7 +905,7 @@ div.setting > p {
   height: 11px;
   width: 11px;
   left: 6px;
-  bottom: 4.5px;
+  bottom: 4px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .3s;
