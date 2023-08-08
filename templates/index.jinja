@@ -449,6 +449,14 @@
                     <option value="pygame" {% if config['settings']['mp3_method'].lower() == 'pygame' %}selected{% endif %}>Pygame</option>
                   </select>
                 </div>
+                
+                <div class="setting data-transfer-method">
+                  <label for="data-transfer-method">Data transfer method</label>
+                  <select id="data-transfer-method" name="settings.data-transfer-method">
+                    <option value="http" {% if config['settings']['data-transfer-method'].lower() == 'http' %}selected{% endif %}>http</option>
+                    <option value="socket" {% if config['settings']['data-transfer-method'].lower() == 'socket' %}selected{% endif %}>socket</option>
+                  </select>
+                </div>
 
                 <div class="setting show-console">
                   <p>Show console</p>
@@ -627,9 +635,10 @@
     </div>
 
 
-
-    <script src="static/js/socketio.js"></script>
-    {# <script src="https://cdn.socket.io/4.3.2/socket.io.esm.min.js"></script> #}
+    {% if config['settings']['data-transfer-method'] == 'socket' %}
+      <script src="static/js/socketio.js"></script>
+      {# <script src="https://cdn.socket.io/4.3.2/socket.io.esm.min.js"></script> #}
+    {% endif %}
 
     <script type="text/javascript">
       const biggest_folder = "{{ biggest_folder }}";
@@ -1538,16 +1547,18 @@
           modal.style.display = 'block';
         }
 
-        // SOCKET CONNECTION
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-      
-        socket.on('connect', function() {
-          console.log('Connected');
-        });
-      
-        socket.on('json_data', function(data) {
-          console.log(data.message);
-        });
+        {% if config['settings']['data-transfer-method'] == 'socket' %}
+          // SOCKET CONNECTION
+          var socket = io.connect('http://' + document.domain + ':' + location.port);
+        
+          socket.on('connect', function() {
+            console.log('Connected');
+          });
+        
+          socket.on('json_data', function(data) {
+            console.log(data.message);
+          });
+        {% endif %}
 
         var forms = document.querySelectorAll('form');
         forms.forEach(form => {
@@ -1634,17 +1645,20 @@
             } else {
               const message = messageElement.value;
               if (!message.startsWith("/usage") && !message.startsWith("/reload") && !message.startsWith("/folder")) {
-                // fetch('/send-data', {
-                //   method: 'POST',
-                //   headers: {
-                //     'Content-Type': 'application/json'
-                //   },
-                //   body: JSON.stringify({ message: message })
-                // })
-                //   .then(response => response.json())
-                //   .then(data => console.log(data))
-                //   .catch(error => console.error(error));
-                socket.emit('message_from_socket', message);
+                {% if config['settings']['data-transfer-method'] == 'socket' %}
+                  socket.emit('message_from_socket', message);
+                {% else %}
+                  fetch('/send-data', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                  })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error(error));
+                {% endif %}
               } else if (message.startsWith("/reload") && swapMode !== 1) {
                 console.log('reloading...');
                 location.reload();
