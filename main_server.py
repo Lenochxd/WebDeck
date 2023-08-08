@@ -830,9 +830,9 @@ def save_single_button():
         config = json.load(f)
     
     button_folderName = list(config['front']['buttons'])[button_folder]
-    print('FETCH /save_single_button -> before :' + config['front']['buttons'][button_folderName][button_index])
+    print('FETCH /save_single_button -> before :' + str(config['front']['buttons'][button_folderName][button_index]))
     config['front']['buttons'][button_folderName][button_index] = button_content
-    print('FETCH /save_single_button -> after  :' + config['front']['buttons'][button_folderName][button_index])
+    print('FETCH /save_single_button -> after  :' + str(config['front']['buttons'][button_folderName][button_index]))
     
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
@@ -965,26 +965,9 @@ def create_folder():
         return jsonify({'success': False})
     
     
-
-@socketio.event
-def send(data):
-    socketio.emit('json_data', data)
-    
-@socketio.on('connect')
-def socketio_connect():
-    print('Client connected')
-
-#@app.route('/send-data', methods=['POST'])
-@socketio.on('message_from_socket')
-def send_data(message):
-
-    try:
-        os.remove('temp/mic-temp')
-    except:
-        pass
-
-    # data = request.get_json()
-    # message = data["message"]
+def send_data(message=None):
+    try: os.remove('temp/mic-temp')
+    except: pass
     
     if not message.strip().replace("\n", "").replace("\r", "") == "":
         print('command recieved: ' + message)
@@ -1601,6 +1584,24 @@ def send_data(message):
 
 
     return jsonify({"status": "success"})
+
+    
+@socketio.event
+def send(data):
+    socketio.emit('json_data', data)
+    
+@socketio.on('connect')
+def socketio_connect():
+    print('Client connected')
+    
+    
+@socketio.on('message_from_socket')
+def send_data_socketio(message):
+    return send_data(message=message)
+
+@app.route('/send-data', methods=['POST'])
+def send_data_route():
+    return send_data(message=request.get_json()["message"])
 
 
 async def playsound(sound_file, sound_volume):
