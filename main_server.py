@@ -82,167 +82,155 @@ def print2(text):
     print(text)
     
     
-def update_gridsize(config):
+# resize grid ||| start
+
+def create_matrix(config):
+    matrix = []
+    for folder_count, (folder_name, folder_content) in enumerate(config["front"]["buttons"].items()):
+        row_count = 0
+        matrix.append([])
+        for count, button in enumerate(folder_content, start=1):
+            if row_count >= len(matrix[folder_count]):
+                matrix[folder_count].append([])
+            matrix[folder_count][row_count].append(button)
+            if count % int(config['front']['width']) == 0:
+                row_count += 1
+    matrix_height = len(matrix)
+    matrix_width = len(matrix[0])
+    return matrix
+
+def unmatrix(matrix):
     
-    # create matrix to calculate the height
-    def create_matrix(config):
-        matrix = []
-        for folder_name, folder_content in config["front"]["buttons"].items():
-            row_count = 0
-            for count, button in enumerate(folder_content, start=1):
-                if row_count >= len(matrix):
-                    matrix.append([])
-                matrix[row_count].append(button)
-                calc_height = int(config['front']['width'])
-                if count % calc_height == 0:
-                    row_count += 1
-            break
-        return len(matrix), len(matrix[0])
+    for folder_count, folder in enumerate(matrix):
+        folderName = list(config['front']['buttons'])[folder_count]
+        config["front"]["buttons"][folderName] = []
+        for row in folder:
+            for button in row:
+                config["front"]["buttons"][folderName].append(button)
+            
+            
+    return config
 
-    oldheight, oldwidth = create_matrix(config)
+def update_gridsize(config, new_height, new_width):
+    new_height, new_width = int(new_height), int(new_width)
+    matrix = create_matrix(config)
+    old_height, old_width = int(config['front']['height']), int(config['front']['width'])
+
+    # if height has changed
+    if old_height != new_height:
 
 
-    if oldheight != int(config['front']['height']):
-        if oldheight < int(config['front']['height']):
-            difference = int(config['front']['height']) - oldheight
-            for _ in range(difference):
+        # if the height has increased
+        if new_height > old_height:
+            difference = new_height - old_height
+            for count, _ in enumerate(range(difference), start=1):
                 for folder_name, folder_content in config["front"]["buttons"].items():
-                    for _ in range(int(config['front']['width'])):
+                    for _ in range(old_width):
+                        # if count % 2 == 0:
+                        #     folder_content.insert(0, {"VOID": "VOID"})
+                        # else:
                         folder_content.append({"VOID": "VOID"})
+            matrix = create_matrix(config)
 
-        else:
-            print('(pas) j, la hauteur a diminué :/')
 
-            difference = oldheight - int(config['front']['height'])
-            print(f'difference: {difference}')
-            print(f'oldheight: {oldheight}')
-            print(f"newheight: {config['front']['height']}")
-            
-            def remove_height():
-                remove_success = True
-                reversed_matrix = []
-                if remove_success:
-                    for folder_name, folder_content in config["front"]["buttons"].items():
-                        before_config = config["front"]["buttons"].copy()  # Copier la configuration actuelle
-            
-                        def unmatrix(matrix):
-                            new_folder_content = []
-                            for row in matrix:
-                                for button in row:
-                                    new_folder_content.append(button)
-                            return new_folder_content
-            
-                        matrix = []
-                        row_count = 0
-                        for count, button in enumerate(folder_content, start=1):
-                            if row_count >= len(matrix):
-                                matrix.append([])
-                            matrix[row_count].append(button)
-                            calc_height = oldwidth + diff_count
-                            if count % calc_height == 0:
-                                row_count += 1
-                        print(matrix)
-                        new_height = len(matrix)
-            
-                        success = False
-                        for row in reversed(matrix):
-                            if all(element == {"VOID": "VOID"} for element in row):
-                                matrix.remove(row)
-                                success = True
-                                break
-            
-                        if success:
-                            folder_content = unmatrix(matrix)
-                        else:
-                            reversed_matrix = []
-                            for col in range(len(matrix[0])):
-                                reversed_matrix.append([])
-                                for row in range(len(matrix)):
-                                    try:
-                                        reversed_matrix[col].append(matrix[row][col])
-                                    except:
-                                        pass
-                            print(reversed_matrix)
-            
-                            success = True
-                            for col in reversed_matrix:
-                                if success:
-                                    try:
-                                        empty_index = len(col) - col[::-1].index({"VOID": "VOID"}) - 1
-                                        for i in range(empty_index, len(col) - 1):
-                                            col[i] = col[i + 1]
-                                    except ValueError:
-                                        success = False
-                                        print("Impossible de replacer le bouton.")
-            
-                            if success:
-                                for col in reversed_matrix:
-                                    col.pop()
-            
-                                result_matrix = []
-                                for col in range(len(reversed_matrix[0])):
-                                    result_matrix.append([])
-                                    for row in range(len(reversed_matrix)):
-                                        try:
-                                            result_matrix[col].append(reversed_matrix[row][col])
-                                        except:
-                                            pass
-                                matrix = result_matrix
-                                del result_matrix
-                                folder_content = unmatrix(matrix)
+        # if the height has decreased
+        if old_height > new_height:
+            difference = old_height - new_height
+            print('height decreased')
+            for count, _ in enumerate(range(difference), start=1):
+                for folder_count, folder in enumerate(matrix):
+                    for row_count, row in enumerate(reversed(folder)):
+                        if all(element == {"VOID": "VOID"} for element in row):
+                            folder.pop(-row_count-1)
+                            break
+                    else:
+                        for col_count in range(len(folder[0])):
+                            for row_count, row in enumerate(reversed(folder), start=1):
+                                if folder[-row_count][col_count] == {"VOID": "VOID"}:
+                                    num = row_count
+                                    while num > 1:
+                                        folder[-num][col_count] = folder[-num+1][col_count]
+                                        num -= 1
+                                    folder[-num][col_count] = {"DEL": "DEL"}
+                                    break
                             else:
-                                remove_success = False
-                                config["front"]["buttons"] = before_config  # Restaurer la configuration précédente
-            
-                        if remove_success:
-                            config["front"]["buttons"][folder_name] = folder_content
-                        else:
-                            config["front"]["buttons"][folder_name] = before_config[folder_name]
-            
-                        del matrix
-                        try:
-                            del reversed_matrix
-                        except:
-                            pass
-            
-            for diff_count, _ in enumerate(range(difference)):
-                remove_height()
-            
-
-            # after_height, after_width = create_matrix(config)
-            # while after_height > int(config['front']['height']):
-            #     print(f'After height: {after_height}')
-            #     print(f"Before height: {config['front']['height']}")
-            #     remove_height()
-            #     after_height, after_width = create_matrix(config)
+                                VarKiNe_respect_poLesReglesDe_Convention = False
+                                for colb_count in range(len(folder[0])):
+                                    for rowb_count in range(len(folder)):
+                                        if folder[rowb_count][colb_count] == {"VOID": "VOID"}:
+                                            folder[rowb_count][colb_count] = folder[-1][col_count]
+                                            VarKiNe_respect_poLesReglesDe_Convention = True
+                                            break
+                                    if VarKiNe_respect_poLesReglesDe_Convention == True:
+                                        break
+                                if VarKiNe_respect_poLesReglesDe_Convention == False:
+                                    print("PAS ASSEZ DE PLACE")
+                        folder.pop(-1)
 
 
-    if oldwidth != int(config['front']['width']):
-        if oldwidth < int(config['front']['width']):
-            difference = int(config['front']['width']) - oldwidth
-            for folder_name, folder_content in config["front"]["buttons"].items():
-                for diff_count, _ in enumerate(range(difference)):
-                    additional_count = 0
-                    for count, button in enumerate(folder_content, start=1):
-                        calc_width = oldwidth + diff_count
-                        if count % calc_width == 0:
-                            print(f'{count} | {additional_count}')
-                            folder_content.insert(count+additional_count, {"VOID": "VOID"})
-                            additional_count += 1
-        else:
-            print('(pas) j, la largeur a diminué :/')
-            
-            
+                            
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # we need to be able to remove à row even if theres no row full of voids.
+        # and I DON'T KNOW how to do that I need help
 
 
-    # recreate matrix to calculate the height
-    new_height, new_width = create_matrix(config)
-    config["front"]["height"] = str(new_height)
-    config["front"]["width"] = str(new_width)
-
-    with open('config.json', 'w', encoding="utf-8")as json_file:
-        json.dump(config, json_file, indent=4)
+    # if width has changed
+    if old_width != new_width:
         
+        # if the width has increased
+        if new_width > old_width:
+            
+            
+            difference = new_width - old_width
+            new_matrix = matrix
+            for count, _ in enumerate(range(difference), start=1):
+                for folder_count, folder in enumerate(matrix):
+                    for row_count, row in enumerate(folder):
+                        # if count % 2 == 0:
+                        #     new_matrix[folder_count][row_count].insert(0, {"VOID": "VOID"})
+                        # else:
+                        new_matrix[folder_count][row_count].append({"VOID": "VOID"})
+            matrix = new_matrix
+            
+            
+        if new_width < old_width:
+            difference = old_width - new_width
+            print('width decreased')
+            for count, _ in enumerate(range(difference), start=1):
+                for folder_count, folder in enumerate(matrix):
+                    for col_count in range(len(folder[0])):
+                        if all(folder[row_count][-col_count-1] == {"VOID": "VOID"} for row_count in range(len(folder))):
+                            for row_count in range(len(folder)):
+                                folder[row_count].pop(-col_count-1)
+                            break
+                    else:
+                        element_to_del = 0
+                        for row_count, row in enumerate(folder):
+                            element_to_del += 1
+                            for element_count, element in enumerate(row):
+                                if element == {"VOID": "VOID"}:
+                                    row.pop(element_count)
+                                    element_to_del -= 1
+                                    if element_to_del==0: break
+                        if element_to_del>0:
+                            for row_count, row in enumerate(folder):
+                                for element_count, element in enumerate(row):
+                                    if element == {"VOID": "VOID"} :
+                                        row.pop(element_count)
+                                        element_to_del -= 1
+                                        if element_to_del==0: break
+                                if element_to_del==0: break
+                        if element_to_del>0:
+                            print("PAS ASSEZ DE PLACE")
+
+
+
+    config = unmatrix(matrix)
+    print(old_height, new_height)
+    print(old_width, new_width)
+    return config
+
+
 # resize grid ||| end
         
 
@@ -746,10 +734,10 @@ def save_config():
     new_config = request.get_json()
     print(new_config)
     
+    old_height = config['front']['height']
+    old_width = config['front']['width']
     config = merge_dicts(config, new_config)
     
-    with open('config.json', 'w', encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
 
@@ -772,10 +760,13 @@ def save_config():
             print("NEW FOLDER :", folder['name'])
         folders_to_create = []
 
-        with open('config.json', 'w', encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
-    
-    update_gridsize(config)
+    config['front']['height'] = old_height
+    config['front']['width'] = old_width
+    config = update_gridsize(config, new_config['front']['height'], new_config['front']['width'])
+    config['front']['height'] = new_config['front']['height']
+    config['front']['width'] = new_config['front']['width']
+    with open('config.json', 'w', encoding="utf-8") as json_file:
+        json.dump(config, json_file, indent=4)
     
     return jsonify({'success': True})
 
@@ -784,10 +775,12 @@ def save_config():
 def complete_save_config():
     global folders_to_create
     # Récupère les données du formulaire
+    old_height = config['front']['height']
+    old_width = config['front']['width']
     config = request.get_json()
-    print(config)
-    print(type(config))
-        
+    new_height = config['front']['height']
+    new_width = config['front']['width']
+    
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     with open('config.json', encoding="utf-8") as f:
@@ -812,10 +805,13 @@ def complete_save_config():
             print("NEW FOLDER :", folder['name'])
         folders_to_create = []
 
-        with open('config.json', 'w', encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
-    
-    update_gridsize(config)
+    config['front']['height'] = old_height
+    config['front']['width'] = old_width
+    config = update_gridsize(config, new_height, new_width)
+    config['front']['height'] = new_height
+    config['front']['width'] = new_width
+    with open('config.json', 'w', encoding="utf-8") as json_file:
+        json.dump(config, json_file, indent=4)
     
     return jsonify({'success': True})
 
@@ -887,10 +883,6 @@ def save_buttons_only():
             print("NEW FOLDER :", folder['name'])
         folders_to_create = []
 
-        with open('config.json', 'w', encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
-
-    update_gridsize(config)
 
     return jsonify({'success': True})
 
