@@ -64,12 +64,12 @@ if if_webdeck == False:
 
         # Créer le menu de l'icône Tray
         menu = (
-            item('Réouvrir', lambda: window.deiconify()),
-            item('Quitter', lambda: quit_program()),
+            #item('Réouvrir', lambda: window.deiconify()),
+            item('Quit', lambda: quit_program()),
         )
 
         # Créer l'icône Tray
-        icon = pystray.Icon("name", image, "Titre", menu)
+        icon = pystray.Icon("name", image, "WebDeck", menu)
         return icon
 
     create_tray_icon()
