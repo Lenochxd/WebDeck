@@ -1,9 +1,9 @@
 import sys, os, json
 from cx_Freeze import setup, Executable
 
-with open('config.json', 'r', encoding="utf-8") as f:
+with open('static/files/version.json', 'r', encoding="utf-8") as f:
     json_file = json.load(f)
-    version = json['version']
+    version = json_file['version']
     
 # Dependencies are automatically detected, but it might need fine tuning.
 build_exe_options = {
