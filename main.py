@@ -8,6 +8,8 @@ import win32com.client
 import os
 import time
 
+os.chdir(sys._MEIPASS)
+
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
 
