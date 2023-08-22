@@ -10,10 +10,10 @@ base = 'Win32GUI' if sys.platform=='win32' else None
 executables = [
     # tray icon
     Executable('main.py', base=base, target_name='WebDeck', icon='static/files/icon.ico'),
-    # actual code
-    Executable('main_server.py', base=base, target_name='WD_main'),
     # bishokus.fr/webdeck/start
-    Executable('start_server.py', base=base, target_name='WD_start')
+    #Executable('start_server.py', base=base, target_name='WD_start'),
+    # actual code
+    Executable('main_server.py', base=base, target_name='WD_main')
 ]
 
 with open('static/files/version.json', encoding="utf-8") as f:
@@ -21,7 +21,6 @@ with open('static/files/version.json', encoding="utf-8") as f:
 
 setup(name='WebDeck',
     version = version,
-    description = f'WebDeck {version}',
     options = {'build_exe': build_options},
     executables = executables)
 
