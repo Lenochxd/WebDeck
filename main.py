@@ -5,10 +5,8 @@ import ctypes
 import sys
 import win32gui, win32con
 import win32com.client
-import os
 import time
-
-os.chdir(sys._MEIPASS)
+import subprocess
 
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
@@ -35,8 +33,8 @@ if if_webdeck == False:
 
     icon = None
 
-    os.system('WD_start.exe')
-    os.system('WD_main.exe')
+    subprocess.Popen(['WD_start.exe'])
+    subprocess.Popen(['WD_main.exe'])
     
     def quit_program():
         global icon
