@@ -687,6 +687,24 @@
         }
       }
 
+      // Cette fonction sera exécutée toutes les 5 secondes
+      function executeCode() {
+        {% if config['settings']['data-transfer-method'] == 'socket' %}
+          socket.emit('message_from_socket', 'loop');
+        {% else %}
+          fetch('/send-data', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: 'loop' })
+          })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+        {% endif %}
+      } setInterval(executeCode, 5000);
+
 
       let config = {};
       let tempEditorConfig = {};
