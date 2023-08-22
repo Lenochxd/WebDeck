@@ -79,8 +79,9 @@ else:
 #    sys.stdout = sys.__stdout__
 
 
-def print2(text):
-    print(text)
+def print2(message):
+    print(message)
+    ctypes.windll.user32.MessageBoxW(0, message, u"WebDeck Error", 0)
     
     
 # resize grid ||| start
@@ -1083,25 +1084,25 @@ def send_data(message=None):
         exec(message.replace('/exec', '').strip())
 
     elif message.startswith('/batch'):
-        os.system(message.replace('/batch', '', 1).strip())
+        subprocess.Popen(message.replace('/batch', '', 1).strip(), shell=True)
 
     elif message.startswith(('/openfile', '/start')):
         path = message.replace(
             '/openfile', '', 1).replace('/start', '', 1).strip()
-        os.system(f'start {path}')
+        subprocess.Popen(f'start {path}', shell=True)
 
     elif message.startswith('/locksession'):
-        os.system('Rundll32.exe user32.dll,LockWorkStation')
+        subprocess.Popen('Rundll32.exe user32.dll,LockWorkStation', shell=True)
 
     elif message.startswith('/screensaversettings'):
-        os.system('rundll32.exe desk.cpl,InstallScreenSaver toasters.scr')
+        subprocess.Popen('rundll32.exe desk.cpl,InstallScreenSaver toasters.scr', shell=True)
 
     elif message.startswith('/screensaver') and not message.startswith('/screensaversettings'):
         if message.endswith(('on', '/screensaver', 'start')):
-            os.system('%windir%\system32\scrnsave.scr /s')
+            subprocess.Popen('%windir%\system32\scrnsave.scr /s', shell=True)
 
         elif message.endswith(('hard', 'full', 'black')):
-            os.system('nircmd.exe monitor off')
+            subprocess.Popen('nircmd.exe monitor off', shell=True)
 
         elif message.endswith(('off', 'false')):
             keyboard.press('CTRL')
@@ -1111,8 +1112,8 @@ def send_data(message=None):
         keyboard.press(key)
 
     elif message.startswith('/restartexplorer'):
-        os.system('taskkill /f /im explorer.exe')
-        os.system('start explorer.exe')
+        subprocess.Popen('taskkill /f /im explorer.exe')
+        subprocess.Popen('start explorer.exe')
 
     elif message.startswith(('/taskill', '/forceclose')):
         window_name = message.replace('/taskill', '').replace('/forceclose', '')
@@ -1126,17 +1127,17 @@ def send_data(message=None):
         except:
             if not '.' in window_name:
                 window_name += '.exe'
-            os.system(f'taskkill /f /im {window_name}')
+            subprocess.Popen(f'taskkill /f /im {window_name}')
 
     elif message.startswith('/restart'):
         exe = message.replace('/restart', '')
         if not '.' in exe:
             exe += '.exe'
-        os.system(f'taskkill /f /im {exe}')
-        os.system(f'start {exe}')
+        subprocess.Popen(f'taskkill /f /im {exe}', shell=True)
+        subprocess.Popen(f'start {exe}', shell=True)
 
     elif message.startswith('/clearclipboard'):
-        os.system('cmd /c "echo off | clip"')
+        subprocess.Popen('cmd /c "echo off | clip"', shell=True)
 
     elif message.startswith('/write '):
         keyboard.write(message.replace('/write ', ''))
@@ -1263,7 +1264,7 @@ def send_data(message=None):
                 break
 
         if playlist_id is None:
-            print2(f"Playlist '{playlist_name}' non trouvée")
+            print2(f"Playlist named '{playlist_name}' not found.")
         else:
             playback = sp.current_playback()
             track_id = playback['item']['id']
@@ -1586,6 +1587,8 @@ def send(data):
 @socketio.on('connect')
 def socketio_connect():
     print('Client connected')
+    with open('config.json', encoding="utf-8") as f:
+        config = json.load(f)
     
     
 @socketio.on('message_from_socket')
