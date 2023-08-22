@@ -78,10 +78,19 @@ else:
 # def enablePrint():
 #    sys.stdout = sys.__stdout__
 
+def should_i_close():
+    if getattr(sys, 'frozen', False):
+        is_handler_opened = False
+        for process in psutil.process_iter(['pid', 'name']):
+            if process.info['name'].lower().strip().replace('.exe','') == 'webdeck':
+                is_handler_opened = True
+                break
+        if is_handler_opened == False:
+            sys.exit()
 
 def print2(message):
     print(message)
-    ctypes.windll.user32.MessageBoxW(0, message, u"WebDeck Error", 0)
+    ctypes.windll.user32.MessageBoxW(None, message, u"WebDeck Error", 0)
     
     
 # resize grid ||| start
@@ -384,7 +393,8 @@ for filename in os.listdir("static/files/images"):
 
 
 app = Flask(__name__)
-#Minify(app=app, html=True, js=True, cssless=True)
+if getattr(sys, 'frozen', False):
+    Minify(app=app, html=True, js=True, cssless=True)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
@@ -589,10 +599,12 @@ def has_at_least_5_minutes_difference(timestamp1, timestamp2):
     difference = abs(timestamp1 - timestamp2)
     difference_in_minutes = difference / 60
     return difference_in_minutes >= 15
-
+        
 excluded_disks = {}
 @app.route('/usage', methods=['POST'])
 def usage():
+    should_i_close()
+    
     # CPU
     cpu_percent = psutil.cpu_percent(4)
     computer_info = {'cpu': {'usage_percent': cpu_percent}}
@@ -635,9 +647,7 @@ def usage():
                 disk_letter = error_message[-2]
                 excluded_disks[disk_letter.upper()] = time.time()
                 print(f"Disk '{disk_letter}' excluded from further processing for 15 minutes.")
-                
-
-
+    
     # Réseau
     network_io_counters = psutil.net_io_counters()
     computer_info['network'] = {
@@ -667,6 +677,8 @@ def utility_functions():
 
 @app.route("/")
 def home():
+    should_i_close()
+
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
     with open('commands.json', encoding="utf-8") as f:
@@ -1593,11 +1605,19 @@ def socketio_connect():
     
 @socketio.on('message_from_socket')
 def send_data_socketio(message):
-    return send_data(message=message)
+    if message == 'loop':
+        should_i_close()
+        return jsonify({"status": "success"})
+    else:
+        return send_data(message=message)
 
 @app.route('/send-data', methods=['POST'])
 def send_data_route():
-    return send_data(message=request.get_json()["message"])
+    if request.get_json()["message"] == 'loop':
+        should_i_close()
+        return jsonify({"status": "success"})
+    else:
+        return send_data(message=request.get_json()["message"])
 
 
 async def playsound(sound_file, sound_volume):
