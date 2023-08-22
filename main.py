@@ -11,6 +11,9 @@ import socket
 import webbrowser
 import json
 
+with open('config.json', encoding="utf-8") as f:
+    config = json.load(f)
+
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
 
@@ -36,8 +39,12 @@ if if_webdeck == False:
 
     icon = None
 
-    #subprocess.Popen(['WD_start.exe'])
-    subprocess.Popen(['WD_main.exe'])
+    if getattr(sys, 'frozen', False):
+        #subprocess.Popen(['WD_start.exe'])
+        subprocess.Popen(['WD_main.exe'])
+    else:
+        subprocess.Popen('python main_server.py', shell=True)
+        
     
     def quit_program():
         global icon
@@ -71,7 +78,9 @@ if if_webdeck == False:
         icon.stop()  # Arrêter l'icône Tray
         
         sys.exit()
-
+        
+    def open_config():
+        webbrowser.open(f"http://{socket.gethostbyname(socket.gethostname())}:{config['url']['port']}?config=show")
 
     def create_tray_icon():
         global icon
@@ -80,7 +89,7 @@ if if_webdeck == False:
         # Créer le menu de l'icône Tray
         menu = (
             #item('Réouvrir', lambda: window.deiconify()),
-            item('Open config', lambda: webbrowser.open(f"https://{socket.gethostbyname(socket.gethostname())}:{config['url']['port']}?config=show")),
+            item('Open config', lambda: open_config()),
             item('Quit', lambda: quit_program()),
         )
 
