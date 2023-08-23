@@ -2,10 +2,10 @@
     "actual_version": "1.0.0",
     "patchnotes": {
         "1.0.0": {
-            "release_date": "22/08/2023",
-            "major":[],
+            "release_date": "24/08/2023",
+            "major":["first release"],
             "minor":[],
-            "nobody cares":[]
+            "nobody_cares":[]
         }
     }
 }
