@@ -1,5 +1,6 @@
 # Standard library imports
 import time
+import threading
 import asyncio
 import subprocess
 import shutil
@@ -54,6 +55,11 @@ import math
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 os.add_dll_directory(os.getcwd())
+
+new_user = False
+if not os.path.exists("config.json"):
+    shutil.copy("config_default.json", "config.json")
+    new_user = True
 
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
@@ -747,11 +753,19 @@ def save_config():
     # Récupère les données du formulaire
     new_config = request.get_json()
     print(new_config)
+    print(config['settings']['show-console'])
     
-    old_height = config['front']['height']
-    old_width = config['front']['width']
+    new_height = new_config['front']['height']
+    new_width = new_config['front']['width']
+    config = update_gridsize(config, new_height, new_width)
+    config['front']['height'] = new_height
+    config['front']['width'] = new_width
+    
     config = merge_dicts(config, new_config)
+    print(config['settings']['show-console'])
     
+    with open('config.json', 'w', encoding="utf-8") as json_file:
+        json.dump(config, json_file, indent=4)  
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
 
@@ -773,14 +787,12 @@ def save_config():
 
             print("NEW FOLDER :", folder['name'])
         folders_to_create = []
+    print(config['settings']['show-console'])
 
-    config['front']['height'] = old_height
-    config['front']['width'] = old_width
-    config = update_gridsize(config, new_config['front']['height'], new_config['front']['width'])
-    config['front']['height'] = new_config['front']['height']
-    config['front']['width'] = new_config['front']['width']
+    
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
+    print(config['settings']['show-console'])
     
     return jsonify({'success': True})
 
@@ -1654,5 +1666,11 @@ try:
 except:
     pass
 
-print('main_server started')
+def auto_closing_loop():
+    print('main_server started')
+    while True:
+        should_i_close()
+        time.sleep(5)
+
+threading.Thread(target=auto_closing_loop, daemon=True).start()
 socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=True)
