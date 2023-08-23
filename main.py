@@ -1,6 +1,6 @@
 import pystray
 from pystray import MenuItem as item
-from PIL import Image
+from PIL import Image, ImageTk
 import ctypes
 import sys
 import win32gui, win32con
@@ -10,6 +10,10 @@ import subprocess
 import socket
 import webbrowser
 import json
+import qrcode
+import tkinter as tk
+from tkinter import PhotoImage
+from io import BytesIO
 
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
@@ -59,10 +63,10 @@ if if_webdeck == False:
             "WebDeck.exe"
         ]
         
+        
         for process in processes:
-            if process.Properties_('Name').Value in processes_to_kill:
-                process_name = process.Properties_('Name').Value.lower().strip()
-                print(f"Stopping process: {process_name}")
+            if process.Properties_('Name').Value.replace('.exe').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
+                print(f"Stopping process: {process.Properties_('Name').Value}")
                 result = process.Terminate()
                 if result == 0:
                     print("Process terminated successfully.")
@@ -82,6 +86,61 @@ if if_webdeck == False:
     def open_config():
         webbrowser.open(f"http://{socket.gethostbyname(socket.gethostname())}:{config['url']['port']}?config=show")
 
+    window = None
+    def close_window(event=None):
+        global window
+        window.destroy()
+        del window
+        window = None
+        
+    def show_qrcode():
+        global window
+        if window is None:
+            # Génération du QR code
+            hostname = socket.gethostbyname(socket.gethostname())
+            port = config['url']['port']
+            url = f"http://{hostname}:{port}"
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(url)
+            qr.make(fit=True)
+
+            # Création de l'image du QR code sous forme de bytes
+            img_stream = BytesIO()
+            qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')
+            img_stream.seek(0)
+
+            # Convertir l'image en format PIL pour EasyGUI
+            qr_pil_image = Image.open(img_stream)
+
+            window = tk.Tk()
+            window.title("QR Code")
+
+            # Convert PIL image to PhotoImage
+            image_tk = ImageTk.PhotoImage(image=qr_pil_image)
+
+            label = tk.Label(window, image=image_tk)
+            label.pack()
+
+            window.iconbitmap("static/files/icon.ico")
+            window.lift()  # Met la fenêtre au premier plan
+            window.focus_force()  # Force le focus sur la fenêtre
+
+            window.bind("<Escape>", close_window)  # Associer la touche "Echap" à la fermeture de la fenêtre
+            window.bind("<Return>", close_window)  # Associer la touche "Entrée" à la fermeture de la fenêtre
+            window.bind("<space>", close_window)  # Associer la touche "Espace" à la fermeture de la fenêtre
+
+            window.resizable(width=False, height=False)
+
+            window.protocol("WM_DELETE_WINDOW", close_window)  # Gérer la fermeture de la fenêtre via la barre de titre
+
+            window.mainloop()
+
+
     def create_tray_icon():
         global icon
         image = Image.open("static/files/icon.ico")
@@ -89,6 +148,7 @@ if if_webdeck == False:
         # Créer le menu de l'icône Tray
         menu = (
             #item('Réouvrir', lambda: window.deiconify()),
+            item('QR Code', lambda: show_qrcode(), default=True),
             item('Open config', lambda: open_config()),
             item('Quit', lambda: quit_program()),
         )
