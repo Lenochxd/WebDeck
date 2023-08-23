@@ -338,6 +338,7 @@
           <div class="config-container {{black_theme}}">
 
             <button class="modal-button" id="editorButton">[E] Enter editor mode</button>
+
             <form id="config-form" class="config-form">
               <div class="setting-category settings">
                 <h1 class="config-title">Settings</h1>
@@ -687,8 +688,22 @@
         }
       }
 
+      // Empêcher la mise en veille de l'écran lorsque l'utilisateur est inactif
+      const wakeLock = async () => {
+        try {
+          const wakeLock = await navigator.wakeLock.request('screen');
+          console.log('Écran verrouillé');
+          alert('cool');
+          
+          // wakeLock.release();
+        } catch (err) {}
+      };
+      // Appeler la fonction pour activer le verrouillage de l'écran lorsque l'utilisateur interagit avec le site
+      document.addEventListener('click', wakeLock);
+
+
       // Cette fonction sera exécutée toutes les 5 secondes
-      function executeCode() {
+      function loop() {
         {% if config['settings']['data-transfer-method'] == 'socket' %}
           socket.emit('message_from_socket', 'loop');
         {% else %}
@@ -703,7 +718,8 @@
             .then(data => console.log(data))
             .catch(error => console.error(error));
         {% endif %}
-      } setInterval(executeCode, 5000);
+      }
+      setInterval(loop, 5000);
 
 
       let config = {};
