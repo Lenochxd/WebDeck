@@ -1,11 +1,10 @@
 from cx_Freeze import setup, Executable
-# Dependencies are automatically detected, but it might need
-# fine tuning.
-build_options = {'packages': [], 'excludes': []}
+build_options = {'packages': [], 'excludes': [], "zip_include_packages": "*", "zip_exclude_packages": "_sounddevice_data"}
 
 import sys, os, json, shutil
 sys.setrecursionlimit(10000)
 base = 'Win32GUI' if sys.platform=='win32' else None
+#base = 'console' if sys.platform=='win32' else None
 
 executables = [
     # tray icon
