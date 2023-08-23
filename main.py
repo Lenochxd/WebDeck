@@ -15,8 +15,15 @@ import tkinter as tk
 from tkinter import PhotoImage
 from io import BytesIO
 
-with open('config.json', encoding="utf-8") as f:
-    config = json.load(f)
+if not os.path.exists("config.json"):
+    port = 5000
+    black_theme = "true"
+else:
+    with open('config.json', encoding="utf-8") as f:
+        config = json.load(f)
+        port = config['url']['port']
+        black_theme = config['front']['black-theme']
+        del config
 
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
@@ -24,7 +31,8 @@ processes = wmi.InstancesOf("Win32_Process")
 if_webdeck = False
 wd_count = 0
 for process in processes:
-    if 'webdeck' in process.Properties_('Name').Value.lower().strip():
+    if 'webdeck' in process.Properties_('Name').Value.lower().strip() or \
+        'wd_' in process.Properties_('Name').Value.lower().strip():
         wd_count += 1
 if wd_count > 1:
     time.sleep(1)
@@ -42,6 +50,7 @@ if wd_count > 1:
 if if_webdeck == False:
 
     icon = None
+    window = None
 
     if getattr(sys, 'frozen', False):
         #subprocess.Popen(['WD_start.exe'])
@@ -51,7 +60,7 @@ if if_webdeck == False:
         
     
     def quit_program():
-        global icon
+        global icon, window
         
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")
@@ -65,7 +74,7 @@ if if_webdeck == False:
         
         
         for process in processes:
-            if process.Properties_('Name').Value.replace('.exe').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
+            if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
                 print(f"Stopping process: {process.Properties_('Name').Value}")
                 result = process.Terminate()
                 if result == 0:
@@ -79,44 +88,45 @@ if if_webdeck == False:
             except Exception as e:
                 print(f"Failed to terminate process {process_name}: {e}")
         
+        close_window()
         icon.stop()  # Arrêter l'icône Tray
         
         sys.exit()
+        exit()
         
     def open_config():
-        webbrowser.open(f"http://{socket.gethostbyname(socket.gethostname())}:{config['url']['port']}?config=show")
+        webbrowser.open(f"http://{socket.gethostbyname(socket.gethostname())}:{port}?config=show")
 
-    window = None
     def close_window(event=None):
         global window
         window.destroy()
         del window
         window = None
-        
+    
+    url = f"http://{socket.gethostbyname(socket.gethostname())}:{port}"
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+
+    # Création de l'image du QR code sous forme de bytes
+    img_stream = BytesIO()
+    # if black_theme.lower() == "true":
+    #     qr.make_image(fill_color="white", back_color="black").save(img_stream, format='PNG')
+    # else:
+    qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')
+    img_stream.seek(0)
+
+    # Convertir l'image en format PIL pour EasyGUI
+    qr_pil_image = Image.open(img_stream)
+
     def show_qrcode():
         global window
         if window is None:
-            # Génération du QR code
-            hostname = socket.gethostbyname(socket.gethostname())
-            port = config['url']['port']
-            url = f"http://{hostname}:{port}"
-            qr = qrcode.QRCode(
-                version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
-                box_size=10,
-                border=4,
-            )
-            qr.add_data(url)
-            qr.make(fit=True)
-
-            # Création de l'image du QR code sous forme de bytes
-            img_stream = BytesIO()
-            qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')
-            img_stream.seek(0)
-
-            # Convertir l'image en format PIL pour EasyGUI
-            qr_pil_image = Image.open(img_stream)
-
             window = tk.Tk()
             window.title("QR Code")
 
@@ -137,7 +147,6 @@ if if_webdeck == False:
             window.resizable(width=False, height=False)
 
             window.protocol("WM_DELETE_WINDOW", close_window)  # Gérer la fermeture de la fenêtre via la barre de titre
-
             window.mainloop()
 
 
