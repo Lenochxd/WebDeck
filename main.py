@@ -2,6 +2,7 @@ import pystray
 from pystray import MenuItem as item
 from PIL import Image, ImageTk
 import ctypes
+import os
 import sys
 import win32gui, win32con
 import win32com.client
