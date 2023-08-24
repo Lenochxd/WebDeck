@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <g id="btn_system_back" fill="none" fill-rule="evenodd" transform="matrix(3.475991, 0, 0, 3.475991, -0.470578, 0.028815)" style="">
+    <path id="btn_back" d="M66,66 L66,88 C66,89.1045695 66.8954305,90 68,90 L102,90 L102,98 L62,98 C59.790861,98 58,96.209139 58,94 L58,66 L42,66 L62,42 L82,66 L66,66 Z" style="fill: rgb(0, 0, 0);"/>
+  </g>
+</svg>
