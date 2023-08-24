@@ -15,6 +15,7 @@ import os
 
 # Third-party library imports
 import requests
+import socket
 import spotipy
 import spotipy.util as util
 from spotipy.oauth2 import SpotifyOAuth
@@ -38,6 +39,7 @@ import win32api
 import win32con
 import win32gui
 import win32com.client
+from win32com.client import Dispatch
 from win10toast import ToastNotifier
 import sounddevice as sd
 import psutil
@@ -60,6 +62,22 @@ new_user = False
 if not os.path.exists("config.json"):
     shutil.copy("config_default.json", "config.json")
     new_user = True
+    file_path = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\WebDeck.lnk'
+    if not os.path.exists(file_path) and getattr(sys, 'frozen', False):
+        dir = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs'
+        name = 'WebDeck.lnk'
+        path = os.path.join(dir, name)
+        target = os.getcwd() + r'\\WebDeck.exe'
+        working_dir = os.getcwd()
+        icon = os.getcwd() + r'\\WebDeck.exe'
+        
+        shell = Dispatch('WScript.Shell')
+        shortcut = shell.CreateShortCut(path)
+        shortcut.Targetpath = target
+        shortcut.WorkingDirectory = working_dir
+        shortcut.IconLocation = icon
+        shortcut.save()
+        
 
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
@@ -674,6 +692,26 @@ def usage():
 
     return jsonify(computer_info)
 
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # N'importe quelle adresse et port, ici on utilise Google DNS
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return local_ip
+
+local_ip = get_local_ip()
+
+# Middleware pour vérifier l'adresse IP de la demande
+@app.before_request
+def check_local_network():
+    remote_ip = request.remote_addr
+    if remote_ip != local_ip and not remote_ip.startswith("127.") and not remote_ip.startswith("192.168."):
+        return "Unauthorized access: you are not on the same network as the server.", 403
+
+
 @app.context_processor
 def utility_functions():
     def print_in_console(message):
@@ -690,6 +728,11 @@ def home():
     with open('commands.json', encoding="utf-8") as f:
         commands = json.load(f)
 
+    is_exe = False
+    if getattr(sys, 'frozen', False):
+        is_exe = True
+        
+
     themes = [
         file_name
         for file_name in os.listdir("static/themes/")
@@ -697,7 +740,7 @@ def home():
     ]
     return render_template("index.jinja",
                            config=config, themes=themes, commands=commands,
-                           biggest_folder=biggest_folder["name"],
+                           biggest_folder=biggest_folder["name"], is_exe=is_exe,
                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open
                            )
 
@@ -760,6 +803,31 @@ def save_config():
     config = update_gridsize(config, new_height, new_width)
     config['front']['height'] = new_height
     config['front']['width'] = new_width
+    
+    # add windows startup shortcut
+    if config['settings']['windows-startup'].lower().strip() == 'false' and \
+            new_config['settings']['windows-startup'].lower().strip() == 'true':
+        dir = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup'
+        name = 'WebDeck.lnk'
+        path = os.path.join(dir, name)
+        target = os.getcwd() + r'\\WebDeck.exe'
+        working_dir = os.getcwd()
+        icon = os.getcwd() + r'\\WebDeck.exe'
+        
+        shell = Dispatch('WScript.Shell')
+        shortcut = shell.CreateShortCut(path)
+        shortcut.Targetpath = target
+        shortcut.WorkingDirectory = working_dir
+        shortcut.IconLocation = icon
+        shortcut.save()
+    elif config['settings']['windows-startup'].lower().strip() == 'true' and \
+            new_config['settings']['windows-startup'].lower().strip() == 'false':
+        file_path = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup\WebDeck.lnk'
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        
+    
     
     config = merge_dicts(config, new_config)
     print(config['settings']['show-console'])

@@ -1,5 +1,5 @@
 from cx_Freeze import setup, Executable
-build_options = {'packages': [], 'excludes': [], "zip_include_packages": "*", "zip_exclude_packages": "_sounddevice_data"}
+build_options = {'packages': [], 'excludes': ["cx_Freeze"], "zip_include_packages": "*", "zip_exclude_packages": "_sounddevice_data"}
 
 import sys, os, json, shutil
 sys.setrecursionlimit(10000)
@@ -24,7 +24,7 @@ setup(name='WebDeck',
     executables = executables)
 
 
-exclude_folders = ['!buttons', '.git', '.vscode', '__pycache__', 'build']
+exclude_folders = ['!buttons', '.git', '.vscode', '__pycache__', 'build', 'webdeck', '%.html%WebDeck']
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(script_dir, 'build')

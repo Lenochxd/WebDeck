@@ -93,9 +93,21 @@ if if_webdeck == False:
         
         sys.exit()
         exit()
-        
+    
+    def get_local_ip():
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            # N'importe quelle adresse et port, ici on utilise Google DNS
+            s.connect(("8.8.8.8", 80))
+            local_ip = s.getsockname()[0]
+        finally:
+            s.close()
+        return local_ip
+
+    local_ip = get_local_ip()
+
     def open_config():
-        webbrowser.open(f"http://{socket.gethostbyname(socket.gethostname())}:{port}?config=show")
+        webbrowser.open(f"http://{local_ip}:{port}?config=show")
 
     def close_window(event=None):
         global window
@@ -103,7 +115,7 @@ if if_webdeck == False:
         del window
         window = None
     
-    url = f"http://{socket.gethostbyname(socket.gethostname())}:{port}"
+    url = f"http://{local_ip}:{port}"
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,

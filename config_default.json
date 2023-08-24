@@ -1,6 +1,7 @@
 {
     "settings": {
         "language": "en",
+        "windows-startup": "false",
         "dev-mode": "false",
         "ear-soundboard": "true",
         "mp3_method": "vlc",
@@ -298,8 +299,8 @@
                 },
                 {
                     "background-color": "#1ed664",
-                    "image": "playpause.png",
-                    "image_size": "100%",
+                    "image": "playpause2.png",
+                    "image_size": "98%",
                     "message": "/mediacontrol playpause",
                     "name": "Play/Pause"
                 },
@@ -381,8 +382,8 @@
                 },
                 {
                     "background-color": "#1ed664",
-                    "image": "volume-mute.png",
-                    "image_size": "100%",
+                    "image": "volume-mute.svg",
+                    "image_size": "65%",
                     "message": "/soundcontrol mute",
                     "name": "Mute"
                 }
