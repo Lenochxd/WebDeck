@@ -348,6 +348,7 @@
                         <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'].lower() == 'true'%}checked{% endif %}>
                       {% else %}
                         <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" checked>
+                      {% endif %}
                       <span class="slider round"></span>
                     </label>
                   </div>
@@ -359,7 +360,7 @@
                         <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" {% if config['settings']['auto-updates'].lower() == 'true'%}checked{% endif %}>
                       {% else %}
                         <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" checked>
-
+                      {% endif %}
                       <span class="slider round"></span>
                     </label>
                   </div>

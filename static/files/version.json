@@ -6,8 +6,8 @@
                 "day": "25",
                 "month": "08",
                 "year": "2023",
-                "hour": "18",
-                "minute": "00"
+                "hour": "19",
+                "minute": "06"
             },
             "updated_files":[
                 "version.json",
@@ -34,7 +34,7 @@
                     "Les mises à jour sont maintenant automatiques par défaut, désactivable dans les paramètres."
                 ],
                 "minor_enhancements":[
-                    "Boutons d'affichage d'utilisation réparés"
+                    "Boutons d'affichage d'utilisation réparés."
                 ],
                 "fixes":[],
                 "nobody_cares":[

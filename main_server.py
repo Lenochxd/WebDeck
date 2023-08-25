@@ -1824,7 +1824,7 @@ def check_for_updates_loop():
             if config['settings']['auto-updates'].lower().strip() == 'true':
                 check_for_updates()
         else:
-            config['settings']['gpu_method'] = 'true'
+            config['settings']['auto-updates'] = 'true'
             check_for_updates()
         with open('config.json', 'w', encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
