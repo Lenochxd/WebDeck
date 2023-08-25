@@ -3,8 +3,7 @@ build_options = {
                     'packages': [],
                     'excludes': ["cx_Freeze"],
                     "zip_include_packages": "*",
-                    "zip_exclude_packages": "_sounddevice_data",
-                    "uac-admin": True
+                    "zip_exclude_packages": "_sounddevice_data"
                 }
 
 import sys, os, json, shutil
