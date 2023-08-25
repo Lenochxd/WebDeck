@@ -625,7 +625,7 @@ def has_at_least_5_minutes_difference(timestamp1, timestamp2):
 
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
-    if config['settings']['gpu_method']:
+    if 'gpu_method' in config['settings'].keys():
         if config['settings']['gpu_method'] == 'nvidia (pynvml)':
             try:
                 pynvml.nvmlInit()
