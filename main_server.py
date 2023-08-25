@@ -58,26 +58,11 @@ import math
 
 if not ctypes.windll.shell32.IsUserAnAdmin():
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-
+    sys.exit()
+    exit()
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 os.add_dll_directory(os.getcwd())
-
-with open('config.json', encoding="utf-8") as f:
-    config = json.load(f)
-    
-if config["settings"]["mp3_method"] == "vlc":
-    try:
-        import vlc
-    except: pass
-else:
-    try:
-        import pygame
-        import pygame._sdl2.audio as sdl2_audio
-    except Exception:
-        pass
-    pygame.init()
-    pygame.mixer.init()
 
 new_user = False
 if not os.path.exists("config.json"):
@@ -98,6 +83,23 @@ if not os.path.exists("config.json"):
         shortcut.WorkingDirectory = working_dir
         shortcut.IconLocation = icon
         shortcut.save()
+
+with open('config.json', encoding="utf-8") as f:
+    config = json.load(f)
+    
+if config["settings"]["mp3_method"] == "vlc":
+    try:
+        import vlc
+    except: pass
+else:
+    try:
+        import pygame
+        import pygame._sdl2.audio as sdl2_audio
+    except Exception:
+        pass
+    pygame.init()
+    pygame.mixer.init()
+
 
 # def blockPrint():
 #    sys.stdout = open(os.devnull, 'w')
