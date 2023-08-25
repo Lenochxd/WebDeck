@@ -1,5 +1,11 @@
 from cx_Freeze import setup, Executable
-build_options = {'packages': [], 'excludes': ["cx_Freeze"], "zip_include_packages": "*", "zip_exclude_packages": "_sounddevice_data"}
+build_options = {
+                    'packages': [],
+                    'excludes': ["cx_Freeze"],
+                    "zip_include_packages": "*",
+                    "zip_exclude_packages": "_sounddevice_data",
+                    "uac-admin": True
+                }
 
 import sys, os, json, shutil
 import time
@@ -18,7 +24,7 @@ executables = [
 ]
 
 with open('static/files/version.json', encoding="utf-8") as f:
-    version = json.load(f)['actual_version']
+    version = json.load(f)['versions'][0]['version']
 
 setup(name='WebDeck',
     version = version,

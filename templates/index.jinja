@@ -453,6 +453,17 @@
                   >  
                 </div>
                 
+                <div class="setting gpu_method">
+                  <label for="gpu_method">GPU usage method (if the gpu usage does not show)</label>
+                  <select id="gpu_method" name="settings.gpu_method">
+                    <option value="nvidia (pynvml)" {% if config['settings']['gpu_method'].lower() == 'nvidia (pynvml)' %}selected{% endif %}>nvidia (pynvml)</option>
+                    <option value="nvidia (GPUtil)" {% if config['settings']['gpu_method'].lower() == 'nvidia (GPUtil)' %}selected{% endif %}>nvidia (GPUtil)</option>
+                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'AMD' %}selected{% endif %}>AMD (doesn't work)</option>
+                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'Intel' %}selected{% endif %}>Intel (lmao)</option>
+                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'None' %}selected{% endif %}>None</option>
+                  </select>
+                </div>
+                
                 <div class="setting mp3_method">
                   <label for="mp3_method">MP3 method (if "ear soundboard" does not work)</label>
                   <select id="mp3_method" name="settings.mp3_method">
@@ -824,8 +835,7 @@
               })
                 .then(response => response.json())
                 .then(usage_dict => {
-                  // console.log(typeof(usage_dict));
-                  // console.log(usage_dict);
+                  console.log(usage_dict);
                   forms.forEach(form => {
                     const divElements = document.querySelectorAll('.usage-value');
                     divElements.forEach(divElement => {

@@ -1,11 +1,56 @@
 {
-    "actual_version": "1.0.0",
-    "patchnotes": {
-        "1.0.0": {
-            "release_date": "24/08/2023",
-            "major":["first release"],
-            "minor":[],
-            "nobody_cares":[]
+    "versions": [
+        {
+            "version": "1.1.0",
+            "release_date": {
+                "day": "25",
+                "month": "08",
+                "year": "2023",
+                "hour": "18"
+            },
+            "en": {
+                "updates":[
+                    "No manual admin launch required anymore.",
+                    "Web page link now displayed below the QR code."
+                ],
+                "minor_enhancements":[
+                    "Added 'gpu_method' parameter for better graphics card compatibility."
+                ],
+                "fixes":[
+                    "Resolved issue with nircmd.exe launching on certain button clicks and not closing itself properly."
+                ]
+            },
+            "fr": {
+                "updates":[
+                    "Plus besoin de lancer en tant qu'administrateur manuellement.",
+                    "Le lien de la page web est maintenant affiché sous le QR code."
+                ],
+                "minor_enhancements":[
+                    "Ajout du paramètre 'gpu_method' pour une meilleure compatibilité avec les cartes graphiques."
+                ],
+                "fixes":[
+                    "Correction d'un problème avec nircmd.exe qui se lançait à chaque clic avec certains boutons et ne se fermait pas."
+                ]
+            }
+        },
+        {
+            "version": "1.0.0",
+            "release_date": {
+                "day": "24",
+                "month": "08",
+                "year": "2023",
+                "hour": "18"
+            },
+            "en": {
+                "updates":["first release"],
+                "minor_enhancements":[],
+                "fixes":[]
+            },
+            "fr": {
+                "updates":["première version"],
+                "minor_enhancements":[],
+                "fixes":[]
+            }
         }
-    }
+    ]
 }

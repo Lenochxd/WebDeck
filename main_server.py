@@ -44,6 +44,7 @@ from win10toast import ToastNotifier
 import sounddevice as sd
 import psutil
 import GPUtil
+import pynvml
 
 # Numerical and scientific libraries
 import numpy as np
@@ -397,7 +398,7 @@ with open('colors.json', 'w', encoding="utf-8") as f:
 
 
 if not os.path.isfile("nircmd.exe"):
-    url = "http://www.nirsoft.net/utils/nircmd.zip"
+    url = "https://www.nirsoft.net/utils/nircmd.zip"
     urllib.request.urlretrieve(url, "nircmd.zip")
 
     with zipfile.ZipFile("nircmd.zip", "r") as zip_ref:
@@ -618,11 +619,27 @@ def set_speakers_by_name(speakers_name):
 #                      stderr=subprocess.STDOUT)
 # stdout_data, stderr_data = p2.communicate(input=bytes(f"aaaaaaaaaaaaaaa", 'utf-8'))
 
-
 def has_at_least_5_minutes_difference(timestamp1, timestamp2):
     difference = abs(timestamp1 - timestamp2)
     difference_in_minutes = difference / 60
     return difference_in_minutes >= 15
+
+with open('config.json', encoding="utf-8") as f:
+    config = json.load(f)
+    if config['settings']['gpu_method']:
+        if config['settings']['gpu_method'] == 'nvidia (pynvml)':
+            try:
+                pynvml.nvmlInit()
+            except:
+                config['settings']['gpu_method'] = 'AMD'
+    else:
+        config['settings']['gpu_method'] = 'nvidia (pynvml)'
+        try:
+            pynvml.nvmlInit()
+        except:
+            config['settings']['gpu_method'] = 'AMD'
+    with open('config.json', 'w', encoding="utf-8") as json_file:
+        json.dump(config, json_file, indent=4)
         
 excluded_disks = {}
 @app.route('/usage', methods=['POST'])
@@ -680,15 +697,36 @@ def usage():
     }
 
     # Carte graphique
-    gpus = GPUtil.getGPUs()
-    computer_info['gpus'] = {}
-    for count, gpu in enumerate(gpus):
-        computer_info['gpus'][f'GPU{count + 1}'] = {
-            'name': gpu.name,
-            'memory_used_mb': gpu.memoryUsed,
-            'memory_total_mb': gpu.memoryTotal,
-            'utilization_percent': int(gpu.load * 100),
+    if config['settings']['gpu_method'] == 'nvidia (pynvml)':
+        num_gpus = pynvml.nvmlDeviceGetCount()
+        for count in range(num_gpus):
+            handle = pynvml.nvmlDeviceGetHandleByIndex(count)
+            utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
+            computer_info['gpus'][f'GPU{count + 1}'] = {
+                'name': '-',
+                'memory_used_mb': '-',
+                'memory_total_mb': '-',
+                'utilization_percent': int(utilization.gpu),
+            }
+    elif config['settings']['gpu_method'] == 'nvidia (GPUtil)':
+        
+        gpus = GPUtil.getGPUs()
+        computer_info['gpus'] = {}
+        for count, gpu in enumerate(gpus):
+            computer_info['gpus'][f'GPU{count + 1}'] = {
+                'name': gpu.name,
+                'memory_used_mb': gpu.memoryUsed,
+                'memory_total_mb': gpu.memoryTotal,
+                'utilization_percent': int(gpu.load * 100),
+            }
+    else:
+        computer_info['gpus']['GPU1'] = {
+            'name': '-',
+            'memory_used_mb': '-',
+            'memory_total_mb': '-',
+            'utilization_percent': '-',
         }
+        
 
     return jsonify(computer_info)
 
@@ -1668,6 +1706,8 @@ def send_data(message=None):
     elif message.startswith('/clipboard'):
         keyboard.hotkey('win', 'v')
 
+    try: subprocess.Popen("taskkill /f /IM nircmd.exe", shell=True)
+    except: pass
 
     return jsonify({"status": "success"})
 

@@ -4,6 +4,7 @@
         "windows-startup": "false",
         "dev-mode": "false",
         "ear-soundboard": "true",
+        "gpu_method": "nvidia (pynvml)",
         "mp3_method": "vlc",
         "show-console": "false",
         "data-transfer-method": "http",

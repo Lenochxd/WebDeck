@@ -86,6 +86,7 @@ if if_webdeck == False:
         for process_name in processes_to_kill:
             try:
                 subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
+                #subprocess.Popen(f'nircmd.exe close title "{process_name}"', shell=True)
             except Exception as e:
                 print(f"Failed to terminate process {process_name}: {e}")
         
@@ -142,24 +143,26 @@ if if_webdeck == False:
         if window is None:
             window = tk.Tk()
             window.title("QR Code")
-
-            # Convert PIL image to PhotoImage
+            
             image_tk = ImageTk.PhotoImage(image=qr_pil_image)
-
+            
             label = tk.Label(window, image=image_tk)
             label.pack()
-
+            
+            text_label = tk.Label(window, text=f"http://{local_ip}:{port}/", font=("Helvetica", 13))
+            text_label.pack()
+            
             window.iconbitmap("static/files/icon.ico")
-            window.lift()  # Met la fenêtre au premier plan
-            window.focus_force()  # Force le focus sur la fenêtre
-
-            window.bind("<Escape>", close_window)  # Associer la touche "Echap" à la fermeture de la fenêtre
-            window.bind("<Return>", close_window)  # Associer la touche "Entrée" à la fermeture de la fenêtre
-            window.bind("<space>", close_window)  # Associer la touche "Espace" à la fermeture de la fenêtre
-
+            window.lift()
+            window.focus_force()
+            
+            window.bind("<Escape>", close_window)
+            window.bind("<Return>", close_window)
+            window.bind("<space>", close_window)
+            
             window.resizable(width=False, height=False)
-
-            window.protocol("WM_DELETE_WINDOW", close_window)  # Gérer la fermeture de la fenêtre via la barre de titre
+            
+            window.protocol("WM_DELETE_WINDOW", close_window)
             window.mainloop()
 
 
