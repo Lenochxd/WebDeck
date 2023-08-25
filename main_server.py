@@ -56,11 +56,6 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 import math
 
-if not ctypes.windll.shell32.IsUserAnAdmin():
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-    sys.exit()
-    exit()
-
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 os.add_dll_directory(os.getcwd())
 

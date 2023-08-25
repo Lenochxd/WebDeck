@@ -1,9 +1,15 @@
+import ctypes
+import sys
+
+if not ctypes.windll.shell32.IsUserAnAdmin():
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+    sys.exit()
+    exit()
+    
 import pystray
 from pystray import MenuItem as item
 from PIL import Image, ImageTk
-import ctypes
 import os
-import sys
 import win32gui, win32con
 import win32com.client
 import time
