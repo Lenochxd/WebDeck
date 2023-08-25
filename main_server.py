@@ -696,6 +696,7 @@ def usage():
     }
 
     # Carte graphique
+    computer_info['gpus'] = {}
     if config['settings']['gpu_method'] == 'nvidia (pynvml)':
         num_gpus = pynvml.nvmlDeviceGetCount()
         for count in range(num_gpus):
@@ -764,7 +765,8 @@ def home():
         config = json.load(f)
     with open('commands.json', encoding="utf-8") as f:
         commands = json.load(f)
-
+    with open('static/files/version.json', encoding="utf-8") as f:
+        versions = json.load(f)['versions'][0]['version']
     is_exe = False
     if getattr(sys, 'frozen', False):
         is_exe = True
@@ -776,7 +778,7 @@ def home():
         if file_name.endswith(".css")
     ]
     return render_template("index.jinja",
-                           config=config, themes=themes, commands=commands,
+                           config=config, themes=themes, commands=commands, versions=versions,
                            biggest_folder=biggest_folder["name"], is_exe=is_exe,
                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open
                            )
@@ -1086,7 +1088,12 @@ def create_folder():
     else:
         print(folders_to_create)    
         return jsonify({'success': False})
-    
+
+def kill_nircmd():
+    try:
+        subprocess.Popen("taskkill /f /IM nircmd.exe", shell=True)
+    except:
+        pass
     
 def send_data(message=None):
     try: os.remove('temp/mic-temp')
@@ -1232,6 +1239,7 @@ def send_data(message=None):
 
         elif message.endswith(('hard', 'full', 'black')):
             subprocess.Popen('nircmd.exe monitor off', shell=True)
+            kill_nircmd()
 
         elif message.endswith(('off', 'false')):
             keyboard.press('CTRL')
@@ -1705,8 +1713,6 @@ def send_data(message=None):
     elif message.startswith('/clipboard'):
         keyboard.hotkey('win', 'v')
 
-    try: subprocess.Popen("taskkill /f /IM nircmd.exe", shell=True)
-    except: pass
 
     return jsonify({"status": "success"})
 
@@ -1773,6 +1779,59 @@ try:
 except:
     pass
 
+def compare_versions(version1, version2):
+    v1_components = list(map(int, version1.split('.')))
+    v2_components = list(map(int, version2.split('.')))
+    
+    for v1, v2 in zip(v1_components, v2_components):
+        if v1 > v2:
+            return 1
+        elif v1 < v2:
+            return -1
+    
+    if len(v1_components) > len(v2_components):
+        return 1
+    elif len(v1_components) < len(v2_components):
+        return -1
+    
+    return 0
+
+def check_for_updates():
+    with open('static/files/version.json', encoding="utf-8") as f:
+        current_version = json.load(f)['versions'][0]['version']
+    url = "https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json"
+    response = requests.get(url)
+    data = response.json()
+    
+    files_to_update = []
+    for version_data in reversed(data["versions"]):
+        version = version_data["version"]
+        if compare_versions(version, current_version) > 0:
+            print(f"New version available: {version}")
+            try:
+                subprocess.Popen(['WD_updater.exe'])
+            except:
+                pass
+            
+            break
+        
+def check_for_updates_loop():
+    while True:
+        
+        with open('config.json', encoding="utf-8") as f:
+            config = json.load(f)
+        if 'auto-updates' in config['settings'].keys():
+            if config['settings']['auto-updates'].lower().strip() == 'true':
+                check_for_updates()
+        else:
+            config['settings']['gpu_method'] = 'true'
+            check_for_updates()
+        with open('config.json', 'w', encoding="utf-8") as json_file:
+            json.dump(config, json_file, indent=4)
+        
+        
+        time.sleep(3600)
+
 def auto_closing_loop():
     print('main_server started')
     while True:
@@ -1780,4 +1839,5 @@ def auto_closing_loop():
         time.sleep(5)
 
 threading.Thread(target=auto_closing_loop, daemon=True).start()
+threading.Thread(target=check_for_updates_loop, daemon=True).start()
 socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=True)

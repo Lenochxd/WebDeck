@@ -213,7 +213,6 @@
                 
                   <button {{ onclick }} class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                     <!--|||||||||||||||||||||||-->
-                    {% set usage_dict = {"cpu":{"usage_percent":0.0},"memory":{"total_gb":0.0,"used_gb":0.0,"available_gb":0.0,"usage_percent":0.0},"disks":{"C":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"D":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"E":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"F":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0}},"network":{"bytes_sent":0,"bytes_recv":0},"gpus":{"0":{"name":"GPU_NAME","memory_used":0.0,"memory_total":0.0,"utilization_percent":0.0}}} %}
                     {% if button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
                       {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
@@ -253,7 +252,6 @@
                       {% endif %}
                     
                     <!--|||||||||||||||||||||||-->
-                    {% set usage_dict = {"cpu":{"usage_percent":0.0},"memory":{"total_gb":0.0,"used_gb":0.0,"available_gb":0.0,"usage_percent":0.0},"disks":{"C":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"D":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"E":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0},"F":{"total_gb":0.0,"used_gb":0.0,"free_gb":0.0,"usage_percent":0.0}},"network":{"bytes_sent":0,"bytes_recv":0},"gpus":{"0":{"name":"GPU_NAME","memory_used":0.0,"memory_total":0.0,"utilization_percent":0.0}}} %}
                     {% if button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
                       {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
@@ -262,7 +260,6 @@
                           <div class="usage-title {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
                             {{ name }}
                           </div>
-                          {# {% set usage_value = eval(path.replace("'",'"'), {'usage_dict': usage_dict}) %} #}
                           {% set usage_value = "-" %}
                           <div class="usage-value {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
                             {{ usage_value }}
@@ -340,14 +337,29 @@
             <button class="modal-button" id="editorButton">[E] Enter editor mode</button>
 
             <form id="config-form" class="config-form">
-              <div class="setting-category settings">
+              <div class="setting-category settings black-theme">
                 <h1 class="config-title">Settings</h1>
 
                 {% if is_exe == True %}
                   <div class="setting windows-startup">
                     <p>Start on Windows startup</p>
                     <label for="windows-startup" class="switch">
-                      <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'].lower() == 'true'%}checked{% endif %}>
+                      {% if 'windows-startup' in config['settings'].keys() %}
+                        <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'].lower() == 'true'%}checked{% endif %}>
+                      {% else %}
+                        <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" checked>
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+
+                  <div class="setting auto-updates">
+                    <p>Auto updates</p>
+                    <label for="auto-updates" class="switch">
+                      {% if 'auto-updates' in config['settings'].keys() %}
+                        <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" {% if config['settings']['auto-updates'].lower() == 'true'%}checked{% endif %}>
+                      {% else %}
+                        <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" checked>
+
                       <span class="slider round"></span>
                     </label>
                   </div>
@@ -388,7 +400,7 @@
                 
               </div>
               
-              <div class="setting-category visuals">
+              <div class="setting-category visuals black-theme">
                 <h1 class="config-title">Visuals</h1>
 
                 <div class="setting gridsize">
@@ -437,7 +449,7 @@
                 </div>
               </div>
 
-              <div class="setting-category experimental">
+              <div class="setting-category experimental black-theme">
                 <h1 class="config-title">Experimental</h1>
                 
                 <div class="setting usage-reload-time">
@@ -835,12 +847,12 @@
               })
                 .then(response => response.json())
                 .then(usage_dict => {
-                  console.log(usage_dict);
+                  // console.log(usage_dict);
                   forms.forEach(form => {
                     const divElements = document.querySelectorAll('.usage-value');
                     divElements.forEach(divElement => {
                       const otherClass = divElement.classList[1];
-                      if (otherClass !== undefined) {
+                      if (otherClass !== undefined || eval(otherClass) !== '-') {
                         try {
                           let newValue
                           if (otherClass.includes('percent')) {

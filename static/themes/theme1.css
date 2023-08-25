@@ -391,6 +391,17 @@ form#config-form {
 .setting-category {
   margin-bottom: 7;
 }
+.setting-category::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background-color: #d5d5d5;
+  margin: 10px 0;
+}
+.setting-category.black-theme::before {
+  background-color: #d5d5d52b!important;
+}
+
 .setting {
   margin-bottom: 15px;
   margin-left: 15px;

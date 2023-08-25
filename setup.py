@@ -19,7 +19,8 @@ executables = [
     # bishokus.fr/webdeck/start
     #Executable('start_server.py', base=base, target_name='WD_start'),
     # actual code
-    Executable('main_server.py', base=base, target_name='WD_main')
+    Executable('main_server.py', base=base, target_name='WD_main'),
+    Executable('updater.py', base=base, target_name='WD_updater')
 ]
 
 with open('static/files/version.json', encoding="utf-8") as f:

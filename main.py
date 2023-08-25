@@ -36,23 +36,34 @@ wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
 
 if_webdeck = False
-wd_count = 0
-for process in processes:
-    if 'webdeck' in process.Properties_('Name').Value.lower().strip() or \
-        'wd_' in process.Properties_('Name').Value.lower().strip():
-        wd_count += 1
-if wd_count > 1:
-    time.sleep(1)
-    wmi = win32com.client.GetObject("winmgmts:")
-    processes = wmi.InstancesOf("Win32_Process")
-
-    if_webdeck = False
+if getattr(sys, 'frozen', False):
     wd_count = 0
     for process in processes:
-        if 'webdeck' in process.Properties_('Name').Value.lower().strip():
+        if 'webdeck' in process.Properties_('Name').Value.lower().strip() or \
+            'wd_' in process.Properties_('Name').Value.lower().strip():
             wd_count += 1
     if wd_count > 1:
-        if_webdeck = True
+        time.sleep(1)
+        wmi = win32com.client.GetObject("winmgmts:")
+        processes = wmi.InstancesOf("Win32_Process")
+
+        if_webdeck = False
+        wd_count = 0
+        for process in processes:
+            if 'webdeck' in process.Properties_('Name').Value.lower().strip():
+                wd_count += 1
+        if wd_count > 1:
+            if_webdeck = True
+            
+            wmi = win32com.client.GetObject("winmgmts:")
+            processes = wmi.InstancesOf("Win32_Process")
+
+            wd_count = 0
+            for process in processes:
+                if 'wd_' in process.Properties_('Name').Value.lower().strip():
+                wd_count += 1
+            if wd_count == 0:
+                subprocess.Popen(['WD_main.exe'])
     
 if if_webdeck == False:
 
@@ -61,7 +72,16 @@ if if_webdeck == False:
 
     if getattr(sys, 'frozen', False):
         #subprocess.Popen(['WD_start.exe'])
-        subprocess.Popen(['WD_main.exe'])
+        wmi = win32com.client.GetObject("winmgmts:")
+        processes = wmi.InstancesOf("Win32_Process")
+
+        if_webdeck = False
+        wd_count = 0
+        for process in processes:
+            if 'wd_' in process.Properties_('Name').Value.lower().strip():
+            wd_count += 1
+        if wd_count == 0:
+            subprocess.Popen(['WD_main.exe'])
     else:
         subprocess.Popen('python main_server.py', shell=True)
         

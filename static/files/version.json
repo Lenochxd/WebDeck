@@ -1,6 +1,46 @@
 {
     "versions": [
         {
+            "version": "1.2.0",
+            "release_date": {
+                "day": "25",
+                "month": "08",
+                "year": "2023",
+                "hour": "18",
+                "minute": "00"
+            },
+            "updated_files":[
+                "version.json",
+                "WD_main.exe",
+                "WD_updater.exe",
+                "templates/index.jinja",
+                "static/themes/theme1.css",
+                "requirements.txt"
+            ],
+            "en": {
+                "updates":[],
+                "minor_enhancements":[
+                    ""
+                ],
+                "fixes":[],
+                "nobody_cares":[
+                    ""
+                ]
+            },
+            "fr": {
+                "updates":[
+                    "Les mises à jour sont maintenant automatiques par défaut, désactivable dans les paramètres."
+                ],
+                "minor_enhancements":[
+                    "Boutons d'affichage d'utilisation réparés"
+                ],
+                "fixes":[],
+                "nobody_cares":[
+                    "Ajout de la barre entre les catégories des paramètres pour mieux les distinguer"
+                ]
+            }
+        },
+        {
             "version": "1.1.0",
             "release_date": {
                 "day": "25",

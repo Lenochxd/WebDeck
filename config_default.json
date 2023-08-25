@@ -2,6 +2,7 @@
     "settings": {
         "language": "en",
         "windows-startup": "false",
+        "auto-updates": "true",
         "dev-mode": "false",
         "ear-soundboard": "true",
         "gpu_method": "nvidia (pynvml)",
