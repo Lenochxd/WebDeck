@@ -1,3 +1,6 @@
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/releases) [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/stargazers) [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg)](https://github.com/LeLenoch/WebDeck/releases) [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/watchers)
+ [![License](https://img.shields.io/github/license/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/issues)
+
 # WebDeck
 
 Le WebDeck est une application Flask qui permet à l'utilisateur de contrôler son ordinateur à distance depuis n'importe quel appareil doté d'un navigateur et d'un écran tactile. Contrairement au StreamDeck d'Elgato, qui nécessite un équipement physique, le WebDeck utilise une application Flask que l'utilisateur héberge sur son propre ordinateur.
