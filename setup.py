@@ -43,7 +43,7 @@ if os.path.exists(build_dir):
     
     for item in os.listdir(script_dir):
         item_path = os.path.join(script_dir, item)
-        if item != target_dir and item not in exclude_folders and item.endswith('.py') == False:
+        if item != target_dir and item not in exclude_folders and item.endswith('.py') == Falseand item.endswith('.md') == False:
             if os.path.isdir(item_path):
                 shutil.copytree(item_path, os.path.join(target_dir, item))
             else:
