@@ -61,7 +61,7 @@ if getattr(sys, 'frozen', False):
             wd_count = 0
             for process in processes:
                 if 'wd_' in process.Properties_('Name').Value.lower().strip():
-                wd_count += 1
+                    wd_count += 1
             if wd_count == 0:
                 subprocess.Popen(['WD_main.exe'])
     
@@ -79,7 +79,7 @@ if if_webdeck == False:
         wd_count = 0
         for process in processes:
             if 'wd_' in process.Properties_('Name').Value.lower().strip():
-            wd_count += 1
+                wd_count += 1
         if wd_count == 0:
             subprocess.Popen(['WD_main.exe'])
     else:

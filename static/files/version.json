@@ -18,13 +18,15 @@
                 "requirements.txt"
             ],
             "en": {
-                "updates":[],
+                "updates":[
+                    "Updates are now automatic by default and can be disabled in the settings."
+                ],
                 "minor_enhancements":[
-                    ""
+                    "Fixed display usage buttons."
                 ],
                 "fixes":[],
                 "nobody_cares":[
-                    ""
+                    "Added separator bars between settings categories for better distinction."
                 ]
             },
             "fr": {
