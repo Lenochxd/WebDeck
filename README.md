@@ -15,7 +15,7 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 1. Download the latest version of WebDeck from the [Releases](https://github.com/LeLenoch/WebDeck/releases) section on GitHub.
 
-2. Extract the contents of `WebDeck-win-amd64-portable.rar` to the location of your choice on your computer.
+2. Extract the contents of `WebDeck-win-amd64-portable.zip` to the location of your choice on your computer.
 
 3. Open the chosen location and launch  `WebDeck.exe`.
 
