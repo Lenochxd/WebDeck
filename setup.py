@@ -27,6 +27,7 @@ with open('static/files/version.json', encoding="utf-8") as f:
     version = json.load(f)['versions'][0]['version']
 
 setup(name='WebDeck',
+    description='WebDeck',
     version = version,
     options = {'build_exe': build_options},
     executables = executables)

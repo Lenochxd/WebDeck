@@ -1,6 +1,10 @@
 <html>
   <head>
-    <title>WebDeck</title>
+    {% if is_exe == True %}
+      <title>WebDeck</title>
+    {% else %}
+      <title>WebDeck DEV</title>
+    {% endif %}
     <link rel="stylesheet" href="static/themes/{{config['front']['theme']}}">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="icon" href="static\files\icon.ico"/>
@@ -20,6 +24,7 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    {# <script src="/static/files/buttonclick.js"></script> #}
 
     {% set black_theme = '' %}
     {% if config['front']['black-theme'] == 'true' %}
@@ -125,7 +130,7 @@
             {% set onclick = 'type=submit' %}
 
             {% if 'VOID' in button_config %}
-              <div class="void form-{{ button_id }}">
+              <div class="void form-{{ button_id }}" id="{{edit_modal_ID}}">
                 <div class="checkbox" style="display: none;"></div>
                 <div class="add-button" add_FOLDER="{{ folder_id }}" add_ID="{{ button_id }}" style="display: none; top: 40.3675;">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -135,7 +140,7 @@
               </div>
             {% else %}
             
-              <form class="form-{{ button_id }} form">
+              <form class="form-{{ button_id }} form" id="{{edit_modal_ID}}">
                 <div class="container-editmode">
                   <div class="edit-button" style="display: none;" edit_modal_ID="{{ edit_modal_ID }}">
                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="Edit / Edit_Pencil_01">
@@ -211,7 +216,7 @@
                   {% endif %}
                 {% if config["front"]["buttons"][folder_id][button_id]["image"] == "" or not config["front"]["buttons"][folder_id][button_id]["image"] %}
                 
-                  <button {{ onclick }} class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                  <button id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                     <!--|||||||||||||||||||||||-->
                     {% if button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
@@ -241,7 +246,7 @@
                     {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% endif %}
                   
-                  <button {{ onclick }} class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                  <button id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                       {% if imagelink.endswith('.svg') %}
                         {{ open(imagelink).read().replace('<svg ','<svg style="width:' + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
                       {% else %}
@@ -329,6 +334,9 @@
             </svg>
           </div>
         </div>
+        <a class="{{black_theme}}" id="version" href="https://github.com/LeLenoch/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="See patchnotes" alt="See patchnotes">
+          v{{versions['versions'][0]['version']}}
+        </a>
 
         <div class="modal-main">
 
@@ -366,9 +374,17 @@
                   </div>
                 {% endif %}
 
-                <div class="setting language">
+                {# <div class="setting language">
                   <label for="language">Language</label>
                   <input class="{{black_theme}}" type="text" id="language" name="settings.language" {% if not config['settings']['language'].strip() == ''%}value="{{config['settings']['language']}}"{% endif %}>  
+                </div> #}
+                <div class="setting language">
+                  <label for="language">Language</label>
+                  <select id="language" name="settings.language">
+                    {% for lang in langs %}
+                      <option value="{{lang}}" {% if config['settings']['language'].lower() == lang.lower() %}selected{% endif %}>{{lang}}</option>
+                    {% endfor %}
+                  </select>
                 </div>
 
                 <div class="setting spotify-api">
@@ -470,10 +486,10 @@
                   <label for="gpu_method">GPU usage method (if the gpu usage does not show)</label>
                   <select id="gpu_method" name="settings.gpu_method">
                     <option value="nvidia (pynvml)" {% if config['settings']['gpu_method'].lower() == 'nvidia (pynvml)' %}selected{% endif %}>nvidia (pynvml)</option>
-                    <option value="nvidia (GPUtil)" {% if config['settings']['gpu_method'].lower() == 'nvidia (GPUtil)' %}selected{% endif %}>nvidia (GPUtil)</option>
-                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'AMD' %}selected{% endif %}>AMD (doesn't work)</option>
-                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'Intel' %}selected{% endif %}>Intel (lmao)</option>
-                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'None' %}selected{% endif %}>None</option>
+                    <option value="nvidia (GPUtil)" {% if config['settings']['gpu_method'].lower() == 'nvidia (gputil)' %}selected{% endif %}>nvidia (GPUtil)</option>
+                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'amd' %}selected{% endif %}>AMD (doesn't work)</option>
+                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel (lmao)</option>
+                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}>None</option>
                   </select>
                 </div>
                 
@@ -697,16 +713,16 @@
       }
 
       {% for folder_id, value in config["front"]["buttons"].items() %}
-      function folder_{{ folder_id }}() {
-        // console.log("{{folder_id}} opened")
-        {% for folder_id2, value in config["front"]["buttons"].items() %}
-        {% if folder_id2 == folder_id %}
-        document.getElementById('folder-{{ folder_id2 }}').classList.remove('invisible');
-        {% else %}
-        document.getElementById('folder-{{ folder_id2 }}').classList.add('invisible');
-        {% endif %}
-        {% endfor %}
-      }
+        function folder_{{ folder_id }}() {
+          // console.log("{{folder_id}} opened")
+          {% for folder_id2, value in config["front"]["buttons"].items() %}
+            {% if folder_id2 == folder_id %}
+              document.getElementById('folder-{{ folder_id2 }}').classList.remove('invisible');
+            {% else %}
+              document.getElementById('folder-{{ folder_id2 }}').classList.add('invisible');
+            {% endif %}
+          {% endfor %}
+        }
       {% endfor %}
 
       function togglePasswordVisibility() {
@@ -853,9 +869,9 @@
                     const divElements = document.querySelectorAll('.usage-value');
                     divElements.forEach(divElement => {
                       const otherClass = divElement.classList[1];
-                      if (otherClass !== undefined || eval(otherClass) !== '-') {
+                      if (otherClass !== undefined || eval(otherClass).replace(' ','') !== '-') {
                         try {
-                          let newValue
+                          let newValue;
                           if (otherClass.includes('percent')) {
                             newValue = eval(otherClass) + '%';
                           } else if (otherClass.includes('_gb')) {
@@ -868,10 +884,10 @@
                             newValue = eval(otherClass);
                           }
                           if (!newValue.includes('undefined')) {
-                            divElement.innerHTML = newValue
+                            divElement.innerHTML = newValue;
                           }
                         } catch (error) {
-                          return
+                          return;
                         }
                       }
                     });
@@ -882,8 +898,8 @@
               console.log(e.message);
             }
           }, {{ config['front']['computer-usage-reload-time'] }} );
-              }
-            });
+        }
+      });
 
       document.addEventListener("DOMContentLoaded", function() {
 
@@ -1733,7 +1749,7 @@
                     const divElements = document.querySelectorAll('.usage-value');
                     divElements.forEach(divElement => {
                       const otherClass = divElement.classList[1];
-                      if (otherClass !== undefined) {
+                      if (otherClass !== undefined || eval(otherClass) !== '-') {
                         try {
                           let newValue;
                           if (otherClass.includes('percent')) {
@@ -2169,12 +2185,6 @@
 
 
 
-
-
-
-
-
-
         // Get the button element in the form
         //onst button = form.querySelector('.button');
 
@@ -2194,8 +2204,8 @@
         //  setInterval(checkTouchEnd, 300);
 
 
-        const print1 = document.getElementById('print1');
-        const print2 = document.getElementById('print2');
+        // const print1 = document.getElementById('print1');
+        // const print2 = document.getElementById('print2');
 
         //  // Add the mousedown event handler
         //  button.addEventListener('mousedown', function() {

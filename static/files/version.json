@@ -1,6 +1,47 @@
 {
     "versions": [
         {
+            "version": "1.3.0",
+            "release_date": {
+                "day": "27",
+                "month": "08",
+                "year": "2023",
+                "hour": "20",
+                "minute": "10"
+            },
+            "updated_files":[
+                "version.json",
+                "WD_main.exe",
+                "templates/index.jinja",
+                "static/themes/theme1.css",
+                "README.md",
+                "config_default.json",
+                "WD_updater.exe"
+            ],
+            "en": {
+                "updates":[],
+                "minor_enhancements":[],
+                "fixes":[],
+                "nobody_cares":[]
+            },
+            "fr": {
+                "updates": [
+                    "[BETA] amélioration de l'auto update.",
+                    "Affichage de la version dans les paramètres."
+                ],
+                "minor_enhancements": [
+                    "Le sélecteur de languages a été rendu plus simple à utiliser",
+                    "Ajout d'une scrollbar dans les paramètres."
+                ],
+                "fixes": [
+                    "Autres boutons d'usage entièrement réparés si la carte graphique n'est pas compatible."
+                ],
+                "nobody_cares": [
+                    "Qualité de code améliorée."
+                ]
+            }
+        },
+        {
             "version": "1.2.0",
             "release_date": {
                 "day": "25",
@@ -38,7 +79,7 @@
                 ],
                 "fixes":[],
                 "nobody_cares":[
-                    "Ajout de la barre entre les catégories des paramètres pour mieux les distinguer"
+                    "Ajout de la barre entre les catégories des paramètres pour mieux les distinguer."
                 ]
             }
         },

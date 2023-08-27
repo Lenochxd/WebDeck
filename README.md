@@ -102,7 +102,7 @@ To check the compatibility of your device and browser with WebDeck, you can refe
       ➗ Math (volume modification function)
     </td>
     <td align="center">
-      🤓 Everhing else
+      🤓 Everything else
     </td>
   </tr>
 </table>

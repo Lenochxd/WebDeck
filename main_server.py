@@ -293,58 +293,22 @@ def convert_position(size, position):
 
 biggest_folder = {"name": "", "buttons_count": 0}
 for folder_name, folder_content in config["front"]["buttons"].items():
-    # for button_content in folder_content:
-    #     if 'position' in button_content.keys() and int(button_content['position'][1]) > int(config["front"]["width"]):
-
-    #         index = letters.index(button_content['position'][0])
-    #         new_letter = letters[index+1]
-    #         button_content['position'] = new_letter + "1"
-    #         with open('config.json', 'w', encoding="utf-8") as json_file:
-    #             json.dump(config, json_file, indent=4)
-    #         with open('config.json', encoding="utf-8") as f:
-    #             config = json.load(f)
-
-    # for button_content in folder_content:
-    #     if 'VOID' in button_content.keys():
-    #         folder_content.pop(folder_content.index(button_content))
-    # total_boxes = int(config["front"]["width"]) * int(config["front"]["height"])
-    # while len(folder_content) < total_boxes:
-    #     folder_content.append({"VOID": "VOID"})
-    # temp_folder = []
-    # for button_content in folder_content:
-    #     if 'position' in button_content.keys():
-    #         if len(button_content['position'].strip()) == 2:
-    #             position = convert_position(f"{config['front']['width']}x{config['front']['height']}", button_content['position'])
-    #             folder_content = swapPositions(
-    #                 folder_content, folder_content.index(button_content), position)
-    #             if not position == folder_content.index(button_content):
-    #                 folder_content = swapPositions(
-    #                     folder_content, folder_content.index(button_content), position)
-    #             if not position == folder_content.index(button_content):
-    #                 print(f"cant swap {button_content}")
-
-    #         else:
-    #             temp_folder.append(button_content)
-    #             folder_content.pop(folder_content.index(button_content))
-    # for button_content in folder_content:
-    #     while len(temp_folder) != 0:
-    #         if 'VOID' in button_content.keys():
-    #             position = folder_content.index(button_content)
-    #             folder_content.pop(position)
-    #             folder_content.insert(position, temp_folder[0])
-    #             temp_folder.pop(temp_folder[0])
-    # for button_content in folder_content:
-    #     if 'position' in button_content.keys() and len(button_content['position'].strip()) == 2:
-    #         position = convert_position(f"{config['front']['width']}x{config['front']['height']}", button_content['position'])
-    #         if not position == folder_content.index(button_content) and (not position == folder_content.index(button_content) and not 'VOID' in button_content.keys()):
-    #             folder_content = swapPositions(
-    #                 folder_content, folder_content.index(button_content), position)
-    #             print(f'swapped {folder_content.index(button_content)} to {position}')
-    #     if 'image' in button_content.keys() and not button_content['image'].strip() == '' and ':' in button_content['image'] and not button_content['image'].startswith('http'):
-    #         button_content['image'] = button_content['image'].replace('/', '\\')
-    #         splitted = button_content['image'].split('\\')
+    # for button in folder_content:
+    #     if 'action' not in button.keys():
+    #         button['action'] = {
+    #             "touch_start": "click",
+    #             "touch_keep": "None",
+    #             "touch_end": "none",
+    #         }
+    
+    
+    
+    
+    #     if 'image' in button.keys() and not button['image'].strip() == '' and ':' in button['image'] and not button['image'].startswith('http'):
+    #         button['image'] = button['image'].replace('/', '\\')
+    #         splitted = button['image'].split('\\')
     #         try:
-    #             copyfile(button_content['image'],f'static/files/images/{splitted[-1]}')
+    #             copyfile(button['image'],f'static/files/images/{splitted[-1]}')
     #         except Exception:
     #             pass
                         
@@ -625,20 +589,20 @@ def has_at_least_5_minutes_difference(timestamp1, timestamp2):
 
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
-    if 'gpu_method' in config['settings'].keys():
+    if 'gpu_method' in config['settings']:
         if config['settings']['gpu_method'] == 'nvidia (pynvml)':
             try:
                 pynvml.nvmlInit()
-            except:
+            except pynvml.NVMLError:
                 config['settings']['gpu_method'] = 'AMD'
     else:
         config['settings']['gpu_method'] = 'nvidia (pynvml)'
         try:
             pynvml.nvmlInit()
-        except:
+        except pynvml.NVMLError:
             config['settings']['gpu_method'] = 'AMD'
-    with open('config.json', 'w', encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
+with open('config.json', 'w', encoding="utf-8") as json_file:
+    json.dump(config, json_file, indent=4)
         
 excluded_disks = {}
 @app.route('/usage', methods=['POST'])
@@ -703,9 +667,6 @@ def usage():
             handle = pynvml.nvmlDeviceGetHandleByIndex(count)
             utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
             computer_info['gpus'][f'GPU{count + 1}'] = {
-                'name': '-',
-                'memory_used_mb': '-',
-                'memory_total_mb': '-',
                 'utilization_percent': int(utilization.gpu),
             }
     elif config['settings']['gpu_method'] == 'nvidia (GPUtil)':
@@ -720,12 +681,7 @@ def usage():
                 'utilization_percent': int(gpu.load * 100),
             }
     else:
-        computer_info['gpus']['GPU1'] = {
-            'name': '-',
-            'memory_used_mb': '-',
-            'memory_total_mb': '-',
-            'utilization_percent': '-',
-        }
+        computer_info['gpus']['GPU1'] = {}
         
 
     return jsonify(computer_info)
@@ -766,7 +722,7 @@ def home():
     with open('commands.json', encoding="utf-8") as f:
         commands = json.load(f)
     with open('static/files/version.json', encoding="utf-8") as f:
-        versions = json.load(f)['versions'][0]['version']
+        versions = json.load(f)
     is_exe = False
     if getattr(sys, 'frozen', False):
         is_exe = True
@@ -779,7 +735,7 @@ def home():
     ]
     return render_template("index.jinja",
                            config=config, themes=themes, commands=commands, versions=versions,
-                           biggest_folder=biggest_folder["name"], is_exe=is_exe,
+                           biggest_folder=biggest_folder["name"], is_exe=is_exe, langs=['en','fr'],
                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open
                            )
 
@@ -828,57 +784,65 @@ folders_to_create = []
 @app.route('/save_config', methods=['POST'])
 def save_config():
     global folders_to_create
-    
+
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f) 
-    
+
     # Récupère les données du formulaire
     new_config = request.get_json()
     print(new_config)
     print(config['settings']['show-console'])
-    
+
     new_height = new_config['front']['height']
     new_width = new_config['front']['width']
     config = update_gridsize(config, new_height, new_width)
     config['front']['height'] = new_height
     config['front']['width'] = new_width
-    
-    # add windows startup shortcut
-    if config['settings']['windows-startup'].lower().strip() == 'false' and \
-            new_config['settings']['windows-startup'].lower().strip() == 'true':
-        dir = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup'
-        name = 'WebDeck.lnk'
-        path = os.path.join(dir, name)
-        target = os.getcwd() + r'\\WebDeck.exe'
-        working_dir = os.getcwd()
-        icon = os.getcwd() + r'\\WebDeck.exe'
-        
-        shell = Dispatch('WScript.Shell')
-        shortcut = shell.CreateShortCut(path)
-        shortcut.Targetpath = target
-        shortcut.WorkingDirectory = working_dir
-        shortcut.IconLocation = icon
-        shortcut.save()
-    elif config['settings']['windows-startup'].lower().strip() == 'true' and \
-            new_config['settings']['windows-startup'].lower().strip() == 'false':
-        file_path = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup\WebDeck.lnk'
-        if os.path.exists(file_path):
-            os.remove(file_path)
 
-        
+    # add windows startup shortcut
+    if 'auto-updates' not in config['settings']:
+        config['settings']['auto-updates'] = 'true'
+        new_config['settings']['auto-updates'] = 'true'
+    if 'windows-startup' not in config['settings']:
+        config['settings']['windows-startup'] = 'false'
+        new_config['settings']['windows-startup'] = 'false'
     
-    
+    if getattr(sys, 'frozen', False):
+        if config['settings']['windows-startup'].lower().strip() == 'false' and \
+                new_config['settings']['windows-startup'].lower().strip() == 'true':
+            dir = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup'
+            name = 'WebDeck.lnk'
+            path = os.path.join(dir, name)
+            target = os.getcwd() + r'\\WebDeck.exe'
+            working_dir = os.getcwd()
+            icon = os.getcwd() + r'\\WebDeck.exe'
+
+            shell = Dispatch('WScript.Shell')
+            shortcut = shell.CreateShortCut(path)
+            shortcut.Targetpath = target
+            shortcut.WorkingDirectory = working_dir
+            shortcut.IconLocation = icon
+            shortcut.save()
+        elif config['settings']['windows-startup'].lower().strip() == 'true' and \
+                new_config['settings']['windows-startup'].lower().strip() == 'false':
+            file_path = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup\WebDeck.lnk'
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+
+
+
     config = merge_dicts(config, new_config)
     print(config['settings']['show-console'])
-    
+
     with open('config.json', 'w', encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)  
+        json.dump(config, json_file, indent=4)
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
 
         print(folders_to_create)
         for folder in folders_to_create:
-                
+
             config['front']['buttons'][folder['name']] = [
                 {
                     "image": "back10.svg",
@@ -896,11 +860,11 @@ def save_config():
         folders_to_create = []
     print(config['settings']['show-console'])
 
-    
+
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     print(config['settings']['show-console'])
-    
+
     return jsonify({'success': True})
 
 # sauvegarde la config ENTIEREMENT, elle ne merge rien
@@ -1481,14 +1445,12 @@ def send_data(message=None):
 
         if '-' in message:
             try:
-                target_volume = current_volume - \
-                    int(message.replace('/spotify volume -', ''))
+                target_volume = current_volume - int(message.replace('/spotify volume -', ''))
             except:
                 target_volume = current_volume - 10
         elif '+' in message:
             try:
-                target_volume = current_volume + \
-                    int(message.replace('/spotify volume +', ''))
+                target_volume = current_volume + int(message.replace('/spotify volume +', ''))
             except:
                 target_volume = current_volume + 10
         elif 'set' in message:
@@ -1591,7 +1553,7 @@ def send_data(message=None):
 
         with open('colors.json', 'r', encoding="utf-8") as f:
             colorsjson = json.load(f)
-        if target_language is None:
+        if target_language is None or target_language == 'en':
             named_original = find_color(hex_color, colorsjson)
             named_color = named_original
         else:
