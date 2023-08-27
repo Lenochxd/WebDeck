@@ -300,6 +300,24 @@ html {
   border-radius: 20px;
 }
 
+a#version {
+  text-align: left;
+  font-size: 14;
+  opacity: 0.25;
+  transition: opacity 0.1s ease;
+  color: black;
+  text-decoration: none;
+  position: relative;
+  top: -15px;
+}
+a#version:hover {
+  opacity: 1;
+}
+a#version.black-theme {
+  color: white;
+}
+
+
 ul {
   list-style-type: none;
   margin-left: -20px;
