@@ -28,6 +28,7 @@ with open('static/files/version.json', encoding="utf-8") as f:
 
 setup(name='WebDeck',
     description='WebDeck',
+    author='bishokus.fr',
     version = version,
     options = {'build_exe': build_options},
     executables = executables)
