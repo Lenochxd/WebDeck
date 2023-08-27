@@ -19,19 +19,29 @@
                 "WD_updater.exe"
             ],
             "en": {
-                "updates":[],
-                "minor_enhancements":[],
-                "fixes":[],
-                "nobody_cares":[]
+                "updates": [
+                    "[BETA] Improved auto-update feature.",
+                    "Added version display in the settings."
+                ],
+                "minor_enhancements": [
+                    "Simplified the language selector for easier use.",
+                    "Added a scroll bar in the settings for improved navigation (especially useful for those with a broken scroll wheel like @Pepito2555 💀)."
+                ],
+                "fixes": [
+                    "Fixed other usage buttons entirely when the graphics card is not compatible."
+                ],
+                "nobody_cares": [
+                    "Enhanced code quality."
+                ]
             },
             "fr": {
                 "updates": [
-                    "[BETA] amélioration de l'auto update.",
-                    "Affichage de la version dans les paramètres."
+                    "[BETA] amélioration de l'auto-update.",
+                    "Ajout de l'affichage de la version dans les paramètres."
                 ],
                 "minor_enhancements": [
                     "Le sélecteur de languages a été rendu plus simple à utiliser",
-                    "Ajout d'une scrollbar dans les paramètres."
+                    "Ajout d'une barre de défilement dans les paramètres pour une meilleure navigation (notamment pour les gens qui ont une molette cassée comme @Pepito2555 💀)."
                 ],
                 "fixes": [
                     "Autres boutons d'usage entièrement réparés si la carte graphique n'est pas compatible."

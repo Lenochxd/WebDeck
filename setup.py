@@ -34,7 +34,7 @@ setup(name='WebDeck',
     executables = executables)
 
 
-exclude_folders = ['!buttons', '.git', '.vscode', '__pycache__', 'build', 'webdeck', '%.html%WebDeck', 'testmic']
+exclude_folders = ['!buttons', '.git', '.vscode', '__pycache__', 'build', 'webdeck', '%.html%WebDeck', 'testmic', 'build.bat']
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(script_dir, 'build')
