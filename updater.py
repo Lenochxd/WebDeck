@@ -74,10 +74,10 @@ def check_updates(current_version):
 
         process_names = ["WebDeck.exe", "WD_main.exe"]
         close_processes(process_names)
-        for files in data["assets"][0]["browser_download_url"]
-
-        update_files = download_and_extract(data["assets"][0]["browser_download_url"])
-        
+        for file_url in data["assets"][0]["browser_download_url"]:
+            if file_url.endswith('.zip'):
+                update_files = download_and_extract(data["assets"][0]["browser_download_url"])
+                
         delete_files = []
         try:
             version_json_url = "https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json"
@@ -88,7 +88,7 @@ def check_updates(current_version):
                     break
         except Exception:
             pass
-        
+                
         for filename in delete_files:
             if os.path.exists(filename):
                 if os.path.isfile(filename):
