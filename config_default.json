@@ -16,7 +16,9 @@
         }
     },
     "front": {
-        "background": "",
+        "background": [
+            "#141414"
+        ],
         "computer-usage-reload-time": "3000",
         "names-color": "#b3b3b3",
         "show-names": "true",
