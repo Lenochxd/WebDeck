@@ -34,7 +34,9 @@ else:
             config['settings']['open-settings-in-browser'] = 'true'
             with open('config.json', 'w', encoding="utf-8") as json_file:
                 json.dump(config, json_file, indent=4)
-        open_browser = 'true'
+            open_browser = 'true'
+        else:
+            open_browser = config['settings']['open-settings-in-browser']
         port = config['url']['port']
         black_theme = config['front']['black-theme']
         del config

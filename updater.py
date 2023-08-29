@@ -106,12 +106,14 @@ def download_and_extract(download_url):
         with open('WebDeck-update.zip', 'wb') as file:
             for chunk in response.iter_content(chunk_size=8192):
                 file.write(chunk)
-        
+
         with zipfile.ZipFile('WebDeck-update.zip', 'r') as zip_ref:
             zip_ref.extractall('WebDeck-update')
-        
-        update_files = [os.path.join('WebDeck-update', f) for f in os.listdir('WebDeck-update')]
-        return update_files
+
+        return [
+            os.path.join('WebDeck-update', f)
+            for f in os.listdir('WebDeck-update')
+        ]
     else:
         error("Failed to download update ZIP file.")
 
