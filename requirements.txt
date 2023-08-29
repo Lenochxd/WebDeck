@@ -28,4 +28,5 @@ deepdiff==6.3.0
 pystray
 tk
 qrcode
+pywebview
 cx_Freeze

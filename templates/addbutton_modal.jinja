@@ -42,7 +42,11 @@
                       {% endfor %}
                     </div>
                   {% elif "file" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" >
+                    <div class="filepath">
+                      <button class="filepath">Select your file</button>
+                      <input type="text" class="filepath {{black_theme}}" placeholder="No file chosen"></input>
+                    </div>
+                    {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
                   {% elif "url" in arg['TYPE'] %}
                     <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
                             placeholder="https://example.com" >
@@ -204,7 +208,11 @@
                           {% endfor %}
                         </div>
                       {% elif "file" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" >
+                        <div class="filepath">
+                          <button class="filepath">Select your file</button>
+                          <input type="text" class="filepath {{black_theme}}" placeholder="No file chosen"></input>
+                        </div>
+                        {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
                       {% elif "url" in choice['TYPE'] %}
                         <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
                           placeholder="https://example.com" >
@@ -295,7 +303,7 @@
                     {% elif ':' in command_value["style"]["image"] %}
                       {% set imagelink = "static/files/images/" + command_value["style"]["image"].split('\\')[-1] %}
                     {% elif command_value["style"]["image"].startswith('**uploaded/') %}
-                      {% set imagelink = "static/files/images/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                      {% set imagelink = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
                       {% set imagelink = "static/files/images/" + command_value["style"]["image"] %}
                     {% endif %}
@@ -485,7 +493,7 @@
                           var formData_{{arg_modal_ID}} = new FormData();
                           formData_{{arg_modal_ID}}.append('image', input_{{arg_modal_ID}}.files[0]);
           
-                          fetch('/upload_image', {
+                          fetch('/upload_file', {
                               method: 'POST',
                               body: formData_{{arg_modal_ID}}
                           })

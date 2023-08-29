@@ -21,13 +21,20 @@ import qrcode
 import tkinter as tk
 from tkinter import PhotoImage
 from io import BytesIO
+import webview
 
 if not os.path.exists("config.json"):
     port = 5000
     black_theme = "true"
+    open_browser = "true"
 else:
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
+        if 'open-settings-in-browser' not in config['settings']:
+            config['settings']['open-settings-in-browser'] = 'true'
+            with open('config.json', 'w', encoding="utf-8") as json_file:
+                json.dump(config, json_file, indent=4)
+        open_browser = 'true'
         port = config['url']['port']
         black_theme = config['front']['black-theme']
         del config
@@ -88,37 +95,40 @@ if if_webdeck == False:
     
     def quit_program():
         global icon, window
-        
+
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")
-        
-        processes_to_kill = [
-            "WD_main.exe",
-            "WD_start.exe",
-            "nircmd.exe",
-            "WebDeck.exe"
-        ]
-        
-        
-        for process in processes:
-            if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
-                print(f"Stopping process: {process.Properties_('Name').Value}")
-                result = process.Terminate()
-                if result == 0:
-                    print("Process terminated successfully.")
-                else:
-                    print("Failed to terminate process.")
-                    
-        for process_name in processes_to_kill:
-            try:
-                subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
-                #subprocess.Popen(f'nircmd.exe close title "{process_name}"', shell=True)
-            except Exception as e:
-                print(f"Failed to terminate process {process_name}: {e}")
-        
+
+        if not getattr(sys, 'frozen', False):
+            for process in processes:
+                if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
+                    print(f"Stopping process: {process.Properties_('Name').Value}")
+                    try: 
+                        result = process.Terminate()
+                    except TypeError:
+                        pass
+                    if result == 0:
+                        print("Process terminated successfully.")
+                    else:
+                        print("Failed to terminate process.")
+
+            processes_to_kill = [
+                "WD_main.exe",
+                "WD_start.exe",
+                "nircmd.exe",
+                "WebDeck.exe"
+            ]
+
+            for process_name in processes_to_kill:
+                try:
+                    subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
+                    #subprocess.Popen(f'nircmd.exe close title "{process_name}"', shell=True)
+                except Exception as e:
+                    print(f"Failed to terminate process {process_name}: {e}")
+
         close_window()
         icon.stop()  # Arrêter l'icône Tray
-        
+
         sys.exit()
         exit()
     
@@ -135,7 +145,15 @@ if if_webdeck == False:
     local_ip = get_local_ip()
 
     def open_config():
-        webbrowser.open(f"http://{local_ip}:{port}?config=show")
+        if open_browser.lower() == 'true':
+            webbrowser.open(f"http://{local_ip}:{port}?config=show")
+        else:
+            webview.create_window('WebDeck Config', url=f'http://{local_ip}:{port}?config=show', background_color='#141414')
+            webview.start()
+            foreground_window = win32gui.GetForegroundWindow()
+            window_title = win32gui.GetWindowText(foreground_window)
+            if "webdeck" in window_title.lower():
+                win32gui.ShowWindow(foreground_window, win32con.SW_MAXIMIZE)
 
     def close_window(event=None):
         global window
@@ -205,7 +223,10 @@ if if_webdeck == False:
         )
 
         # Créer l'icône Tray
-        icon = pystray.Icon("name", image, "WebDeck", menu)
+        if getattr(sys, 'frozen', False):
+            icon = pystray.Icon("name", image, "WebDeck", menu)
+        else:
+            icon = pystray.Icon("name", image, "WebDeck DEV", menu)
         return icon
 
     create_tray_icon()

@@ -4,10 +4,12 @@
         "windows-startup": "false",
         "auto-updates": "true",
         "dev-mode": "false",
+        "flask-debug": "true",
         "ear-soundboard": "true",
         "gpu_method": "nvidia (pynvml)",
         "mp3_method": "vlc",
         "show-console": "false",
+        "open-settings-in-browser": "true",
         "data-transfer-method": "http",
         "spotify-api": {
             "CLIENT_ID": "",

@@ -60,7 +60,7 @@
                     {% elif ':' in button_settings["image"] %}
                       {% set imagelink = "static/files/images/" + button_settings["image"].split('\\')[-1] %}
                     {% elif button_settings["image"].startswith('**uploaded/') %}
-                      {% set imagelink = "static/files/images/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                      {% set imagelink = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
                       {% set imagelink = "static/files/images/" + button_settings["image"] %}
                     {% endif %}
@@ -282,7 +282,7 @@
                         var formData_{{edit_modal_ID}} = new FormData();
                         formData_{{edit_modal_ID}}.append('image', input_{{edit_modal_ID}}.files[0]);
           
-                        fetch('/upload_image', {
+                        fetch('/upload_file', {
                             method: 'POST',
                             body: formData_{{edit_modal_ID}}
                         })
