@@ -11,7 +11,8 @@
             },
             "updated_files": [
                 "WebDeck.exe",
-                "Updater.exe"
+                "Updater.exe",
+                "static/files/version.json"
             ],
             "deleted_files": [],
             "en": {
@@ -57,7 +58,7 @@
                 "requirements.txt",
                 "WebDeck.exe",
                 "WD_main.exe",
-                "version.json",
+                "static/files/version.json",
                 "config_default.json",
                 "commands.json"
             ],
@@ -109,7 +110,7 @@
                 "minute": ""
             },
             "updated_files":[
-                "version.json",
+                "static/files/version.json",
                 "WD_main.exe",
                 "templates/index.jinja",
                 "static/themes/theme1.css",
@@ -161,7 +162,7 @@
                 "minute": "06"
             },
             "updated_files":[
-                "version.json",
+                "static/files/version.json",
                 "WD_main.exe",
                 "WD_updater.exe",
                 "templates/index.jinja",
