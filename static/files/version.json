@@ -1,6 +1,39 @@
 {
     "versions": [
         {
+            "version": "1.4.1",
+            "release_date": {
+                "day": "30",
+                "month": "08",
+                "year": "2023",
+                "hour": "02",
+                "minute": "00"
+            },
+            "updated_files": [
+                "WebDeck.exe",
+                "Updater.exe"
+            ],
+            "deleted_files": [],
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "[BETA] Improved auto-update functionality.",
+                    "Fixed 'Open settings in browser' parameter."
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "[BETA] amélioration de l'auto-update.",
+                    "Paramètre 'Open settings in browser' réparé."
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.4.0",
             "release_date": {
                 "day": "30",
@@ -65,7 +98,6 @@
                     "Ajout du paramètre 'flask-debug'"
                 ]
             }
-
         },
         {
             "version": "1.3.0",
