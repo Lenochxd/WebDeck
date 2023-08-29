@@ -74,8 +74,8 @@ def check_updates(current_version):
 
         process_names = ["WebDeck.exe", "WD_main.exe"]
         close_processes(process_names)
-        for file_url in data["assets"][0]["browser_download_url"]:
-            if file_url.endswith('.zip'):
+        for file_url in data["assets"]:
+            if file_url["browser_download_url"].endswith('.zip'):
                 update_files = download_and_extract(data["assets"][0]["browser_download_url"])
                 
         delete_files = []
