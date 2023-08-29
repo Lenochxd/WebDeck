@@ -30,10 +30,23 @@
             ],
             "deleted_files": [],
             "en": {
-                "updates": [],
-                "minor_enhancements": [],
-                "fixes": [],
-                "nobody_cares": []
+                "updates": [
+                    "Added the 'Open settings in browser' parameter. Disabling this option will create a dedicated browser for WebDeck."
+                ],
+                "minor_enhancements": [
+                    "You can now change the color of button titles.",
+                    "You can now change the WebDeck's background.",
+                    "You can now have a random background for the WebDeck."
+                ],
+                "fixes": [
+                    "The editor mode will no longer activate while you're typing.",
+                    "The 'Write' button, which wasn't inputting certain characters, has been fixed.",
+                    "The 'Open' button has been fixed.",
+                    "The Increase, Decrease, and Set volume to [...] buttons have been fixed."
+                ],
+                "nobody_cares": [
+                    "Added the 'flask-debug' parameter."
+                ]
             },
             "fr": {
                 "updates": [
