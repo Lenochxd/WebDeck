@@ -41,6 +41,8 @@ import win32gui
 import win32com.client
 from win32com.client import Dispatch
 from win10toast import ToastNotifier
+import tkinter as tk
+from tkinter import filedialog
 import sounddevice as sd
 import psutil
 import GPUtil
@@ -78,9 +80,30 @@ if not os.path.exists("config.json"):
         shortcut.WorkingDirectory = working_dir
         shortcut.IconLocation = icon
         shortcut.save()
-
+if not os.path.exists("static/files/uploaded"):
+    try:
+        os.makedirs("static/files/uploaded")
+    except FileExistsError:
+        pass
+    
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
+
+def check_json_update(config):
+    if 'auto-updates' not in config['settings']:
+        config['settings']['auto-updates'] = 'true'
+    if 'windows-startup' not in config['settings']:
+        config['settings']['windows-startup'] = 'false'
+    if 'flask-debug' not in config['settings']:
+        config['settings']['flask-debug'] = 'true'
+    if 'open-settings-in-browser' not in config['settings']:
+        config['settings']['open-settings-in-browser'] = 'true'
+    return config
+
+config = check_json_update(config)
+with open('config.json', 'w', encoding="utf-8") as json_file:
+    json.dump(config, json_file, indent=4)
+
     
 if config["settings"]["mp3_method"] == "vlc":
     try:
@@ -115,7 +138,7 @@ def should_i_close():
 def print2(message):
     print(message)
     ctypes.windll.user32.MessageBoxW(None, message, u"WebDeck Error", 0)
-    
+
     
 # resize grid ||| start
 
@@ -269,11 +292,16 @@ def update_gridsize(config, new_height, new_width):
 # resize grid ||| end
         
 
-if config["front"]["background"] and not config["front"]["background"].strip() == "":
-    try:
-        copyfile(config["front"]["background"].replace('/','\\\\'), "static/files/background-image")
-    except:
-        pass
+if config["front"]["background"]: 
+    if type(config["front"]["background"]) == 'str':
+        config["front"]["background"] = ["#141414"]
+    if type(config["front"]["background"]) == 'list' and config["front"]["background"] == ['']:
+        config["front"]["background"] = ["#141414"]
+        
+    # try:
+    #     copyfile(config["front"]["background"].replace('/','\\\\'), "static/files/background-image")
+    # except:
+    #     pass
 
 def getarg(message, arg):
     return next((x.split(f'{arg}:', 1)[1].strip() for x in message.split() if x.startswith(f'{arg}:')), None)
@@ -375,8 +403,7 @@ if not os.path.isfile("nircmd.exe"):
 for filename in os.listdir("static/files/images"):
     if ' ' in filename and not filename.startswith("!!"):
         new_filename = filename.replace(" ", "_")
-        os.rename(f"static/files/images/{filename}",
-                  f"static/files/images/{new_filename}")
+        os.rename(f"static/files/images/{filename}", f"static/files/images/{new_filename}")
         print(f"renamed {filename}")
 
 
@@ -400,16 +427,13 @@ except:
 
 
 def get_current_volume():
-    comtypes.CoInitialize()
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = cast(interface, POINTER(IAudioEndpointVolume))
-    comtypes.CoUninitialize()
     return volume.GetMasterVolumeLevelScalar()
 
 
 def set_volume(target_volume):
-    comtypes.CoInitialize()
     current_volume = get_current_volume()
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
@@ -421,43 +445,25 @@ def set_volume(target_volume):
             current_volume += 0.01
         volume.SetMasterVolumeLevelScalar(current_volume, None)
         time.sleep(0.01)
-    comtypes.CoUninitialize()
 
     return current_volume
 
 
 def increase_volume(delta):
-    comtypes.CoInitialize()
     win32api.keybd_event(win32con.VK_VOLUME_UP, 0)
     win32api.keybd_event(win32con.VK_VOLUME_UP, 0, win32con.KEYEVENTF_KEYUP)
-    if delta != '':
-        target_volume = get_current_volume() + (int(delta) / 100.0)
-        comtypes.CoUninitialize()
-        return set_volume(target_volume)
-    else:
-        comtypes.CoUninitialize()
+    if delta == '':
         return get_current_volume()
-
+    target_volume = get_current_volume() + (int(delta) / 100.0)
+    return set_volume(target_volume)
 
 def decrease_volume(delta):
-    comtypes.CoInitialize()
     win32api.keybd_event(win32con.VK_VOLUME_DOWN, 0)
     win32api.keybd_event(win32con.VK_VOLUME_DOWN, 0, win32con.KEYEVENTF_KEYUP)
-    if delta != '':
-        target_volume = get_current_volume() - (int(delta) / 100.0)
-        comtypes.CoUninitialize()
-        return set_volume(target_volume)
-    else:
-        comtypes.CoUninitialize()
+    if delta == '':
         return get_current_volume()
-
-
-def set_current_volume():
-    comtypes.CoInitialize()
-    current_volume = get_current_volume()
-    print(current_volume)
-    comtypes.CoUninitialize()
-    return current_volume
+    target_volume = get_current_volume() - (int(delta) / 100.0)
+    return set_volume(target_volume)
 
 
 def find_color(hex_code, colors):
@@ -726,7 +732,16 @@ def home():
     is_exe = False
     if getattr(sys, 'frozen', False):
         is_exe = True
-        
+
+    random_bg = "//"
+    if str(config["front"]["background"]) in ["", [''], []]:
+        random_bg = "#141414"
+        config["front"]["background"] = ['#141414']
+        with open('config.json', 'w', encoding="utf-8") as json_file:
+            json.dump(config, json_file, indent=4)
+    while random_bg.startswith('//') == True:
+        random_bg = random.choice(config["front"]["background"])
+    print(f"random background: {random_bg}")
 
     themes = [
         file_name
@@ -734,10 +749,10 @@ def home():
         if file_name.endswith(".css")
     ]
     return render_template("index.jinja",
-                           config=config, themes=themes, commands=commands, versions=versions,
-                           biggest_folder=biggest_folder["name"], is_exe=is_exe, langs=['en','fr'],
-                           int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open
-                           )
+                            config=config, themes=themes, commands=commands, versions=versions,
+                            biggest_folder=biggest_folder["name"], is_exe=is_exe, langs=['en','fr'], random_bg=random_bg,
+                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open
+                            )
 
 
 @app.route("/config")
@@ -799,13 +814,9 @@ def save_config():
     config['front']['height'] = new_height
     config['front']['width'] = new_width
 
-    # add windows startup shortcut
-    if 'auto-updates' not in config['settings']:
-        config['settings']['auto-updates'] = 'true'
-        new_config['settings']['auto-updates'] = 'true'
-    if 'windows-startup' not in config['settings']:
-        config['settings']['windows-startup'] = 'false'
-        new_config['settings']['windows-startup'] = 'false'
+    config = check_json_update(config)
+    new_config = check_json_update(new_config)
+    
     
     if getattr(sys, 'frozen', False):
         if config['settings']['windows-startup'].lower().strip() == 'false' and \
@@ -859,7 +870,11 @@ def save_config():
             print("NEW FOLDER :", folder['name'])
         folders_to_create = []
     print(config['settings']['show-console'])
-
+    
+    try:
+        config['front']['background'] = eval(config['front']['background'])
+    except TypeError:
+        pass
 
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
@@ -1015,16 +1030,24 @@ def get_config():
         
     return jsonify(config)
 
-@app.route('/upload_image', methods=['POST'])
-def upload_image():
+root = tk.Tk()
+root.withdraw()  # Cache la fenêtre principale
+root.iconbitmap("static/files/icon.ico")
+@app.route('/upload_filepath', methods=['POST'])
+def upload_filepath():
+    return filedialog.askopenfilename()
+
+@app.route('/upload_file', methods=['POST'])
+def upload_file():
     if 'image' not in request.files:
         return jsonify({'success': False, 'message': 'Aucune image trouvée'})
 
+    print(request)
     image = request.files['image']
     if image.filename == '':
         return jsonify({'success': False, 'message': 'Aucun fichier sélectionné'})
 
-    save_path = f'static/files/images/uploaded/{image.filename}'
+    save_path = f'static/files/uploaded/{image.filename}'
     image.save(save_path)
 
     return jsonify({'success': True})
@@ -1241,11 +1264,12 @@ def send_data(message=None):
         subprocess.Popen('cmd /c "echo off | clip"', shell=True)
 
     elif message.startswith('/write '):
-        keyboard.write(message.replace('/write ', ''))
+        
+        keyboard2.write(message.replace('/write ', ''))
 
     elif message.startswith('/writeandsend '):
-        keyboard.write(message.replace('/writeandsend ', ''))
-        keyboard.press('ENTER')
+        keyboard2.write(message.replace('/writeandsend ', ''))
+        keyboard2.press('ENTER')
 
     elif message.startswith('/volume +'):
         delta = message.replace('/volume +', '')
@@ -1373,8 +1397,7 @@ def send_data(message=None):
             if 'add_or_remove' in message:
                 playlist_items = sp.playlist_items(
                     playlist_id, fields='items(track(uri))')
-                track_uris = [item['track']['uri']
-                              for item in playlist_items['items']]
+                track_uris = [item['track']['uri'] for item in playlist_items['items']]
 
                 if track_uri in track_uris:
                     sp.playlist_remove_all_occurrences_of_items(
@@ -1692,19 +1715,11 @@ def socketio_connect():
     
 @socketio.on('message_from_socket')
 def send_data_socketio(message):
-    if message == 'loop':
-        should_i_close()
-        return jsonify({"status": "success"})
-    else:
-        return send_data(message=message)
+     return send_data(message=message)
 
 @app.route('/send-data', methods=['POST'])
 def send_data_route():
-    if request.get_json()["message"] == 'loop':
-        should_i_close()
-        return jsonify({"status": "success"})
-    else:
-        return send_data(message=request.get_json()["message"])
+    return send_data(message=request.get_json()["message"])
 
 
 async def playsound(sound_file, sound_volume):
@@ -1802,4 +1817,7 @@ def auto_closing_loop():
 
 threading.Thread(target=auto_closing_loop, daemon=True).start()
 threading.Thread(target=check_for_updates_loop, daemon=True).start()
-socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=True)
+flask_debug = False
+if config['settings']['flask-debug'] == 'true':
+    flask_debug = True
+socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=flask_debug)

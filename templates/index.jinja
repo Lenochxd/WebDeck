@@ -24,6 +24,9 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="/static/files/names-color-setting.js"></script>
+    <script src="/static/files/background-setting.js"></script>
+    <script src="/static/files/filepath.js"></script>
     {# <script src="/static/files/buttonclick.js"></script> #}
 
     {% set black_theme = '' %}
@@ -69,14 +72,14 @@
 
     <style>
       
-      {% if config["front"]["background"] and not config["front"]["background"].strip() == "" %}
+      {% if random_bg and not random_bg.strip() == "" %}
         body, div.fakeform-container {
-          {% if 'true' in config["front"]["background"].lower() %}
-            background-image: url("static/files/background-image")!important;
+          {% if '**uploaded/' in random_bg.lower() %}
+            background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
             background-size: cover;
             background-color: transparent;
           {% else %}
-            background-color: {{config["front"]["background"]}}!important;
+            background-color: {{random_bg}}!important;
             background-image: none;
           {% endif %}
         }
@@ -216,7 +219,7 @@
                   {% endif %}
                 {% if config["front"]["buttons"][folder_id][button_id]["image"] == "" or not config["front"]["buttons"][folder_id][button_id]["image"] %}
                 
-                  <button id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                  <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                     <!--|||||||||||||||||||||||-->
                     {% if button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
@@ -241,12 +244,12 @@
                   {% elif ':' in config["front"]["buttons"][folder_id][button_id]["image"] %}
                     {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
                   {% elif config["front"]["buttons"][folder_id][button_id]["image"].startswith('**uploaded/') %}
-                    {% set imagelink = "static/files/images/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                    {% set imagelink = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                   {% else %}
                     {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% endif %}
                   
-                  <button id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                  <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                       {% if imagelink.endswith('.svg') %}
                         {{ open(imagelink).read().replace('<svg ','<svg style="width:' + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
                       {% else %}
@@ -323,7 +326,7 @@
     </div>
 
 
-    <div class="modal-container {{black_theme}}">
+    <div class="modal-container {{black_theme}}" id="modal-container">
       <div class="modal-content {{black_theme}}">
 
         <div class="modal-header bold">
@@ -339,8 +342,73 @@
         </a>
 
         <div class="modal-main">
+          <div class="config-container choose-background {{black_theme}}" id="choose-background" style="display: none;">
+            <
+            <button type="button" id="setting-background-back" class="{{black_theme}}">
+              Back
+            </button>
+            <h1 class="config-title">Random backgrounds list</h1>
+            <div class="background-color-input-container">
+              <input type="color" class="background-color-input {{black_theme}}" id="background-color-input">
+              <input type="text" id="background-color-hex" class="background-color-setting {{black_theme}}" placeholder="Background Color (HEX)">
+            </div>
 
-          <div class="config-container {{black_theme}}">
+            <div id="create-bg-choices">
+              <button class="{{black_theme}}" id="create-color-bg">Add a color backgroud</button>
+              or
+              <input type="file" id="create-image-bg" class="{{black_theme}}" accept="image/jpeg, image/png, image/gif">
+            </div>
+            
+            <div class="editorStyle-bar {{black_theme}}"></div>
+
+            <div id="choose-backgrounds-container">
+
+              {% for bg in config["front"]["background"] %}
+                {% if bg.replace('//','').startswith('rgb(') or bg.replace('//','').startswith('#') %}
+                  <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{black_theme}}" background="{{bg}}" style="background-color: {{bg.replace('//','')}};">
+                    Background color : {{bg.replace('//','')}}
+                    <div class="choose-bg-buttons">
+
+                      {% if bg.startswith('//') %}
+                        <div class="choose-bg-activate-button"></div>
+                      {% else %}
+                        <div class="choose-bg-activate-button choose-bg-activate-button-checked"></div>
+                      {% endif %}
+
+                      <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <title>Remove this background</title>
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg.replace('//','')}}">
+                    <div class="choose-bg-pseudo-element" style="background-image: url({{ "static/files/uploaded/" + bg.replace('//','').replace('**uploaded/', '') }})"></div>
+                    <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}">
+                    <div class="choose-bg-buttons">
+                      {% if bg.startswith('//') %}
+                        <div class="choose-bg-activate-button"></div>
+                      {% else %}
+                        <div class="choose-bg-activate-button choose-bg-activate-button-checked"></div>
+                      {% endif %}
+                    
+                      <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <title>Remove this background</title>
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+          </div>
+
+
+
+          <div class="config-container {{black_theme}}" id="config-container" style="display: block;">
 
             <button class="modal-button" id="editorButton">[E] Enter editor mode</button>
 
@@ -448,6 +516,14 @@
                   </select>
                 </div>
 
+                <div class="setting background">
+                  <label for="setting-background">Background image</label>
+                  <button type="button" id="setting-background" class="{{black_theme}}">
+                    Open the backgrounds menu
+                  </button>
+                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{config["front"]["background"]}}">
+                </div>
+
                 <div class="setting black-theme">
                   <p>Black theme</p>
                   <label for="black-theme" class="switch">
@@ -463,6 +539,19 @@
                     <input class="{{black_theme}}" type="checkbox" id="show-names" name="front.show-names" {% if config['front']['show-names'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
+                  <div class="names-color-input-container">
+                    {% set default_names_color = '' %}
+                    {% if config['front']['names-color'] and not config['front']['names-color'].strip() == '' %}
+                      {% if config['front']['names-color'].strip().startswith('#') %}
+                        {% set default_names_color = 'value="' + config['front']['names-color'].strip() + '"' %}
+                      {% else %}
+                        {% set default_names_color = 'value="#' + config['front']['names-color'].strip() + '"' %}
+                      {% endif %}
+                    {% endif %}
+                    <input type="color" class="names-color-input {{black_theme}}" id="names-color-input" {{default_names_color}}>
+                    <input type="text" name="front.names-color" id="names-color-hex" class="names-color-setting {{black_theme}}" placeholder="Button Names Color (HEX)" {{default_names_color}}>
+                  </div>
+
                 </div>
               </div>
 
@@ -482,6 +571,14 @@
                   >  
                 </div>
                 
+                <div class="setting open-settings-in-browser">
+                  <p>Open settings in browser</p>
+                  <label for="open-settings-in-browser" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-browser" name="settings.open-settings-in-browser" {% if config['settings']['open-settings-in-browser'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
                 <div class="setting gpu_method">
                   <label for="gpu_method">GPU usage method (if the gpu usage does not show)</label>
                   <select id="gpu_method" name="settings.gpu_method">
@@ -752,7 +849,7 @@
       document.addEventListener('click', wakeLock);
 
 
-      {# // Cette fonction sera exécutée toutes les 5 secondes
+      {#
        function loop() {
         {% if config['settings']['data-transfer-method'] == 'socket' %}
           socket.emit('message_from_socket', 'loop');
@@ -1031,7 +1128,7 @@
         }
       
         function showEditWindow(event) {
-            ifModif = 1;
+            // ifModif = 1;
             console.log('edit pressé');
         }
       
@@ -1495,7 +1592,7 @@
         swapEditorButton.addEventListener('click', swapEditorButtonFunction);
 
         document.addEventListener('keydown', function(event) {
-          if ((is_editbutton_modal_opened === 0) || (is_addbutton_modal_opened === 0)) {
+          if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0 && document.getElementById('modal-container').style.opacity !== '1') {
             
             if (event.key === 'e') {
               editorMode = editorMode === 0 ? 1 : 0;

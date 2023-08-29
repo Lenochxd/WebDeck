@@ -1,13 +1,69 @@
 {
     "versions": [
         {
+            "version": "1.4.0",
+            "release_date": {
+                "day": "30",
+                "month": "08",
+                "year": "2023",
+                "hour": "",
+                "minute": ""
+            },
+            "updated_files": [
+                "static/files/filepath.js",
+                "static/files/names-color-setting.js",
+                "static/files/background-setting.js",
+                "static/files/images/css_logo.png",
+                "static/files/images/caret-down.svg",
+                "static/files/images/caret-up.svg",
+                "static/files/images/trash.svg",
+                "templates/editbutton_modal.jinja",
+                "templates/addbutton_modal.jinja",
+                "templates/index.jinja",
+                "static/themes/theme1.css",
+                "requirements.txt",
+                "WebDeck.exe",
+                "WD_main.exe",
+                "version.json",
+                "config_default.json",
+                "commands.json"
+            ],
+            "deleted_files": [],
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [
+                    "jout du paramètre 'Open settings in browser'. Désactiver cette option créera un navigateur dédié au WebDeck."
+                ],
+                "minor_enhancements": [
+                    "Possibilité de changer la couleur du titre des boutons.",
+                    "Possibilité de changer le fond d'écran du WebDeck.",
+                    "Possibilité d'avoir un fond d'écran aléatoire."
+                ],
+                "fixes": [
+                    "Le mode éditeur ne s'activera plus lorsque vous serez en train d'écrire.",
+                    "Le bouton 'Écrire', qui n'écrivait pas certains caractères, a été réparé.",
+                    "Le bouton 'Ouvrir' a été réparé",
+                    "Les boutons Augmenter, Baisser et Mettre le volume à [...] ont été réparés."
+                ],
+                "nobody_cares": [
+                    "Ajout du paramètre 'flask-debug'"
+                ]
+            }
+
+        },
+        {
             "version": "1.3.0",
             "release_date": {
                 "day": "27",
                 "month": "08",
                 "year": "2023",
-                "hour": "20",
-                "minute": "10"
+                "hour": "21",
+                "minute": ""
             },
             "updated_files":[
                 "version.json",
@@ -18,6 +74,7 @@
                 "config_default.json",
                 "WD_updater.exe"
             ],
+            "deleted_files": [],
             "en": {
                 "updates": [
                     "[BETA] Improved auto-update feature.",
@@ -68,6 +125,7 @@
                 "static/themes/theme1.css",
                 "requirements.txt"
             ],
+            "deleted_files": [],
             "en": {
                 "updates":[
                     "Updates are now automatic by default and can be disabled in the settings."
@@ -102,6 +160,8 @@
                 "hour": "14",
                 "minute": "42"
             },
+            "updated_files": [],
+            "deleted_files": [],
             "en": {
                 "updates":[
                     "No manual admin launch required anymore.",
@@ -133,8 +193,11 @@
                 "day": "24",
                 "month": "08",
                 "year": "2023",
-                "hour": "18"
+                "hour": "18",
+                "minute": ""
             },
+            "updated_files": [],
+            "deleted_files": [],
             "en": {
                 "updates":["first release"],
                 "minor_enhancements":[],

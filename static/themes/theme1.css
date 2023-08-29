@@ -1,5 +1,15 @@
-/* Désactiver le zoom */
+.theme-logo {
+  background-image: url(/static/files/images/css_logo.png);;
+}
+
+
+
+/* ------------------------------------------------------ */
+
+
+
 html, body {
+  /* Désactiver le zoom */
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   user-scalable: no;
@@ -754,7 +764,7 @@ div.editorStyle-bar.black-theme {
   background-color: #515151!important;
 }
 
-div.background-color-input-container {
+div.background-color-input-container, div.names-color-input-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -762,7 +772,7 @@ div.background-color-input-container {
   margin-bottom: 10px;
 }
 
-input.background-color-input {
+input.background-color-input, input.names-color-input {
   position: relative;
   margin-right: 5px;
   height: 30;
@@ -797,6 +807,16 @@ div.args_container {
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: flex-start;
+}
+
+div.filepath {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+input.filepath {
+  width: -webkit-fill-available;
+  margin-left: 4px;
 }
 
 
@@ -972,4 +992,85 @@ input:checked + .slider:after {
 
 .slider.round:after {
   border-radius: 50%;
+}
+
+
+div.choose-bg-element {
+  margin: auto;
+  padding: 18px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #000;
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+div.choose-bg-element.black-theme {
+  border: 1px solid #ccc!important;
+  box-shadow: 0 0 10px #ccc!important;
+}
+div.choose-bg-element-image > img {
+  border-radius: 15px;
+  max-width: -webkit-fill-available;
+  margin-left: 10px;
+  width: 87%;
+  z-index: 1;
+}
+.choose-bg-element {
+  position: relative;
+  overflow: hidden;
+}
+
+.choose-bg-pseudo-element {
+  content: "";
+  position: absolute;
+  top: -20;
+  left: -70;
+  width: 115%;
+  height: 110%;
+  background-size: cover;
+  margin-left: 10px;
+  filter: blur(10px);
+}
+
+
+.choose-bg-delete-button, .choose-bg-activate-button, .choose-bg-activate-button-checked {
+  margin-left: -6px;
+  display: inline-block;
+  fill: black;
+  background-color: white;
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid #0000005e;
+  margin-right: 5px;
+  z-index: 1;
+  height: 25;
+  width: 25;
+}
+.choose-bg-activate-button {
+  content: url(/static/files/images/square.svg);
+}
+.choose-bg-activate-button-checked {
+  content: url(/static/files/images/square-checked.svg)!important;
+}
+svg.choose-bg-delete-button:hover, .choose-bg-activate-button:hover {
+  cursor: pointer;
+}
+div#choose-bg-all-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+div#create-bg-choices {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+div.choose-bg-buttons {
+  height: 35.7;
+  z-index: 1;
 }
