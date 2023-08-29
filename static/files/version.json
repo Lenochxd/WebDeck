@@ -6,8 +6,8 @@
                 "day": "30",
                 "month": "08",
                 "year": "2023",
-                "hour": "",
-                "minute": ""
+                "hour": "01",
+                "minute": "22"
             },
             "updated_files": [
                 "static/files/filepath.js",
@@ -31,13 +31,12 @@
             "deleted_files": [],
             "en": {
                 "updates": [
+                    "You can now change the WebDeck's background.",
+                    "You can now have a random background for the WebDeck.",
+                    "You can now change the color of button titles.",
                     "Added the 'Open settings in browser' parameter. Disabling this option will create a dedicated browser for WebDeck."
                 ],
-                "minor_enhancements": [
-                    "You can now change the color of button titles.",
-                    "You can now change the WebDeck's background.",
-                    "You can now have a random background for the WebDeck."
-                ],
+                "minor_enhancements": [],
                 "fixes": [
                     "The editor mode will no longer activate while you're typing.",
                     "The 'Write' button, which wasn't inputting certain characters, has been fixed.",
@@ -50,13 +49,12 @@
             },
             "fr": {
                 "updates": [
+                    "Possibilité de changer le fond d'écran du WebDeck.",
+                    "Possibilité d'avoir un fond d'écran aléatoire.",
+                    "Possibilité de changer la couleur du titre des boutons.",
                     "Ajout du paramètre 'Open settings in browser'. Désactiver cette option créera un navigateur dédié au WebDeck."
                 ],
-                "minor_enhancements": [
-                    "Possibilité de changer la couleur du titre des boutons.",
-                    "Possibilité de changer le fond d'écran du WebDeck.",
-                    "Possibilité d'avoir un fond d'écran aléatoire."
-                ],
+                "minor_enhancements": [],
                 "fixes": [
                     "Le mode éditeur ne s'activera plus lorsque vous serez en train d'écrire.",
                     "Le bouton 'Écrire', qui n'écrivait pas certains caractères, a été réparé.",
