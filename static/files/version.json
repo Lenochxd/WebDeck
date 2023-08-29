@@ -50,7 +50,7 @@
             },
             "fr": {
                 "updates": [
-                    "jout du paramètre 'Open settings in browser'. Désactiver cette option créera un navigateur dédié au WebDeck."
+                    "Ajout du paramètre 'Open settings in browser'. Désactiver cette option créera un navigateur dédié au WebDeck."
                 ],
                 "minor_enhancements": [
                     "Possibilité de changer la couleur du titre des boutons.",
