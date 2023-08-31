@@ -3,11 +3,11 @@
         {
             "version": "1.4.1",
             "release_date": {
-                "day": "30",
-                "month": "08",
+                "day": "01",
+                "month": "09",
                 "year": "2023",
-                "hour": "02",
-                "minute": "00"
+                "hour": "01",
+                "minute": "29"
             },
             "updated_files": [
                 "WebDeck.exe",
