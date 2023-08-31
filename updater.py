@@ -114,6 +114,8 @@ def check_updates(current_version):
 
         replace_files()
 
+        open_process("WebDeck.exe")
+
 def download_and_extract(download_url):
     response = requests.get(download_url, stream=True)
     if response.status_code == 200:
