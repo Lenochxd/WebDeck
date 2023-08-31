@@ -12,6 +12,8 @@
             "updated_files": [
                 "WebDeck.exe",
                 "Updater.exe",
+                "static/files/update_move.bat",
+                "static/themes/theme1.css",
                 "static/files/version.json"
             ],
             "deleted_files": [],

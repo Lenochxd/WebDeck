@@ -215,9 +215,7 @@ if if_webdeck == False:
         global icon
         image = Image.open("static/files/icon.ico")
 
-        # Créer le menu de l'icône Tray
         menu = (
-            #item('Réouvrir', lambda: window.deiconify()),
             item('QR Code', lambda: show_qrcode(), default=True),
             item('Open config', lambda: open_config()),
             item('Quit', lambda: quit_program()),

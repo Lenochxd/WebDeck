@@ -1,4 +1,12 @@
+import ctypes, sys
+
+if not ctypes.windll.shell32.IsUserAnAdmin():
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+    sys.exit()
+    exit()
+
 import os
+import shutil
 import json
 import requests
 import psutil
@@ -72,11 +80,19 @@ def check_updates(current_version):
     if compare_versions(latest_version, current_version) > 0:
         print(f"New version available: {latest_version}")
 
+    if os.path.exists("WebDeck-update"):
+        open_process("WebDeck.exe")
+        shutil.rmtree("WebDeck-update")
+        if os.path.exists("WebDeck-update.zip"):
+            os.remove("WebDeck-update.zip")
+    else:
+
         process_names = ["WebDeck.exe", "WD_main.exe"]
         close_processes(process_names)
         for file_url in data["assets"]:
             if file_url["browser_download_url"].endswith('.zip'):
-                update_files = download_and_extract(data["assets"][0]["browser_download_url"])
+                download_and_extract(file_url["browser_download_url"])
+                break
                 
         delete_files = []
         try:
@@ -96,9 +112,7 @@ def check_updates(current_version):
                 elif os.path.isdir(filename):
                     os.rmdir(filename)
 
-        replace_files(update_files)
-
-        open_process("WebDeck.exe")
+        replace_files()
 
 def download_and_extract(download_url):
     response = requests.get(download_url, stream=True)
@@ -109,25 +123,37 @@ def download_and_extract(download_url):
 
         with zipfile.ZipFile('WebDeck-update.zip', 'r') as zip_ref:
             zip_ref.extractall('WebDeck-update')
-
-        return [
-            os.path.join('WebDeck-update', f)
-            for f in os.listdir('WebDeck-update')
-        ]
+        return
     else:
         error("Failed to download update ZIP file.")
 
-def replace_files(update_files):
-    for file_path in update_files:
-        if "WD_update.exe" not in file_path:
-            target_path = os.path.join(os.path.dirname(file_path), os.path.basename(file_path))
-            os.replace(file_path, target_path)
-            print(f"Updated {target_path}")
-    
-    # Clean up extracted files and ZIP
-    os.remove('WebDeck-update.zip')
-    for file_path in update_files:
-        os.remove(file_path)
+def replace_files():
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+
+    # Move files and folders from WebDeck-update/WebDeck to the current directory
+    update_dir = os.path.join(current_dir, "WebDeck-update", "WebDeck")
+    for root, _, files in os.walk(update_dir):
+        for item in files:
+            source = os.path.join(root, item)
+            relative_path = os.path.relpath(source, update_dir)
+            destination = os.path.join(current_dir, relative_path)
+            try:
+                os.makedirs(os.path.dirname(destination), exist_ok=True)
+                shutil.move(source, destination)
+            except (PermissionError, shutil.Error) as e:
+                print(e)
+
+    # Remove the WebDeck-update directory
+    update_dir_path = os.path.join(current_dir, "WebDeck-update")
+    shutil.rmtree(update_dir_path, ignore_errors=True)
+
+    # Delete the WebDeck-update.zip file
+    zip_file_path = os.path.join(current_dir, "WebDeck-update.zip")
+    os.remove(zip_file_path)
+
+    # Launch WebDeck.exe
+    exe_path = os.path.join(current_dir, "WebDeck.exe")
+    os.system(exe_path)
 
 
 
