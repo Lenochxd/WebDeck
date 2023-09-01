@@ -27,7 +27,7 @@ body {
   background-color: rgb(20,20,20);
   transition-delay: 250ms;
   transition-property: margin-right;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   display: flex;
 }
 
@@ -109,7 +109,7 @@ div.one-button {
   cursor: pointer;
   display: inline-flex;
   flex-direction: column; /* alignement vertical */
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
@@ -165,7 +165,7 @@ p.buttontext {
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   text-align: center;
   line-height: 1.4;
   display: block;
@@ -273,25 +273,24 @@ div.usage-value {
 .modal-container, .addbutton-modal-container, .addbutton-modal-container-args, .editbutton-modal-container {
   position: fixed;
   left: 0;
-  top: -100%;
+  top: 0;
   width: 100%;
   height: 100%;
   /* Animer la modal */
   display: none;
   transition: top .5s ease-in-out;
   transition: opacity 0.5s ease-in-out;
-  top:0;
 }
 
 
 /* Centrer le contenu de la modal */
 .modal-content, .addbutton-modal-content, .addbutton-modal-content-args, .editbutton-modal-content {
   margin: auto;
-  width:90%;
-  height:90%;
-  background-color:#fbfbfd!important;
-  padding:20px;
-  box-shadow:0px .5rem .5rem rgba(0,0,0,.2);
+  width: 90%;
+  height: 90%;
+  background-color: #fbfbfd!important;
+  padding: 20px;
+  box-shadow: 0px .5rem .5rem rgba(0,0,0,.2);
   border-radius: 10px;
   overflow-y: scroll;
 }
@@ -407,7 +406,7 @@ div.fakeform-container.black-theme {
 
 .modal-content p, .addbutton-modal-content p, .addbutton-modal-content-args p, .editbutton-modal-content p {
   font-size: 12px;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   text-align: center;
   line-height: 1.4;
   margin-top: 0;
@@ -487,6 +486,7 @@ textarea {
   border-radius: 5px;
   font-size: 16px;
   resize: vertical;
+  opacity: 1;
 }
 input[type="text"].black-theme,
 input[type="url"].black-theme,
@@ -495,6 +495,7 @@ input[type="number"].black-theme,
 textarea.black-theme {
   border: 1px solid #494949!important;
   background-color: #333333!important;
+  color: white!important;
 }
 
 input[type="text"].black-theme::placeholder,
@@ -503,14 +504,6 @@ input[type="password"].black-theme::placeholder,
 input[type="number"].black-theme::placeholder,
 textarea.black-theme::placeholder {
   color: rgb(136, 136, 136)!important;
-  opacity: 1;
-}
-input[type="text"].black-theme,
-input[type="url"].black-theme,
-input[type="password"].black-theme,
-input[type="number"].black-theme,
-textarea.black-theme {
-  color: white!important;
   opacity: 1;
 }
 input[type="text"].spotify-setting,
@@ -664,7 +657,7 @@ div.swapMode-open-folder {
   display: inline-flex;
   flex-direction: column;
   justify-content: center; /* alignement vertical */
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 10px;
   font-weight: 600;
   line-height: 1.25;
