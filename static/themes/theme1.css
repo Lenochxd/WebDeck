@@ -249,7 +249,16 @@ div.usage-value {
   animation-duration: 0.4s;
   z-index: 3;
   color: black;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /* Animer la modal */
+  transition: top .5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
+
 .modal-container.black-theme,
 .addbutton-modal-container.black-theme,
 .addbutton-modal-container-args.black-theme,
@@ -266,20 +275,6 @@ div.usage-value {
     margin-top: 0;
     opacity: 1;
   }
-}
-
-
-/* Afficher la modal en position fixe et couvrant toute la page */
-.modal-container, .addbutton-modal-container, .addbutton-modal-container-args, .editbutton-modal-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  /* Animer la modal */
-  display: none;
-  transition: top .5s ease-in-out;
-  transition: opacity 0.5s ease-in-out;
 }
 
 
