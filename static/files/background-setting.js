@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
     pageloadElements.forEach(function(element) {
         var computedStyle = getComputedStyle(element);
-        var textColor = computedStyle.color;
         var backgroundColor = computedStyle.backgroundColor;
         
         var brightness = calculateBrightness(backgroundColor);

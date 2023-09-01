@@ -1,4 +1,4 @@
-function handleFilepathButtonClick(button) {
+function handleFilepathButtonClick() {
     fetch('/upload_filepath', {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     filepathButtons.forEach(button => {
         button.addEventListener('click', () => {
-            handleFilepathButtonClick(button);
+            handleFilepathButtonClick();
         });
     });
 
