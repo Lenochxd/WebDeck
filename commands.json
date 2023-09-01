@@ -30,7 +30,10 @@
       "style": {
         "image": "reload.png",
         "image_size": "50%",
-        "name": "Reload"
+        "name":  {
+          "en": "Reload",
+          "fr": "Recharger la page"
+        }
       }
     },
     "Open a folder": {
@@ -814,6 +817,14 @@
       "description": {
         "en": "Add the sound currently playing on spotify to favorites",
         "fr": "Mettre le son actuellement joué sur spotify en favoris"
+      },
+      "style": {
+        "image": "add-to-playlist5.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Add song to favorites",
+          "fr": "Favoris"
+        }
       }
     },
     "Save the played album": {
@@ -826,6 +837,14 @@
       "description": {
         "en": "Add the currently playing album on spotify to favorites",
         "fr": "Mettre l'album actuellement joué dans les albums favoris"
+      },
+      "style": {
+        "image": "add-to-playlist5.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Save the played album",
+          "fr": "Ajouter l'album en favoris"
+        }
       }
     },
     "Add current song to a playlist (removes if already)": {
