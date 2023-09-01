@@ -60,7 +60,6 @@ body {
 }
 
 div.void {
-  display: block;
   margin-top: 0em;
   margin-block-end: 1em;
   width: 132px;
@@ -109,8 +108,7 @@ div.one-button {
   color: rgba(0, 0, 0, 0.85);
   cursor: pointer;
   display: inline-flex;
-  flex-direction: column;
-  justify-content: center; /* alignement vertical */
+  flex-direction: column; /* alignement vertical */
   font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 16px;
   font-weight: 600;
@@ -164,7 +162,6 @@ div.one-button {
 p.buttontext {
   color: #b3b3b3;
   margin-top: -7px;
-  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
@@ -738,7 +735,7 @@ button:focus, button:focus-visible {
 
 input.image-size-value {
   border: 1px solid #ccc;
-  padding: 5px 5px;
+  padding: 5px;
   width: 60px;
 }
 
