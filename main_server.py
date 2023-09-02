@@ -1362,17 +1362,14 @@ def send_data(message=None):
             track_id = track_info['item']['id']
             print(track_info)
 
-            is_liked = sp.current_user_saved_tracks_contains(tracks=[track_id])[
-                0]
+            is_liked = sp.current_user_saved_tracks_contains(tracks=[track_id])[0]
             # Add or remove like based on current state
             if is_liked:
                 sp.current_user_saved_tracks_delete(tracks=[track_id])
-                print(
-                    f"Removed track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
+                print(f"Removed track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
             else:
                 sp.current_user_saved_tracks_add(tracks=[track_id])
-                print(
-                    f"Liked track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
+                print(f"Liked track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
         else:
             print("No track currently playing.")
 
