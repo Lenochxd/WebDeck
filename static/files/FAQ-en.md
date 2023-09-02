@@ -49,7 +49,7 @@ Once these steps are completed, the application settings will be reset to their 
 
 Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is you. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
 
-If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers; they are directed straight to Spotify's servers.
+If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
 
 
 ## Can I put a GIF on a button?
@@ -74,7 +74,7 @@ Customizing the background is a breeze. Follow these simple steps:
 This way, you can customize the button backgrounds to your preferences with just a few clicks.
 
 
-## I'm a developer; how can I customize the page's CSS?
+## I'm a developer, how can I customize the page's CSS?
 
 As a developer, you have the option to customize the CSS of the page according to your preferences. Here's how to do it in a few simple steps:
 
@@ -92,7 +92,7 @@ Absolutely! You have the option to select any file, and it will be opened with t
 
 ## Why is WebDeck detected as malware/trojan on virustotal.com?
 
-Don't worry; WebDeck is obviously NOT a malicious application. There are several reasons for its detection as malware by the `Jiangmin` antivirus on virustotal.com.
+Don't worry, WebDeck is obviously NOT a malicious application. There are several reasons for its detection as malware by the `Jiangmin` antivirus on virustotal.com.
 
 Firstly, it's essential to understand that before being an .exe file, an application is initially written using a programming language understandable by a computer. In the case of WebDeck, this language is Python. The process of transforming a .py file into a .exe file can be done using three main software, but they all have one problem: regardless of the application's purpose, it can be identified as a potential malware by some antivirus programs.
 
