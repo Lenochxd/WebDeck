@@ -21,6 +21,7 @@ html, body {
   overflow-y: hidden;
   overflow: hidden;
   font-family: "Lato", sans-serif;
+  background-color: rgb(20,20,20);
 }
 
 body {
