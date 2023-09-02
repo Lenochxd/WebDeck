@@ -17,7 +17,7 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 2. Extract the contents of `WebDeck-win-amd64-portable.zip` to the location of your choice on your computer.
 
-3. Open the chosen location and launch  `WebDeck.exe`.
+3. Open the chosen location and run  `WebDeck.exe`.
 
 4. There is nothing to install on your mobile device, you simply need to scan the QR code by clicking on the tray icon.
 
