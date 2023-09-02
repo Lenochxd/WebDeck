@@ -74,6 +74,11 @@ Customizing the background is a breeze. Follow these simple steps:
 This way, you can customize the button backgrounds to your preferences with just a few clicks.
 
 
+## Can I open files other than software via the "Open ..." button?
+
+Absolutely! You have the option to select any file, and it will be opened with the corresponding default application. For example, if you choose to open an image, it will automatically open with your usual image viewer.
+
+
 ## I'm a developer, how can I customize the page's CSS?
 
 As a developer, you have the option to customize the CSS of the page according to your preferences. Here's how to do it in a few simple steps:
@@ -83,11 +88,6 @@ As a developer, you have the option to customize the CSS of the page according t
 3. Restart the application on your computer.
 
 Once these steps are completed, you can select your own theme in the settings. You will have the freedom to modify the CSS as needed and customize the appearance of the page to your liking. You can even share your `.css` file with other users if you wish.
-
-
-## Can I open files other than software via the "Open ..." button?
-
-Absolutely! You have the option to select any file, and it will be opened with the corresponding default application. For example, if you choose to open an image, it will automatically open with your usual image viewer.
 
 
 ## Why is WebDeck detected as malware/trojan on virustotal.com?

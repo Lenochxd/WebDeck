@@ -72,6 +72,10 @@ La personnalisation du fond d'écran est un jeu d'enfant. Suivez ces étapes sim
 Ainsi, vous pourrez personnaliser l'arrière-plan des boutons selon vos préférences en quelques clics.
 
 
+## Peut-on ouvrir des fichiers autres que des logiciels via le bouton "Ouvrir ..." ?
+
+Absolument ! Vous avez la possibilité de sélectionner n'importe quel fichier, et il sera ouvert avec l'application par défaut correspondante. Par exemple, si vous choisissez de ouvrir une image, elle s'ouvrira automatiquement avec votre visionneuse d'images habituelle.
+
 
 ## Je suis développeur, comment puis-je personnaliser le CSS de la page ?
 
@@ -82,11 +86,6 @@ En tant que développeur, vous avez la possibilité de personnaliser le CSS de l
 3. Redémarrez l'application sur votre ordinateur.
 
 Une fois ces étapes accomplies, vous pourrez sélectionner votre propre thème dans les paramètres. Vous aurez ainsi la liberté de modifier le CSS selon vos besoins et de personnaliser l'apparence de la page à votre gré. Vous pourrez même partager votre fichier `.css` avec d'autres utilisateurs si vous le souhaitez.
-
-
-## Peut-on ouvrir des fichiers autres que des logiciels via le bouton "Ouvrir ..." ?
-
-Absolument ! Vous avez la possibilité de sélectionner n'importe quel fichier, et il sera ouvert avec l'application par défaut correspondante. Par exemple, si vous choisissez de ouvrir une image, elle s'ouvrira automatiquement avec votre visionneuse d'images habituelle.
 
 
 ## Pourquoi le WebDeck est détecté comme un malware/trojan sur virustotal.com ?
