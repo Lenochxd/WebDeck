@@ -109,3 +109,22 @@ WebDeck utilise `cx_Freeze`, qui est l'option la moins sujette à la détection 
 Tout cela pour dire que l'application n'est en aucun cas un virus. Mais il y a tout de même une autre raison. Même si `cx_Freeze` était parfait, virustotal.com pourrait toujours détecter le logiciel comme un possible malware, car le WebDeck offre une personnalisation totale. Vous pouvez créer des boutons qui effectuent diverses actions, comme éteindre votre ordinateur, supprimer des fichiers, ou exécuter des macros, par exemple. Bien que certains logiciels malveillants puissent ressembler à cela, en utilisant des combinaisons de touches clavier pour causer des dommages, ce n'est pas le but du WebDeck. Ici, l'utilisateur a le plein contrôle sur les actions que le logiciel effectue sur son ordinateur lorsque vous cliquez sur un bouton, alors que l'antivirus préfère penser que le logiciel a simplement tout droit sur votre ordinateur.
 
 *Autres sources : [1](https://stackoverflow.com/questions/11860287/why-my-freezed-app-is-detected-as-possible-virus?rq=4) - [2](https://stackoverflow.com/questions/22693665/python-executables-alarms-antivirus?rq=4) - [3](https://stackoverflow.com/questions/23815222/py2exe-application-flagged-as-malware-by-windows-defender-what-to-do?rq=4) - [4](https://stackoverflow.com/questions/48464693/py2exe-detected-as-virus-alternatives?rq=4) - [5](https://github.com/marcelotduarte/cx_Freeze/issues/315)*
+
+
+## Comment compiler le fichier `WebDeck.exe` par vous-même ?
+
+Si vous préférez compiler le fichier `WebDeck.exe` vous-même par mesure de sécurité, même si WebDeck est open source, voici les étapes à suivre :
+
+1. Téléchargez le code source et extrayez-le.
+2. Ouvrez un terminal dans le dossier du code source.
+3. Créez un environnement virtuel :\
+`python -m venv webdeck`\
+`webdeck\Scripts\activate.bat`
+4. Installez les dépendances :\
+`pip install -r requirements.txt`
+5. Effectuez la compilation :\
+`python setup.py build`
+6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pourl'installer: https://stackoverflow.com/a/52963704/17100464.
+7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
+8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
+9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`

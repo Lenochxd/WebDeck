@@ -107,3 +107,22 @@ WebDeck uses `cx_Freeze`, which is the least prone to detection (but was chosen 
 All of this to say that the application is by no means a virus. But there is still another reason. Even if `cx_Freeze` were perfect, virustotal.com could still detect the software as potential malware because WebDeck offers complete customization. You can create buttons that perform various actions, such as shutting down your computer, deleting files, or running macros, for example. While some malicious software may look like this, using keyboard shortcuts to cause harm, that is not the purpose of WebDeck. Here, the user has full control over the actions the software takes on their computer when clicking a button, while the antivirus prefers to think that the software simply has full control over your computer.
 
 *Other sources: [1](https://stackoverflow.com/questions/11860287/why-my-freezed-app-is-detected-as-possible-virus?rq=4) - [2](https://stackoverflow.com/questions/22693665/python-executables-alarms-antivirus?rq=4) - [3](https://stackoverflow.com/questions/23815222/py2exe-detected-as-virus-alternatives?rq=4) - [4](https://stackoverflow.com/questions/48464693/py2exe-detected-as-virus-alternatives?rq=4) - [5](https://github.com/marcelotduarte/cx_Freeze/issues/315)*
+
+
+## Can you compile the `WebDeck.exe` file yourself?
+
+If you prefer to compile the WebDeck.exe file yourself for security reasons, even though WebDeck is open source, here are the steps to follow:
+
+1. Téléchargez le code source et extrayez-le.
+2. Ouvrez un terminal dans le dossier du code source.
+3. Créez un environnement virtuel :\
+`python -m venv webdeck`\
+`webdeck\Scripts\activate.bat`
+4. Installez les dépendances :\
+`pip install -r requirements.txt`
+5. Effectuez la compilation :\
+`python setup.py build`
+6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pourl'installer: https://stackoverflow.com/a/52963704/17100464.
+7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
+8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
+9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
