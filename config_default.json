@@ -24,6 +24,7 @@
         "computer-usage-reload-time": "3000",
         "names-color": "#b3b3b3",
         "show-names": "true",
+        "portrait-rotate": "90",
         "theme": "theme1.css",
         "height": "4",
         "width": "8",
