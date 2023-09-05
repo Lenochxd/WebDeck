@@ -30,6 +30,7 @@ body {
   transition-property: margin-right;
   font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   display: flex;
+  justify-content: center;
 }
 
 #loading-screen {
@@ -74,6 +75,7 @@ div.void {
   flex-wrap: wrap;
 }
 
+
 div.buttons-center {
   display: flex;
   flex-wrap: wrap;
@@ -83,13 +85,23 @@ div.buttons-center {
   border-radius: 20px;
 }
 
-
 div.all-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
   align-items: left;
 }
+
+@media (orientation: portrait) {
+  div.buttons-center {
+    transform: rotate(90deg);
+  }
+  div.all-buttons {
+    width: max-content;
+
+  }
+}
+
 
 div.one-button {
   width: 300px;
