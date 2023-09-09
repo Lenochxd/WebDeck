@@ -6,8 +6,8 @@
                 "day": "09",
                 "month": "09",
                 "year": "2023",
-                "hour": "23",
-                "minute": "00"
+                "hour": "22",
+                "minute": "57"
             },
             "en": {
                 "updates": [
@@ -33,7 +33,7 @@
                     "Nouveau logo de chargement"
                 ],
                 "fixes": [
-                    "Bouton 'Ouvrir' a été réparé pour les fichier .bat"
+                    "Le bouton 'Ouvrir' a été réparé pour les fichier .bat"
                 ],
                 "nobody_cares": [
                     "Ajout du CSS pour le slider (input type range)"
