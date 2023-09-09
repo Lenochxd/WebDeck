@@ -6,6 +6,7 @@
       <title>WebDeck DEV</title>
     {% endif %}
     <link rel="stylesheet" href="static/themes/{{config['front']['theme']}}">
+    <link rel="stylesheet" href="static/files/loading-squares.css">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="icon" href="static\files\icon.ico"/>
     <meta charset="UTF-8">
@@ -53,7 +54,14 @@
   </head>
   <body>
     <div id="loading-screen">
-      <p>Chargement...</p>
+      {# <p>Chargement...</p> #}
+      <div class="loadingspinner">
+        <div id="square1"></div>
+        <div id="square2"></div>
+        <div id="square3"></div>
+        <div id="square4"></div>
+        <div id="square5"></div>
+      </div>
     </div>
 
 
@@ -82,6 +90,9 @@
             background-color: {{random_bg}}!important;
             background-image: none;
           {% endif %}
+        }
+        div.fakeform-container {
+          background-size: 500%;
         }
       {% endif %}
       
@@ -117,7 +128,7 @@
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
       Open folder: 
       {% for folder_id, value in config["front"]["buttons"].items() %}
-        <button class="EditorButtons-Folder" id="" onclick="folder_{{ folder_id }}()">
+        <button class="EditorButtons-Folder" onclick="folder_{{ folder_id }}()">
           {{ folder_id }}
         </button>
       {% endfor %}
@@ -610,6 +621,14 @@
                   <p>Show console</p>
                   <label for="show-console" class="switch">
                     <input class="{{black_theme}}" type="checkbox" id="show-console" name="settings.show-console" {% if config['settings']['show-console'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <div class="setting dev-mode">
+                  <p>Dev mode</p>
+                  <label for="dev-mode" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="dev-mode" name="settings.dev-mode" {% if config['settings']['dev-mode'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -2223,11 +2242,13 @@
         // Calculer la limite de la grande div en fonction de la taille de la petite div
         const maxDivs = maxRows * maxCols;
         const maxWidth = maxCols * smallDivWidth + 10;
+        const maxHeight = maxCols * smallDivHeight + 10;
 
         // Récupérer la grande div et modifier sa largeur avec les marges
         const bigDivs = document.querySelectorAll('[id^="folder-"].buttons-center');
         bigDivs.forEach((bigDiv) => {
           bigDiv.style.maxWidth = `${maxWidth}px`;
+          bigDiv.style.maxHeight = `${maxHeight}px`;
         });
 
         // REDIMENTIONNER LES DIVS POUR S'AJUSTER A LA TAILLE DE L'ECRAN
@@ -2237,13 +2258,13 @@
         try {
           dezoomBtn.addEventListener('click', () => {
             if (swapMode !== 1) {
-              currentZoom = currentZoom - 0.05; // ici tu peux mettre 0.1 si c'est trop long
-              let larg = 100 / currentZoom;
-              let long = 100 / currentZoom;
-              document.body.style.transformOrigin = "left top"; //tu peux changer center top mais après ça marche moins
+              currentZoom = currentZoom - 0.05;
+              let calcWidth = 100 / currentZoom;
+              let calcHeight = 100 / currentZoom;
+              document.body.style.transformOrigin = "left top";
               document.body.style.transform = "scale(" + currentZoom + ")";
-              document.body.style.width = `${larg}%`;
-              document.body.style.height = `${long}%`;
+              document.body.style.width = `${calcWidth}%`;
+              document.body.style.height = `${calcHeight}%`;
             }
           });
         } catch (error) {}
@@ -2251,13 +2272,13 @@
         try {
           zoomBtn.addEventListener('click', () => {
             if (swapMode !== 1) {
-              currentZoom = currentZoom + 0.05; // ici tu peux mettre 0.1 si c'est trop long
-              let larg = 100 / currentZoom;
-              let long = 100 / currentZoom;
+              currentZoom = currentZoom + 0.05;
+              let calcWidth = 100 / currentZoom;
+              let calcHeight = 100 / currentZoom;
               document.body.style.transformOrigin = "left top";
               document.body.style.transform = "scale(" + currentZoom + ")";
-              document.body.style.width = `${larg}%`; //pour etre sur que ça s'adapte à la taille de l'écran
-              document.body.style.height = `${long}%`;
+              document.body.style.width = `${calcWidth}%`;
+              document.body.style.height = `${calcHeight}%`;
             }
           });
         } catch (error) {}
