@@ -48,8 +48,7 @@
                     </div>
                     {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
                   {% elif "url" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
-                            placeholder="https://example.com" >
+                    <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com">
                   {% elif "number" in arg['TYPE'] %}
                     {% set string_list = arg['TYPE'].split(" ") %}
                     {% set number_list = [] %}
@@ -91,7 +90,7 @@
                   <div class="webdeck_foldername_div">
                     <form id="webdeck_foldername_form" novalidate>
                       <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="New folder name" >
-                      <button id="submitButton" type="submit">Create a folder</button>
+                      <button id="submitButton" type="submit">Create folder</button>
                     </form>
                       
                     <script>
@@ -214,7 +213,7 @@
                         </div>
                         {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
                       {% elif "url" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url"
+                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}"
                           placeholder="https://example.com" >
                       {% elif "number" in arg['TYPE'] %}
                         {% set string_list = arg['TYPE'].split(" ") %}
@@ -376,9 +375,16 @@
               <label for="button-text-input_{{arg_modal_ID}}">Button Text:</label>
               <input type="text" id="button-text-input_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
             </div>
-            
           </div>
-          
+
+          {% if config['settings']['dev-mode'].lower() == 'true' %}
+            <div class="editorStyle-bar {{black_theme}}" style="display: none;"></div>
+
+            <div class="arg_container" arg_modal_ID="{{arg_modal_ID}}" style="display: none;">
+              <label for="command_{{arg_modal_ID}}">Command (experimental):</label>
+              <input class="{{black_theme}}" type="text" name="" id="command_{{arg_modal_ID}}" value="{{ command_value['command'] }}" readonly>
+            </div>
+          {% endif %}
           
           <input type="submit" value="Save" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
@@ -440,13 +446,12 @@
               });
               
               imageSizeValue_{{arg_modal_ID}}.addEventListener('keypress', function(event) {
-                  var charCode = event.which ? event.which : event.keyCode;
-              
-                  // Vérifier si le caractère saisi est un chiffre (0-9)
-                  if (charCode < 48 || charCode > 57) {
-                      // Empêcher l'ajout du caractère indésirable
-                      event.preventDefault();
-                  }
+                var charCode = event.which ? event.which : event.keyCode;
+            
+                // Vérifier si le caractère saisi est un chiffre (0-9)
+                if (charCode < 48 || charCode > 57) {
+                    event.preventDefault();
+                }
               });
               
               
@@ -454,6 +459,10 @@
               var buttonBackgroundColorInput_{{arg_modal_ID}} = document.getElementById('background-color-input_{{arg_modal_ID}}');
               var buttonBackgroundColorHex_{{arg_modal_ID}} = document.getElementById('background-color-hex_{{arg_modal_ID}}');
               
+              document.getElementById('command_{{arg_modal_ID}}').addEventListener('input', function() {
+                button_{{arg_modal_ID}}['message'] = this.value;
+              });
+
               buttonBackgroundColorInput_{{arg_modal_ID}}.addEventListener('input', function() {
                 var colorValue = this.value;
                 var hexValue = normalizeHexValue(colorValue);
