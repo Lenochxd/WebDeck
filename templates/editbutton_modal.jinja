@@ -165,9 +165,16 @@
                 <input type="text" id="button-text-input_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
               {% endif %}
             </div>
-            
           </div>
-          
+
+          {% if config['settings']['dev-mode'].lower() == 'true' %}
+            <div class="editorStyle-bar {{black_theme}}"></div>
+
+            <div class="arg_container" edit_modal_ID="{{edit_modal_ID}}">
+              <label for="command_{{edit_modal_ID}}">Command (experimental):</label>
+              <input class="{{black_theme}}" type="text" name="" id="command_{{edit_modal_ID}}" value="{{ button_settings['message'] }}">
+            </div>
+          {% endif %}
           
           <input type="submit" value="Save" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
@@ -229,13 +236,12 @@
             });
             
             imageSizeValue_{{edit_modal_ID}}.addEventListener('keypress', function(event) {
-                var charCode = event.which ? event.which : event.keyCode;
-            
-                // Vérifier si le caractère saisi est un chiffre (0-9)
-                if (charCode < 48 || charCode > 57) {
-                    // Empêcher l'ajout du caractère indésirable
-                    event.preventDefault();
-                }
+              var charCode = event.which ? event.which : event.keyCode;
+          
+              // Vérifier si le caractère saisi est un chiffre (0-9)
+              if (charCode < 48 || charCode > 57) {
+                event.preventDefault();
+              }
             });
             
             
@@ -243,6 +249,10 @@
             var buttonBackgroundColorInput_{{edit_modal_ID}} = document.getElementById('background-color-input_{{edit_modal_ID}}');
             var buttonBackgroundColorHex_{{edit_modal_ID}} = document.getElementById('background-color-hex_{{edit_modal_ID}}');
             
+            document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function() {
+              button_{{edit_modal_ID}}['message'] = this.value;
+            });
+
             buttonBackgroundColorInput_{{edit_modal_ID}}.addEventListener('input', function() {
               var colorValue = this.value;
               var hexValue = normalizeHexValue(colorValue);
