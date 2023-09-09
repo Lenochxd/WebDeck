@@ -1,6 +1,46 @@
 {
     "versions": [
         {
+            "version": "1.5.0",
+            "release_date": {
+                "day": "09",
+                "month": "09",
+                "year": "2023",
+                "hour": "23",
+                "minute": "00"
+            },
+            "en": {
+                "updates": [
+                    "Added the 'Dev mode' setting, allowing to modify the behavior of buttons using the modify button",
+                    "Added 'Play a song' and 'Play a playlist' buttons in the Spotify category"
+                ],
+                "minor_enhancements": [
+                    "New loading logo"
+                ],
+                "fixes": [
+                    "The 'Open' button has been fixed for .bat files"
+                ],
+                "nobody_cares": [
+                    "Added CSS for the slider (input type range)"
+                ]
+            },
+            "fr": {
+                "updates": [
+                    "Ajout du paramètre 'Dev mode' permettant de modifier le comportement des boutons avec le bouton modifier",
+                    "Ajout des boutons 'Jouer une musique' et 'Jouer une playlist' dans la catégorie Spotify"
+                ],
+                "minor_enhancements": [
+                    "Nouveau logo de chargement"
+                ],
+                "fixes": [
+                    "Bouton 'Ouvrir' a été réparé pour les fichier .bat"
+                ],
+                "nobody_cares": [
+                    "Ajout du CSS pour le slider (input type range)"
+                ]
+            }
+        },
+        {
             "version": "1.4.1",
             "release_date": {
                 "day": "01",
@@ -111,7 +151,7 @@
                 "hour": "21",
                 "minute": ""
             },
-            "updated_files":[
+            "updated_files": [
                 "static/files/version.json",
                 "WD_main.exe",
                 "templates/index.jinja",
@@ -163,7 +203,7 @@
                 "hour": "19",
                 "minute": "06"
             },
-            "updated_files":[
+            "updated_files": [
                 "static/files/version.json",
                 "WD_main.exe",
                 "WD_updater.exe",
@@ -173,26 +213,26 @@
             ],
             "deleted_files": [],
             "en": {
-                "updates":[
+                "updates": [
                     "Updates are now automatic by default and can be disabled in the settings."
                 ],
-                "minor_enhancements":[
+                "minor_enhancements": [
                     "Fixed display usage buttons."
                 ],
-                "fixes":[],
-                "nobody_cares":[
+                "fixes": [],
+                "nobody_cares": [
                     "Added separator bars between settings categories for better distinction."
                 ]
             },
             "fr": {
-                "updates":[
+                "updates": [
                     "Les mises à jour sont maintenant automatiques par défaut, désactivable dans les paramètres."
                 ],
-                "minor_enhancements":[
+                "minor_enhancements": [
                     "Boutons d'affichage d'utilisation réparés."
                 ],
-                "fixes":[],
-                "nobody_cares":[
+                "fixes": [],
+                "nobody_cares": [
                     "Ajout de la barre entre les catégories des paramètres pour mieux les distinguer."
                 ]
             }
@@ -209,26 +249,26 @@
             "updated_files": [],
             "deleted_files": [],
             "en": {
-                "updates":[
+                "updates": [
                     "No manual admin launch required anymore.",
                     "Web page link now displayed below the QR code."
                 ],
-                "minor_enhancements":[
+                "minor_enhancements": [
                     "Added 'gpu_method' parameter for better graphics card compatibility."
                 ],
-                "fixes":[
+                "fixes": [
                     "Resolved issue with nircmd.exe launching on certain button clicks and not closing itself properly."
                 ]
             },
             "fr": {
-                "updates":[
+                "updates": [
                     "Plus besoin de lancer en tant qu'administrateur manuellement.",
                     "Le lien de la page web est maintenant affiché sous le QR code."
                 ],
-                "minor_enhancements":[
+                "minor_enhancements": [
                     "Ajout du paramètre 'gpu_method' pour une meilleure compatibilité avec les cartes graphiques."
                 ],
-                "fixes":[
+                "fixes": [
                     "Correction d'un problème avec nircmd.exe qui se lançait à chaque clic avec certains boutons et ne se fermait pas."
                 ]
             }
@@ -245,14 +285,18 @@
             "updated_files": [],
             "deleted_files": [],
             "en": {
-                "updates":["first release"],
-                "minor_enhancements":[],
-                "fixes":[]
+                "updates": [
+                    "first release"
+                ],
+                "minor_enhancements": [],
+                "fixes": []
             },
             "fr": {
-                "updates":["première version"],
-                "minor_enhancements":[],
-                "fixes":[]
+                "updates": [
+                    "première version"
+                ],
+                "minor_enhancements": [],
+                "fixes": []
             }
         }
     ]
