@@ -807,6 +807,58 @@
         }
       ]
     },
+    "Play song": {
+      "command": "/spotify playsong",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Song name",
+          "fr": "Nom de la musique"
+        }
+      ],
+      "name": {
+        "en": "Play a specific music",
+        "fr": "Jouer une musique"
+      },
+      "description": {
+        "en": "Plays specific music from a name (ONLY WITH SPOTIFY PREMIUM)",
+        "fr": "Joue une musique spécifique à partir d'un nom (SEULEMENT AVEC SPOTIFY PRENIUM)"
+      },
+      "style": {
+        "image": "play.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Play the specified sound",
+          "fr": "Jouer le son spécifié"
+        }
+      }
+    },
+    "Play playlist": {
+      "command": "/spotify playplaylist",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Playlist name",
+          "fr": "Nom de la playlist"
+        }
+      ],
+      "name": {
+        "en": "Play a specific playlist",
+        "fr": "Jouer une playlist"
+      },
+      "description": {
+        "en": "Plays specific playlist from a name (ONLY WITH SPOTIFY PREMIUM)",
+        "fr": "Joue une playlist spécifique à partir d'un nom (SEULEMENT AVEC SPOTIFY PRENIUM)"
+      },
+      "style": {
+        "image": "playlist2.png",
+        "image_size": "70%",
+        "name": {
+          "en": "Play the specified playlist",
+          "fr": "Jouer la playlist"
+        }
+      }
+    },
     "Like the played song": {
       "command": "/spotify likesong",
       "args": [],
@@ -819,7 +871,7 @@
         "fr": "Mettre le son actuellement joué sur spotify en favoris"
       },
       "style": {
-        "image": "add-to-playlist5.png",
+        "image": "heart.svg",
         "image_size": "70%",
         "name": {
           "en": "Add song to favorites",
