@@ -98,6 +98,8 @@ def check_json_update(config):
         config['settings']['flask-debug'] = 'true'
     if 'open-settings-in-browser' not in config['settings']:
         config['settings']['open-settings-in-browser'] = 'true'
+    if 'portrait-rotate' not in config['front']:
+        config['front']['portrait-rotate'] = '90'
     return config
 
 config = check_json_update(config)
@@ -113,10 +115,10 @@ else:
     try:
         import pygame
         import pygame._sdl2.audio as sdl2_audio
+        pygame.init()
+        pygame.mixer.init()
     except Exception:
         pass
-    pygame.init()
-    pygame.mixer.init()
 
 
 # def blockPrint():
@@ -1210,9 +1212,19 @@ def send_data(message=None):
         subprocess.Popen(message.replace('/batch', '', 1).strip(), shell=True)
 
     elif message.startswith(('/openfile', '/start')):
-        path = message.replace(
-            '/openfile', '', 1).replace('/start', '', 1).strip()
-        subprocess.Popen(f'start {path}', shell=True)
+        path = message.replace('/openfile', '', 1).replace('/start', '', 1).strip()
+        
+        if ':' in path:
+            initial_path = os.getcwd()
+            try:
+                file_directory = os.path.dirname(path)
+                os.chdir(file_directory)
+                os.startfile(path)
+            finally:
+                os.chdir(initial_path)
+        else:
+            os.startfile(path)
+
 
     elif message.startswith('/locksession'):
         subprocess.Popen('Rundll32.exe user32.dll,LockWorkStation', shell=True)
@@ -1352,6 +1364,28 @@ def send_data(message=None):
         else:
             print("No album currently playing.")
 
+    elif message.startswith('/spotify playsong'):
+        song_name = message.replace('/spotify playsong','').strip()
+        
+        sp = spotipy.Spotify(auth=spotify_token)
+        results = sp.search(song_name, 1, 0, "track")
+        track_uri = results['tracks']['items'][0]['uri']
+        sp.start_playback(uris=[track_uri])
+
+    elif message.startswith('/spotify playplaylist'):
+        playlist_name = message.replace('/spotify playplaylist', '').strip()
+        
+        sp = spotipy.Spotify(auth=spotify_token)
+        playlists = sp.current_user_playlists()  # Récupérer les playlists de l'utilisateur actuel
+        
+        for playlist in playlists['items']:
+            if playlist_name.lower().strip() in playlist['name'].lower().strip():
+                playlist_uri = playlist['uri']
+                sp.start_playback(context_uri=playlist_uri)
+                break
+        else:
+            print(f"Playlist '{playlist_name}' non trouvée.")
+    
     elif message.startswith('/spotify likesong'):
         sp = spotipy.Spotify(auth=spotify_token)
         # Get information about the user's currently playing track
