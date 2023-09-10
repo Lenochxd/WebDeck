@@ -1688,6 +1688,8 @@ def send_data(message=None):
         hwnd = get_focused_window()
         if hwnd:
             close_window(hwnd)
+            subprocess.Popen(f'taskkill /f /im {hwnd}', shell=True)
+            subprocess.Popen(f'taskkill /f /im {hwnd}.exe', shell=True)
 
     # A FIX
     elif message.startswith('/firstplan'):
