@@ -382,7 +382,7 @@
       }
     },
     "Kill a task": {
-      "command": "/kill",
+      "command": "/forceclose",
       "args": [
         {
           "TYPE": "input text-windowsapp",
