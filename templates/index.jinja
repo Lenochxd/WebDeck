@@ -869,7 +869,7 @@
 
 
       {#
-       function loop() {
+      function loop() {
         {% if config['settings']['data-transfer-method'] == 'socket' %}
           socket.emit('message_from_socket', 'loop');
         {% else %}
