@@ -28,6 +28,7 @@
     <script src="/static/files/names-color-setting.js"></script>
     <script src="/static/files/background-setting.js"></script>
     <script src="/static/files/filepath.js"></script>
+    <script src="/static/files/loadingscreen.js"></script>
     {# <script src="/static/files/buttonclick.js"></script> #}
 
     {% set black_theme = '' %}
@@ -1717,16 +1718,6 @@
 
         // =========== EDITORMODE ======== END
 
-
-        var loadingScreen = document.getElementById("loading-screen");
-        setTimeout(function() {
-          loadingScreen.classList.add("hidden");
-          setTimeout(function() {
-            loadingScreen.remove();
-          }, 1000);
-        }, 1000);
-        
-        
 
         // ?modal=show ?config=show
         const urlParams = new URLSearchParams(window.location.search);
