@@ -33,6 +33,10 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 To check the compatibility of your device and browser with WebDeck, you can refer to the  [test table](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). This table details the results of various experiments on different devices and browsers. You can also contribute to the table using https://bishokus.fr/webdeck/test-it
 
+### 💻 Operating System Support
+
+WebDeck currently supports Windows. We plan to develop versions for Linux and macOS in the future. Unfortunately, Wine emulation is not a viable solution for Linux compatibility. We appreciate your patience as we work on expanding our supported platforms.
+
 ## Compilation (Nerds only)
 
 <details>
