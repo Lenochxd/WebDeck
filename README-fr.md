@@ -30,6 +30,10 @@ Le WebDeck est une application Flask qui permet à l'utilisateur de contrôler s
 
 Pour vérifier la compatibilité de votre appareil et navigateur avec WebDeck, vous pouvez consulter le [tableau des tests](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). Celui-ci détaille les résultats de différentes expériences sur divers appareils et navigateurs. Vous pouvez vous aussi contribuer au tableau avec https://bishokus.fr/webdeck/test-it
 
+### 💻 Systèmes d'Exploitation
+
+Le WebDeck prend actuellement en charge Windows. Il est prévu de développer des versions pour Linux et macOS à l'avenir. Malheureusement, l'émulation Wine n'est pas une solution viable pour la compatibilité Linux. Nous vous remercions de votre patience pendant que nous travaillons à étendre nos plates-formes prises en charge.
+
 ## Compilation (Pour les nerds)
 
 <details>
