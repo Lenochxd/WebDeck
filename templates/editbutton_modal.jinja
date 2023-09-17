@@ -42,7 +42,7 @@
                         {% set fill = 'fill:'+ button_settings["color"] +';'+' color:'+ button_settings["color"] +';' %}
                       {% endif %}
                     {% endif %}
-                  {% set class = "button" %}
+                  {% set class = "wd_button" %}
                   {% if button_settings["image"] == "" or not button_settings["image"] %}
                     <button type="button" id="button-element_{{edit_modal_ID}}" class="{{class}}" role="button"
                       style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;
@@ -96,7 +96,7 @@
                         {% elif button_settings["name"][config.settings.language] %}
                           {% set button_name = button_settings["name"][config.settings.language] %}
                         {% elif button_settings["name"]["en"] %}
-                          {% set button_name = button_settings["name"][config.settings.language] %}
+                          {% set button_name = button_settings["name"]["en"] %}
                         {% elif button_settings["name"][0] %}
                           {% set button_name = button_settings["name"][0] %}
                         {% endif %}
@@ -106,7 +106,7 @@
                         {% elif command_value["style"]["name"][config.settings.language] %}
                           {% set button_name = command_value["style"]["name"][config.settings.language] %}
                         {% elif command_value["style"]["name"]["en"] %}
-                          {% set button_name = command_value["style"]["name"][config.settings.language] %}
+                          {% set button_name = command_value["style"]["name"]["en"] %}
                         {% elif command_value["style"]["name"][0] %}
                           {% set button_name = command_value["style"]["name"][0] %}
                         {% endif %}
@@ -116,7 +116,7 @@
                   {# {% endif %} #}
                 
                 {% else %}
-                    <button type="button" class="button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                    <button type="button" class="wd_button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                       <img id="button-image_{{edit_modal_ID}}" draggable="false" alt="" style="
                         width: {{ 112*(50/100) + 3}}px;">
                     </button>
