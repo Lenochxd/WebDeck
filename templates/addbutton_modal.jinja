@@ -290,7 +290,7 @@
                         {% set fill = 'fill:'+ command_value["style"]["color"] +';'+' color:'+ command_value["style"]["color"] +';' %}
                       {% endif %}
                     {% endif %}
-                  {% set class = "button" %}
+                  {% set class = "wd_button" %}
                   {% if command_value["style"]["image"] == "" or not command_value["style"]["image"] %}
                     <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                       <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="
@@ -332,7 +332,7 @@
                         {% elif command_value["style"]["name"][config.settings.language] %}
                           {% set button_name = command_value["style"]["name"][config.settings.language] %}
                         {% elif command_value["style"]["name"]["en"] %}
-                          {% set button_name = command_value["style"]["name"][config.settings.language] %}
+                          {% set button_name = command_value["style"]["name"]["en"] %}
                         {% elif command_value["style"]["name"][0] %}
                           {% set button_name = command_value["style"]["name"][0] %}
                         {% endif %}
@@ -342,7 +342,7 @@
                   {# {% endif %} #}
                 
                 {% else %}
-                    <button type="button" class="button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                    <button type="button" class="wd_button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                       <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="
                         width: {{ 112*(50/100) + 3}}px;">
                     </button>
@@ -583,7 +583,7 @@
                           return value_{{arg_modal_ID}} !== ''; // Filter out empty values
                       });
           
-                      var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}} + ' ' + values_{{arg_modal_ID}}.join(' '); // Concatenate the command and values
+                      var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}} + ' ' + values_{{arg_modal_ID}}.join('<|§|>'); // Concatenate the command and values
           
                       // Reset the form if needed
                       // form_{{arg_modal_ID}}.reset();
