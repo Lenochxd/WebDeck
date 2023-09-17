@@ -129,7 +129,7 @@
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
       Open folder: 
       {% for folder_id, value in config["front"]["buttons"].items() %}
-        <button class="EditorButtons-Folder" onclick="folder_{{ folder_id }}()">
+        <button class="button EditorButtons-Folder" onclick="folder_{{ folder_id }}()">
           {{ folder_id }}
         </button>
       {% endfor %}
@@ -173,7 +173,7 @@
                 <input type="hidden" class="message {{black_theme}}" value="{{ button_config['message'] }}">
                 <div class="checkbox" style="display: none;"></div>
                 
-                {% set class = "button" %}
+                {% set class = "wd_button" %}
                 {% if 'background-color' in config["front"]["buttons"][folder_id][button_id].keys() %}
                   {% set class = class + ' button-'+button_config['background-color'].replace('#','') %}
                 {% endif %}
@@ -331,10 +331,13 @@
 
 
     <div id="EditorButtons" style="display: none; position: fixed; bottom: 16; left: 0;">
-      <button class="" id="SaveExitEditorButton">Save and exit editor mode</button>
-      <button class="" id="exitEditorButton">[E] Don't save and exit</button>
+      <button class="button" id="SaveExitEditorButton">Save and exit editor mode</button>
+      <button class="button" id="exitEditorButton">[E] Don't save and exit</button>
       
-      <button class="" id="swapEditorButton">[S] Swap 2 Buttons</button>
+      <button class="button" id="swapEditorButton">
+        <img src="static/files/images/swap.png">
+        [S] Swap 2 Buttons
+      </button>
     </div>
 
 
@@ -422,7 +425,7 @@
 
           <div class="config-container {{black_theme}}" id="config-container" style="display: block;">
 
-            <button class="modal-button" id="editorButton">[E] Enter editor mode</button>
+            <button class="button modal-button" id="editorButton">[E] Enter editor mode</button>
 
             <form id="config-form" class="config-form">
               <div class="setting-category settings black-theme">
@@ -675,7 +678,7 @@
                         {% if command_value["name"][config.settings.language] %}
                           {% set command_name = command_value["name"][config.settings.language] %}
                         {% elif command_value["name"]["en"] %}
-                          {% set command_name = command_value["name"][config.settings.language] %}
+                          {% set command_name = command_value["name"]["en"] %}
                         {% elif command_value["name"][0] %}
                           {% set command_name = command_value["name"][0] %}
                         {% endif %}
@@ -685,7 +688,7 @@
                         {% if command_value["description"][config.settings.language] %}
                           {% set command_desc = command_value["description"][config.settings.language] %}
                         {% elif command_value["description"]["en"] %}
-                          {% set command_desc = command_value["description"][config.settings.language] %}
+                          {% set command_desc = command_value["description"]["en"] %}
                         {% elif command_value["description"][0] %}
                           {% set command_desc = command_value["description"][0] %}
                         {% endif %}
@@ -710,7 +713,7 @@
                           {% if command_value["name"][config.settings.language] %}
                             {% set command = command_value["name"][config.settings.language] %}
                           {% elif command_value["name"]["en"] %}
-                            {% set command = command_value["name"][config.settings.language] %}
+                            {% set command = command_value["name"]["en"] %}
                           {% elif command_value["name"][0] %}
                             {% set command = command_value["name"][0] %}
                           {% endif %}
@@ -729,7 +732,7 @@
                                 {% if command_value["name"][config.settings.language] %}
                                   {% set command_name = command_value["name"][config.settings.language] %}
                                 {% elif command_value["name"]["en"] %}
-                                  {% set command_name = command_value["name"][config.settings.language] %}
+                                  {% set command_name = command_value["name"]["en"] %}
                                 {% elif command_value["name"][0] %}
                                   {% set command_name = command_value["name"][0] %}
                                 {% endif %}
@@ -739,7 +742,7 @@
                                 {% if command_value["description"][config.settings.language] %}
                                   {% set command_desc = command_value["description"][config.settings.language] %}
                                 {% elif command_value["description"]["en"] %}
-                                  {% set command_desc = command_value["description"][config.settings.language] %}
+                                  {% set command_desc = command_value["description"]["en"] %}
                                 {% elif command_value["description"][0] %}
                                   {% set command_desc = command_value["description"][0] %}
                                 {% endif %}
