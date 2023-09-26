@@ -33,6 +33,33 @@ If you prefer to use a language other than English, you can follow these simple 
 This way, you can customize the application's language according to your linguistic preferences.
 
 
+## How to Connect Your Spotify Account
+
+Follow these simple steps to connect your Spotify account to WebDeck:
+
+1. Log in to your Spotify account on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+
+2. Click the blue "Create app" button to create a new application.
+
+3. Fill out the form as follows:
+   - Name and Description: Optional, write whatever you want.
+   - Redirect URI: Enter `http://localhost:8888/callback`.
+
+4. Check the box to accept the terms of use.
+
+5. Click "Save" to save your application.
+
+6. Once on the homepage, click "Settings" in the right-hand menu.
+
+7. Copy your "Client ID" and click "View client secret" below to also copy the client secret. You will need this information to configure your WebDeck.
+
+8. In your WebDeck, make sure to provide your Spotify username in the "Username" field in the settings, as well as the **Client ID** and **Client Secret**.
+
+9. Save the configuration, and there you go! Your Spotify account is now connected to the application!
+
+Remember to keep your "Client ID" and "Client Secret" secure, as they are required for authenticating your WebDeck application with Spotify.
+
+
 ## How do I reset the application settings?
 
 Resetting the settings is a simple process. Follow these steps:
