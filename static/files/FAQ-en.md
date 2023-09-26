@@ -33,7 +33,7 @@ If you prefer to use a language other than English, you can follow these simple 
 This way, you can customize the application's language according to your linguistic preferences.
 
 
-## How to Connect Your Spotify Account
+## How to connect your Spotify account
 
 Follow these simple steps to connect your Spotify account to WebDeck:
 
