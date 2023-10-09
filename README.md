@@ -4,7 +4,7 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/watchers)
 [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
 [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/issues)
-<a href="https://discord.gg/CK2mu4P">
+<a href="https://discord.gg/tUPsYHAGfm">
   <img src="https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield" alt="Discord Shield">
 </a>
 
@@ -129,7 +129,7 @@ https://buymeacoffee.com/bishokus
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to open an issue on GitHub, submit a pull request with your upgrades, or if you're not a nerd, contact me elsewhere:
 
 Discord: Lenoch\
-Discord Server: https://discord.gg/CK2mu4P \
+Discord Server: https://discord.gg/tUPsYHAGfm \
 Twitter: https://twitter.com/LenochJ \
 Email (?): contact.lenoch@gmail.com
 
