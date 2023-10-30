@@ -108,10 +108,10 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
       🎨 Logo and color design
     </td>
     <td align="center">
-      📈 Math, beta testing, and <a href="https://bishokus.fr/wdt">bishokus.fr/wdt</a> enjoyer
+      📈 Maths, beta testing, and <a href="https://bishokus.fr/wdt">bishokus.fr/wdt</a> enjoyer
     </td>
     <td align="center">
-      ➗ Math (volume modification function)
+      ➗ Maths (volume modification function)
     </td>
     <td align="center">
       🤓 Everything else
