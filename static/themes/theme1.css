@@ -22,6 +22,7 @@ html, body {
   overflow: hidden;
   font-family: "Lato", sans-serif;
   background-color: rgb(20,20,20);
+  margin: inherit;
 }
 
 body {
@@ -51,6 +52,11 @@ body {
 #loading-screen.hidden {
   opacity: 0;
   pointer-events: none;
+}
+#loading-screen::before {
+  /* preload checked.svg */
+  content: url(/static/files/images/checked.svg);
+  opacity: 0;
 }
 
 
@@ -806,11 +812,27 @@ input::placeholder {
   flex-direction: row;
 }
 
-
 #swapEditorButton {
+  display: flex;
   position: fixed;
   bottom: 16;
   right: 16;
+}
+
+#EditorButtonLogo {
+  margin-right: 5px;
+}
+
+#SaveExitEditorButton {
+  display: inline-flex;
+  margin-right: 5px;
+}
+
+#EditorButtons {
+  display: none;
+  position: fixed;
+  bottom: 16;
+  left: 0;
 }
 
 div.swapMode-open-folder {
