@@ -330,12 +330,15 @@
     {% endfor %}
 
 
-    <div id="EditorButtons" style="display: none; position: fixed; bottom: 16; left: 0;">
-      <button class="button" id="SaveExitEditorButton">Save and exit editor mode</button>
-      <button class="button" id="exitEditorButton">[E] Don't save and exit</button>
+    <div id="EditorButtons">
+      <button class="button" id="SaveExitEditorButton">
+        <img src="static/files/images/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
+        [E] Save and exit
+      </button>
+      <button class="button" id="exitEditorButton">[Q] Quit without saving</button>
       
       <button class="button" id="swapEditorButton">
-        <img src="static/files/images/swap.png">
+        <img src="static/files/images/swap.png" width="20" height="20" id="EditorButtonLogo">
         [S] Swap 2 Buttons
       </button>
     </div>
@@ -1267,7 +1270,7 @@
             for (let i = 0; i < deleteButtonElements.length; i++) {
                 deleteButtonElements[i].style.display = editorMode === 0 ? 'none' : 'flex';
             }
-            EditorButtons.style.display = editorMode === 0 ? 'none' : 'block';
+            EditorButtons.style.display = editorMode === 0 ? 'none' : 'flex';
             EditorButtonsFolders.style.display = editorMode === 0 ? 'none' : 'block';
         }
         function hideEditorPartially() {
@@ -1334,7 +1337,7 @@
               editorMode = 0;
               swapMode = 0;
               showEditorPartially()
-              swapEditorButton.textContent = '[S] Swap 2 Buttons'
+              swapEditorButton.childNodes[2].nodeValue = '[S] Swap 2 Buttons'
               swapFirstBtn = 0;
               swapSecondBtn = 0;
               swapChanges = []
@@ -1348,78 +1351,100 @@
         // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
         const exitEditorButton = document.getElementById('exitEditorButton');
         exitEditorButton.addEventListener('click', function () {
-          if (ifModif === 1) {
-            console.log(`swapChanges ${swapChanges}`);
-            // while (swapChanges.length > 0) {
-            //   console.log(swapChanges.length);
-            //   undoSwap()
-            // }
-            location.reload();
-          }
+          editorMode = editorMode === 0 ? 1 : 0;
+            toggleEditorMode();
+            editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+            console.log('La valeur de editorMode a été modifiée :', editorMode);
+            if (editorMode === 1) {
+              fetch('/get_config')
+                .then(function (response) {
+                  let tempEditorConfig = {}; // Déclarer tempEditorConfig
+                  if (response.ok) {
+                    return response.json();
+                  } else {
+                    throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                  }
+                })
+                .then(function (configData) {
+                  // Utilisez les données de configuration retournées
+                  tempEditorConfig = configData; // Stockez les données JSON dans la variable "configData"
+                })
+                .catch(function (error) {
+                  // Gérez les erreurs ici
+                  console.error(error);
+                });
+            } else {
+              if (ifModif === 1) {
+                console.log(`swapChanges ${swapChanges}`);
+                // while (swapChanges.length > 0) {
+                //   console.log(swapChanges.length);
+                //   undoSwap()
+                // }
+                location.reload();
+              }
+              swapEditorButtonFunction()
+              editorMode = 0;
+              toggleEditorMode();
+              editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+              console.log('La valeur de editorMode a été modifiée :', editorMode);
+            }
+        });
+      
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton SaveExitEditorButton
+        function SaveExitEditor() {
           editorMode = 0;
           swapMode = 0;
           showEditorPartially()
-          swapEditorButton.textContent = '[S] Swap 2 Buttons'
+          swapEditorButtonFunction()
+          swapEditorButton.childNodes[2].nodeValue = '[S] Swap 2 Buttons'
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           swapChanges = []
           console.log(`swapChanges: ${swapChanges}`);
           toggleEditorMode();
-          editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+          if (ifModif === 1 || swapChanges.length !== 0) {
+              fetch('/save_buttons_only', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(tempEditorConfig)
+              })
+              .then(function(response) {
+                  if (response.ok) {
+                      // Le serveur a enregistré les données avec succès
+                      return response.json();
+                  } else {
+                      // Le serveur a retourné une erreur
+                      throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                  }
+              })
+              .then(function(response) {
+                  if (response.success) {
+                      // Le serveur a enregistré les données avec succès
+                      alert('Les paramètres ont été enregistrés avec succès.');
+                      location.reload();
+                  } else {
+                      // Le serveur a retourné une erreur
+                      alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                  }
+              })
+              .catch(function(error) {
+                  // Une erreur s'est produite
+                  alert(error.message);
+              });
+          }
           console.log('La valeur de editorMode a été modifiée :', editorMode);
-        });
-      
-        // Ajouter un gestionnaire d'événements pour le clic sur le bouton SaveExitEditorButton
+        }
+
         const SaveExitEditorButton = document.getElementById('SaveExitEditorButton');
         SaveExitEditorButton.addEventListener('click', function () {
-            editorMode = 0;
-            swapMode = 0;
-            showEditorPartially()
-            swapEditorButtonFunction()
-            swapEditorButton.textContent = '[S] Swap 2 Buttons'
-            swapFirstBtn = 0;
-            swapSecondBtn = 0;
-            swapChanges = []
-            console.log(`swapChanges: ${swapChanges}`);
-            toggleEditorMode();
-            if (ifModif === 1 || swapChanges.length !== 0) {
-                fetch('/save_buttons_only', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(tempEditorConfig)
-                })
-                .then(function(response) {
-                    if (response.ok) {
-                        // Le serveur a enregistré les données avec succès
-                        return response.json();
-                    } else {
-                        // Le serveur a retourné une erreur
-                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                    }
-                })
-                .then(function(response) {
-                    if (response.success) {
-                        // Le serveur a enregistré les données avec succès
-                        alert('Les paramètres ont été enregistrés avec succès.');
-                        location.reload();
-                    } else {
-                        // Le serveur a retourné une erreur
-                        alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
-                    }
-                })
-                .catch(function(error) {
-                    // Une erreur s'est produite
-                    alert(error.message);
-                });
-            }
-            console.log('La valeur de editorMode a été modifiée :', editorMode);
+          SaveExitEditor();
         });
         // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
         function swapEditorButtonFunction(event) {
           swapMode = swapMode === 0 ? 1 : 0;
-          swapEditorButton.textContent = swapMode === 0 ? '[S] Swap 2 Buttons' : '[S] Stop Swap Mode';
+          swapEditorButton.childNodes[2].nodeValue = swapMode === 0 ? '[S] Swap 2 Buttons' : '[S] Stop Swap Mode';
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           console.log('La valeur de swapMode a été modifiée :', swapMode);
@@ -1427,7 +1452,7 @@
           var checkboxDivs = document.querySelectorAll('div.checkbox');
           var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
           if (editorMode === 1 && swapMode === 1) {
-            swapEditorButton.textContent = '[S] Stop Swap Mode';
+            swapEditorButton.childNodes[2].nodeValue = '[S] Stop Swap Mode';
             hideEditorPartially()
             // afficher swapMode-open-folder
             for (var i = 0; i < openFolderDivs.length; i++) {
@@ -1456,7 +1481,7 @@
               }
             }
           } else {
-            swapEditorButton.textContent = '[S] Swap 2 Buttons';
+            swapEditorButton.childNodes[2].nodeValue = '[S] Swap 2 Buttons';
             swapMode = 0;
             showEditorPartially()
 
@@ -1616,16 +1641,18 @@
 
         document.addEventListener('keydown', function(event) {
           if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0 && document.getElementById('modal-container').style.opacity !== '1') {
-            
             if (event.key === 'e') {
+              SaveExitEditor();
+            }
+            if (event.key === 'q') {
               editorMode = editorMode === 0 ? 1 : 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+              editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Quit editor mode';
               console.log('La valeur de editorMode a été modifiée :', editorMode);
               if (editorMode === 1) {
                 fetch('/get_config')
                   .then(function (response) {
-                    let tempEditorConfig = {}; // Déclarer tempEditorConfig
+                    let tempEditorConfig = {};
                     if (response.ok) {
                       return response.json();
                     } else {
@@ -1634,10 +1661,9 @@
                   })
                   .then(function (configData) {
                     // Utilisez les données de configuration retournées
-                    tempEditorConfig = configData; // Stockez les données JSON dans la variable "configData"
+                    tempEditorConfig = configData; // Stocker les données JSON dans la variable "configData"
                   })
                   .catch(function (error) {
-                    // Gérez les erreurs ici
                     console.error(error);
                   });
               } else {
