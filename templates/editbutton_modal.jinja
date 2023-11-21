@@ -249,9 +249,11 @@
             var buttonBackgroundColorInput_{{edit_modal_ID}} = document.getElementById('background-color-input_{{edit_modal_ID}}');
             var buttonBackgroundColorHex_{{edit_modal_ID}} = document.getElementById('background-color-hex_{{edit_modal_ID}}');
             
-            document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function() {
-              button_{{edit_modal_ID}}['message'] = this.value;
-            });
+            {% if config['settings']['dev-mode'].lower() == 'true' %}
+              document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function() {
+                button_{{edit_modal_ID}}['message'] = this.value;
+              });
+            {% endif %}
 
             buttonBackgroundColorInput_{{edit_modal_ID}}.addEventListener('input', function() {
               var colorValue = this.value;
