@@ -15,6 +15,9 @@
             "CLIENT_ID": "",
             "CLIENT_SECRET": "",
             "USERNAME": ""
+        },
+        "soundboard": {
+            "vbcable": "cable input"
         }
     },
     "front": {
