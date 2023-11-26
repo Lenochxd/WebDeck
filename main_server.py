@@ -1,7 +1,6 @@
 # Standard library imports
 import time
 import threading
-import asyncio
 import subprocess
 import shutil
 import copy
@@ -12,6 +11,7 @@ import json
 import urllib.request
 import zipfile
 import os
+import importlib
 
 # Third-party library imports
 import requests
@@ -44,9 +44,12 @@ from win10toast import ToastNotifier
 import tkinter as tk
 from tkinter import filedialog
 import sounddevice as sd
+import soundfile as sf
 import psutil
 import GPUtil
 import pynvml
+import pygame
+import pygame._sdl2.audio as sdl2_audio
 
 # Numerical and scientific libraries
 import numpy as np
@@ -60,6 +63,9 @@ import math
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 os.add_dll_directory(os.getcwd())
+
+pygame.init()
+pygame.mixer.init()
 
 new_user = False
 if not os.path.exists("config.json"):
@@ -106,26 +112,59 @@ config = check_json_update(config)
 with open('config.json', 'w', encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
 
-    
-if config["settings"]["mp3_method"] == "vlc":
-    try:
-        import vlc
-    except: pass
-else:
-    try:
-        import pygame
-        import pygame._sdl2.audio as sdl2_audio
-        pygame.init()
+def get_device(device_name, capture_devices: bool = False) -> tuple[str, ...]:
+    init_by_me = not pygame.mixer.get_init()
+    if init_by_me:
         pygame.mixer.init()
-    except Exception:
-        pass
+    devices = tuple(sdl2_audio.get_audio_device_names(capture_devices))
+    if init_by_me:
+        pygame.mixer.quit()
+    for d in devices:
+        if device_name in d.lower():
+            device = d
+    return device
 
+def soundboard_play_default(file_path: str, volume=1.0):
+    print(f"Play: {file_path}\r\nDevice: {device}")
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.set_volume(volume)
+    pygame.mixer.music.play()
 
-# def blockPrint():
-#    sys.stdout = open(os.devnull, 'w')
-#
-# def enablePrint():
-#    sys.stdout = sys.__stdout__
+temp_audio = {}
+def soundboard_play_cable(file_path, device_name, volume=1.0):
+    global temp_audio
+    if temp_audio.get(f"{file_path};{volume}") is None:
+        data, fs = sf.read(file_path, dtype='float32')
+        data *= volume  # Adjust volume
+        temp_audio[f'{file_path};{volume}'] = {
+            'data': data,
+            'fs': fs
+        }
+    else:
+        data, fs = temp_audio[f'{file_path};{volume}']['data'], temp_audio[f'{file_path};{volume}']['fs']
+    sd.play(data, fs, device=device_name)
+    sd.wait()
+
+vbcable_device = config['settings']['soundboard']['vbcable']
+def playsound(file_path: str, sound_volume, ear_soundboard=True):
+    global vbcable_device
+    
+    if ear_soundboard:
+        soundboard_play_default(file_path, volume=sound_volume)
+        devices = sd.query_devices()
+        cable_input_devices = [device["name"] for device in devices if "cable input" in device["name"].lower()]
+
+        if cable_input_devices:
+            cable_input_device = cable_input_devices[0]
+            soundboard_play_cable(file_path, cable_input_device, volume=sound_volume)
+        else:
+            print("Aucun périphérique correspondant à 'cable input' n'a été trouvé.")
+        
+        pygame.mixer.quit()
+        pygame.mixer.init()
+    else:
+        playsound_device(file_path, sound_volume, vbcable_device)
+
 
 def should_i_close():
     if getattr(sys, 'frozen', False):
@@ -721,8 +760,12 @@ def utility_functions():
 
     return dict(mdebug=print_in_console)
 
+dict_func = {}
+all_func = {}
 @app.route("/")
 def home():
+    global all_func
+
     should_i_close()
 
     with open('config.json', encoding="utf-8") as f:
@@ -731,9 +774,23 @@ def home():
         commands = json.load(f)
     with open('static/files/version.json', encoding="utf-8") as f:
         versions = json.load(f)
-    is_exe = False
-    if getattr(sys, 'frozen', False):
-        is_exe = True
+    is_exe = bool(getattr(sys, 'frozen', False))
+    
+    
+    folder_path = "./addons"
+
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.py'):
+                module_path = os.path.join(root, file)
+                module_name = os.path.splitext(os.path.relpath(module_path, folder_path).replace(os.sep, '.'))[0]
+                module = importlib.import_module(f'addons.{module_name}')
+
+                dict_doc, dict_func, addon_name = module.WebDeckAddon._dict_doc, module.WebDeckAddon._dict_func, module.WebDeckAddon._addon_name
+                all_func[addon_name] = dict_func
+                dict_doc = {x:y._to_dict() for x,y in dict_doc.items()}
+                commands[addon_name] = dict_doc
+
 
     random_bg = "//"
     if str(config["front"]["background"]) in ["", [''], []]:
@@ -1085,6 +1142,10 @@ def kill_nircmd():
         pass
     
 def send_data(message=None):
+    global all_func
+    
+    message = message.replace('<|§|>', ' ')
+    
     try: os.remove('temp/mic-temp')
     except: pass
     
@@ -1102,70 +1163,26 @@ def send_data(message=None):
     elif message.startswith('/playsound '):
         if "v=" in message:
             sound_file = re.search(r'/playsound (.+?) v=', message).group(1)
-            percentage = message.replace(sound_file, '').replace(
-                '/playsound ', '').replace(' v=', '').replace('', '')
+            percentage = message.replace(sound_file, '').replace('/playsound ', '').replace(' v=', '').replace('', '')
             sound_volume = float(percentage) / 100
-
         else:
             sound_file = message.replace('/playsound ', '')
-            sound_volume = float(100) / 100  # max volume (default)
+            sound_volume = float(50) / 100  # mid volume (default)
 
-        if not ":" in sound_file:
-            # si il est stoque directement dans static/files/sounds et pas dans C:\example
+        if all(substring not in sound_file for substring in [":", "static/files/sounds/", "static\\files\\sounds\\"]):
+            # si il est stocké directement dans static/files/sounds et pas dans C:\example
             sound_file = f"static/files/sounds/{sound_file}"
+        
+        ear_soundboard = config['settings']["ear-soundboard"].lower() == "true"
+        playsound(sound_file, sound_volume, ear_soundboard)
+            
 
-        if config['settings']["ear-soundboard"].lower() == "true":
-            if "v=" in message:
-                sound_file = re.search(
-                    r'/playsound (.+?) v=', message).group(1)
-                percentage = message.replace(sound_file, '').replace(
-                    '/playsound ', '').replace(' v=', '').replace('', '')
-                sound_volume = float(percentage) / 100
-            else:
-                sound_file = message.replace('/playsound ', '')
-                sound_volume = float(100) / 100  # max volume (default)
-
-            if not ":" in sound_file:
-                sound_file = "static/files/sounds/" + sound_file
-
-            if config["settings"]["mp3_method"] == "vlc":
-
-                try:
-                    player = vlc.MediaPlayer(sound_file)
-                    player.audio_set_volume(int(percentage))
-                    player.play()
-                except Exception as e:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(
-                        exc_tb.tb_frame.f_code.co_filename)[1]
-                    print(
-                        f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
-                    print("ERROR:      ", e)
-                    print("ERROR LINE: ", exc_tb.tb_lineno)
-                    print2("Error while loading MP3 file named " + sound_file)
-            else:
-                try:
-                    pygame.mixer.music.load(sound_file)
-                    pygame.mixer.music.play()
-                    pygame.mixer.music.set_volume(sound_volume)
-                except Exception as e:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(
-                        exc_tb.tb_frame.f_code.co_filename)[1]
-                    print(
-                        f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
-                    print("ERROR:      ", e)
-                    print("ERROR LINE: ", exc_tb.tb_lineno)
-                    print2("Error while loading MP3 file named " + sound_file)
-
-        asyncio.run(playsound(sound_file, sound_volume))
 
     elif message.startswith('/playlocalsound '):
 
         if "v=" in message:
             sound_file = re.search(r'/playsound (.+?) v=', message).group(1)
-            percentage = message.replace(sound_file, '').replace(
-                '/playsound ', '').replace(' v=', '').replace('', '')
+            percentage = message.replace(sound_file, '').replace('/playsound ', '').replace(' v=', '').replace('', '')
             sound_volume = float(percentage) / 100
         else:
             sound_file = message.replace('/playsound ', '')
@@ -1179,15 +1196,13 @@ def send_data(message=None):
                     player = vlc.MediaPlayer(sound_file)
                 else:
                     # si il est stoque directement dans static/files/sounds
-                    player = vlc.MediaPlayer(
-                        "static/files/sounds/" + sound_file)
+                    player = vlc.MediaPlayer("static/files/sounds/" + sound_file)
                 player.audio_set_volume(int(percentage))
                 player.play()
             except Exception as e:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(
-                    f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
+                print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
                 print("ERROR:      ", e)
                 print("ERROR LINE: ", exc_tb.tb_lineno)
                 print2("Error while loading MP3 file named " + sound_file)
@@ -1199,8 +1214,7 @@ def send_data(message=None):
             except Exception as e:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(
-                    f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
+                print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
                 print("ERROR:      ", e)
                 print("ERROR LINE: ", exc_tb.tb_lineno)
                 print2("Error while loading MP3 file named " + sound_file)
@@ -1280,7 +1294,6 @@ def send_data(message=None):
         subprocess.Popen('cmd /c "echo off | clip"', shell=True)
 
     elif message.startswith('/write '):
-        
         keyboard2.write(message.replace('/write ', ''))
 
     elif message.startswith('/writeandsend '):
@@ -1752,41 +1765,12 @@ def socketio_connect():
     
 @socketio.on('message_from_socket')
 def send_data_socketio(message):
-     return send_data(message=message)
+    return send_data(message=message)
 
 @app.route('/send-data', methods=['POST'])
 def send_data_route():
     return send_data(message=request.get_json()["message"])
 
-
-async def playsound(sound_file, sound_volume):
-    def get_devices(capture_devices: bool = False) -> tuple[str, ...]:
-        init_by_me = not pygame.mixer.get_init()
-        if init_by_me:
-            pygame.mixer.init()
-        devices = tuple(sdl2_audio.get_audio_device_names(capture_devices))
-        if init_by_me:
-            pygame.mixer.quit()
-        for d in devices:
-            if "virtual cable" in d.lower():
-                device = d
-        return device
-
-    def play(file_path: str, device=None):
-        if device is None:
-            device = get_devices()
-        print("Play: {}\r\nDevice: {}".format(file_path, device))
-        pygame.mixer.init(devicename=device)
-        pygame.mixer.music.load(file_path)
-        pygame.mixer.music.play()
-        pygame.mixer.music.set_volume(sound_volume)
-        try:
-            while True:
-                sleep(0.1)
-        except KeyboardInterrupt:
-            pass
-        pygame.mixer.quit()
-    play(sound_file)
 
 try:
     os.remove('temp/mic-temp')
@@ -1852,9 +1836,96 @@ def auto_closing_loop():
         should_i_close()
         time.sleep(5)
 
-threading.Thread(target=auto_closing_loop, daemon=True).start()
-threading.Thread(target=check_for_updates_loop, daemon=True).start()
+# mic to vbcable
+def soundboard():
+    audio = pyaudio.PyAudio()
+    num_devices = audio.get_device_count()
+    
+    # Recherche du microphone par son nom
+    microphone_name = "Fifine"
+    # output_name = "CABLE Input"
+    output_name = "cable input"
+    mic_index = None
+    output_device = None
+    
+    for i in range(audio.get_device_count()):
+        device_info = audio.get_device_info_by_index(i)
+        if device_info['maxInputChannels'] > 0 and microphone_name.lower() in device_info['name'].lower():
+            mic_index = i
+            break
+    
+    for i in range(audio.get_device_count()):
+        device_info = audio.get_device_info_by_index(i)
+        if device_info['maxOutputChannels'] > 0 and output_name.lower() in device_info['name'].lower():
+            output_device = i
+            break
+    
+    if mic_index is None:
+        print("Impossible de trouver le microphone.")
+    else:
+        print(f"Microphone '{microphone_name}' found at index {mic_index}")
+    
+    if output_device is None:
+        print("Impossible de trouver les haut-parleurs.")
+    else:
+        print(f"Speaker '{output_name}' found at index {output_device}")
+    
+    stream_in = None
+    stream_out = None
+    
+    input_device_info = audio.get_device_info_by_index(mic_index)
+    input_channels = input_device_info['maxInputChannels']
+    
+    output_device_info = audio.get_device_info_by_index(output_device)
+    output_channels = input_device_info['maxInputChannels']
+    
+    print(f"i: {input_device_info}")
+    print(f"o: {output_device_info}")
+    
+    stream_in = audio.open(format=pyaudio.paInt16,
+                            channels=input_channels,
+                            rate=44100,
+                            input=True,
+                            input_device_index=mic_index)
+    
+    stream_out = audio.open(format=pyaudio.paInt16,
+                            channels=input_channels,
+                            rate=44100,
+                            output=True,
+                            output_device_index=output_device)
+    
+    print("soundboard: ON")
+    soundboard_on = True
+    
+    try:
+        while True:
+            data = stream_in.read(1024)
+            stream_out.write(data)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print("Arrêt de la soundboard.")
+    
+        if stream_in is not None:
+            stream_in.stop_stream()
+            stream_in.close()
+    
+        if stream_out is not None:
+            stream_out.stop_stream()
+            stream_out.close()
+    
+        audio.terminate()
+    
+auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
+check_for_updates_loop_thread = threading.Thread(target=check_for_updates_loop, daemon=True)
+soundboard_thread = threading.Thread(target=soundboard, daemon=True)
+
+auto_closing_loop_thread.start()
+check_for_updates_loop_thread.start()
+soundboard_thread.start()
+
+
 flask_debug = False
 if config['settings']['flask-debug'] == 'true':
     flask_debug = True
-socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=flask_debug)
+socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=flask_debug, use_reloader=False)
