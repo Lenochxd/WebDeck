@@ -125,7 +125,7 @@ def get_device(device_name, capture_devices: bool = False) -> tuple[str, ...]:
     return device
 
 def soundboard_play_default(file_path: str, volume=1.0):
-    print(f"Play: {file_path}\r\nDevice: {device}")
+    print(f"Play: {file_path}\r\n")
     pygame.mixer.music.load(file_path)
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play()
