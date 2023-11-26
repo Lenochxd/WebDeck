@@ -700,9 +700,9 @@
         "fr": "Jouer un son"
       },
       "style": {
+        "image": "volume-up.svg",
+        "image_size": "75%",
         "name": {
-          "image": "volume-up.svg",
-          "image_size": "75%",
           "en": "Soundboard",
           "fr": "Jouer le son"
         }
