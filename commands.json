@@ -30,7 +30,7 @@
       "style": {
         "image": "reload.png",
         "image_size": "50%",
-        "name":  {
+        "name": {
           "en": "Reload",
           "fr": "Recharger la page"
         }
@@ -385,7 +385,7 @@
       "command": "/forceclose",
       "args": [
         {
-          "TYPE": "input text-windowsapp",
+          "TYPE": "input path-windowsapp",
           "en": "Task (app.exe)",
           "fr": "Tache (app.exe)"
         }
@@ -405,7 +405,7 @@
       "command": "/restart",
       "args": [
         {
-          "TYPE": "input text-windowsapp",
+          "TYPE": "input path-windowsapp",
           "en": "Task (app.exe)",
           "fr": "Tache (app.exe)"
         }
@@ -682,6 +682,26 @@
           "en": "Clear clipboard",
           "fr": "Supprime tout le presse-papier"
         }
+      }
+    }
+  },
+  "Soundboard": {
+    "command": "/forceclose",
+    "args": [
+      {
+        "TYPE": "input path-mp3_file",
+        "en": "Audio file (.mp3)",
+        "fr": "Fichier audio (.mp3)"
+      }
+    ],
+    "name": {
+      "en": "Play a sound",
+      "fr": "Jouer un son"
+    },
+    "style": {
+      "name": {
+        "en": "Soundboard",
+        "fr": "Jouer le son"
       }
     }
   },
