@@ -64,8 +64,10 @@
                         {% endif %}
                       {% endif %}
                     {% endfor %}
-                  {% elif "text-windowsapp" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
+                  {% elif "path-windowsapp" in arg['TYPE'] %}
+                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe">
+                  {% elif "path-mp3_file" in arg['TYPE'] %}
+                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".mp3">
                   {% elif "longtext" in arg['TYPE'] %}
                     <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
                   {% elif "text" in arg['TYPE'] %}
@@ -213,8 +215,7 @@
                         </div>
                         {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
                       {% elif "url" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}"
-                          placeholder="https://example.com" >
+                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com" >
                       {% elif "number" in arg['TYPE'] %}
                         {% set string_list = arg['TYPE'].split(" ") %}
                         {% set number_list = [] %}
@@ -230,7 +231,7 @@
                             {% endif %}
                           {% endif %}
                         {% endfor %}
-                      {% elif "text-windowsapp" in choice['TYPE'] %}
+                      {% elif "path-windowsapp" in choice['TYPE'] %}
                         <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
                       {% elif "longtext" in choice['TYPE'] %}
                         <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33"></textarea>
