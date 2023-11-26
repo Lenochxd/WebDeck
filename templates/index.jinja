@@ -330,7 +330,7 @@
     {% endfor %}
 
 
-    <div id="EditorButtons">
+    <div id="EditorButtons" style="display: none;">
       <button class="button" id="SaveExitEditorButton">
         <img src="static/files/images/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
         [E] Save and exit
@@ -1141,10 +1141,21 @@
                 const formIndex = parseInt(formNumber) - 1;
                 console.log(`${parentId} > ${formNumber}`);
       
-                console.log(tempEditorConfig.front); // JSP POURQUOI MAIS sans ce console.log ça fonctionne pas (???????????)
-                tempEditorConfig['front']['buttons'][parentId][formNumber] = {
-                    "VOID": "VOID"
-                };
+                try {
+                  console.log(tempEditorConfig.front); // JSP POURQUOI MAIS sans ce console.log ça fonctionne pas (???????????)
+                  tempEditorConfig['front']['buttons'][parentId][formNumber] = {
+                      "VOID": "VOID"
+                  };
+                } catch (error) {
+                  console.error(error)
+                  get_config();
+                  tempEditorConfig = config;
+
+                  console.log(tempEditorConfig.front); // JSP POURQUOI MAIS sans ce console.log ça fonctionne pas (???????????)
+                  tempEditorConfig['front']['buttons'][parentId][formNumber] = {
+                      "VOID": "VOID"
+                  };
+                }
       
                 closest_form.parentNode.replaceChild(voidDiv, closest_form);
       
