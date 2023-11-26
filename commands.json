@@ -686,24 +686,26 @@
     }
   },
   "Soundboard": {
-    "command": "/forceclose",
-    "args": [
-      {
-        "TYPE": "input path-mp3_file",
-        "en": "Audio file (.mp3)",
-        "fr": "Fichier audio (.mp3)"
-      }
-    ],
-    "name": {
-      "en": "Play a sound",
-      "fr": "Jouer un son"
-    },
-    "style": {
+    "Soundboard": {
+      "command": "/playsound",
+      "args": [
+        {
+          "TYPE": "input path-mp3_file",
+          "en": "Audio file (.mp3)",
+          "fr": "Fichier audio (.mp3)"
+        }
+      ],
       "name": {
-        "image": "volume-up.svg",
-        "image_size": "75%",
-        "en": "Soundboard",
-        "fr": "Jouer le son"
+        "en": "Play a sound",
+        "fr": "Jouer un son"
+      },
+      "style": {
+        "name": {
+          "image": "volume-up.svg",
+          "image_size": "75%",
+          "en": "Soundboard",
+          "fr": "Jouer le son"
+        }
       }
     }
   },
