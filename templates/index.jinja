@@ -1317,7 +1317,7 @@
         editorButton.addEventListener('click', function () {
             editorMode = editorMode === 0 ? 1 : 0;
             toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+            editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
             console.log('La valeur de editorMode a été modifiée :', editorMode);
             if (editorMode === 1) {
                 fetch('/get_config')
@@ -1354,7 +1354,7 @@
               swapChanges = []
               console.log(`swapChanges: ${swapChanges}`);
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+              editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
         });
@@ -1364,7 +1364,7 @@
         exitEditorButton.addEventListener('click', function () {
           editorMode = editorMode === 0 ? 1 : 0;
             toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+            editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
             console.log('La valeur de editorMode a été modifiée :', editorMode);
             if (editorMode === 1) {
               fetch('/get_config')
@@ -1396,7 +1396,7 @@
               swapEditorButtonFunction()
               editorMode = 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+              editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
         });
@@ -1689,7 +1689,7 @@
                 swapEditorButtonFunction()
                 editorMode = 0;
                 toggleEditorMode();
-                editorButton.textContent = editorMode === 0 ? '[E] Enter editor mode' : '[E] Exit editor mode';
+                editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
                 console.log('La valeur de editorMode a été modifiée :', editorMode);
               }
             }
