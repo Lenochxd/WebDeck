@@ -865,8 +865,6 @@
       const wakeLock = async () => {
         try {
           const wakeLock = await navigator.wakeLock.request('screen');
-          console.log('Écran verrouillé');
-          alert('cool');
           
           // wakeLock.release();
         } catch (err) {}
