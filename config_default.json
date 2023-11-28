@@ -7,7 +7,6 @@
         "flask-debug": "true",
         "ear-soundboard": "true",
         "gpu_method": "nvidia (pynvml)",
-        "mp3_method": "vlc",
         "show-console": "false",
         "open-settings-in-browser": "true",
         "data-transfer-method": "http",
@@ -17,6 +16,7 @@
             "USERNAME": ""
         },
         "soundboard": {
+            "mic_input_device": "",
             "vbcable": "cable input"
         }
     },
