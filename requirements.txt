@@ -2,7 +2,6 @@ flask
 flask_socketio
 Flask-Minify
 gevent
-python-vlc==3.0.18121
 pygame==2.1.3.dev8
 win10toast
 keyboard==0.13.5
