@@ -106,11 +106,45 @@ def check_json_update(config):
         config['settings']['open-settings-in-browser'] = 'true'
     if 'portrait-rotate' not in config['front']:
         config['front']['portrait-rotate'] = '90'
+    if 'soundboard' not in config['settings']:
+        config['settings']['soundboard'] = {
+            "mic_input_device": "",
+            "vbcable": "cable input"
+        }
+    if 'mic_input_device' not in config['settings']['soundboard']:
+        config['settings']['soundboard']['mic_input_device'] = ""
+    if 'vbcable' not in config['settings']['soundboard']:
+        config['settings']['soundboard']['vbcable'] = "cable input"
     return config
 
 config = check_json_update(config)
 with open('config.json', 'w', encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
+
+def select_audio_device(hostapi=0):
+    p = pyaudio.PyAudio()
+    all_devices = []
+
+    try:
+        for i in range(p.get_device_count()):
+            device_info = p.get_device_info_by_index(i)
+            
+            # Vérifier si le périphérique est un périphérique d'entrée actif
+            if device_info['maxInputChannels'] > 0 and device_info['hostApi'] == hostapi:
+                ok = True
+                for device in all_devices:
+                    if device[device.find('(') + 1:] in device_info['name'][device_info['name'].find('(') + 1:]:
+                        ok = False
+                if ok:
+                    print(f"Appareil {i}: {device_info['name']}")
+                    all_devices.append(device_info['name'])
+        print(f"ALL: {len(all_devices)}")
+        print(p.get_default_output_device_info())
+    except Exception as e:
+        print(f"Une erreur s'est produite : {str(e)}")
+    finally:
+        p.terminate()
+    return all_devices
 
 def get_device(device_name, capture_devices: bool = False) -> tuple[str, ...]:
     init_by_me = not pygame.mixer.get_init()
@@ -409,7 +443,7 @@ with open('colors.json', 'r', encoding="utf-8") as f:
     try:
         data = json.load(f)
     except Exception:
-        copyfile("static/files/colorsbcp.json", "colors.json")
+        shutil.copyfile("static/files/colorsbcp.json", "colors.json")
         with open('colors.json', 'r', encoding="utf-8") as f:
             data = json.load(f)
 
@@ -449,6 +483,7 @@ for filename in os.listdir("static/files/images"):
 
 
 app = Flask(__name__)
+app.jinja_env.globals.update(select_audio_device=select_audio_device)
 if getattr(sys, 'frozen', False):
     Minify(app=app, html=True, js=True, cssless=True)
 app.config['SECRET_KEY'] = 'secret!'
