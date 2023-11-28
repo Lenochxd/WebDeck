@@ -1175,11 +1175,8 @@ def send_data(message=None):
         
         ear_soundboard = config['settings']["ear-soundboard"].lower() == "true"
         playsound(sound_file, sound_volume, ear_soundboard)
-            
-
 
     elif message.startswith('/playlocalsound '):
-
         if "v=" in message:
             sound_file = re.search(r'/playsound (.+?) v=', message).group(1)
             percentage = message.replace(sound_file, '').replace('/playsound ', '').replace(' v=', '').replace('', '')
@@ -1187,37 +1184,17 @@ def send_data(message=None):
         else:
             sound_file = message.replace('/playsound ', '')
             sound_volume = float(100) / 100  # max volume (default)
-
-        if config["settings"]["mp3_method"] == "vlc":
-
-            try:
-                if ":" in sound_file:
-                    # si le son a un emplacement custom (ex: C:\son.mp3)
-                    player = vlc.MediaPlayer(sound_file)
-                else:
-                    # si il est stoque directement dans static/files/sounds
-                    player = vlc.MediaPlayer("static/files/sounds/" + sound_file)
-                player.audio_set_volume(int(percentage))
-                player.play()
-            except Exception as e:
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
-                print("ERROR:      ", e)
-                print("ERROR LINE: ", exc_tb.tb_lineno)
-                print2("Error while loading MP3 file named " + sound_file)
-        else:
-            try:
-                pygame.mixer.music.load(sound_file)
-                pygame.mixer.music.play()
-                pygame.mixer.music.set_volume(sound_volume)
-            except Exception as e:
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
-                print("ERROR:      ", e)
-                print("ERROR LINE: ", exc_tb.tb_lineno)
-                print2("Error while loading MP3 file named " + sound_file)
+        try:
+            pygame.mixer.music.load(sound_file)
+            pygame.mixer.music.set_volume(sound_volume)
+            pygame.mixer.music.play()
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
+            print("ERROR:      ", e)
+            print("ERROR LINE: ", exc_tb.tb_lineno)
+            print2("Error while loading MP3 file named " + sound_file)
 
     elif message.startswith('/exec'):
         exec(message.replace('/exec', '').strip())
