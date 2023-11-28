@@ -491,15 +491,6 @@
                     </li>
                   </ul>
                 </div>
-
-                
-                <div class="setting ear-soundboard">
-                  <p>Ear Soundboard</p>
-                  <label for="ear-soundboard" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
-                    <span class="slider round"></span>
-                  </label>
-                </div>
                 
               </div>
               
@@ -573,6 +564,29 @@
                 </div>
               </div>
 
+              <div class="setting-category soundboard black-theme">
+                <h1 class="config-title">Soundboard</h1>
+
+                  <div class="setting mic_input_device">
+                    <label for="mic_input_device">Input device</label>
+                    <select id="mic_input_device" name="settings.mic_input_device">
+                      {% set audio_devices = select_audio_device() %}
+                      {% for device in audio_devices %}
+                        <option value="{{device}}" {% if config['settings']['soundboard']['mic_input_device'].lower() == device.lower() %}selected{% endif %}>{{device}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="setting ear-soundboard">
+                    <p>Ear Soundboard</p>
+                    <label for="ear-soundboard" class="switch">
+                      <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+
+              </div>
+
               <div class="setting-category experimental black-theme">
                 <h1 class="config-title">Experimental</h1>
                 
@@ -605,14 +619,6 @@
                     <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'amd' %}selected{% endif %}>AMD (doesn't work)</option>
                     <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel (lmao)</option>
                     <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}>None</option>
-                  </select>
-                </div>
-                
-                <div class="setting mp3_method">
-                  <label for="mp3_method">MP3 method (if "ear soundboard" does not work)</label>
-                  <select id="mp3_method" name="settings.mp3_method">
-                    <option value="vlc" {% if config['settings']['mp3_method'].lower() == 'vlc' %}selected{% endif %}>VLC</option>
-                    <option value="pygame" {% if config['settings']['mp3_method'].lower() == 'pygame' %}selected{% endif %}>Pygame</option>
                   </select>
                 </div>
                 
