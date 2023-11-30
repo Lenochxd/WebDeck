@@ -27,66 +27,11 @@
                 {% set arg_name = "arg_name is missing!" %}
               {% endif %}
               {% if "input" in arg['TYPE'] %}
-                
                 <div class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                   
                   <label for="{{ arg_name }}_{{arg_modal_ID}}">{{ arg_name }}:</label>
-                  {% if "webdeck_foldername" in arg['TYPE'] %}
-                    <!-- lister tous les dossiers -->
-                    <div class="webdeck_foldername_ALL">
-                      {% for key in config["front"]["buttons"] %}
-                        <div class="webdeck_foldername">
-                          <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
-                          <label for="{{ key }}">{{ key }}</label>
-                        </div>
-                      {% endfor %}
-                    </div>
-                  {% elif "file" in arg['TYPE'] %}
-                    <div class="filepath">
-                      <button class="filepath">Select your file</button>
-                      <input type="text" class="filepath {{black_theme}}" placeholder="No file chosen"></input>
-                    </div>
-                    {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
-                  {% elif "url" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com">
-                  {% elif "number" in arg['TYPE'] %}
-                    {% set string_list = arg['TYPE'].split(" ") %}
-                    {% set number_list = [] %}
-                    {% for i in string_list %}
-                      {% if i.startswith('number') %}
-                        {% set number_list = eval(i.replace('number', '')) %}
-                        {% set min = number_list[0] %}
-                        {% set max = number_list[1] %}
-                        {% if min.startswith('-') or max.startswith('-') %}
-                          <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
-                        {% else %}
-                          <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
-                        {% endif %}
-                      {% endif %}
-                    {% endfor %}
-                  {% elif "path-windowsapp" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe">
-                  {% elif "path-mp3_file" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="file" name="{{file}}" accept=".mp3">
-                  {% elif "longtext" in arg['TYPE'] %}
-                    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
-                  {% elif "text" in arg['TYPE'] %}
-                    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
-                  {% elif "dropdown" in arg['TYPE'] %}
-                    {# lister toutes les options #}
-                    <select name="{{file}}" >
-                      {% for option in arg['options'] %}
-                        {% if option[config.settings.language] %}
-                          {% set option_name = option[config.settings.language] %}
-                        {% elif arg["en"] %}
-                          {% set option_name = option["en"] %}
-                        {% else %}
-                          {% set option_name = "option_name is missing!" %}
-                        {% endif %}
-                        <option value="{{ option['ID'] }}"> {{ option_name }} </option>
-                      {% endfor %}
-                    </select>
-                  {% endif %}
+                  {% include 'args.jinja' %}
+
                 </div>
                 {% if "webdeck_foldername" in arg['TYPE'] %}
                   <div class="webdeck_foldername_div">
@@ -198,60 +143,7 @@
                     
                     <div style="display: none;" class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                       {# <h2> {{ choice_name }} </h2> #}
-                      {% if "webdeck_foldername" in arg['TYPE'] %}
-                        {# lister tous les dossiers #}
-                        <div class="webdeck_foldername_ALL">
-                          {% for key in config["front"]["buttons"] %}
-                            <div class="webdeck_foldername">
-                              <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
-                              <label for="{{ key }}">{{ key }}</label>
-                            </div>
-                          {% endfor %}
-                        </div>
-                      {% elif "file" in choice['TYPE'] %}
-                        <div class="filepath">
-                          <button class="filepath">Select your file</button>
-                          <input type="text" class="filepath {{black_theme}}" placeholder="No file chosen"></input>
-                        </div>
-                        {# <input class="{{black_theme}}" type="file" name="{{file}}" > #}
-                      {% elif "url" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com" >
-                      {% elif "number" in arg['TYPE'] %}
-                        {% set string_list = arg['TYPE'].split(" ") %}
-                        {% set number_list = [] %}
-                        {% for i in string_list %}
-                          {% if i.startswith('number') %}
-                            {% set number_list = eval(i.replace('number', '')) %}
-                            {% set min = number_list[0] %}
-                            {% set max = number_list[1] %}
-                            {% if min.startswith('-') or max.startswith('-') %}
-                              <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
-                            {% else %}
-                              <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                      {% elif "path-windowsapp" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="file" name="{{file}}" accept=".exe" >
-                      {% elif "longtext" in choice['TYPE'] %}
-                        <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33"></textarea>
-                      {% elif "text" in choice['TYPE'] %}
-                        <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
-                      {% elif "dropdown" in choice['TYPE'] %}
-                        {# lister toutes les options #}
-                        <select name="{{file}}" >
-                          {% for option in choice['options'] %}
-                            {% if option[config.settings.language] %}
-                              {% set option_name = option[config.settings.language] %}
-                            {% elif choice["en"] %}
-                              {% set option_name = option["en"] %}
-                            {% else %}
-                              {% set option_name = "option_name is missing!" %}
-                            {% endif %}
-                            <option value="{{ option['ID'] }}"> {{ option_name }} </option>
-                          {% endfor %}
-                        </select>
-                      {% endif %}
+                      {% include 'args.jinja' %}
                     </div>
                   {% endfor %}
                 </div>
