@@ -32,6 +32,37 @@ If you prefer to use a language other than English, you can follow these simple 
 
 This way, you can customize the application's language according to your linguistic preferences.
 
+## How to Set Up My Soundboard?
+
+Follow these steps to configure the application's soundboard:
+
+1. **Install VB-CABLE Driver:**
+   - Download the driver from [this link](https://download.vb-audio.com/Download_CABLE/VBCABLE_Driver_Pack43.zip).
+   - Unzip the downloaded file.
+   - Run `VBCABLE_Setup_x64.exe`.
+   - Click on "Install Driver".
+   - Restart your computer.
+
+2. **Configure Webdeck Settings:**
+   - Open the webdeck settings.
+   - Scroll down to the "Soundboard" section.
+   - Select the appropriate input microphone.
+   - Choose "CABLE Input (VB-Audio Virtual Cable)" as the output.
+
+3. **Configure External Software Settings:**
+   - Open the settings of the software where you want to use the soundboard and make sure to select "CABLE Output (VB-Audio Virtual Cable)" as the microphone input.
+
+4. **Discord Configuration:**
+   - If you are using the soundboard on Discord, disable the "Automatic Gain Control" feature in "Settings > Voice & Video".
+   - Note that the use of noise suppression may result in distorted sound quality.
+
+5. **Add Sounds:**
+   - Add a button with the Q key.
+   - Go to the "Soundboard" section, then "Play a sound".
+   - Import your audio file **in MP3 format**.
+
+You have now successfully configured the application's soundboard. Press the associated button to play your sound.
+
 
 ## How to connect your Spotify account
 
@@ -117,26 +148,13 @@ As a developer, you have the option to customize the CSS of the page according t
 Once these steps are completed, you can select your own theme in the settings. You will have the freedom to modify the CSS as needed and customize the appearance of the page to your liking. You can even share your `.css` file with other users if you wish.
 
 
-## Why is WebDeck detected as malware/trojan on virustotal.com?
+## Why is WebDeck detected as malware by my antivirus?
 
-Don't worry, WebDeck is obviously NOT a malicious application. There are several reasons for its detection as malware by the `Jiangmin` antivirus on virustotal.com.
-
-Firstly, it's essential to understand that before being an .exe file, an application is initially written using a programming language understandable by a computer. In the case of WebDeck, this language is Python. The process of transforming a .py file into a .exe file can be done using three main software, but they all have one problem: regardless of the application's purpose, it can be identified as a potential malware by some antivirus programs.
-
-- `PyInstaller`: 18 / 69 antivirus detected viruses.
-- `py2exe`: 4 / 68 antivirus detected viruses.
-- `cx_Freeze`: 1 / 68 antivirus detected viruses.
-
-*Source: [Stack Overflow](https://stackoverflow.com/questions/67702280/why-are-executable-created-from-python-scripts-detected-as-viruses)*
-
-WebDeck uses `cx_Freeze`, which is the least prone to detection (but was chosen by chance). However, all these tools work similarly: the final .exe file runs a modified version of the .py file, allowing the software to run. Unfortunately, some antivirus programs fail to make the connection between these files, seeing only that one .exe file opens another, which can potentially be interpreted as malicious activity by the antivirus.
-
-All of this to say that the application is by no means a virus. But there is still another reason. Even if `cx_Freeze` were perfect, virustotal.com could still detect the software as potential malware because WebDeck offers complete customization. You can create buttons that perform various actions, such as shutting down your computer, deleting files, or running macros, for example. While some malicious software may look like this, using keyboard shortcuts to cause harm, that is not the purpose of WebDeck. Here, the user has full control over the actions the software takes on their computer when clicking a button, while the antivirus prefers to think that the software simply has full control over your computer.
-
-*Other sources: [1](https://stackoverflow.com/questions/11860287/why-my-freezed-app-is-detected-as-possible-virus?rq=4) - [2](https://stackoverflow.com/questions/22693665/python-executables-alarms-antivirus?rq=4) - [3](https://stackoverflow.com/questions/23815222/py2exe-detected-as-virus-alternatives?rq=4) - [4](https://stackoverflow.com/questions/48464693/py2exe-detected-as-virus-alternatives?rq=4) - [5](https://github.com/marcelotduarte/cx_Freeze/issues/315)*
+I have no idea, but it's open source, so if you're concerned about malicious code, feel free to check it yourself.\
+But don't worry, WebDeck is obviously NOT a malicious application.
 
 
-## Can you compile the `WebDeck.exe` file yourself?
+## Can I compile the `WebDeck.exe` file yourself?
 
 If you prefer to compile the WebDeck.exe file yourself for security reasons, even though WebDeck is open source, here are the steps to follow:
 
