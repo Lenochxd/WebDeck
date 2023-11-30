@@ -72,6 +72,7 @@
                       box-shadow: {{button_settings['background-color']}} 0 1px 3px 0;
                     {% endif %}
                     ">
+                      {% if isfile(imagelink) %}
                         {% if imagelink.endswith('.svg') %}
                           {{ open(imagelink).read().replace('<svg','<svg id="button-image_' + edit_modal_ID + '" style="width:' + str(112*(int(button_settings["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(button_settings["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
                         {% else %}
@@ -80,6 +81,7 @@
                             {{fill}}"
                           >
                         {% endif %}
+                      {% endif %}
                       
                     </button>
                   {% endif %}
