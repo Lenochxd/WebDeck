@@ -134,7 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById("create-image-bg").addEventListener('change', function() {
+    document.getElementById("create-image-bg").addEventListener("change", upload_file);
+    var uploadFileElements = document.querySelectorAll(".upload-file");
+    uploadFileElements.forEach(function(element) {
+        element.addEventListener("change", upload_file);
+    });
+
+    function upload_file(_event) {
         var input = this;
         
         if (input.files && input.files[0]) {
@@ -249,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(input.files[0]);
 
         }
-    });
+    }
 
     var deleteButtons = document.querySelectorAll(".choose-bg-delete-button");
     
