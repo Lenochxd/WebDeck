@@ -262,13 +262,15 @@
                   {% endif %}
                   
                   <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      {% if imagelink.endswith('.svg') %}
-                        {{ open(imagelink).read().replace('<svg ','<svg style="width:' + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
-                      {% else %}
-                        <img src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
-                          width: {{ 112 * (int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) / 100) + 3 }}px;
-                          {{fill}}"
-                        >
+                      {% if isfile(imagelink) %}
+                        {% if imagelink.endswith('.svg') %}
+                          {{ open(imagelink).read().replace('<svg ','<svg style="width:' + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
+                        {% else %}
+                          <img src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
+                            width: {{ 112 * (int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) / 100) + 3 }}px;
+                            {{fill}}"
+                          >
+                        {% endif %}
                       {% endif %}
                     
                     <!--|||||||||||||||||||||||-->
@@ -569,10 +571,32 @@
 
                   <div class="setting mic_input_device">
                     <label for="mic_input_device">Input device</label>
-                    <select id="mic_input_device" name="settings.mic_input_device">
+                    <select id="mic_input_device" name="settings.soundboard.mic_input_device">
                       {% set audio_devices = select_audio_device() %}
                       {% for device in audio_devices %}
-                        <option value="{{device}}" {% if config['settings']['soundboard']['mic_input_device'].lower() == device.lower() %}selected{% endif %}>{{device}}</option>
+                        {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
+                        {% if not device.endswith(')') and '(' in device %}
+                          {% set device = device + "..." %}
+                        {% endif %}
+                        <option value="{{device.replace('...','')}}" {% if mic_input_device[mic_input_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
+                          {{device}}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  
+                  <div class="setting mic_output_device">
+                    <label for="mic_output_device">Output device (vbcable)</label>
+                    <select id="mic_output_device" name="settings.soundboard.vbcable">
+                      {% set audio_devices = select_audio_device('output') %}
+                      {% for device in audio_devices %}
+                        {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
+                        {% if not device.endswith(')') and '(' in device %}
+                          {% set device = device + "..." %}
+                        {% endif %}
+                        <option value="{{device.replace('...','')}}" {% if mic_output_device[mic_output_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
+                          {{device}}
+                        </option>
                       {% endfor %}
                     </select>
                   </div>
