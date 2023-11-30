@@ -309,6 +309,70 @@
         }
       }
     },
+    "Shutdown PC": {
+      "command": "/PCshutdown",
+      "args": [],
+      "name": {
+        "en": "Shutdown PC",
+        "fr": "Éteindre l'ordinateur"
+      },
+      "style": {
+        "image": "",
+        "image_size": "70%",
+        "name": {
+          "en": "Shutdown PC",
+          "fr": "Éteindre l'ordinateur"
+        }
+      }
+    },
+    "Restart PC": {
+      "command": "/PCrestart",
+      "args": [],
+      "name": {
+        "en": "Restart PC",
+        "fr": "Redémarrer l'ordinateur"
+      },
+      "style": {
+        "image": "",
+        "image_size": "70%",
+        "name": {
+          "en": "Restart PC",
+          "fr": "Redémarrer l'ordinateur"
+        }
+      }
+    },
+    "Sleep PC": {
+      "command": "/PCsleep",
+      "args": [],
+      "name": {
+        "en": "Sleep PC",
+        "fr": "Mettre en veille l'ordinateur"
+      },
+      "style": {
+        "image": "",
+        "image_size": "70%",
+        "name": {
+          "en": "Sleep PC",
+          "fr": "Entrer en veille"
+        }
+      }
+    },
+    "Hibernate PC": {
+      "command": "/PChibernate",
+      "args": [],
+      "name": {
+        "en": "Hibernate PC",
+        "fr": "Mettre en veille prolongée l'ordinateur"
+      },
+      "style": {
+        "image": "",
+        "image_size": "70%",
+        "name": {
+          "en": "Hibernate PC",
+          "fr": "Veille prolongée"
+        }
+      }
+    },
     "ScreenSaver": {
       "command": "/screensaver",
       "args": [
@@ -690,9 +754,14 @@
       "command": "/playsound",
       "args": [
         {
-          "TYPE": "input path-mp3_file",
+          "TYPE": "input path-soundboard-audio",
           "en": "Audio file (.mp3)",
           "fr": "Fichier audio (.mp3)"
+        },
+        {
+          "TYPE": "input number['1','100']",
+          "en": "Audio volume (0-100%)",
+          "fr": "Volume audio (0-100%)"
         }
       ],
       "name": {
