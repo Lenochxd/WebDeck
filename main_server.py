@@ -121,7 +121,7 @@ config = check_json_update(config)
 with open('config.json', 'w', encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
 
-def select_audio_device(hostapi=0):
+def select_audio_device(channels_type='input'):
     p = pyaudio.PyAudio()
     all_devices = []
 
@@ -129,15 +129,20 @@ def select_audio_device(hostapi=0):
         for i in range(p.get_device_count()):
             device_info = p.get_device_info_by_index(i)
             
+            if channels_type == 'input':
+                channels = device_info['maxInputChannels']
+            else:
+                channels = device_info['maxOutputChannels']
             # Vérifier si le périphérique est un périphérique d'entrée actif
-            if device_info['maxInputChannels'] > 0 and device_info['hostApi'] == hostapi:
+            if channels > 0 and device_info['hostApi'] == 0:
                 ok = True
                 for device in all_devices:
                     if device[device.find('(') + 1:] in device_info['name'][device_info['name'].find('(') + 1:]:
                         ok = False
-                if ok:
+                if ok and not "microsoft - input" in device_info['name'].lower():
                     print(f"Appareil {i}: {device_info['name']}")
                     all_devices.append(device_info['name'])
+        del ok
         print(f"ALL: {len(all_devices)}")
         print(p.get_default_output_device_info())
     except Exception as e:
@@ -159,7 +164,7 @@ def get_device(device_name, capture_devices: bool = False) -> tuple[str, ...]:
     return device
 
 def soundboard_play_default(file_path: str, volume=1.0):
-    print(f"Play: {file_path}\r\n")
+    print(f"Play: {file_path}  -  volume:{volume}\r\n")
     pygame.mixer.music.load(file_path)
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play()
@@ -301,7 +306,7 @@ def update_gridsize(config, new_height, new_width):
                         folder.pop(-1)
 
 
-                            
+
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # we need to be able to remove à row even if theres no row full of voids.
         # and I DON'T KNOW how to do that I need help
@@ -312,8 +317,8 @@ def update_gridsize(config, new_height, new_width):
         
         # if the width has increased
         if new_width > old_width:
-            
-            
+
+
             difference = new_width - old_width
             new_matrix = matrix
             for count, _ in enumerate(range(difference), start=1):
@@ -324,13 +329,13 @@ def update_gridsize(config, new_height, new_width):
                         # else:
                         new_matrix[folder_count][row_count].append({"VOID": "VOID"})
             matrix = new_matrix
-            
-            
+
+
         if new_width < old_width:
             difference = old_width - new_width
             print('width decreased')
             for count, _ in enumerate(range(difference), start=1):
-                for folder_count, folder in enumerate(matrix):
+                for folder in matrix:
                     for col_count in range(len(folder[0])):
                         if all(folder[row_count][-col_count-1] == {"VOID": "VOID"} for row_count in range(len(folder))):
                             for row_count in range(len(folder)):
@@ -338,7 +343,7 @@ def update_gridsize(config, new_height, new_width):
                             break
                     else:
                         element_to_del = 0
-                        for row_count, row in enumerate(folder):
+                        for row in folder:
                             element_to_del += 1
                             for element_count, element in enumerate(row):
                                 if element == {"VOID": "VOID"}:
@@ -346,7 +351,7 @@ def update_gridsize(config, new_height, new_width):
                                     element_to_del -= 1
                                     if element_to_del==0: break
                         if element_to_del>0:
-                            for row_count, row in enumerate(folder):
+                            for row in folder:
                                 for element_count, element in enumerate(row):
                                     if element == {"VOID": "VOID"} :
                                         row.pop(element_count)
@@ -842,10 +847,11 @@ def home():
         for file_name in os.listdir("static/themes/")
         if file_name.endswith(".css")
     ]
+    
     return render_template("index.jinja",
                             config=config, themes=themes, commands=commands, versions=versions,
                             biggest_folder=biggest_folder["name"], is_exe=is_exe, langs=['en','fr'], random_bg=random_bg,
-                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open
+                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open, isfile=os.path.isfile
                             )
 
 
@@ -856,14 +862,6 @@ def update_config():
         config_json = json.load(f)
     return render_template("config.html", config=config_json)
 
-@app.route("/temp")
-def temp():
-    return render_template("temp.html",str=str)
-
-
-@app.route("/scratch")
-def scratch():
-    return render_template("scratch.html")
 
 def print_dict_differences(dict1, dict2):
     diff = DeepDiff(dict1, dict2, ignore_order=True)
@@ -1133,6 +1131,7 @@ def upload_filepath():
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
+    print(request.files)
     if 'image' not in request.files:
         return jsonify({'success': False, 'message': 'Aucune image trouvée'})
 
@@ -1195,14 +1194,16 @@ def send_data(message=None):
         sys.exit("/exit received")
 
 
+        
     elif message.startswith('/playsound '):
-        if "v=" in message:
-            sound_file = re.search(r'/playsound (.+?) v=', message).group(1)
-            percentage = message.replace(sound_file, '').replace('/playsound ', '').replace(' v=', '').replace('', '')
+        message = message.replace('C:\\fakepath\\', '').replace('/playsound ', '')
+        percentage = message[message.rfind(' ') + 1:].replace(' ','')
+        try: 
             sound_volume = float(percentage) / 100
-        else:
-            sound_file = message.replace('/playsound ', '')
+            sound_file = message.replace('/playsound ', '').replace(percentage, '')
+        except:
             sound_volume = float(50) / 100  # mid volume (default)
+            sound_file = message.replace('/playsound ', '')
 
         if all(substring not in sound_file for substring in [":", "static/files/sounds/", "static\\files\\sounds\\"]):
             # si il est stocké directement dans static/files/sounds et pas dans C:\example
@@ -1212,13 +1213,15 @@ def send_data(message=None):
         playsound(sound_file, sound_volume, ear_soundboard)
 
     elif message.startswith('/playlocalsound '):
-        if "v=" in message:
-            sound_file = re.search(r'/playsound (.+?) v=', message).group(1)
-            percentage = message.replace(sound_file, '').replace('/playsound ', '').replace(' v=', '').replace('', '')
+        message = message.replace('C:\\fakepath\\', '').replace('/playlocalsound ', '')
+        percentage = message[message.rfind(' ') + 1:].replace(' ','')
+        try: 
             sound_volume = float(percentage) / 100
-        else:
-            sound_file = message.replace('/playsound ', '')
-            sound_volume = float(100) / 100  # max volume (default)
+            sound_file = message.replace('/playlocalsound ', '').replace(percentage, '')
+        except:
+            sound_volume = float(50) / 100  # mid volume (default)
+            sound_file = message.replace('/playlocalsound ', '')
+            
         try:
             pygame.mixer.music.load(sound_file)
             pygame.mixer.music.set_volume(sound_volume)
@@ -1252,6 +1255,18 @@ def send_data(message=None):
             os.startfile(path)
 
 
+    elif message.startswith('/PCshutdown'):
+        subprocess.Popen('shutdown /s /f /t 0', shell=True)
+    
+    elif message.startswith('/PCrestart'):
+        subprocess.Popen('shutdown /r /f /t 0', shell=True)
+    
+    elif message.startswith('/PCsleep'):
+        subprocess.Popen('rundll32.exe powrprof.dll,SetSuspendState 0,1,0', shell=True)
+    
+    elif message.startswith('/PChibernate'):
+        subprocess.Popen('shutdown /h /t 0', shell=True)
+    
     elif message.startswith('/locksession'):
         subprocess.Popen('Rundll32.exe user32.dll,LockWorkStation', shell=True)
 
@@ -1276,7 +1291,7 @@ def send_data(message=None):
     elif message.startswith('/restartexplorer'):
         subprocess.Popen('taskkill /f /im explorer.exe', shell=True)
         time.sleep(0.5)
-        os.startfile('explorer.exe')
+        subprocess.Popen('explorer.exe', shell=True)
         hwnd = get_window_by_name('explorer.exe')
         if hwnd:
             close_window(hwnd)
@@ -1853,10 +1868,10 @@ def soundboard():
     audio = pyaudio.PyAudio()
     num_devices = audio.get_device_count()
     
-    # Recherche du microphone par son nom
-    microphone_name = "Fifine"
-    # output_name = "CABLE Input"
-    output_name = "cable input"
+    mic_input_device = config['settings']['soundboard']['mic_input_device']
+    microphone_name = mic_input_device[mic_input_device.find("(") + 1:]
+    mic_output_device = config['settings']['soundboard']['vbcable']
+    output_name = mic_output_device[mic_output_device.find("(") + 1:]
     mic_index = None
     output_device = None
     
