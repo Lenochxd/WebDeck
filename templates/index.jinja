@@ -567,47 +567,58 @@
               </div>
 
               <div class="setting-category soundboard black-theme">
-                <h1 class="config-title">Soundboard</h1>
+                <div class="settings-title-info">
+                  <h1 class="config-title">Soundboard</h1>
+                  {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard" %}
+                  {% if config.settings.language == "fr" %}
+                    {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-ma-soundboard-" %}
+                  {% endif %}
+                  <a href="{{soundboard_info}}" target="_blank">
+                      <!-- source: https://phosphoricons.com/ -->
+                      {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                  </a>
+                </div>
 
-                  <div class="setting mic_input_device">
-                    <label for="mic_input_device">Input device</label>
-                    <select id="mic_input_device" name="settings.soundboard.mic_input_device">
-                      {% set audio_devices = select_audio_device() %}
-                      {% for device in audio_devices %}
-                        {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
-                        {% if not device.endswith(')') and '(' in device %}
-                          {% set device = device + "..." %}
-                        {% endif %}
-                        <option value="{{device.replace('...','')}}" {% if mic_input_device[mic_input_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
-                          {{device}}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </div>
+
+                <div class="setting mic_input_device">
+                  <label for="mic_input_device">Input device</label>
+                  <select id="mic_input_device" name="settings.soundboard.mic_input_device">
+                    {% set audio_devices = select_audio_device() %}
+                    {% for device in audio_devices %}
+                      {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
+                      {% if not device.endswith(')') and '(' in device %}
+                        {% set device = device + "..." %}
+                      {% endif %}
+                      <option value="{{device.replace('...','')}}" {% if mic_input_device[mic_input_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
+                        {{device}}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
                   
-                  <div class="setting mic_output_device">
-                    <label for="mic_output_device">Output device (vbcable)</label>
-                    <select id="mic_output_device" name="settings.soundboard.vbcable">
-                      {% set audio_devices = select_audio_device('output') %}
-                      {% for device in audio_devices %}
-                        {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
-                        {% if not device.endswith(')') and '(' in device %}
-                          {% set device = device + "..." %}
-                        {% endif %}
-                        <option value="{{device.replace('...','')}}" {% if mic_output_device[mic_output_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
-                          {{device}}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </div>
+                <div class="setting mic_output_device">
+                  <label for="mic_output_device">Output device (vbcable)</label>
+                  <select id="mic_output_device" name="settings.soundboard.vbcable">
+                    {% set audio_devices = select_audio_device('output') %}
+                    {% for device in audio_devices %}
+                      {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
+                      {% if not device.endswith(')') and '(' in device %}
+                        {% set device = device + "..." %}
+                      {% endif %}
+                      <option value="{{device.replace('...','')}}" {% if mic_output_device[mic_output_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
+                        {{device}}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
 
-                  <div class="setting ear-soundboard">
-                    <p>Ear Soundboard</p>
-                    <label for="ear-soundboard" class="switch">
-                      <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
+                <div class="setting ear-soundboard">
+                  <p>Ear Soundboard</p>
+                  <label for="ear-soundboard" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
 
               </div>
 
