@@ -385,25 +385,34 @@
                 return value;
               }
           
-              document.getElementById('image-input_{{arg_modal_ID}}').addEventListener('change', function() {
-                  var input_{{arg_modal_ID}} = this;
+              
+              function file_input_change(fileInputID) {
+                  console.log('1');
+                  var input_{{arg_modal_ID}} = document.getElementById(fileInputID);
+
+                  console.log(input_{{arg_modal_ID}}.files);
           
                   if (input_{{arg_modal_ID}}.files && input_{{arg_modal_ID}}.files[0]) {
+                      console.log('2');
                       var reader_{{arg_modal_ID}} = new FileReader();
           
                       reader_{{arg_modal_ID}}.onloadend = function() {
+                          console.log('3');
                           image_{{arg_modal_ID}}.setAttribute('src', reader_{{arg_modal_ID}}.result);
           
                           var formData_{{arg_modal_ID}} = new FormData();
                           formData_{{arg_modal_ID}}.append('image', input_{{arg_modal_ID}}.files[0]);
           
+                          console.log('4');
                           fetch('/upload_file', {
                               method: 'POST',
                               body: formData_{{arg_modal_ID}}
                           })
                           .then(response => response.json())
                           .then(data => {
+                              console.log('5');
                               if (data.success) {
+                                  console.log('6');
                                   var fileName_{{arg_modal_ID}} = input_{{arg_modal_ID}}.files[0].name;
                                   console.log('Image envoyée avec succès ! Nom du fichier :', fileName_{{arg_modal_ID}});
                                   // Faire quelque chose avec le nom du fichier
@@ -418,10 +427,16 @@
                               // Faire quelque chose si une erreur s'est produite lors de la requête
                           });
                       };
-          
-                      reader_{{arg_modal_ID}}.readAsDataURL(input_{{arg_modal_ID}}.files[0]);
                   }
+                  console.log('7');
+                  reader_{{arg_modal_ID}}.readAsDataURL(input_{{arg_modal_ID}}.files[0]);
+              }
+
+              document.getElementById('image-input_{{arg_modal_ID}}').addEventListener('change', function() {
+                  console.log('image-input_{{arg_modal_ID}} just got changed!');
+                  file_input_change('image-input_{{arg_modal_ID}}');
               });
+
           
               var buttonText_{{arg_modal_ID}} = document.getElementById('button-text-input_{{arg_modal_ID}}');
               var buttonPreview_{{arg_modal_ID}} = document.getElementById('button-text-preview_{{arg_modal_ID}}');
