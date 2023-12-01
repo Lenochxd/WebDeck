@@ -823,11 +823,16 @@ def home():
             if file.endswith('.py'):
                 module_path = os.path.join(root, file)
                 module_name = os.path.splitext(os.path.relpath(module_path, folder_path).replace(os.sep, '.'))[0]
-                module = importlib.import_module(f'addons.{module_name}')
+
+                try:
+                    module = __import__(f'addons.{module_name}', fromlist=[''])
+                except ImportError as e:
+                    print(f"Erreur d'importation pour le module {module_name}: {e}")
+                    continue
 
                 dict_doc, dict_func, addon_name = module.WebDeckAddon._dict_doc, module.WebDeckAddon._dict_func, module.WebDeckAddon._addon_name
                 all_func[addon_name] = dict_func
-                dict_doc = {x:y._to_dict() for x,y in dict_doc.items()}
+                dict_doc = {x: y._to_dict() for x, y in dict_doc.items()}
                 commands[addon_name] = dict_doc
 
 
