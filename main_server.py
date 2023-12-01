@@ -580,8 +580,7 @@ def translate(word, target_language):
     if word == "Discord" or target_language.upper() == "EN":
         result = word
     else:
-        result = GoogleTranslator(
-            source='en', target=target_language).translate(word)
+        result = GoogleTranslator(source='en', target=target_language).translate(word)
 
     return result
 
