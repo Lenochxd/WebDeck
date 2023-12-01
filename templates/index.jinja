@@ -937,21 +937,28 @@
       let config = {};
       let tempEditorConfig = {};
 
-      function get_config() {
-        fetch('/get_config')
-        .then(function(response) {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Une erreur est survenue lors du chargement des paramètres.');
-            }
-          })
-        .then(function(configData) {
-            let config = configData;
-          })
-        .catch(function(error) {
-            console.error(error);
-          });
+      async function get_config() {
+        try {
+          const response = await fetch('/get_config');
+          if (!response.ok) {
+            throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+          }
+          const configData = await response.json();
+          console.log(configData); // Log the config data if needed
+          return configData;
+        } catch (error) {
+          console.error(error);
+          throw error; // Rethrow the error if needed
+        }
+      }
+
+      async function loadConfig() {
+        try {
+          const config = await get_config();
+          return config;
+        } catch (error) {
+          return null;
+        }
       }
 
 
@@ -1064,6 +1071,23 @@
       });
 
       document.addEventListener("DOMContentLoaded", function() {
+
+        fetch('/get_config')
+          .then(function (response) {
+            let tempEditorConfig = {};
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+            }
+          })
+          .then(function (configData) {
+            // Utilisez les données de configuration retournées
+            tempEditorConfig = configData; // Stocker les données JSON dans la variable "configData"
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
 
         // =========== EDITORMODE ======== START
         var buttons = document.querySelectorAll('.createbutton_submit');
@@ -1180,26 +1204,17 @@
                 const formIndex = parseInt(formNumber) - 1;
                 console.log(`${parentId} > ${formNumber}`);
       
-                try {
-                  console.log(tempEditorConfig.front); // JSP POURQUOI MAIS sans ce console.log ça fonctionne pas (???????????)
-                  tempEditorConfig['front']['buttons'][parentId][formNumber] = {
-                      "VOID": "VOID"
-                  };
-                } catch (error) {
-                  console.error(error)
-                  get_config();
+                loadConfig().then((config) => {
                   tempEditorConfig = config;
-
-                  console.log(tempEditorConfig.front); // JSP POURQUOI MAIS sans ce console.log ça fonctionne pas (???????????)
                   tempEditorConfig['front']['buttons'][parentId][formNumber] = {
-                      "VOID": "VOID"
+                    "VOID": "VOID"
                   };
-                }
+                  closest_form.parentNode.replaceChild(voidDiv, closest_form);
+        
+                  console.log("Le bouton a été supprimé.");
+                  console.log(tempEditorConfig);
+                });
       
-                closest_form.parentNode.replaceChild(voidDiv, closest_form);
-      
-                console.log("Le bouton a été supprimé.");
-                console.log(tempEditorConfig);
             }
         }
       
@@ -1387,7 +1402,7 @@
               editorMode = 0;
               swapMode = 0;
               showEditorPartially()
-              swapEditorButton.childNodes[2].nodeValue = '[S] Swap 2 Buttons'
+              swapEditorButton.childNodes[1].nodeValue = '[S] Swap 2 Buttons'
               swapFirstBtn = 0;
               swapSecondBtn = 0;
               swapChanges = []
@@ -1441,12 +1456,12 @@
         });
       
         // Ajouter un gestionnaire d'événements pour le clic sur le bouton SaveExitEditorButton
-        function SaveExitEditor() {
+        function SaveExitEditor(tempEditorConfig) {
           editorMode = 0;
           swapMode = 0;
           showEditorPartially()
           swapEditorButtonFunction()
-          swapEditorButton.childNodes[2].nodeValue = '[S] Swap 2 Buttons'
+          swapEditorButton.childNodes[1].nodeValue = '[S] Swap 2 Buttons'
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           swapChanges = []
@@ -1489,12 +1504,15 @@
 
         const SaveExitEditorButton = document.getElementById('SaveExitEditorButton');
         SaveExitEditorButton.addEventListener('click', function () {
-          SaveExitEditor();
+          console.log('tempEditorConfig:');
+          console.log(JSON.stringify(tempEditorConfig));
+          SaveExitEditor(tempEditorConfig);
         });
         // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
         function swapEditorButtonFunction(event) {
           swapMode = swapMode === 0 ? 1 : 0;
-          swapEditorButton.childNodes[2].nodeValue = swapMode === 0 ? '[S] Swap 2 Buttons' : '[S] Stop Swap Mode';
+          const swapEditorButton = document.getElementById('swapEditorButton');
+          swapEditorButton.childNodes[1].nodeValue = swapMode === 0 ? '[S] Swap 2 Buttons' : '[S] Stop Swap Mode';
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           console.log('La valeur de swapMode a été modifiée :', swapMode);
@@ -1502,7 +1520,7 @@
           var checkboxDivs = document.querySelectorAll('div.checkbox');
           var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
           if (editorMode === 1 && swapMode === 1) {
-            swapEditorButton.childNodes[2].nodeValue = '[S] Stop Swap Mode';
+            swapEditorButton.childNodes[1].nodeValue = '[S] Stop Swap Mode';
             hideEditorPartially()
             // afficher swapMode-open-folder
             for (var i = 0; i < openFolderDivs.length; i++) {
@@ -1531,7 +1549,7 @@
               }
             }
           } else {
-            swapEditorButton.childNodes[2].nodeValue = '[S] Swap 2 Buttons';
+            swapEditorButton.childNodes[1].nodeValue = '[S] Swap 2 Buttons';
             swapMode = 0;
             showEditorPartially()
 
@@ -1692,7 +1710,7 @@
         document.addEventListener('keydown', function(event) {
           if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0 && document.getElementById('modal-container').style.opacity !== '1') {
             if (event.key === 'e') {
-              SaveExitEditor();
+              SaveExitEditor(tempEditorConfig);
             }
             if (event.key === 'q') {
               editorMode = editorMode === 0 ? 1 : 0;
