@@ -170,6 +170,20 @@ button.button.black-theme {
   max-width: 100%;
 }
 
+.settings-title-info {
+  display: flex;
+}
+
+.info-icon {
+  fill: #515151;
+  height: 25;
+  margin-top: 3;
+  margin-left: 3;
+}
+.info-icon:hover {
+  fill: #9b9b9b;
+}
+
 @keyframes animation {
   100% {background-color: rgb(255, 255, 255);}
   100% {background-color: none;}
