@@ -1209,9 +1209,9 @@ def send_data(message=None):
             sound_volume = float(50) / 100  # mid volume (default)
             sound_file = message.replace('/playsound ', '')
 
-        if all(substring not in sound_file for substring in [":", "static/files/sounds/", "static\\files\\sounds\\"]):
-            # si il est stocké directement dans static/files/sounds et pas dans C:\example
-            sound_file = f"static/files/sounds/{sound_file}"
+        if all(substring not in sound_file for substring in [":", "static/files/uploaded/", "static\\files\\uploaded\\"]):
+            # si il est stocké directement dans static/files/uploaded et pas dans C:\example
+            sound_file = f"static/files/uploaded/{sound_file}"
         
         ear_soundboard = config['settings']["ear-soundboard"].lower() == "true"
         playsound(sound_file, sound_volume, ear_soundboard)
