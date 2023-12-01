@@ -1,6 +1,62 @@
 {
     "versions": [
         {
+            "version": "1.6.0",
+            "release_date": {
+                "day": "02",
+                "month": "12",
+                "year": "2023",
+                "hour": "00",
+                "minute": "20"
+            },
+            "en": {
+                "updates": [
+                    "Added the soundboard!! (finally)",
+                    "Added the 'Shutdown computer' button",
+                    "Added the 'Restart computer' button",
+                    "Added the 'Sleep computer' button",
+                    "Added the 'Hibernate computer' button",
+                    "Removed the 2-second waiting time during page loading"
+                ],
+                "minor_enhancements": [
+                    "Graphic improvements"
+                ],
+                "fixes": [
+                    "Fixed buttons: SuperAltF4, Kill a task, Restart file explorer",
+                    "Fixed a graphical bug with the swapmode interface",
+                    "Fixed the shifted wallpaper bug",
+                    "Fixed the bug preventing the addition of new buttons if developer mode was not enabled",
+                    "Fixed the page not working after deleting a downloaded image that had been removed"
+                ],
+                "nobody_cares": [
+                    "Fixed double launch (use_reloader=False)"
+                ]
+            },
+            "fr": {
+                "updates": [
+                    "Ajout de la soundboard!!",
+                    "Ajout du bouton 'Éteindre l'ordinateur'",
+                    "Ajout du bouton 'Redémarrer l'ordinateur'",
+                    "Ajout du bouton 'Mettre en veille l'ordinateur'",
+                    "Ajout du bouton 'Mettre en veille prolongée l'ordinateur'",
+                    "Suppression du délai d'attente de 2 secondes lors du chargement de la page"
+                ],
+                "minor_enhancements": [
+                    "Améliorations graphiques"
+                ],
+                "fixes": [
+                    "Correction des boutons : SuperAltF4, Tuer une tâche, Redémarrer l'explorateur de fichiers",
+                    "Correction d'un bug graphique avec l'interface swapmode",
+                    "Correction du bug du fond d'écran décalé",
+                    "Correction du bug empêchant l'ajout de nouveaux boutons si le mode développeur n'était pas activé",
+                    "Correction de la page qui ne fonctionnait pas après la suppression d'une image téléchargée ayant été supprimée"
+                ],
+                "nobody_cares": [
+                    "Correction du lancement en double (use_reloader=False)"
+                ]
+            }
+        },
+        {
             "version": "1.5.0",
             "release_date": {
                 "day": "09",
