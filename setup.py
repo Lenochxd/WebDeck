@@ -3,7 +3,11 @@ build_options = {
                     'packages': [],
                     'excludes': ["cx_Freeze"],
                     "zip_include_packages": "*",
-                    "zip_exclude_packages": "_sounddevice_data"
+                    "zip_exclude_packages": [
+                        "_sounddevice_data",
+                        "pygame",
+                        "soundfile", "_soundfile", "_soundfile_data"
+                    ]
                 }
 
 import sys, os, json, shutil
