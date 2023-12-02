@@ -1,5 +1,7 @@
 [![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/LeLenoch/WebDeck/blob/master/README-fr.md)
 
+# WebDeck
+
 The WebDeck is a Flask application that allows users to control their computer remotely from any device with a browser and a touchscreen. Unlike Elgato's StreamDeck, which requires physical equipment, WebDeck uses a Flask application that the user hosts on their own computer.
 
 <div align="center">
@@ -49,7 +51,7 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 `pip install -r requirements.txt`
 5. Start the compilation:\
 `python setup.py build`
-6. (Optional) If you want to sign the executables with signtool, follow the instructions provided in this link: https://stackoverflow.com/a/52963704/17100464.
+6. (Optional) If you want to sign the executables with signtool, follow the instructions provided in [this link](https://stackoverflow.com/a/52963704/17100464).
 7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe`
 8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_main.exe`
 9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe`
@@ -57,7 +59,6 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 </details>
 
 ## ⭐ Contributors
-
 
 <table align="center">
   <tr>
@@ -96,7 +97,6 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
         Lenoch
       </a>
     </td>
-    <!-- Ajoutez plus de contributeurs de la même manière -->
   </tr>
   <tr>
     <td align="center">
@@ -118,21 +118,21 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 </table>
 <br>
 
-
 ## 🙏 Donate
-https://buymeacoffee.com/bishokus
+
+If you appreciate the project, consider [buying me a coffee](https://buymeacoffee.com/bishokus).
 
 ---
 
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to open an issue on GitHub, submit a pull request with your upgrades, or if you're not a nerd, contact me elsewhere:
 
-Discord: Lenoch\
-Discord Server: https://discord.gg/tUPsYHAGfm \
-Twitter: https://twitter.com/LenochJ \
-Email (?): contact.lenoch@gmail.com
+- Discord: Lenoch
+- Discord Server: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
+- Twitter: [https://twitter.com/LenochJ](https://twitter.com/LenochJ)
+- Email (?): contact.lenoch@gmail.com
 
 <br>
 
 ---
 
-[![wakatime](https://wakatime.com/badge/user/0929cfd2-6330-4ccd-b5d6-859515b66a10/project/4bcf5971-919c-48a5-9f8c-2f1a06046591.svg)](https://wakatime.com/badge/user/0929cfd2-6330-4ccd-b5d6-859515b66a10/project/4bcf5971-919c-48a5-9f8c-2f1a06046591) : (only since July 3rd 2023, started on December 16th, 2022)
+[![wakatime](https://wakatime.com/badge/user/0929cfd2-6330-4ccd-b5d6-859515b66a10/project/4bcf5971-919c-48a5-9f8c-2f1a06046591.svg)](https://wakatime.com/badge/user/0929cfd2-6330-4ccd-b5d6-859515b66a10/project/4bcf5971-919c-48a5-9f8c-2f1a06046591) : (only since July 3rd, 2023, started on December 16th, 2022)
