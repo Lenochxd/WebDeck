@@ -1,22 +1,20 @@
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/releases)
-[![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg)](https://github.com/LeLenoch/WebDeck/releases)
-[![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/stargazers)
-[![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/watchers)
-[![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
-[![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/issues)
-<a href="https://discord.gg/tUPsYHAGfm">
-  <img src="https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield" alt="Discord Shield">
-</a>
-
-
 [![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/LeLenoch/WebDeck/blob/master/README-fr.md)
-
-# WebDeck
 
 The WebDeck is a Flask application that allows users to control their computer remotely from any device with a browser and a touchscreen. Unlike Elgato's StreamDeck, which requires physical equipment, WebDeck uses a Flask application that the user hosts on their own computer.
 
 <div align="center">
-  <img src="https://media.discordapp.net/attachments/939294227152662589/1144740939873669221/example.png" alt="WebDeck example image" width="375" height="257">
+  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="WebDeck banner" height="75%" width="75%">
+  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c601d4f6-cbb3-460b-874d-b74ec5e71696" alt="WebDeck example image" width="45%" height="45%">
+  
+  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/releases)
+  [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg)](https://github.com/LeLenoch/WebDeck/releases)
+  [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/stargazers)
+  [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/watchers)
+  [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
+  [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/issues)
+  <a href="https://discord.gg/tUPsYHAGfm">
+    <img src="https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield" alt="Discord Shield">
+  </a>
 </div>
 
 ## 🖥️🚀 Installation
