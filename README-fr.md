@@ -51,7 +51,7 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
 `pip install -r requirements.txt`
 5. Lancez la compilation :\
 `python setup.py build`
-6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pourl'installer: https://stackoverflow.com/a/52963704/17100464.
+6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pour l'installer: https://stackoverflow.com/a/52963704/17100464.
 7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
 8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
 9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
