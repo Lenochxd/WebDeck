@@ -657,13 +657,13 @@
                   </select>
                 </div>
                 
-                <div class="setting data-transfer-method">
+                {# <div class="setting data-transfer-method">
                   <label for="data-transfer-method">Data transfer method</label>
                   <select id="data-transfer-method" name="settings.data-transfer-method">
                     <option value="http" {% if config['settings']['data-transfer-method'].lower() == 'http' %}selected{% endif %}>http</option>
                     <option value="socket" {% if config['settings']['data-transfer-method'].lower() == 'socket' %}selected{% endif %}>socket</option>
                   </select>
-                </div>
+                </div> #}
 
                 <div class="setting show-console">
                   <p>Show console</p>
