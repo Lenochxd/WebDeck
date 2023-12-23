@@ -1,6 +1,36 @@
 {
     "versions": [
         {
+            "version": "1.6.1",
+            "release_date": {
+                "day": "23",
+                "month": "12",
+                "year": "2023",
+                "hour": "21",
+                "minute": "46"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Added help button for Spotify account"
+                ],
+                "fixes": [
+                    "Fixed latency"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Ajout d'un bouton d'aide pour la connexion au compte spotify"
+                ],
+                "fixes": [
+                    "Correction d'une importante latence (horrible)"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.6.0",
             "release_date": {
                 "day": "02",
