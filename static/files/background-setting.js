@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         element.addEventListener("change", upload_file);
     });
 
-    function upload_file(_event) {
+    function upload_file() {
         var input = this;
         
         if (input.files && input.files[0]) {
