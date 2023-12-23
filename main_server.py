@@ -788,6 +788,7 @@ local_ip = get_local_ip()
 @app.before_request
 def check_local_network():
     remote_ip = request.remote_addr
+    # print(f'new connection established: {remote_ip}')
     if remote_ip != local_ip and not remote_ip.startswith("127.") and not remote_ip.startswith("192.168."):
         return "Unauthorized access: you are not on the same network as the server.", 403
 
@@ -1959,4 +1960,4 @@ soundboard_thread.start()
 flask_debug = False
 if config['settings']['flask-debug'] == 'true':
     flask_debug = True
-socketio.run(app, host=config['url']['ip'], port=config['url']['port'], debug=flask_debug, use_reloader=False)
+app.run(host=config['url']['ip'], port=config['url']['port'], debug=flask_debug, use_reloader=False)
