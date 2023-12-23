@@ -476,7 +476,18 @@
                 </div>
 
                 <div class="setting spotify-api">
-                  <label for="spotify">Spotify API</label>
+                  <div class="settings-title-info">
+                    <label for="spotify" style="margin-top: 3;">Spotify API</label>
+                    {% set spotify_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account" %}
+                    {% if config.settings.language == "fr" %}
+                      {% set spotify_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-connecter-mon-compte-spotify-" %}
+                    {% endif %}
+                    <a href="{{spotify_info}}" target="_blank">
+                        <!-- source: https://phosphoricons.com/ -->
+                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                    </a>
+                  </div>
+
                   <ul>
                     <li>
                       <label for="spotify-USERNAME">Username</label>
