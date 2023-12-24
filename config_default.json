@@ -132,7 +132,7 @@
                 {
                     "image": "",
                     "image_size": "100%",
-                    "message": "/usage 'C disk' usage_dict['disks']['C']['total_gb']",
+                    "message": "/usage 'C disk' usage_dict['disks']['C']['usage_percent']",
                     "name": "C disk usage"
                 },
                 {
