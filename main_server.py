@@ -705,7 +705,7 @@ def usage():
         'total_gb': round(memory.total / 1024**3, 2),
         'used_gb': round(memory.total / 1024**3 - memory.available / 1024**3, 2),
         'available_gb': round(memory.available / 1024**3, 2),
-        'usage_percent': psutil.virtual_memory()[2]
+        'usage_percent': memory[2]
     }
 
     # Disque dur
@@ -1858,7 +1858,6 @@ def check_for_updates_loop():
             check_for_updates()
         with open('config.json', 'w', encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
-        
         
         time.sleep(3600)
 
