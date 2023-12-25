@@ -1948,13 +1948,14 @@ def soundboard():
         audio.terminate()
     
 auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
-check_for_updates_loop_thread = threading.Thread(target=check_for_updates_loop, daemon=True)
 soundboard_thread = threading.Thread(target=soundboard, daemon=True)
+# check_for_updates_loop_thread = threading.Thread(target=check_for_updates_loop, daemon=True)
 
 auto_closing_loop_thread.start()
-check_for_updates_loop_thread.start()
 soundboard_thread.start()
+# check_for_updates_loop_thread.start()
 
+check_for_updates()
 
 flask_debug = False
 if config['settings']['flask-debug'] == 'true':
