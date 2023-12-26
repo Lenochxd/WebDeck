@@ -783,6 +783,8 @@ def get_local_ip():
     return local_ip
 
 local_ip = get_local_ip()
+if config['url']['ip'] == 'local_ip':
+    config['url']['ip'] = local_ip
 
 # Middleware pour vérifier l'adresse IP de la demande
 @app.before_request
@@ -1957,7 +1959,16 @@ soundboard_thread.start()
 
 check_for_updates()
 
-flask_debug = False
-if config['settings']['flask-debug'] == 'true':
-    flask_debug = True
-app.run(host=config['url']['ip'], port=config['url']['port'], debug=flask_debug, use_reloader=False)
+command = [
+    'powershell',
+    'New-NetFirewallRule',
+    '-DisplayName', '"WebDeck"',
+    '-Direction', 'Inbound',
+    '-Program', f'"{sys.executable}"',
+    '-Action', 'Allow'
+]
+subprocess.run(command)
+
+app.run(host=local_ip, port=config['url']['port'],
+        debug=False,
+        use_reloader=False)
