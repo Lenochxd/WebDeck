@@ -48,6 +48,7 @@ import soundfile as sf
 import psutil
 import GPUtil
 import pynvml
+import vlc
 import pygame
 import pygame._sdl2.audio as sdl2_audio
 
@@ -151,59 +152,88 @@ def select_audio_device(channels_type='input'):
         p.terminate()
     return all_devices
 
-def get_device(device_name, capture_devices: bool = False) -> tuple[str, ...]:
-    init_by_me = not pygame.mixer.get_init()
-    if init_by_me:
-        pygame.mixer.init()
-    devices = tuple(sdl2_audio.get_audio_device_names(capture_devices))
-    if init_by_me:
-        pygame.mixer.quit()
-    for d in devices:
-        if device_name in d.lower():
-            device = d
-    return device
 
-def soundboard_play_default(file_path: str, volume=1.0):
-    print(f"Play: {file_path}  -  volume:{volume}\r\n")
-    pygame.mixer.music.load(file_path)
-    pygame.mixer.music.set_volume(volume)
-    pygame.mixer.music.play()
+def get_device(vbcable_device):
+    # https://stackoverflow.com/questions/73884593/how-to-change-vlc-python-output-device
+    player = vlc.MediaPlayer()
+    mods = player.audio_output_device_enum()
+    if mods:
+        mod = mods
+        while mod:
+            mod = mod.contents
+            # If VB-Cable is found, return it's module and device id
+            if vbcable_device.lower() in str(mod.description).lower():
+                device = mod.device
+                return device
+            mod = mod.next
 
-temp_audio = {}
-def soundboard_play_cable(file_path, device_name, volume=1.0):
-    global temp_audio
-    if temp_audio.get(f"{file_path};{volume}") is None:
-        data, fs = sf.read(file_path, dtype='float32')
-        data *= volume  # Adjust volume
-        temp_audio[f'{file_path};{volume}'] = {
-            'data': data,
-            'fs': fs
-        }
-    else:
-        data, fs = temp_audio[f'{file_path};{volume}']['data'], temp_audio[f'{file_path};{volume}']['fs']
-    sd.play(data, fs, device=device_name)
-    sd.wait()
-
-vbcable_device = config['settings']['soundboard']['vbcable']
+cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
+player_vbcable = {}
+player_ear_soundboard  = {}
 def playsound(file_path: str, sound_volume, ear_soundboard=True):
-    global vbcable_device
+    global cable_input_device, player
+    print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
+    print(len(player_vbcable))
+    print(player_vbcable)
     
-    if ear_soundboard:
-        soundboard_play_default(file_path, volume=sound_volume)
-        devices = sd.query_devices()
-        cable_input_devices = [device["name"] for device in devices if "cable input" in device["name"].lower()]
+    p_id = len(player_vbcable.keys())
+    if p_id <= 3:
+        player_vbcable[p_id] = vlc.MediaPlayer(file_path)
+        player_vbcable[p_id].audio_set_volume(int(sound_volume * 100))
+        player_vbcable[p_id].audio_output_device_set(None, cable_input_device)
+        player_vbcable[p_id].play()
+        player_vbcable[p_id].event_manager().event_attach(
+            vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
+        )
 
-        if cable_input_devices:
-            cable_input_device = cable_input_devices[0]
-            soundboard_play_cable(file_path, cable_input_device, volume=sound_volume)
-        else:
-            print("Aucun périphérique correspondant à 'cable input' n'a été trouvé.")
-        
-        pygame.mixer.quit()
-        pygame.mixer.init()
+        if ear_soundboard:
+            player_ear_soundboard[p_id] = vlc.MediaPlayer(file_path)
+            player_ear_soundboard[p_id].audio_set_volume(int(sound_volume * 100))
+            player_ear_soundboard[p_id].play()
+            player_ear_soundboard[p_id].event_manager().event_attach(
+                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+            )
+            
+
     else:
-        playsound_device(file_path, sound_volume, vbcable_device)
+        player_vbcable[0].stop()
+        player_vbcable[0].set_time(0)
+        player_vbcable[0].play()
+        player_vbcable[0].event_manager().event_attach(
+            vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
+        )
 
+        if ear_soundboard:
+            player_ear_soundboard[0].stop()
+            player_ear_soundboard[0].set_time(0)
+            player_ear_soundboard[0].play()
+            player_ear_soundboard[0].event_manager().event_attach(
+                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+            )
+def remove_player(sb_type, p_id):
+    global player_vbcable, player_ear_soundboard
+    try:
+        if sb_type == 1:
+            del player_vbcable[p_id]
+        else:
+            del player_ear_soundboard[p_id]
+    except KeyError:
+        pass
+    
+def stop_soundboard():
+    global player_vbcable, player_ear_soundboard
+    while True:
+        try:
+            for p_id, player in player_vbcable.items():
+                player.stop()
+                del player_vbcable[p_id]
+                
+            for p_id, player in player_ear_soundboard.items():
+                player.stop()
+                del player_ear_soundboard[p_id]
+            break
+        except RuntimeError:
+            ...
 
 def should_i_close():
     if getattr(sys, 'frozen', False):
@@ -1202,6 +1232,8 @@ def send_data(message=None):
 
 
         
+    elif message.startswith('/stop_soundboard'):
+        stop_soundboard()
     elif message.startswith('/playsound '):
         message = message.replace('C:\\fakepath\\', '').replace('/playsound ', '')
         percentage = message[message.rfind(' ') + 1:].replace(' ','')
@@ -1948,14 +1980,13 @@ def soundboard():
             stream_out.close()
     
         audio.terminate()
-    
+
+
 auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
 soundboard_thread = threading.Thread(target=soundboard, daemon=True)
-# check_for_updates_loop_thread = threading.Thread(target=check_for_updates_loop, daemon=True)
 
 auto_closing_loop_thread.start()
 soundboard_thread.start()
-# check_for_updates_loop_thread.start()
 
 check_for_updates()
 
