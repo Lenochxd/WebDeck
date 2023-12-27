@@ -30,3 +30,4 @@ tk
 qrcode
 pywebview
 cx_Freeze
+python-vlc
