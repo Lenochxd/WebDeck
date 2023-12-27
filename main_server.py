@@ -164,7 +164,7 @@ def get_device(vbcable_device):
 
 cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
 player_vbcable = {}
-player_ear_soundboard  = {}
+player_ear_soundboard = {}
 def playsound(file_path: str, sound_volume, ear_soundboard=True):
     global cable_input_device, player
     print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
@@ -317,16 +317,16 @@ def update_gridsize(config, new_height, new_width):
                                     folder[-num][col_count] = {"DEL": "DEL"}
                                     break
                             else:
-                                VarKiNe_respect_poLesReglesDe_Convention = False
+                                x = False
                                 for colb_count in range(len(folder[0])):
                                     for rowb_count in range(len(folder)):
                                         if folder[rowb_count][colb_count] == {"VOID": "VOID"}:
                                             folder[rowb_count][colb_count] = folder[-1][col_count]
-                                            VarKiNe_respect_poLesReglesDe_Convention = True
+                                            x = True
                                             break
-                                    if VarKiNe_respect_poLesReglesDe_Convention == True:
+                                    if x == True:
                                         break
-                                if VarKiNe_respect_poLesReglesDe_Convention == False:
+                                if x == False:
                                     print("PAS ASSEZ DE PLACE")
                         folder.pop(-1)
 
@@ -938,20 +938,19 @@ def save_config():
     config['front']['height'] = new_height
     config['front']['width'] = new_width
 
-    soundboard_restart = False
-    if not config['settings']['soundboard'] == new_config['settings']['soundboard']:
-        soundboard_restart = True
-
+    soundboard_restart = (
+        not config['settings']['soundboard']
+        == new_config['settings']['soundboard']
+    )
     config = check_json_update(config)
     new_config = check_json_update(new_config)
-    
-    
-    if getattr(sys, 'frozen', False):
-        if config['settings']['windows-startup'].lower().strip() == 'false' and \
+
+
+    if config['settings']['windows-startup'].lower().strip() == 'false' and \
                 new_config['settings']['windows-startup'].lower().strip() == 'true':
+        if getattr(sys, 'frozen', False):
             dir = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup'
-            name = 'WebDeck.lnk'
-            path = os.path.join(dir, name)
+            path = os.path.join(dir, 'WebDeck.lnk')
             target = os.getcwd() + r'\\WebDeck.exe'
             working_dir = os.getcwd()
             icon = os.getcwd() + r'\\WebDeck.exe'
@@ -962,13 +961,12 @@ def save_config():
             shortcut.WorkingDirectory = working_dir
             shortcut.IconLocation = icon
             shortcut.save()
-        elif config['settings']['windows-startup'].lower().strip() == 'true' and \
+    elif config['settings']['windows-startup'].lower().strip() == 'true' and \
                 new_config['settings']['windows-startup'].lower().strip() == 'false':
+        if getattr(sys, 'frozen', False):
             file_path = os.getenv('APPDATA') + r'\Microsoft\Windows\Start Menu\Programs\Startup\WebDeck.lnk'
             if os.path.exists(file_path):
                 os.remove(file_path)
-
-
 
 
     config = merge_dicts(config, new_config)
@@ -998,7 +996,7 @@ def save_config():
             print("NEW FOLDER :", folder['name'])
         folders_to_create = []
     print(config['settings']['show-console'])
-    
+
     try:
         config['front']['background'] = eval(config['front']['background'])
     except TypeError:
@@ -1006,10 +1004,10 @@ def save_config():
 
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
-        
+
     if soundboard_restart:
         restart_soundboard()
-    
+
     print(config['settings']['show-console'])
 
     return jsonify({'success': True})
