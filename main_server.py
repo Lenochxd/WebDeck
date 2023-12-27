@@ -49,8 +49,6 @@ import psutil
 import GPUtil
 import pynvml
 import vlc
-import pygame
-import pygame._sdl2.audio as sdl2_audio
 
 # Numerical and scientific libraries
 import numpy as np
@@ -62,11 +60,8 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 import math
 
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 os.add_dll_directory(os.getcwd())
 
-pygame.init()
-pygame.mixer.init()
 
 new_user = False
 if not os.path.exists("config.json"):
@@ -237,13 +232,14 @@ def stop_soundboard():
 
 def should_i_close():
     if getattr(sys, 'frozen', False):
-        is_handler_opened = False
-        for process in psutil.process_iter(['pid', 'name']):
-            if process.info['name'].lower().strip().replace('.exe','') == 'webdeck':
-                is_handler_opened = True
-                break
-        if is_handler_opened == False:
+        is_handler_opened = any(
+            process.info['name'].lower().strip().replace('.exe', '')
+            == 'webdeck'
+            for process in psutil.process_iter(['pid', 'name'])
+        )
+        if not is_handler_opened:
             sys.exit()
+            exit()
 
 def print2(message):
     print(message)
@@ -275,7 +271,6 @@ def unmatrix(matrix):
         for row in folder:
             for button in row:
                 config["front"]["buttons"][folderName].append(button)
-            
             
     return config
 
@@ -943,6 +938,10 @@ def save_config():
     config['front']['height'] = new_height
     config['front']['width'] = new_width
 
+    soundboard_restart = False
+    if not config['settings']['soundboard'] == new_config['settings']['soundboard']:
+        soundboard_restart = True
+
     config = check_json_update(config)
     new_config = check_json_update(new_config)
     
@@ -1007,6 +1006,10 @@ def save_config():
 
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
+        
+    if soundboard_restart:
+        restart_soundboard()
+    
     print(config['settings']['show-console'])
 
     return jsonify({'success': True})
@@ -1262,9 +1265,12 @@ def send_data(message=None):
             sound_file = message.replace('/playlocalsound ', '')
             
         try:
-            pygame.mixer.music.load(sound_file)
-            pygame.mixer.music.set_volume(sound_volume)
-            pygame.mixer.music.play()
+            player = vlc.MediaPlayer(sound_file)
+            player.audio_set_volume(int(sound_volume * 100))
+            player.play()
+            player.event_manager().event_attach(
+                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+            )
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -1902,7 +1908,11 @@ def auto_closing_loop():
         time.sleep(5)
 
 # mic to vbcable
+sb_on = True
 def soundboard():
+    global sb_on
+    sb_on = True
+
     audio = pyaudio.PyAudio()
     num_devices = audio.get_device_count()
     
@@ -1963,7 +1973,7 @@ def soundboard():
     soundboard_on = True
     
     try:
-        while True:
+        while sb_on == True:
             data = stream_in.read(1024)
             stream_out.write(data)
     except KeyboardInterrupt:
@@ -1980,6 +1990,14 @@ def soundboard():
             stream_out.close()
     
         audio.terminate()
+
+def restart_soundboard():
+    global soundboard_thread, sb_on
+    sb_on = False
+    time.sleep(0.2)
+    soundboard_thread = threading.Thread(target=soundboard, daemon=True)
+    soundboard_thread.start()
+    print('sb thread revived')
 
 
 auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
