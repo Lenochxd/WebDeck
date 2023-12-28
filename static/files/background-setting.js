@@ -134,105 +134,95 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById("create-image-bg").addEventListener("change", upload_file);
-    var uploadFileElements = document.querySelectorAll(".upload-file");
-    uploadFileElements.forEach(function(element) {
-        element.addEventListener("change", upload_file);
-    });
-
-    function upload_file() {
+    document.getElementById("create-image-bg").addEventListener("change", function() {
         var input = this;
         
         if (input.files && input.files[0]) {
-            var reader = new FileReader();
-        
-            reader.onloadend = function() {
-        
-                var formData = new FormData();
-                formData.append('image', input.files[0]);
-        
-                fetch('/upload_file', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        var fileName = "**uploaded/" + input.files[0].name;
-                        console.log('Image envoyée avec succès ! Nom du fichier :', fileName);
-                        // Faire quelque chose avec le nom du fichier
-                        // button.image = "**uploaded/" + fileName;
+            
+            var file = input.files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload_file', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('Fichier téléchargé avec succès!');
+                    var fileName = "**uploaded/" + input.files[0].name;
+                    console.log('Image envoyée avec succès ! Nom du fichier :', fileName);
+                    // Faire quelque chose avec le nom du fichier
+                    // button.image = "**uploaded/" + fileName;
 
-                        var imageFile = reader.result
+                    var imageFile = 'static/files/uploaded/' + input.files[0].name;
 
-                        var divElement = document.createElement("div");
-                        divElement.classList.add("choose-bg-element");
-                        divElement.classList.add("choose-bg-element-image");
-                        var createColorBgElement = document.getElementById("create-color-bg");
-                        if (createColorBgElement.classList.contains("black-theme")) {
-                            divElement.classList.add("black-theme");
-                        }
-                        
-                        // Créer un pseudo-élément ::before pour contenir l'image de fond
-                        var pseudoElement = document.createElement("div");
-                        pseudoElement.classList.add("choose-bg-pseudo-element");
-                        pseudoElement.style.backgroundImage = "url(" + reader.result + ")";
-                        divElement.appendChild(pseudoElement);
-                        
-                        
-                        backgrounds_array.push(fileName);
-                        //divElement.textContent = "Background image: " + input.files[0].name;
-                        divElement.setAttribute("background", fileName);
-                        
-                        var chooseBackgroundsContainer = document.getElementById("choose-backgrounds-container");
-                        chooseBackgroundsContainer.appendChild(divElement);
-                        
+                    var divElement = document.createElement("div");
+                    divElement.classList.add("choose-bg-element");
+                    divElement.classList.add("choose-bg-element-image");
+                    var createColorBgElement = document.getElementById("create-color-bg");
+                    if (createColorBgElement.classList.contains("black-theme")) {
+                        divElement.classList.add("black-theme");
+                    }
+                    
+                    // Créer un pseudo-élément ::before pour contenir l'image de fond
+                    var pseudoElement = document.createElement("div");
+                    pseudoElement.classList.add("choose-bg-pseudo-element");
+                    pseudoElement.style.backgroundImage = "url(" + imageFile + ")";
+                    divElement.appendChild(pseudoElement);
+                    
+                    
+                    backgrounds_array.push(fileName);
+                    //divElement.textContent = "Background image: " + input.files[0].name;
+                    divElement.setAttribute("background", fileName);
+                    
+                    var chooseBackgroundsContainer = document.getElementById("choose-backgrounds-container");
+                    chooseBackgroundsContainer.appendChild(divElement);
+                    
 
-                        var imgElement = document.createElement("img");
-                        
-                        imgElement.setAttribute("src", imageFile);
-                        divElement.appendChild(imgElement);
-                        
+                    var imgElement = document.createElement("img");
+                    
+                    imgElement.setAttribute("src", imageFile);
+                    divElement.appendChild(imgElement);
+                    
 
-                        var chooseBgButtonsDiv = document.querySelector(".choose-bg-buttons");
-                        var clonedChooseBgButtons = chooseBgButtonsDiv.cloneNode(true);
-                        divElement.appendChild(clonedChooseBgButtons);
-                        var activateButton = clonedChooseBgButtons.querySelector(".choose-bg-activate-button");
-                        activateButton.classList.add("choose-bg-activate-button-checked");
-                        
-                        
-                        var activateButtons = document.querySelectorAll(".choose-bg-activate-button");
+                    var chooseBgButtonsDiv = document.querySelector(".choose-bg-buttons");
+                    var clonedChooseBgButtons = chooseBgButtonsDiv.cloneNode(true);
+                    divElement.appendChild(clonedChooseBgButtons);
+                    var activateButton = clonedChooseBgButtons.querySelector(".choose-bg-activate-button");
+                    activateButton.classList.add("choose-bg-activate-button-checked");
+                    
+                    
+                    var activateButtons = document.querySelectorAll(".choose-bg-activate-button");
 
-                        activateButtons.forEach(function(activateButton) {
-                            // Vérifier si un event listener "click" existe déjà
-                            var clickListenerExists = false;
-                            var clickListeners = getEventListeners(activateButton);
-                            if (clickListeners && clickListeners.click) {
-                                for (var i = 0; i < clickListeners.click.length; i++) {
-                                    if (clickListeners.click[i].listener.toString() === activateButtonEvent.toString()) {
-                                        clickListenerExists = true;
-                                        break;
-                                    }
+                    activateButtons.forEach(function(activateButton) {
+                        // Vérifier si un event listener "click" existe déjà
+                        var clickListenerExists = false;
+                        var clickListeners = getEventListeners(activateButton);
+                        if (clickListeners && clickListeners.click) {
+                            for (var i = 0; i < clickListeners.click.length; i++) {
+                                if (clickListeners.click[i].listener.toString() === activateButtonEvent.toString()) {
+                                    clickListenerExists = true;
+                                    break;
                                 }
                             }
+                        }
 
-                            if (!clickListenerExists) {
-                                activateButton.addEventListener("click", activateButtonEvent);
-                            }
-                        });
-                        
-                        var deleteButtons = document.querySelectorAll(".choose-bg-delete-button");
+                        if (!clickListenerExists) {
+                            activateButton.addEventListener("click", activateButtonEvent);
+                        }
+                    });
+                    
+                    var deleteButtons = document.querySelectorAll(".choose-bg-delete-button");
     
-                        deleteButtons.forEach(function(deleteButton) {
-                            // Vérifier si un event listener "click" existe déjà
-                            var clickListenerExists = false;
-                            var clickListeners = getEventListeners(deleteButton);
-                            if (clickListeners && clickListeners.click) {
-                                for (var i = 0; i < clickListeners.click.length; i++) {
-                                    if (clickListeners.click[i].listener.toString() === deleteButton.toString()) {
-                                        clickListenerExists = true;
-                                        break;
-                                    }
+                    deleteButtons.forEach(function(deleteButton) {
+                        // Vérifier si un event listener "click" existe déjà
+                        var clickListenerExists = false;
+                        var clickListeners = getEventListeners(deleteButton);
+                        if (clickListeners && clickListeners.click) {
+                            for (var i = 0; i < clickListeners.click.length; i++) {
+                                if (clickListeners.click[i].listener.toString() === deleteButton.toString()) {
+                                    clickListenerExists = true;
+                                    break;
+                                }
                                 }
                             }
 
@@ -241,21 +231,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         });
                         removeBackgroundFromArray()
-                    } else {
-                        console.error('Erreur lors de l\'envoi de l\'image:', data.message);
-                        // Faire quelque chose si l'envoi a échoué
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de l\'envoi de l\'image :', error);
-                    // Faire quelque chose si une erreur s'est produite lors de la requête
-                });
-            };
-        
-            reader.readAsDataURL(input.files[0]);
-
+                } else {
+                    console.error('Échec du téléchargement du fichier.');
+                }
+            }
+            xhr.send(formData);
         }
-    }
+    });
 
     var deleteButtons = document.querySelectorAll(".choose-bg-delete-button");
     
