@@ -919,7 +919,6 @@ def merge_dicts(d1, d2):
     return d1
 
 folders_to_create = []
-
 @app.route('/save_config', methods=['POST'])
 def save_config():
     global folders_to_create
@@ -1169,19 +1168,17 @@ def upload_filepath():
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
-    print(request.files)
-    if 'image' not in request.files:
-        return jsonify({'success': False, 'message': 'Aucune image trouvée'})
-
     print(request)
-    image = request.files['image']
-    if image.filename == '':
-        return jsonify({'success': False, 'message': 'Aucun fichier sélectionné'})
+    print(request.files)
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'message': 'Aucun fichier trouvé'})
+    
+    uploaded_file = request.files['file']
+    
+    save_path = os.path.join('static/files/uploaded', uploaded_file.filename)
+    uploaded_file.save(save_path)
 
-    save_path = f'static/files/uploaded/{image.filename}'
-    image.save(save_path)
-
-    return jsonify({'success': True})
+    return jsonify({'success': True, 'message': 'Fichier téléchargé avec succès'})
 
 @app.route('/create_folder', methods=['POST'])
 def create_folder():
@@ -2017,5 +2014,5 @@ command = [
 subprocess.run(command)
 
 app.run(host=local_ip, port=config['url']['port'],
-        debug=False,
-        use_reloader=False)
+        debug=config['settings']['flask-debug'],
+        use_reloader=config['settings']['flask-debug'] == 'false')
