@@ -49,11 +49,5 @@
         {% endfor %}
     </select>
 {% elif "path-soundboard-audio" in arg['TYPE'] %}
-    <input class="{{black_theme}}" id="audio-input_{{arg_modal_ID}}" type="file" name="{{file}}" accept=".mp3">
-    <script>
-        document.getElementById('audio-input_{{arg_modal_ID}}').addEventListener('change', function() {
-            console.log('audio-input_{{arg_modal_ID}} just got changed!');
-            file_input_change('audio-input_{{arg_modal_ID}}');
-        });
-    </script>
+    <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept=".mp3">
 {% endif %}
