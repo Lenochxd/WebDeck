@@ -29,6 +29,7 @@
     <script src="/static/files/background-setting.js"></script>
     <script src="/static/files/filepath.js"></script>
     <script src="/static/files/loadingscreen.js"></script>
+    <script src="/static/files/upload_file.js"></script>
     {# <script src="/static/files/buttonclick.js"></script> #}
 
     {% set black_theme = '' %}
@@ -177,44 +178,47 @@
                 {% if 'background-color' in config["front"]["buttons"][folder_id][button_id].keys() %}
                   {% set class = class + ' button-'+button_config['background-color'].replace('#','') %}
                 {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/fullscreen' %}
-                  {% set class = class + " fullscreen-btn" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom in' %}
-                  {% set class = class + " zoom-in-btn" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom out' %}
-                  {% set class = class + " zoom-out-btn" %}
+
+                {% if config["front"]["buttons"][folder_id][button_id]["message"] %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/fullscreen' %}
+                    {% set class = class + " fullscreen-btn" %}
                   {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div expand' %}
-                  {% set class = class + " expand-btn" %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom in' %}
+                    {% set class = class + " zoom-in-btn" %}
                   {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div shrink' %}
-                  {% set class = class + " shrink-btn" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-out' %}
-                  {% set class = class + " box-zoom-out" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-in' %}
-                  {% set class = class + " box-zoom-in" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-dezoom' %}
-                  {% set class = class + " dezoom-btn" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-zoom' %}
-                  {% set class = class + " zoom-btn" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-modal' %}
-                  {% set class = class + " open-config-modal" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config' %}
-                  {% set class = class + " open-config-modal" %}
-                {% endif %}
-                {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config-modal' %}
-                  {% set class = class + " open-config-modal" %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom out' %}
+                    {% set class = class + " zoom-out-btn" %}
+                    {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div expand' %}
+                    {% set class = class + " expand-btn" %}
+                    {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div shrink' %}
+                    {% set class = class + " shrink-btn" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-out' %}
+                    {% set class = class + " box-zoom-out" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-in' %}
+                    {% set class = class + " box-zoom-in" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-dezoom' %}
+                    {% set class = class + " dezoom-btn" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-zoom' %}
+                    {% set class = class + " zoom-btn" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-modal' %}
+                    {% set class = class + " open-config-modal" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config' %}
+                    {% set class = class + " open-config-modal" %}
+                  {% endif %}
+                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config-modal' %}
+                    {% set class = class + " open-config-modal" %}
+                  {% endif %}
                 {% endif %}
 
-                {% if button_config["message"].startswith("/folder") %}
+                {% if button_config["message"] and button_config["message"].startswith("/folder") %}
                   {% set onclick = 'onclick="' + 'folder_' + button_config['message'].replace('/folder ', '') + '()" onclickhandler="' + 'folder_' + button_config['message'].replace('/folder ', '') + '()"' %}
                   <div class="swapMode-open-folder" {{ onclick }} style="display: none;">
                     Open Folder
@@ -274,7 +278,7 @@
                       {% endif %}
                     
                     <!--|||||||||||||||||||||||-->
-                    {% if button_config['message'].startswith('/usage') %}
+                    {% if button_config["message"] and button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace("'",'"',2).split('"')[1] %}
                       {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
                       {% if button_config['message'].split()[1] %}
@@ -304,7 +308,11 @@
                 
               </form>
 
-              {% set button_command = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
+              {% if button_config["message"] %}
+                {% set button_command = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
+              {% else %}
+                {% set button_command = '' %}
+              {% endif %}
               {% set button_settings = config["front"]["buttons"][folder_id][button_id] %}
 
               {% for category, commands_name in commands.items() if command_value == None %}
