@@ -204,7 +204,7 @@
                         {% if imagelink.endswith('.svg') %}
                           {{ open(imagelink).read().replace('<svg','<svg id="button-image_' + arg_modal_ID + '" style="width:' + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(command_value["style"]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
                         {% else %}
-                          <img id="button-image_{{arg_modal_ID}}" src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
+                          <img id="button-image_{{arg_modal_ID}}" src="{{ imagelink }}" draggable="false" style="
                             width: {{ 112*(int(command_value['style']['image_size'].replace('%', '')) /100) + 3}}px;
                             {{fill}}"
                           >
@@ -237,7 +237,8 @@
                 {% else %}
                     <button type="button" class="wd_button" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                       <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="
-                        width: {{ 112*(50/100) + 3}}px;">
+                        width: {{ 112*(50/100) + 3}}px;
+                      ">
                     </button>
                     
                     <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" >
@@ -253,9 +254,13 @@
               <input type="file" id="image-input_{{arg_modal_ID}}" class="{{black_theme}}">
               
               <div class="slider-container">
+                {% set default_size = '75' %}
+                {% if command_value["style"] and command_value["style"]['image_size'] and not command_value["style"]['image_size'].strip() == '' %}
+                  {% set default_size = command_value["style"]['image_size'].strip().replace('%','') %}
+                {% endif %}
                 <label for="image-size-slider_{{arg_modal_ID}}">Image Size:</label>
-                <input type="range" id="image-size-slider_{{arg_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="75" step="1">
-                <input type="number" id="image-size-value_{{arg_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="75">
+                <input type="range" id="image-size-slider_{{arg_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="{{default_size}}" step="1">
+                <input type="number" id="image-size-value_{{arg_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="{{default_size}}">
                 %
               </div>
               
@@ -281,161 +286,155 @@
           
           <input type="submit" value="Save" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
+              function updateImageSize(arg_modal_ID, imageSizeSlider, imageSizeValue, imageElement, button) {
+                  imageSizeSlider.addEventListener('input', function () {
+                      var imageSize = this.value;
+                      var parsedValue = parseInt(imageSize);
+
+                      var calculatedSize = 112 * (parsedValue / 100) + 3;
+                      imageElement.style.width = calculatedSize + 'px';
+
+                      if (imageElement.tagName === 'svg') {
+                          imageElement.style.height = calculatedSize + 'px';
+                          imageElement.height = calculatedSize + 'px';
+                          imageElement.width = calculatedSize + 'px';
+                      }
+
+                      imageSizeValue.value = parsedValue;
+                      button.image_size = `${parsedValue}%`;
+                  });
+
+                  imageSizeValue.addEventListener('input', function (event) {
+                      var newValue = imageSizeValue.value;
+                      var parsedValue = parseInt(newValue);
+
+                      if (!isNaN(parsedValue)) {
+                          imageSizeSlider.value = parsedValue;
+
+                          var calculatedSize = 112 * (parsedValue / 100) + 3;
+                          imageElement.style.width = calculatedSize + 'px';
+
+                          if (imageElement.tagName === 'svg') {
+                              imageElement.style.height = calculatedSize + 'px';
+                              imageElement.height = calculatedSize + 'px';
+                              imageElement.width = calculatedSize + 'px';
+                          }
+
+                          button.image_size = `${parsedValue}%`;
+                      }
+
+                      event.preventDefault();
+                  });
+
+                  imageSizeValue.addEventListener('keypress', function (event) {
+                      var charCode = event.which ? event.which : event.keyCode;
+
+                      if (charCode < 48 || charCode > 57) {
+                          event.preventDefault();
+                      }
+                  });
+              }
+
+              function updateButtonBackgroundColor(arg_modal_ID, buttonElement, buttonBackgroundColorInput, buttonBackgroundColorHex, button) {
+                  buttonBackgroundColorInput.addEventListener('input', function () {
+                      var colorValue = this.value;
+                      var hexValue = normalizeHexValue(colorValue);
+
+                      buttonBackgroundColorInput.value = hexValue;
+                      buttonBackgroundColorHex.value = hexValue;
+                      button['background-color'] = hexValue;
+
+                      buttonElement.style.backgroundColor = hexValue;
+                      buttonElement.style.boxShadow = "0 0 5px " + hexValue;
+                  });
+
+                  buttonBackgroundColorHex.addEventListener('input', function () {
+                      var hexValue = this.value;
+                      var normalizedHexValue = normalizeHexValue(hexValue);
+
+                      buttonBackgroundColorInput.value = normalizedHexValue;
+                      buttonBackgroundColorHex.value = normalizedHexValue;
+                      button['background-color'] = normalizedHexValue;
+
+                      buttonElement.style.backgroundColor = normalizedHexValue;
+                      buttonElement.style.boxShadow = "0 0 5px " + normalizedHexValue;
+                  });
+              }
+
+              function normalizeHexValue(value) {
+                  if (value.charAt(0) !== '#') {
+                      value = '#' + value;
+                  }
+                  return value;
+              }
+
+              document.getElementById('image-input_{{arg_modal_ID}}').addEventListener('change', function () {
+                  console.log('image-input_{{arg_modal_ID}} just got changed!');
+
+                  var input_{{arg_modal_ID}} = this;
+                  var file = input_{{arg_modal_ID}}.files[0];
+                  var formData = new FormData();
+                  formData.append('file', file);
+
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/upload_file', true);
+
+                  xhr.onload = function () {
+                      if (xhr.status === 200) {
+                          console.log('Fichier téléchargé avec succès!');
+                          var element = document.getElementById('button-image_{{arg_modal_ID}}');
+
+                          if (element.tagName.toLowerCase() === 'svg') {
+                              var imgElement = document.createElement('img');
+                              imgElement.setAttribute('id', 'button-image_{{arg_modal_ID}}');
+                              imgElement.setAttribute('draggable', false);
+                              imgElement.setAttribute('src', 'static/files/uploaded/' + input_{{arg_modal_ID}}.files[0].name);
+                              imgElement.setAttribute('style', 'width: 87px;');
+                              element.parentNode.replaceChild(imgElement, element);
+
+                              var image_{{arg_modal_ID}} = document.getElementById('button-image_{{arg_modal_ID}}');
+                              var imageSizeSlider_{{arg_modal_ID}} = document.getElementById('image-size-slider_{{arg_modal_ID}}');
+                              var imageSizeValue_{{arg_modal_ID}} = document.getElementById('image-size-value_{{arg_modal_ID}}');
+
+                              updateImageSize('{{arg_modal_ID}}', imageSizeSlider_{{arg_modal_ID}}, imageSizeValue_{{arg_modal_ID}}, image_{{arg_modal_ID}}, button_{{arg_modal_ID}});
+                          } else {
+                              element.setAttribute('src', 'static/files/uploaded/' + input_{{arg_modal_ID}}.files[0].name);
+                          }
+
+                          button_{{arg_modal_ID}}.image = "**uploaded/" + input_{{arg_modal_ID}}.files[0].name;
+                      } else {
+                          console.error('Échec du téléchargement du fichier.');
+                      }
+                  };
+
+                  xhr.send(formData);
+              });
+
               {% if command_value["style"] %}
                   var button_{{arg_modal_ID}} = {{command_value["style"]}};
               {% else %}
                   var button_{{arg_modal_ID}} = {};
               {% endif %}
               button_{{arg_modal_ID}}.name = "{{ button_name }}";
-              
+
               var image_{{arg_modal_ID}} = document.getElementById('button-image_{{arg_modal_ID}}');
               var imageSizeSlider_{{arg_modal_ID}} = document.getElementById('image-size-slider_{{arg_modal_ID}}');
               var imageSizeValue_{{arg_modal_ID}} = document.getElementById('image-size-value_{{arg_modal_ID}}');
-              
-              imageSizeSlider_{{arg_modal_ID}}.addEventListener('input', function() {
-                  var imageSize = this.value;
-                  var parsedValue = parseInt(imageSize);
-              
-                  // Mettre à jour la taille de l'image en fonction de la valeur du slider
-                  var calculatedSize = 112 * (parsedValue / 100) + 3;
-                  image_{{arg_modal_ID}}.style.width = calculatedSize + 'px';
-                  if (image_{{arg_modal_ID}}.tagName === 'svg') {
-                    image_{{arg_modal_ID}}.style.height = calculatedSize + 'px';
-                    image_{{arg_modal_ID}}.height = calculatedSize + 'px';
-                    image_{{arg_modal_ID}}.width = calculatedSize + 'px';
-                  }
-              
-                  // Mettre à jour la valeur du span pour l'affichage visuel
-                  imageSizeValue_{{arg_modal_ID}}.value = parsedValue;
-              
-                  // Mettre à jour la valeur de taille dans l'objet "button"
-                  button_{{arg_modal_ID}}.image_size = `${parsedValue}%`;
-              });
-              
-              imageSizeValue_{{arg_modal_ID}}.addEventListener('input', function(event) {
-                  var newValue = imageSizeValue_{{arg_modal_ID}}.value;
-                  var parsedValue = parseInt(newValue);
-              
-                  // Vérifier si la valeur saisie est un nombre valide
-                  if (!isNaN(parsedValue)) {
-                      // Mettre à jour la valeur du slider pour l'affichage visuel
-                      imageSizeSlider_{{arg_modal_ID}}.value = parsedValue;
-              
-                      // Mettre à jour la taille de l'image en fonction de la valeur du slider
-                      var calculatedSize = 112 * (parsedValue / 100) + 3;
-                      image_{{arg_modal_ID}}.style.width = calculatedSize + 'px';
-                      if (image_{{arg_modal_ID}}.tagName === 'svg') {
-                        image_{{arg_modal_ID}}.style.height = calculatedSize + 'px';
-                        image_{{arg_modal_ID}}.height = calculatedSize + 'px';
-                        image_{{arg_modal_ID}}.width = calculatedSize + 'px';
-                      }
-              
-                      // Mettre à jour la valeur de taille dans l'objet "button"
-                      button_{{arg_modal_ID}}.image_size = `${parsedValue}%`;
-                  }
-              
-                  // Empêcher l'événement d'entrée par défaut pour éviter l'ajout de caractères indésirables
-                  event.preventDefault();
-              });
-              
-              imageSizeValue_{{arg_modal_ID}}.addEventListener('keypress', function(event) {
-                var charCode = event.which ? event.which : event.keyCode;
-            
-                // Vérifier si le caractère saisi est un chiffre (0-9)
-                if (charCode < 48 || charCode > 57) {
-                    event.preventDefault();
-                }
-              });
-              
-              
+
+              updateImageSize('{{arg_modal_ID}}', imageSizeSlider_{{arg_modal_ID}}, imageSizeValue_{{arg_modal_ID}}, image_{{arg_modal_ID}}, button_{{arg_modal_ID}});
+
               var buttonElement_{{arg_modal_ID}} = document.getElementById('button-element_{{arg_modal_ID}}');
               var buttonBackgroundColorInput_{{arg_modal_ID}} = document.getElementById('background-color-input_{{arg_modal_ID}}');
               var buttonBackgroundColorHex_{{arg_modal_ID}} = document.getElementById('background-color-hex_{{arg_modal_ID}}');
-              
+
+              updateButtonBackgroundColor('{{arg_modal_ID}}', buttonElement_{{arg_modal_ID}}, buttonBackgroundColorInput_{{arg_modal_ID}}, buttonBackgroundColorHex_{{arg_modal_ID}}, button_{{arg_modal_ID}});
+
               {% if config['settings']['dev-mode'].lower() == 'true' %}
-                document.getElementById('command_{{arg_modal_ID}}').addEventListener('input', function() {
-                  button_{{arg_modal_ID}}['message'] = this.value;
-                });
+                  document.getElementById('command_{{arg_modal_ID}}').addEventListener('input', function () {
+                      button_{{arg_modal_ID}}['message'] = this.value;
+                  });
               {% endif %}
 
-              buttonBackgroundColorInput_{{arg_modal_ID}}.addEventListener('input', function() {
-                var colorValue = this.value;
-                var hexValue = normalizeHexValue(colorValue);
-                buttonBackgroundColorInput_{{arg_modal_ID}}.value = hexValue;
-                buttonBackgroundColorHex_{{arg_modal_ID}}.value = hexValue;
-                button_{{arg_modal_ID}}['background-color'] = hexValue;
-                buttonElement_{{arg_modal_ID}}.style.backgroundColor = hexValue;
-                buttonElement_{{arg_modal_ID}}.style.boxShadow = "0 0 5px " + hexValue;
-              });
-              
-              buttonBackgroundColorHex_{{arg_modal_ID}}.addEventListener('input', function() {
-                var hexValue = this.value;
-                var normalizedHexValue = normalizeHexValue(hexValue);
-                buttonBackgroundColorInput_{{arg_modal_ID}}.value = normalizedHexValue;
-                buttonBackgroundColorHex_{{arg_modal_ID}}.value = normalizedHexValue;
-                button_{{arg_modal_ID}}['background-color'] = normalizedHexValue;
-                buttonElement_{{arg_modal_ID}}.style.backgroundColor = normalizedHexValue;
-                buttonElement_{{arg_modal_ID}}.style.boxShadow = "0 0 5px " + normalizedHexValue;
-              });
-              
-              function normalizeHexValue(value) {
-                if (value.charAt(0) !== '#') {
-                  value = '#' + value;
-                }
-                return value;
-              }
-          
-              
-              function file_input_change(fileInputID) {
-                  console.log('1');
-                  var input_{{arg_modal_ID}} = document.getElementById(fileInputID);
-
-                  console.log(input_{{arg_modal_ID}}.files);
-          
-                  if (input_{{arg_modal_ID}}.files && input_{{arg_modal_ID}}.files[0]) {
-                      console.log('2');
-                      var reader_{{arg_modal_ID}} = new FileReader();
-          
-                      reader_{{arg_modal_ID}}.onloadend = function() {
-                          console.log('3');
-                          image_{{arg_modal_ID}}.setAttribute('src', reader_{{arg_modal_ID}}.result);
-          
-                          var formData_{{arg_modal_ID}} = new FormData();
-                          formData_{{arg_modal_ID}}.append('image', input_{{arg_modal_ID}}.files[0]);
-          
-                          console.log('4');
-                          fetch('/upload_file', {
-                              method: 'POST',
-                              body: formData_{{arg_modal_ID}}
-                          })
-                          .then(response => response.json())
-                          .then(data => {
-                              console.log('5');
-                              if (data.success) {
-                                  console.log('6');
-                                  var fileName_{{arg_modal_ID}} = input_{{arg_modal_ID}}.files[0].name;
-                                  console.log('Image envoyée avec succès ! Nom du fichier :', fileName_{{arg_modal_ID}});
-                                  // Faire quelque chose avec le nom du fichier
-                                  button_{{arg_modal_ID}}.image = "**uploaded/" + fileName_{{arg_modal_ID}};
-                              } else {
-                                  console.error('Erreur lors de l\'envoi de l\'image:', data.message);
-                                  // Faire quelque chose si l'envoi a échoué
-                              }
-                          })
-                          .catch(error => {
-                              console.error('Erreur lors de l\'envoi de l\'image :', error);
-                              // Faire quelque chose si une erreur s'est produite lors de la requête
-                          });
-                      };
-                  }
-                  console.log('7');
-                  reader_{{arg_modal_ID}}.readAsDataURL(input_{{arg_modal_ID}}.files[0]);
-              }
-
-              document.getElementById('image-input_{{arg_modal_ID}}').addEventListener('change', function() {
-                  console.log('image-input_{{arg_modal_ID}} just got changed!');
-                  file_input_change('image-input_{{arg_modal_ID}}');
-              });
 
           
               var buttonText_{{arg_modal_ID}} = document.getElementById('button-text-input_{{arg_modal_ID}}');
@@ -501,7 +500,7 @@
           
           
                   button_{{arg_modal_ID}}.message = commandString_{{arg_modal_ID}};
-          
+                  console.log(button_{{arg_modal_ID}});
                   console.log('buttonCommand received, from: add');
                   var element = document.querySelector('#addbutton-modal-content');
                   var location_Folder = element.getAttribute('add_FOLDER');
@@ -548,8 +547,6 @@
                   
                   element.removeAttribute('add_ID');
                   element.removeAttribute('add_FOLDER');
-                
-                  console.log(button_{{arg_modal_ID}});
               }
               document.getElementById('{{arg_modal_ID}}_submit').addEventListener('click', function(event) {
                   setTimeout(function() {
