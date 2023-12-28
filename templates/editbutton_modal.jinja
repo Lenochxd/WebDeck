@@ -180,147 +180,155 @@
           
           <input type="submit" value="Save" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
+            function updateImageSize(edit_modal_ID, imageSizeSlider, imageSizeValue, imageElement, button) {
+                imageSizeSlider.addEventListener('input', function () {
+                    var imageSize = this.value;
+                    var parsedValue = parseInt(imageSize);
+
+                    var calculatedSize = 112 * (parsedValue / 100) + 3;
+                    imageElement.style.width = calculatedSize + 'px';
+
+                    if (imageElement.tagName === 'svg') {
+                        imageElement.style.height = calculatedSize + 'px';
+                        imageElement.height = calculatedSize + 'px';
+                        imageElement.width = calculatedSize + 'px';
+                    }
+
+                    imageSizeValue.value = parsedValue;
+                    button.image_size = `${parsedValue}%`;
+                });
+
+                imageSizeValue.addEventListener('input', function (event) {
+                    var newValue = imageSizeValue.value;
+                    var parsedValue = parseInt(newValue);
+
+                    if (!isNaN(parsedValue)) {
+                        imageSizeSlider.value = parsedValue;
+
+                        var calculatedSize = 112 * (parsedValue / 100) + 3;
+                        imageElement.style.width = calculatedSize + 'px';
+
+                        if (imageElement.tagName === 'svg') {
+                            imageElement.style.height = calculatedSize + 'px';
+                            imageElement.height = calculatedSize + 'px';
+                            imageElement.width = calculatedSize + 'px';
+                        }
+
+                        button.image_size = `${parsedValue}%`;
+                    }
+
+                    event.preventDefault();
+                });
+
+                imageSizeValue.addEventListener('keypress', function (event) {
+                    var charCode = event.which ? event.which : event.keyCode;
+
+                    if (charCode < 48 || charCode > 57) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+            function updateButtonBackgroundColor(edit_modal_ID, buttonElement, buttonBackgroundColorInput, buttonBackgroundColorHex, button) {
+                buttonBackgroundColorInput.addEventListener('input', function () {
+                    var colorValue = this.value;
+                    var hexValue = normalizeHexValue(colorValue);
+
+                    buttonBackgroundColorInput.value = hexValue;
+                    buttonBackgroundColorHex.value = hexValue;
+                    button['background-color'] = hexValue;
+
+                    buttonElement.style.backgroundColor = hexValue;
+                    buttonElement.style.boxShadow = "0 0 5px " + hexValue;
+                });
+
+                buttonBackgroundColorHex.addEventListener('input', function () {
+                    var hexValue = this.value;
+                    var normalizedHexValue = normalizeHexValue(hexValue);
+
+                    buttonBackgroundColorInput.value = normalizedHexValue;
+                    buttonBackgroundColorHex.value = normalizedHexValue;
+                    button['background-color'] = normalizedHexValue;
+
+                    buttonElement.style.backgroundColor = normalizedHexValue;
+                    buttonElement.style.boxShadow = "0 0 5px " + normalizedHexValue;
+                });
+            }
+
+            function normalizeHexValue(value) {
+                if (value.charAt(0) !== '#') {
+                    value = '#' + value;
+                }
+                return value;
+            }
+
+            document.getElementById('image-input_{{edit_modal_ID}}').addEventListener('change', function () {
+                console.log('image-input_{{edit_modal_ID}} just got changed!');
+
+                var input_{{edit_modal_ID}} = this;
+                var file = input_{{edit_modal_ID}}.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/upload_file', true);
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        console.log('Fichier téléchargé avec succès!');
+                        var element = document.getElementById('button-image_{{edit_modal_ID}}');
+
+                        if (element.tagName.toLowerCase() === 'svg') {
+                            var imgElement = document.createElement('img');
+                            imgElement.setAttribute('id', 'button-image_{{edit_modal_ID}}');
+                            imgElement.setAttribute('draggable', false);
+                            imgElement.setAttribute('src', 'static/files/uploaded/' + input_{{edit_modal_ID}}.files[0].name);
+                            imgElement.setAttribute('style', 'width: 87px;');
+                            element.parentNode.replaceChild(imgElement, element);
+
+                            var image_{{edit_modal_ID}} = document.getElementById('button-image_{{edit_modal_ID}}');
+                            var imageSizeSlider_{{edit_modal_ID}} = document.getElementById('image-size-slider_{{edit_modal_ID}}');
+                            var imageSizeValue_{{edit_modal_ID}} = document.getElementById('image-size-value_{{edit_modal_ID}}');
+
+                            updateImageSize('{{edit_modal_ID}}', imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}}, image_{{edit_modal_ID}}, button_{{edit_modal_ID}});
+                        } else {
+                            element.setAttribute('src', 'static/files/uploaded/' + input_{{edit_modal_ID}}.files[0].name);
+                        }
+
+                        button_{{edit_modal_ID}}.image = "**uploaded/" + input_{{edit_modal_ID}}.files[0].name;
+                    } else {
+                        console.error('Échec du téléchargement du fichier.');
+                    }
+                };
+
+                xhr.send(formData);
+            });
+
             {% if button_settings %}
                 var button_{{edit_modal_ID}} = {{button_settings}};
             {% else %}
                 var button_{{edit_modal_ID}} = {};
             {% endif %}
             button_{{edit_modal_ID}}.name = "{{ button_name }}";
-            
+
             var image_{{edit_modal_ID}} = document.getElementById('button-image_{{edit_modal_ID}}');
             var imageSizeSlider_{{edit_modal_ID}} = document.getElementById('image-size-slider_{{edit_modal_ID}}');
             var imageSizeValue_{{edit_modal_ID}} = document.getElementById('image-size-value_{{edit_modal_ID}}');
-            
-            imageSizeSlider_{{edit_modal_ID}}.addEventListener('input', function() {
-                var imageSize = this.value;
-                var parsedValue = parseInt(imageSize);
-            
-                // Mettre à jour la taille de l'image en fonction de la valeur du slider
-                var calculatedSize = 112 * (parsedValue / 100) + 3;
-                image_{{edit_modal_ID}}.style.width = calculatedSize + 'px';
-                if (image_{{edit_modal_ID}}.tagName === 'svg') {
-                  image_{{edit_modal_ID}}.style.height = calculatedSize + 'px';
-                  image_{{edit_modal_ID}}.height = calculatedSize + 'px';
-                  image_{{edit_modal_ID}}.width = calculatedSize + 'px';
-                }
-            
-                // Mettre à jour la valeur du span pour l'affichage visuel
-                imageSizeValue_{{edit_modal_ID}}.value = parsedValue;
-            
-                // Mettre à jour la valeur de taille dans l'objet "button"
-                button_{{edit_modal_ID}}.image_size = `${parsedValue}%`;
-            });
-            
-            imageSizeValue_{{edit_modal_ID}}.addEventListener('input', function(event) {
-                var newValue = imageSizeValue_{{edit_modal_ID}}.value;
-                var parsedValue = parseInt(newValue);
-            
-                // Vérifier si la valeur saisie est un nombre valide
-                if (!isNaN(parsedValue)) {
-                    // Mettre à jour la valeur du slider pour l'affichage visuel
-                    imageSizeSlider_{{edit_modal_ID}}.value = parsedValue;
-            
-                    // Mettre à jour la taille de l'image en fonction de la valeur du slider
-                    var calculatedSize = 112 * (parsedValue / 100) + 3;
-                    image_{{edit_modal_ID}}.style.width = calculatedSize + 'px';
-                    if (image_{{edit_modal_ID}}.tagName === 'svg') {
-                      image_{{edit_modal_ID}}.style.height = calculatedSize + 'px';
-                      image_{{edit_modal_ID}}.height = calculatedSize + 'px';
-                      image_{{edit_modal_ID}}.width = calculatedSize + 'px';
-                    }
 
-                    // Mettre à jour la valeur de taille dans l'objet "button"
-                    button_{{edit_modal_ID}}.image_size = `${parsedValue}%`;
-                }
-            
-                // Empêcher l'événement d'entrée par défaut pour éviter l'ajout de caractères indésirables
-                event.preventDefault();
-            });
-            
-            imageSizeValue_{{edit_modal_ID}}.addEventListener('keypress', function(event) {
-              var charCode = event.which ? event.which : event.keyCode;
-          
-              // Vérifier si le caractère saisi est un chiffre (0-9)
-              if (charCode < 48 || charCode > 57) {
-                event.preventDefault();
-              }
-            });
-            
-            
+            updateImageSize('{{edit_modal_ID}}', imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}}, image_{{edit_modal_ID}}, button_{{edit_modal_ID}});
+
             var buttonElement_{{edit_modal_ID}} = document.getElementById('button-element_{{edit_modal_ID}}');
             var buttonBackgroundColorInput_{{edit_modal_ID}} = document.getElementById('background-color-input_{{edit_modal_ID}}');
             var buttonBackgroundColorHex_{{edit_modal_ID}} = document.getElementById('background-color-hex_{{edit_modal_ID}}');
-            
+
+            updateButtonBackgroundColor('{{edit_modal_ID}}', buttonElement_{{edit_modal_ID}}, buttonBackgroundColorInput_{{edit_modal_ID}}, buttonBackgroundColorHex_{{edit_modal_ID}}, button_{{edit_modal_ID}});
+
             {% if config['settings']['dev-mode'].lower() == 'true' %}
-              document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function() {
-                button_{{edit_modal_ID}}['message'] = this.value;
-              });
+                document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function () {
+                    button_{{edit_modal_ID}}['message'] = this.value;
+                });
             {% endif %}
 
-            buttonBackgroundColorInput_{{edit_modal_ID}}.addEventListener('input', function() {
-              var colorValue = this.value;
-              var hexValue = normalizeHexValue(colorValue);
-              buttonBackgroundColorInput_{{edit_modal_ID}}.value = hexValue;
-              buttonBackgroundColorHex_{{edit_modal_ID}}.value = hexValue;
-              button_{{edit_modal_ID}}['background-color'] = hexValue;
-              buttonElement_{{edit_modal_ID}}.style.backgroundColor = hexValue;
-              buttonElement_{{edit_modal_ID}}.style.boxShadow = "0 0 5px " + hexValue;
-            });
-            
-            buttonBackgroundColorHex_{{edit_modal_ID}}.addEventListener('input', function() {
-              var hexValue = this.value;
-              var normalizedHexValue = normalizeHexValue(hexValue);
-              buttonBackgroundColorInput_{{edit_modal_ID}}.value = normalizedHexValue;
-              buttonBackgroundColorHex_{{edit_modal_ID}}.value = normalizedHexValue;
-              button_{{edit_modal_ID}}['background-color'] = normalizedHexValue;
-              buttonElement_{{edit_modal_ID}}.style.backgroundColor = normalizedHexValue;
-              buttonElement_{{edit_modal_ID}}.style.boxShadow = "0 0 5px " + normalizedHexValue;
-            });
-            
-            function normalizeHexValue(value) {
-              if (value.charAt(0) !== '#') {
-                value = '#' + value;
-              }
-              return value;
-            }
-          
-            document.getElementById('image-input_{{edit_modal_ID}}').addEventListener('change', function() {
-                var input_{{edit_modal_ID}} = this;
-          
-                if (input_{{edit_modal_ID}}.files && input_{{edit_modal_ID}}.files[0]) {
-                    var reader_{{edit_modal_ID}} = new FileReader();
-          
-                    reader_{{edit_modal_ID}}.onloadend = function() {
-                        image_{{edit_modal_ID}}.setAttribute('src', reader_{{edit_modal_ID}}.result);
-          
-                        var formData_{{edit_modal_ID}} = new FormData();
-                        formData_{{edit_modal_ID}}.append('image', input_{{edit_modal_ID}}.files[0]);
-          
-                        fetch('/upload_file', {
-                            method: 'POST',
-                            body: formData_{{edit_modal_ID}}
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                var fileName_{{edit_modal_ID}} = input_{{edit_modal_ID}}.files[0].name;
-                                console.log('Image envoyée avec succès ! Nom du fichier :', fileName_{{edit_modal_ID}});
-                                // Faire quelque chose avec le nom du fichier
-                                button_{{edit_modal_ID}}.image = "**uploaded/" + fileName_{{edit_modal_ID}};
-                            } else {
-                                console.error('Erreur lors de l\'envoi de l\'image:', data.message);
-                                // Faire quelque chose si l'envoi a échoué
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Erreur lors de l\'envoi de l\'image :', error);
-                            // Faire quelque chose si une erreur s'est produite lors de la requête
-                        });
-                    };
-          
-                    reader_{{edit_modal_ID}}.readAsDataURL(input_{{edit_modal_ID}}.files[0]);
-                }
-            });
           
             var buttonText_{{edit_modal_ID}} = document.getElementById('button-text-input_{{edit_modal_ID}}');
             var buttonPreview_{{edit_modal_ID}} = document.getElementById('button-text-preview_{{edit_modal_ID}}');
