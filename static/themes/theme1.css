@@ -88,7 +88,7 @@ div.buttons-center {
   flex-wrap: wrap;
   justify-content: left;
   margin: auto;
-  /*border: 1px solid rgba(253, 252, 252, 0.1);*/
+  /* border: 3px solid rgba(253, 252, 252, 0.1); */
   border-radius: 20px;
 }
 
@@ -97,6 +97,7 @@ div.all-buttons {
   flex-wrap: wrap;
   justify-content: left;
   align-items: left;
+  width: max-content;
 }
 
 @media (orientation: portrait) {
@@ -555,6 +556,8 @@ div.fakeform-container {
   margin-bottom: 10;
   margin-right: 20;
   width: fit-content;
+  background-size: 500%;
+  background-position: 25% 93%;
 }
 div.fakeform-container.black-theme {
   border: 1px solid #515151!important;
@@ -1262,6 +1265,8 @@ div#create-bg-choices {
 }
 
 div.choose-bg-buttons {
+  position: absolute;
+  right: 10;
   height: 35.7;
   z-index: 1;
 }
