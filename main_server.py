@@ -49,6 +49,7 @@ import psutil
 import GPUtil
 import pynvml
 import vlc
+from PIL import Image
 
 # Numerical and scientific libraries
 import numpy as np
@@ -1177,6 +1178,12 @@ def upload_file():
     
     save_path = os.path.join('static/files/uploaded', uploaded_file.filename)
     uploaded_file.save(save_path)
+
+    if request.form.get('info') and request.form.get('info') == "background_image":
+        img = Image.open(save_path)
+        img_rotated = img.rotate(-90, expand=True)
+        file_name, extension = os.path.splitext(os.path.basename(save_path))
+        img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
 
     return jsonify({'success': True, 'message': 'Fichier téléchargé avec succès'})
 
