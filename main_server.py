@@ -873,6 +873,16 @@ def home():
             json.dump(config, json_file, indent=4)
     while random_bg.startswith('//') == True:
         random_bg = random.choice(config["front"]["background"])
+        if random_bg.startswith('**uploaded/'):
+            random_bg_path = random_bg.replace('**uploaded/', 'static/files/uploaded/')
+            if os.path.exists(random_bg_path):
+                file_name, extension = os.path.splitext(os.path.basename(random_bg_path))
+                random_bg_90_path = f"static/files/uploaded/{file_name}-90{extension}"
+                if not os.path.exists(random_bg_90_path):
+                    img = Image.open(random_bg_path)
+                    img_rotated = img.rotate(-90, expand=True)
+                    file_name, extension = os.path.splitext(os.path.basename(random_bg_path))
+                    img_rotated.save(random_bg_90_path)
     print(f"random background: {random_bg}")
 
     themes = [
