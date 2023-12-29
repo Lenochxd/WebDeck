@@ -78,7 +78,7 @@
           body, div.fakeform-container {
             background-color: transparent;
           }
-          html::before, div.fakeform-container {
+          html::before {
             content: "";
             position: absolute;
             top: 0;
@@ -92,6 +92,13 @@
             background-color: transparent;
             background-position: center;
             z-index: -1;
+          }
+          div.fakeform-container {
+            background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
+            background-size: cover;
+            background-position: center;
+            background-color: transparent;
+            background-position: center;
           }
           @media (orientation: portrait) {
             html::before {
@@ -885,7 +892,6 @@
     {% endif %}
 
     <script type="text/javascript">
-      const biggest_folder = "{{ biggest_folder }}";
 
       if (window.location !== window.parent.location) {
           console.log("La page est chargée dans un iframe.");
@@ -992,9 +998,13 @@
 
 
       function auto_resize() {
-        folder_{{biggest_folder}}();  // Appel initial à la fonction folder_{{biggest_folder}}
-        const div = document.querySelector('#folder-{{biggest_folder}}');
-        {# let currentZoom = 1; #}
+        var divs = document.querySelectorAll('.buttons-center');
+        for (var i = 0; i < divs.length; i++) {
+            if (!divs[i].classList.contains('invisible')) {
+                var div = divs[i];
+                break;
+            }
+        }
         var currentZoom = document.body.offsetWidth / 100;
 
         function applyZoom(newZoom) {
@@ -1006,24 +1016,28 @@
           document.body.style.height = `${scalePercentage}%`;
         }
 
-        while (true) {
+        var count = 0;
+        while (count < 1000) {
+          count ++;
           const rect = div.getBoundingClientRect();
           if (!(rect.right > window.innerWidth || rect.bottom > window.innerHeight)) {
             currentZoom += 0.05;
             applyZoom(currentZoom);
           } else {
-            folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+            count = 1000;
             break;
           }
         }
 
-        while (true) {
+        count = 0;
+        while (count < 1000) {
+          count ++;
           const rect = div.getBoundingClientRect();
           if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
             currentZoom -= 0.05;
             applyZoom(currentZoom);
           } else {
-            folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+            count = 1000;
             break;
           }
         }
