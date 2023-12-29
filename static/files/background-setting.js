@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var file = input.files[0];
             var formData = new FormData();
             formData.append('file', file);
+            formData.append('info', 'background_image');
             
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/upload_file', true);
