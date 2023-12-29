@@ -40,7 +40,6 @@
     {# {% set total_boxes = int(config["front"]["width"]) * int(config["front"]["height"]) %}
     {% for folder_id, value in config["front"]["buttons"].items() %}
 
-
       {% for _ in range(total_boxes) %}
         {% if config["front"]["buttons"][folder_id]|length < total_boxes %}
           {% set config = config["front"]["buttons"][folder_id].append({"VOID": "VOID"}) %}
@@ -48,7 +47,6 @@
         {% endif %}
       {% endfor %}
       
-    
     {% endfor %} #}
 
   </head>
@@ -76,19 +74,38 @@
     <style>
       
       {% if random_bg and not random_bg.strip() == "" %}
-        body, div.fakeform-container {
-          {% if '**uploaded/' in random_bg.lower() %}
+        {% if '**uploaded/' in random_bg.lower() %}
+          body, div.fakeform-container {
+            background-color: transparent;
+          }
+          html::before, div.fakeform-container {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
             background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
             background-size: cover;
+            background-position: center;
             background-color: transparent;
-          {% else %}
+            background-position: center;
+            z-index: -1;
+          }
+          @media (orientation: portrait) {
+            html::before {
+              {% set extension = random_bg.replace('**uploaded/', '').split('.')[-1] %}
+              {% set bg_image = "static/files/uploaded/" + random_bg.replace('**uploaded/', '').replace('.'+extension, '-90.'+extension) %}
+              background-image: url("{{ bg_image }}")!important;
+            }
+          }
+        {% else %}
+          body, div.fakeform-container {
             background-color: {{random_bg}}!important;
             background-image: none;
-          {% endif %}
-        }
-        div.fakeform-container {
-          background-size: 500%;
-        }
+          }
+        {% endif %}
       {% endif %}
       
       {% for folder_id, value in config["front"]["buttons"].items() %}
@@ -977,7 +994,8 @@
       function auto_resize() {
         folder_{{biggest_folder}}();  // Appel initial à la fonction folder_{{biggest_folder}}
         const div = document.querySelector('#folder-{{biggest_folder}}');
-        let currentZoom = 1;
+        {# let currentZoom = 1; #}
+        var currentZoom = document.body.offsetWidth / 100;
 
         function applyZoom(newZoom) {
           currentZoom = newZoom;
@@ -991,7 +1009,7 @@
         while (true) {
           const rect = div.getBoundingClientRect();
           if (!(rect.right > window.innerWidth || rect.bottom > window.innerHeight)) {
-            currentZoom += 0.1;
+            currentZoom += 0.05;
             applyZoom(currentZoom);
           } else {
             folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
