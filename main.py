@@ -101,6 +101,19 @@ if if_webdeck == False:
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")
 
+        processes_to_kill = [
+            "WD_main.exe",
+            "WD_start.exe",
+            "nircmd.exe",
+            "WebDeck.exe"
+        ]
+
+        for process_name in processes_to_kill:
+            try:
+                subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
+            except Exception as e:
+                print(f"Failed to terminate process {process_name}: {e}")
+                
         for process in processes:
             if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
                 print(f"Stopping process: {process.Properties_('Name').Value}")
@@ -113,19 +126,6 @@ if if_webdeck == False:
                 else:
                     print("Failed to terminate process.")
 
-        processes_to_kill = [
-            "WD_main.exe",
-            "WD_start.exe",
-            "nircmd.exe",
-            "WebDeck.exe"
-        ]
-
-        for process_name in processes_to_kill:
-            try:
-                subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
-                #subprocess.Popen(f'nircmd.exe close title "{process_name}"', shell=True)
-            except Exception as e:
-                print(f"Failed to terminate process {process_name}: {e}")
 
         close_window()
         icon.stop()  # Arrêter l'icône Tray

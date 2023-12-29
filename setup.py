@@ -15,7 +15,7 @@ import time
 start_time = time.time()
 sys.setrecursionlimit(10000)
 base = 'Win32GUI' if sys.platform=='win32' else None
-#base = 'console' if sys.platform=='win32' else None
+# base = 'console' if sys.platform=='win32' else None
 
 executables = [
     # tray icon
@@ -38,7 +38,11 @@ setup(name='WebDeck',
     executables = executables)
 
 
-exclude_folders = ['!buttons', '.git', '.vscode', '__pycache__', 'build', 'webdeck', '%.html%WebDeck', 'testmic', 'build.bat']
+exclude_folders = [
+    '!buttons', '.git', '.vscode', '__pycache__', 'build',
+    'webdeck', '%.html%WebDeck', 'testmic', 'build.bat',
+    'WD_main.exe', 'WebDeck.exe', 'WD_updater.exe'
+]
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(script_dir, 'build')

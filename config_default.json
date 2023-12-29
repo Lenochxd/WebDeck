@@ -76,7 +76,8 @@
                     "name": "Color picker"
                 },
                 {
-                    "image": "https://www.sordum.org/wp-content/uploads/2020/01/restart_explorer.png",
+                    "image": "restart_explorer.png",
+                    "source": "https://www.sordum.org/wp-content/uploads/2020/01/restart_explorer.png",
                     "image_size": "80%",
                     "message": "/restartexplorer",
                     "name": "restart explorer"

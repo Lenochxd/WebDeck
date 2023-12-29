@@ -38,7 +38,6 @@ import pyperclip
 import win32api
 import win32con
 import win32gui
-import win32com.client
 from win32com.client import Dispatch
 from win10toast import ToastNotifier
 import tkinter as tk
@@ -234,6 +233,7 @@ def stop_soundboard():
             ...
 
 def should_i_close():
+    global sb_on
     if getattr(sys, 'frozen', False):
         is_handler_opened = any(
             process.info['name'].lower().strip().replace('.exe', '')
@@ -241,6 +241,7 @@ def should_i_close():
             for process in psutil.process_iter(['pid', 'name'])
         )
         if not is_handler_opened:
+            sb_on = False
             sys.exit()
             exit()
 
@@ -2014,15 +2015,35 @@ soundboard_thread.start()
 
 check_for_updates()
 
-command = [
-    'powershell',
-    'New-NetFirewallRule',
-    '-DisplayName', '"WebDeck"',
-    '-Direction', 'Inbound',
-    '-Program', f'"{sys.executable}"',
-    '-Action', 'Allow'
-]
-subprocess.run(command)
+def check_firewall_permission():
+    try:
+        firewall_manager = Dispatch("HNetCfg.FwMgr")
+        policy = firewall_manager.LocalPolicy.CurrentProfile
+        authorized_applications = policy.AuthorizedApplications
+
+        for app in authorized_applications:
+            if app.ProcessImageFileName.lower() == sys.executable.lower():
+                print(f"L'application ({sys.executable}) a l'autorisation de passer à travers le pare-feu.")
+                return True
+
+        print(f"L'application ({sys.executable}) n'a pas l'autorisation de passer à travers le pare-feu.")
+        return False
+    except Exception as e:
+        print(f"Erreur lors de la vérification du pare-feu : {e}")
+        return True
+
+if check_firewall_permission() == False:
+    command = [
+        'powershell',
+        '-NoProfile',
+        '-WindowStyle', 'Hidden',
+        'New-NetFirewallRule',
+        '-DisplayName', '"WebDeck"',
+        '-Direction', 'Inbound',
+        '-Program', f'"{sys.executable}"',
+        '-Action', 'Allow'
+    ]
+    subprocess.run(command)
 
 app.run(host=local_ip, port=config['url']['port'],
         debug=config['settings']['flask-debug'],
