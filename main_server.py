@@ -211,8 +211,10 @@ def remove_player(sb_type, p_id):
     try:
         if sb_type == 1:
             del player_vbcable[p_id]
-        else:
+        elif sb_type == 2:
             del player_ear_soundboard[p_id]
+        else:
+            del p_id
     except KeyError:
         pass
     
@@ -425,36 +427,28 @@ def convert_position(size, position):
     return position
 
 
-biggest_folder = {"name": "", "buttons_count": 0}
-for folder_name, folder_content in config["front"]["buttons"].items():
-    # for button in folder_content:
-    #     if 'action' not in button.keys():
-    #         button['action'] = {
-    #             "touch_start": "click",
-    #             "touch_keep": "None",
-    #             "touch_end": "none",
-    #         }
+# for folder_name, folder_content in config["front"]["buttons"].items():
+#     for button in folder_content:
+#         if 'action' not in button.keys():
+#             button['action'] = {
+#                 "touch_start": "click",
+#                 "touch_keep": "None",
+#                 "touch_end": "none",
+#             }
     
     
     
-    
-    #     if 'image' in button.keys() and not button['image'].strip() == '' and ':' in button['image'] and not button['image'].startswith('http'):
-    #         button['image'] = button['image'].replace('/', '\\')
-    #         splitted = button['image'].split('\\')
-    #         try:
-    #             copyfile(button['image'],f'static/files/images/{splitted[-1]}')
-    #         except Exception:
-    #             pass
-                        
-    
-    if folder_content.index(folder_content[-1]) > biggest_folder["buttons_count"]:
-        biggest_folder["buttons_count"] = folder_content.index(folder_content[-1])
-        biggest_folder["name"] = folder_name
+#         if 'image' in button.keys() and not button['image'].strip() == '' and ':' in button['image'] and not button['image'].startswith('http'):
+#             button['image'] = button['image'].replace('/', '\\')
+#             splitted = button['image'].split('\\')
+#             try:
+#                 copyfile(button['image'],f'static/files/images/{splitted[-1]}')
+#             except Exception:
+#                 pass
 
     x = int(config["front"]["width"])
     # while 'VOID' in folder_content[-1].keys():
     #     folder_content.pop(-1)
-print(biggest_folder)
 
 with open('config.json', 'w', encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
@@ -893,7 +887,7 @@ def home():
     
     return render_template("index.jinja",
                             config=config, themes=themes, commands=commands, versions=versions,
-                            biggest_folder=biggest_folder["name"], is_exe=is_exe, langs=['en','fr'], random_bg=random_bg,
+                            is_exe=is_exe, langs=['en','fr'], random_bg=random_bg,
                             int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open, isfile=os.path.isfile
                             )
 
@@ -1247,7 +1241,7 @@ def send_data(message=None):
 
 
         
-    elif message.startswith('/stop_soundboard'):
+    elif message.startswith('/stop_sound'):
         stop_soundboard()
     elif message.startswith('/playsound '):
         message = message.replace('C:\\fakepath\\', '').replace('/playsound ', '')
@@ -1281,7 +1275,7 @@ def send_data(message=None):
             player.audio_set_volume(int(sound_volume * 100))
             player.play()
             player.event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(3, player)
             )
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
