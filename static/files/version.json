@@ -1,6 +1,62 @@
 {
     "versions": [
         {
+            "version": "1.6.2",
+            "release_date": {
+                "day": "29",
+                "month": "12",
+                "year": "2023",
+                "hour": "19",
+                "minute": "10"
+            },
+            "en": {
+                "updates": [
+                    "Added the 'stop soundboard' button"
+                ],
+                "minor_enhancements": [
+                    "Completed soundboard functionality; fixed spamming issue",
+                    "Ability to change the microphone on the soundboard without restarting the application",
+                    "Removed hourly automatic updates; now updates only occur when the software is launched"
+                ],
+                "fixes": [
+                    "Fixed the bug where only the last deleted button was actually removed",
+                    "Resolved firewall issues",
+                    "Fixed wallpaper orientation in portrait mode",
+                    "Fixed 'ear_soundboard=False'",
+                    "Fixed automatic zoom",
+                    "Fixed various other minor bugs/oversights"
+                ],
+                "nobody_cares": [
+                    "Replaced Pygame with VLC",
+                    "Fixed 'auto-close'",
+                    "Improved CSS"
+                ]
+            },            
+            "fr": {
+                "updates": [
+                    "Ajout du bouton 'stop soundboard'"
+                ],
+                "minor_enhancements": [
+                    "Soundboard entièrement terminée; possibilité de spam corrigée",
+                    "Possibilité de changer de microphone sur la soundboard sans redémarrer l'application",
+                    "Retrait de la mise à jour automatique toutes les heures; désormais, elle se fait seulement lors du lancement du logiciel"
+                ],
+                "fixes": [
+                    "Correction du bug où seul le dernier bouton supprimé l'était réellement",
+                    "Correction des problèmes de pare-feu",
+                    "Correction de l'orientation du fond d'écran en mode portrait",
+                    "Correction de 'ear_soundboard=False'",
+                    "Correction du zoom automatique des boutons",
+                    "Correction de quelques autres petits bugs/oublis"
+                ],
+                "nobody_cares": [
+                    "Remplacement de Pygame par VLC",
+                    "Correction de l'auto-close'",
+                    "Amélioration du CSS"
+                ]
+            }
+        },
+        {
             "version": "1.6.1",
             "release_date": {
                 "day": "23",
