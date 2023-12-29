@@ -963,8 +963,8 @@
       setInterval(loop, 5000); #}
 
 
-      let config = {};
-      let tempEditorConfig = {};
+      var config = {};
+      var tempEditorConfig = {};
 
       async function get_config() {
         try {
@@ -1104,7 +1104,7 @@
 
         fetch('/get_config')
           .then(function (response) {
-            let tempEditorConfig = {};
+            var tempEditorConfig = {};
             if (response.ok) {
               return response.json();
             } else {
@@ -1233,18 +1233,22 @@
                 const formNumber = formClassMatch ? formClassMatch[1] : '';
                 const formIndex = parseInt(formNumber) - 1;
                 console.log(`${parentId} > ${formNumber}`);
-      
-                loadConfig().then((config) => {
-                  tempEditorConfig = config;
-                  tempEditorConfig['front']['buttons'][parentId][formNumber] = {
-                    "VOID": "VOID"
-                  };
-                  closest_form.parentNode.replaceChild(voidDiv, closest_form);
-        
-                  console.log("Le bouton a été supprimé.");
+
+                if (tempEditorConfig === null || tempEditorConfig == {}) {
+                  loadConfig().then((config) => {
+                    var tempEditorConfig = loadConfig();
+                  });
                   console.log(tempEditorConfig);
-                });
-      
+                }
+                tempEditorConfig['front']['buttons'][parentId][formNumber] = {
+                  "VOID": "VOID"
+                };
+                closest_form.parentNode.replaceChild(voidDiv, closest_form);
+
+                console.log("Le bouton a été supprimé.");
+                console.log(tempEditorConfig);
+                config = tempEditorConfig;
+
             }
         }
       
@@ -1406,7 +1410,7 @@
             if (editorMode === 1) {
                 fetch('/get_config')
                     .then(function (response) {
-                        let tempEditorConfig = {};
+                        var tempEditorConfig = {};
                         if (response.ok) {
                             return response.json();
                         } else {
@@ -1453,7 +1457,7 @@
             if (editorMode === 1) {
               fetch('/get_config')
                 .then(function (response) {
-                  let tempEditorConfig = {}; // Déclarer tempEditorConfig
+                  var tempEditorConfig = {}; // Déclarer tempEditorConfig
                   if (response.ok) {
                     return response.json();
                   } else {
@@ -1750,7 +1754,7 @@
               if (editorMode === 1) {
                 fetch('/get_config')
                   .then(function (response) {
-                    let tempEditorConfig = {};
+                    var tempEditorConfig = {};
                     if (response.ok) {
                       return response.json();
                     } else {
