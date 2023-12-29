@@ -750,7 +750,7 @@
     }
   },
   "Soundboard": {
-    "Soundboard": {
+    "Playsound": {
       "command": "/playsound",
       "args": [
         {
@@ -768,12 +768,36 @@
         "en": "Play a sound",
         "fr": "Jouer un son"
       },
+      "description": {
+        "en": "Play a sound on the soundboard",
+        "fr": "Joue un son sur la soundboard"
+      },
       "style": {
         "image": "volume-up.svg",
-        "image_size": "75%",
+        "image_size": "70%",
         "name": {
           "en": "Soundboard",
           "fr": "Jouer le son"
+        }
+      }
+    },
+    "Stopsound": {
+      "command": "/stop_soundboard",
+      "args": [],
+      "name": {
+        "en": "Stop sounds",
+        "fr": "Arrêter les sons"
+      },
+      "description": {
+        "en": "Stop all sounds currently playing by the soundboard",
+        "fr": "Arrête tous les sons actuellement joués par la soundboard"
+      },
+      "style": {
+        "image": "sound-off.png",
+        "image_size": "60%",
+        "name": {
+          "en": "stop soundboard",
+          "fr": "stop soundboard"
         }
       }
     }
