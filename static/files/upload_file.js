@@ -18,9 +18,11 @@ function upload_file(element) {
 }
 
 // new audio file -> **uploaded
-var elements = document.querySelectorAll('.audio-input');
-elements.forEach(function(element) {
-    element.addEventListener('change', function() {
-        upload_file(element);
+document.addEventListener('DOMContentLoaded', function() {
+    var elements = document.querySelectorAll('.audio-input');
+    elements.forEach(function(element) {
+        element.addEventListener('change', function() {
+            upload_file(element);
+        });
     });
 });
