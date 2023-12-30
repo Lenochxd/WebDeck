@@ -1,6 +1,36 @@
 {
     "versions": [
         {
+            "version": "1.6.3",
+            "release_date": {
+                "day": "30",
+                "month": "12",
+                "year": "2023",
+                "hour": "16",
+                "minute": "50"
+            },
+            "en": {
+                "updates": [
+                    "Added an error notification system"
+                ],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Resolved VLC error"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [
+                    "Ajout d'un système de notifications d'erreurs"
+                ],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction de l'erreur VLC"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.6.2",
             "release_date": {
                 "day": "29",
@@ -31,7 +61,7 @@
                     "Fixed 'auto-close'",
                     "Improved CSS"
                 ]
-            },            
+            },
             "fr": {
                 "updates": [
                     "Ajout du bouton 'stop soundboard'"
