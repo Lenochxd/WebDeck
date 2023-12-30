@@ -43,20 +43,25 @@ Follow these steps to configure the application's soundboard:
    - Click on "Install Driver".
    - Restart your computer.
 
-2. **Configure Webdeck Settings:**
+2. **Install VLC media player:**
+   - If VLC media player is not already installed on your computer, download it from [this link](https://www.videolan.org/vlc/download-windows.html).
+   - Proceed with the installation by following the instructions.
+   - VLC is essential for playing sounds on the soundboard. However, it is not necessary to open the software even once for the soundboard to work. Installation is sufficient, and everything will function perfectly.
+
+3. **Configure Webdeck Settings:**
    - Open the webdeck settings.
    - Scroll down to the "Soundboard" section.
    - Select the appropriate input microphone.
    - Choose "CABLE Input (VB-Audio Virtual Cable)" as the output.
 
-3. **Configure External Software Settings:**
+4. **Configure External Software Settings:**
    - Open the settings of the software where you want to use the soundboard and make sure to select "CABLE Output (VB-Audio Virtual Cable)" as the microphone input.
 
-4. **Discord Configuration:**
+5. **Discord Configuration:**
    - If you are using the soundboard on Discord, disable the "Automatic Gain Control" feature in "Settings > Voice & Video".
    - Note that the use of noise suppression may result in distorted sound quality.
 
-5. **Add Sounds:**
+6. **Add Sounds:**
    - Add a button with the Q key.
    - Go to the "Soundboard" section, then "Play a sound".
    - Import your audio file **in MP3 format**.
@@ -103,13 +108,6 @@ Resetting the settings is a simple process. Follow these steps:
 Once these steps are completed, the application settings will be reset to their default values, allowing you to start fresh with a clean configuration if necessary.
 
 
-## Does the software communicate with a server?
-
-Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is you. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
-
-If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
-
-
 ## Can I put a GIF on a button?
 
 Of course! You can easily add a `.gif` file as the image for your button when creating or editing it.
@@ -130,6 +128,20 @@ Customizing the background is a breeze. Follow these simple steps:
 6. To remove a background, click the corresponding delete icon.
 
 This way, you can customize the button backgrounds to your preferences with just a few clicks.
+
+
+## Does the software communicate with a server?
+
+Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is you. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
+
+If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
+
+
+## Why is VLC Media Player Necessary?
+
+WebDeck needs the `python-vlc` library for sound playback on the soundboard. Therefore, it is essential to have VLC media player installed on your computer, even if you do not use the VLC software interface. Unfortunately, to date, no alternative solution has been identified to bypass this requirement.
+
+**Note:** This dependency is a current limitation, and the WebDeck development team is actively exploring potential alternatives to streamline the user experience in future updates.
 
 
 ## Can I open files other than software via the "Open ..." button?

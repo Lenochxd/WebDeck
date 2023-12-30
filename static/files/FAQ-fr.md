@@ -42,20 +42,25 @@ Suivez ces étapes pour configurer la soundboard de l'application:
    - Cliquez sur "Install Driver".
    - Redémarrer l'ordinateur.
 
-2. **Configurer les paramètres du webdeck:**
+2. **Installer VLC media player:**
+   - Si VLC media player n'est pas déjà installé sur votre ordinateur, téléchargez-le à partir de [ce lien](https://www.videolan.org/vlc/download-windows.html).
+   - Procédez à l'installation en suivant les instructions.
+   - VLC est essentiel pour la lecture des sons sur la soundboard. Cependant, il n'est pas nécessaire d'ouvrir le logiciel une seule fois pour que la soundboard fonctionne. L'installation suffit, et tout sera parfaitement fonctionnel.
+
+3. **Configurer les paramètres du webdeck:**
    - Ouvrez les paramètres du webdeck.
    - Faites défiler jusqu'à la section "Soundboard".
    - Sélectionnez votre microphone d'entrée.
    - Choisissez "CABLE Input (VB-Audio Virtual Cable)" comme sortie.
 
-3. **Configurer les paramètres du logiciel externe:**
+4. **Configurer les paramètres du logiciel externe:**
    - Ouvrez les paramètres du logiciel où vous souhaitez utiliser la soundboard et sélectionnez "CABLE Output (VB-Audio Virtual Cable)" comme entrée microphone.
 
-4. **Configuration pour Discord:**
+5. **Configuration pour Discord:**
    - Si vous utilisez la soundboard sur Discord, désactivez la fonction "Annulation d'écho" dans "Paramètres > Voix & Vidéo".
    - Notez que l'utilisation de la suppression du bruit peut entraîner une qualité altérée des sons.
 
-5. **Ajouter des sons:**
+6. **Ajouter des sons:**
    - Ajoutez un bouton avec la touche Q.
    - Allez dans la section "Soundboard" puis "Jouer un son".
    - Importez votre fichier audio **au format MP3**.
@@ -102,13 +107,6 @@ La réinitialisation des paramètres est un processus simple. Suivez ces étapes
 Une fois ces étapes accomplies, les paramètres de l'application seront réinitialisés à leurs valeurs par défaut, vous permettant de recommencer avec une configuration fraîche si nécessaire.
 
 
-## Le logiciel communique-t-il avec un serveur ?
-
-Oui, mais non. En effet, le WebDeck établit une communication avec un serveur, mais ce serveur, c'est vous. Le WebDeck sur votre appareil mobile n'est rien de plus qu'une simple page web, et le "serveur" auquel il se connecte est en réalité votre ordinateur. La communication entre ces deux appareils s'effectue par le biais de votre réseau local. Autrement dit, votre ordinateur agit comme un serveur, mais l'accès à ce serveur est strictement réservé à vous seul.
-
-Si votre question porte sur la communication du logiciel avec un **autre** serveur que celui de votre ordinateur, alors la réponse est non. Pour garantir un maximum de sécurité, aucune donnée ne sort de votre réseau. Les seules données envoyées à l'extérieur de votre domicile sont les requêtes API vers Spotify, mais ces données ne transitent pas par des serveurs dédiés au WebDeck, elles sont dirigées directement vers les serveurs de Spotify.
-
-
 ## Puis-je mettre un GIF sur un bouton ?
 
 Bien sur ! Vous pouvez facilement ajouter un fichier `.gif` en tant qu'image de votre bouton lors de sa création ou de sa modification.
@@ -129,6 +127,20 @@ La personnalisation du fond d'écran est un jeu d'enfant. Suivez ces étapes sim
 6. Pour supprimer un arrière-plan, cliquez sur l'icône de suppression correspondante.
 
 Ainsi, vous pourrez personnaliser l'arrière-plan des boutons selon vos préférences en quelques clics.
+
+
+## Pourquoi VLC Media Player est nécessaire ?
+
+WebDeck utilise la bibliothèque `python-vlc` pour la lecture des sons sur la soundboard. Par conséquent, il est indispensable d'avoir VLC media player installé sur votre ordinateur, même si vous n'utilisez pas l'interface du logiciel VLC. Malheureusement, à ce jour, aucune solution alternative n'a été identifiée pour contourner cette exigence.
+
+**Remarque :** Cette dépendance est une limitation actuelle, et l'équipe de développement de Webdeck explore activement des alternatives potentielles pour simplifier l'expérience utilisateur dans les futures mises à jour.
+
+
+## Le logiciel communique-t-il avec un serveur ?
+
+Oui, mais non. En effet, le WebDeck établit une communication avec un serveur, mais ce serveur, c'est vous. Le WebDeck sur votre appareil mobile n'est rien de plus qu'une simple page web, et le "serveur" auquel il se connecte est en réalité votre ordinateur. La communication entre ces deux appareils s'effectue par le biais de votre réseau local. Autrement dit, votre ordinateur agit comme un serveur, mais l'accès à ce serveur est strictement réservé à vous seul.
+
+Si votre question porte sur la communication du logiciel avec un **autre** serveur que celui de votre ordinateur, alors la réponse est non. Pour garantir un maximum de sécurité, aucune donnée ne sort de votre réseau. Les seules données envoyées à l'extérieur de votre domicile sont les requêtes API vers Spotify, mais ces données ne transitent pas par des serveurs dédiés au WebDeck, elles sont dirigées directement vers les serveurs de Spotify.
 
 
 ## Peut-on ouvrir des fichiers autres que des logiciels via le bouton "Ouvrir ..." ?
