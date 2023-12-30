@@ -47,7 +47,10 @@ import soundfile as sf
 import psutil
 import GPUtil
 import pynvml
-import vlc
+try:
+    import vlc
+except:
+    pass
 from PIL import Image
 
 # Numerical and scientific libraries
@@ -150,23 +153,24 @@ def select_audio_device(channels_type='input'):
 
 def get_device(vbcable_device):
     # https://stackoverflow.com/questions/73884593/how-to-change-vlc-python-output-device
-    player = vlc.MediaPlayer()
-    mods = player.audio_output_device_enum()
-    if mods:
-        mod = mods
-        while mod:
-            mod = mod.contents
-            # If VB-Cable is found, return it's module and device id
-            if vbcable_device.lower() in str(mod.description).lower():
-                device = mod.device
-                return device
-            mod = mod.next
+    try:
+        player = vlc.MediaPlayer()
+        mods = player.audio_output_device_enum()
+        if mods:
+            mod = mods
+            while mod:
+                mod = mod.contents
+                # If VB-Cable is found, return it's module and device id
+                if vbcable_device.lower() in str(mod.description).lower():
+                    device = mod.device
+                    return device
+                mod = mod.next
+    except:
+        return 'ERROR_NO_VLC'
             
-vlc_installed = True
-try:
-    cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
-except AttributeError:
-    vlc_installed = False
+cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
+vlc_installed = cable_input_device != 'ERROR_NO_VLC'
+
 player_vbcable = {}
 player_ear_soundboard = {}
 def playsound(file_path: str, sound_volume, ear_soundboard=True):
