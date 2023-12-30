@@ -133,4 +133,4 @@ WebDeck est un projet en constante évolution, et nous apprécions vos contribut
 
 ---
 
-[![wakatime](https://wakatime.com/badge/user/0929cfd2-6330-4ccd-b5d6-859515b66a10/project/4bcf5971-919c-48a5-9f8c-2f1a06046591.svg)](https://wakatime.com/badge/user/0929cfd2-6330-4ccd-b5d6-859515b66a10/project/4bcf5971-919c-48a5-9f8c-2f1a06046591) : (uniquement depuis le 3 juillet 2023, commencé le 16 décembre 2022)
+[![wakatime](https://wakatime.com/badge/github/LeLenoch/WebDeck.svg)](https://wakatime.com/badge/github/LeLenoch/WebDeck) : (uniquement depuis le 3 juillet 2023, commencé le 16 décembre 2022)
