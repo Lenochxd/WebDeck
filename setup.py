@@ -6,7 +6,8 @@ build_options = {
                     "zip_exclude_packages": [
                         "_sounddevice_data",
                         "pygame",
-                        "soundfile", "_soundfile", "_soundfile_data"
+                        "soundfile", "_soundfile", "_soundfile_data",
+                        "vlc", "python-vlc"
                     ]
                 }
 
