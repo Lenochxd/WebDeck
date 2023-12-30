@@ -161,50 +161,58 @@ def get_device(vbcable_device):
                 device = mod.device
                 return device
             mod = mod.next
-
-cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
+            
+vlc_installed = True
+try:
+    cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
+except AttributeError:
+    vlc_installed = False
 player_vbcable = {}
 player_ear_soundboard = {}
 def playsound(file_path: str, sound_volume, ear_soundboard=True):
     global cable_input_device, player
-    print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
-    print(len(player_vbcable))
-    print(player_vbcable)
-    
-    p_id = len(player_vbcable.keys())
-    if p_id <= 3:
-        player_vbcable[p_id] = vlc.MediaPlayer(file_path)
-        player_vbcable[p_id].audio_set_volume(int(sound_volume * 100))
-        player_vbcable[p_id].audio_output_device_set(None, cable_input_device)
-        player_vbcable[p_id].play()
-        player_vbcable[p_id].event_manager().event_attach(
-            vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
-        )
-
-        if ear_soundboard:
-            player_ear_soundboard[p_id] = vlc.MediaPlayer(file_path)
-            player_ear_soundboard[p_id].audio_set_volume(int(sound_volume * 100))
-            player_ear_soundboard[p_id].play()
-            player_ear_soundboard[p_id].event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
-            )
-            
-
+    if not vlc_installed:
+        print("VLC is not installed!")
+        return jsonify({'success': False, 'message': 'VLC is not installed!'})
     else:
-        player_vbcable[0].stop()
-        player_vbcable[0].set_time(0)
-        player_vbcable[0].play()
-        player_vbcable[0].event_manager().event_attach(
-            vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
-        )
-
-        if ear_soundboard:
-            player_ear_soundboard[0].stop()
-            player_ear_soundboard[0].set_time(0)
-            player_ear_soundboard[0].play()
-            player_ear_soundboard[0].event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+        print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
+        print(len(player_vbcable))
+        print(player_vbcable)
+        
+        p_id = len(player_vbcable.keys())
+        if p_id <= 3:
+            player_vbcable[p_id] = vlc.MediaPlayer(file_path)
+            player_vbcable[p_id].audio_set_volume(int(sound_volume * 100))
+            player_vbcable[p_id].audio_output_device_set(None, cable_input_device)
+            player_vbcable[p_id].play()
+            player_vbcable[p_id].event_manager().event_attach(
+                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
             )
+
+            if ear_soundboard:
+                player_ear_soundboard[p_id] = vlc.MediaPlayer(file_path)
+                player_ear_soundboard[p_id].audio_set_volume(int(sound_volume * 100))
+                player_ear_soundboard[p_id].play()
+                player_ear_soundboard[p_id].event_manager().event_attach(
+                    vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+                )
+                
+        else:
+            player_vbcable[0].stop()
+            player_vbcable[0].set_time(0)
+            player_vbcable[0].play()
+            player_vbcable[0].event_manager().event_attach(
+                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
+            )
+
+            if ear_soundboard:
+                player_ear_soundboard[0].stop()
+                player_ear_soundboard[0].set_time(0)
+                player_ear_soundboard[0].play()
+                player_ear_soundboard[0].event_manager().event_attach(
+                    vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(2, p_id)
+                )
+        return jsonify({'success': True})
 def remove_player(sb_type, p_id):
     global player_vbcable, player_ear_soundboard
     try:
@@ -218,19 +226,24 @@ def remove_player(sb_type, p_id):
         pass
     
 def stop_soundboard():
-    global player_vbcable, player_ear_soundboard
-    while True:
-        try:
-            for p_id, player in player_vbcable.items():
-                player.stop()
-                del player_vbcable[p_id]
-                
-            for p_id, player in player_ear_soundboard.items():
-                player.stop()
-                del player_ear_soundboard[p_id]
-            break
-        except RuntimeError:
-            ...
+    if not vlc_installed:
+        print("VLC is not installed!")
+        return jsonify({'success': False, 'message': 'VLC is not installed!'})
+    else:
+        global player_vbcable, player_ear_soundboard
+        while True:
+            try:
+                for p_id, player in player_vbcable.items():
+                    player.stop()
+                    del player_vbcable[p_id]
+                    
+                for p_id, player in player_ear_soundboard.items():
+                    player.stop()
+                    del player_ear_soundboard[p_id]
+                break
+            except RuntimeError:
+                ...
+        return jsonify({'success': True})
 
 def should_i_close():
     global sb_on
@@ -1243,7 +1256,7 @@ def send_data(message=None):
 
         
     elif message.startswith('/stop_sound'):
-        stop_soundboard()
+        return stop_soundboard()
     elif message.startswith('/playsound '):
         message = message.replace('C:\\fakepath\\', '').replace('/playsound ', '')
         percentage = message[message.rfind(' ') + 1:].replace(' ','')
@@ -1259,7 +1272,7 @@ def send_data(message=None):
             sound_file = f"static/files/uploaded/{sound_file}"
         
         ear_soundboard = config['settings']["ear-soundboard"].lower() == "true"
-        playsound(sound_file, sound_volume, ear_soundboard)
+        return playsound(sound_file, sound_volume, ear_soundboard)
 
     elif message.startswith('/playlocalsound '):
         message = message.replace('C:\\fakepath\\', '').replace('/playlocalsound ', '')
