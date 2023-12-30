@@ -22,7 +22,7 @@
                     "Fixed the bug where only the last deleted button was actually removed",
                     "Resolved firewall issues",
                     "Fixed wallpaper orientation in portrait mode",
-                    "Fixed 'ear_soundboard=False'",
+                    "Fixed 'ear soundboard' setting",
                     "Fixed automatic zoom",
                     "Fixed various other minor bugs/oversights"
                 ],
@@ -45,7 +45,7 @@
                     "Correction du bug où seul le dernier bouton supprimé l'était réellement",
                     "Correction des problèmes de pare-feu",
                     "Correction de l'orientation du fond d'écran en mode portrait",
-                    "Correction de 'ear_soundboard=False'",
+                    "Correction du paramètre 'ear soundboard'",
                     "Correction du zoom automatique des boutons",
                     "Correction de quelques autres petits bugs/oublis"
                 ],
