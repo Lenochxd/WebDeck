@@ -5,10 +5,11 @@
     {% else %}
       <title>WebDeck DEV</title>
     {% endif %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="static/themes/{{config['front']['theme']}}">
     <link rel="stylesheet" href="static/files/loading-squares.css">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="icon" href="static\files\icon.ico"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta charset="UTF-8">
 
 
@@ -23,6 +24,7 @@
       .ui-dialog .ui-state-error { padding: .3em; }
       .validateTips { border: 1px solid transparent; padding: 0.3em; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="/static/files/names-color-setting.js"></script>
@@ -948,6 +950,37 @@
       // Appeler la fonction pour activer le verrouillage de l'écran lorsque l'utilisateur interagit avec le site
       document.addEventListener('click', wakeLock);
 
+      function showToast(type, text) {
+        let bg, duration
+        if (type === 0) {
+          bg = "linear-gradient(to right, #dc4e74, #c93d3d)";
+          duration = 2000
+        } else {
+          duration = 3000
+          bg = "linear-gradient(to right, #00b07d, #96c93d)";
+        }
+        Toastify({
+          text: text,
+          duration: duration,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          stopOnFocus: true,
+          style: {
+            background: bg,
+          }
+        }).showToast();
+      }
+
+      function showError(text) {
+        showToast(0, text)
+        console.log('ERROR: ', text);
+      }
+      function showInfo(text) {
+        showToast(1, text)
+        console.log('INFO: ', text);
+      }
+
 
       {#
       function loop() {
@@ -962,7 +995,13 @@
             body: JSON.stringify({ message: 'loop' })
           })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                      if (data.success === false) {
+                        showError(data.message);
+                      } else {
+                        console.log(data);
+                      }
+                    })
             .catch(error => console.error(error));
         {% endif %}
       }
@@ -1539,12 +1578,14 @@
                       location.reload();
                   } else {
                       // Le serveur a retourné une erreur
-                      alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                      showError('Error :/');
+                      // alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
                   }
               })
               .catch(function(error) {
                   // Une erreur s'est produite
-                  alert(error.message);
+                  showError(error.message);
+                  {# alert(error.message); #}
               });
           }
           console.log('La valeur de editorMode a été modifiée :', editorMode);
@@ -1639,11 +1680,8 @@
           console.log(`Last change: ${lastChange}`)
           
           if (lastChange === undefined) {
-            alert("There are no changes to undo.")
+            showError("There are no changes to undo.");
           } else {
-
-          
-
             let [swapFirstBtn, swapSecondBtn] = lastChange.split(" > ");
             const [parentId1, formNumber1] = swapFirstBtn.split(";;;");
             const [parentId2, formNumber2] = swapSecondBtn.split(";;;");
@@ -1699,7 +1737,7 @@
           console.log(`Last change: ${lastChange}`)
           
           if (lastChange === undefined) {
-            alert("There are no changes to undo.")
+            showError("There are no changes to undo.");
           } else {
 
           
@@ -1961,11 +1999,12 @@
                     if (response.success) {
                       alert('Les paramètres ont été enregistrés avec succès.');
                     } else {
+                      showError('Error :/');
                       alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
                     }
                   })
                   .catch(function(error) {
-                    alert(error.message);
+                    showError(error.message);
                   });
               }
             } else {
@@ -1982,7 +2021,13 @@
                     body: JSON.stringify({ message: message })
                   })
                     .then(response => response.json())
-                    .then(data => console.log(data))
+                    .then(data => {
+                      if (data.success === false) {
+                        showError(data.message);
+                      } else {
+                        console.log(data);
+                      }
+                    })
                     .catch(error => console.error(error));
                 {% endif %}
               } else if (message.startsWith("/reload") && swapMode !== 1) {
