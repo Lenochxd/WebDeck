@@ -460,7 +460,7 @@ def convert_position(size, position):
 #             except Exception:
 #                 pass
 
-    x = int(config["front"]["width"])
+    # x = int(config["front"]["width"])
     # while 'VOID' in folder_content[-1].keys():
     #     folder_content.pop(-1)
 
