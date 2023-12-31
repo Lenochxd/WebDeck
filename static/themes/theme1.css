@@ -737,6 +737,7 @@ input[type="submit"] {
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease-in-out; /* ajoute une transition pour une animation fluide */
+  width: -webkit-fill-available;
 }
 
 /* effet hover */
