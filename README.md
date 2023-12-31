@@ -8,16 +8,15 @@ The WebDeck is a Flask application that allows users to control their computer r
   <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="WebDeck banner" height="75%" width="75%">
   <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c601d4f6-cbb3-460b-874d-b74ec5e71696" alt="WebDeck example image" width="45%" height="45%">
   
-  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/releases)
-  [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg)](https://github.com/LeLenoch/WebDeck/releases)
-  [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/stargazers)
-  [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/watchers)
-  [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
-  [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/issues)
-  <a href="https://discord.gg/tUPsYHAGfm">
-    <img src="https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield" alt="Discord Shield">
-  </a>
+  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
+  [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
+  [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/stargazers)
+  [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/watchers)
+  [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
+  [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/issues)
+  [![Discord](https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield)](https://discord.gg/tUPsYHAGfm)
 </div>
+
 
 ## 🖥️🚀 Installation
 
@@ -29,6 +28,14 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 4. There is nothing to install on your mobile device, you simply need to scan the QR code by clicking on the tray icon.
 
+
+## 📋 Frequently Asked Questions (FAQ)
+
+Before asking questions, please check our [FAQ](https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
+
+If your question is not addressed in the FAQ, feel free to ask us on our [Discord server](https://discord.gg/tUPsYHAGfm).
+
+
 ## 📱❔ Compatibility
 
 To check the compatibility of your device and browser with WebDeck, you can refer to the  [test table](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). This table details the results of various experiments on different devices and browsers. You can also contribute to the table using https://bishokus.fr/webdeck/test-it
@@ -36,6 +43,7 @@ To check the compatibility of your device and browser with WebDeck, you can refe
 ### 💻 Operating System Support
 
 WebDeck currently supports Windows. We plan to develop versions for Linux and macOS in the future. Unfortunately, Wine emulation is not a viable solution for Linux compatibility. We appreciate your patience as we work on expanding our supported platforms.
+
 
 ## Compilation (Nerds only)
 
@@ -57,6 +65,7 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe`
 
 </details>
+
 
 ## ⭐ Contributors
 
