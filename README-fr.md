@@ -6,16 +6,15 @@ Le WebDeck est une application Flask qui permet à l'utilisateur de contrôler s
   <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="Bannière WebDeck" height="75%" width="75%">
   <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c601d4f6-cbb3-460b-874d-b74ec5e71696" alt="Exemple d'image WebDeck" width="45%" height="45%">
   
-  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/releases)
-  [![GitHub téléchargements](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg)](https://github.com/LeLenoch/WebDeck/releases)
-  [![GitHub étoiles](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/stargazers)
-  [![GitHub observateurs](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/watchers)
-  [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
-  [![GitHub problèmes](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg)](https://github.com/LeLenoch/WebDeck/issues)
-  <a href="https://discord.gg/tUPsYHAGfm">
-    <img src="https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield" alt="Discord Shield">
-  </a>
+  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
+  [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
+  [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/stargazers)
+  [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/watchers)
+  [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
+  [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/issues)
+  [![Discord](https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield)](https://discord.gg/tUPsYHAGfm)
 </div>
+
 
 ## 🖥️🚀 Installation
 
@@ -27,6 +26,14 @@ Le WebDeck est une application Flask qui permet à l'utilisateur de contrôler s
 
 4. Vous n'avez rien à installer sur votre appareil mobile, il vous suffira simplement de scanner le QR code présent en cliquant sur l'icone minimisée.
 
+
+## 📋 Foire aux questions (FAQ)
+
+Avant de poser des questions, veuillez consulter notre [FAQ](https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md) pour voir si votre question a déjà été répondue. Nous avons rassemblé les questions fréquemment posées pour vous fournir des réponses rapides.
+
+Si votre question n'est pas abordée dans la FAQ, n'hésitez pas à nous la poser sur notre [serveur Discord](https://discord.gg/tUPsYHAGfm).
+
+
 ## 📱❔ Compatibilité
 
 Pour vérifier la compatibilité de votre appareil et navigateur avec WebDeck, vous pouvez consulter le [tableau des tests](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). Celui-ci détaille les résultats de différentes expériences sur divers appareils et navigateurs. Vous pouvez vous aussi contribuer au tableau avec https://bishokus.fr/webdeck/test-it
@@ -34,6 +41,7 @@ Pour vérifier la compatibilité de votre appareil et navigateur avec WebDeck, v
 ### 💻 Systèmes d'Exploitation
 
 Le WebDeck prend actuellement en charge Windows. Il est prévu de développer des versions pour Linux et macOS à l'avenir. Malheureusement, l'émulation Wine n'est pas une solution viable pour la compatibilité Linux. Nous vous remercions de votre patience pendant que nous travaillons à étendre nos plates-formes prises en charge.
+
 
 ## Compilation (Pour les nerds)
 
@@ -55,6 +63,7 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
 9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
 
 </details>
+
 
 ## ⭐ Contributeurs
 
