@@ -120,6 +120,34 @@ config = check_json_update(config)
 with open('config.json', 'w', encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
 
+def save_config(config):
+    with open('config.json', 'w', encoding="utf-8") as json_file:
+        json.dump(config, json_file, indent=4)
+    with open('config.json', encoding="utf-8") as f:
+        config = json.load(f)
+    return config
+
+def create_folders(config):
+    global folders_to_create
+    for folder in folders_to_create:
+
+        config['front']['buttons'][folder['name']] = [
+            {
+                "image": "back10.svg",
+                "image_size": "110%",
+                "message": f"/folder {folder['parent_folder']}",
+                "name": f"back to {folder['parent_folder']}",
+            }
+        ]
+
+        void_count = int(config['front']['width']) * int(config['front']['height'])
+        for _ in range(void_count-1):
+            config['front']['buttons'][folder['name']].append({"VOID": "VOID"})
+
+        print("NEW FOLDER :", folder['name'])
+    folders_to_create = []
+    return config
+
 def select_audio_device(channels_type='input'):
     p = pyaudio.PyAudio()
     all_devices = []
@@ -943,7 +971,7 @@ def merge_dicts(d1, d2):
 
 folders_to_create = []
 @app.route('/save_config', methods=['POST'])
-def save_config():
+def saveconfig():
     global folders_to_create
 
     with open('config.json', encoding="utf-8") as f:
@@ -992,32 +1020,8 @@ def save_config():
 
 
     config = merge_dicts(config, new_config)
-    print(config['settings']['show-console'])
-
-    with open('config.json', 'w', encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-    with open('config.json', encoding="utf-8") as f:
-        config = json.load(f)
-
-        print(folders_to_create)
-        for folder in folders_to_create:
-
-            config['front']['buttons'][folder['name']] = [
-                {
-                    "image": "back10.svg",
-                    "image_size": "110%",
-                    "message": f"/folder {folder['parent_folder']}",
-                    "name": f"back to {folder['parent_folder']}",
-                }
-            ]
-
-            void_count = int(config['front']['width']) * int(config['front']['height'])
-            for _ in range(void_count-1):
-                config['front']['buttons'][folder['name']].append({"VOID": "VOID"})
-
-            print("NEW FOLDER :", folder['name'])
-        folders_to_create = []
-    print(config['settings']['show-console'])
+    config = create_folders(config)
+    config = save_config(config)
 
     try:
         config['front']['background'] = eval(config['front']['background'])
@@ -1045,29 +1049,8 @@ def complete_save_config():
     new_height = config['front']['height']
     new_width = config['front']['width']
     
-    with open('config.json', 'w', encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-    with open('config.json', encoding="utf-8") as f:
-        config = json.load(f)
-
-        print(folders_to_create)
-        for folder in folders_to_create:
-                
-            config['front']['buttons'][folder['name']] = [
-                {
-                    "image": "back10.svg",
-                    "image_size": "110%",
-                    "message": f"/folder {folder['parent_folder']}",
-                    "name": f"back to {folder['parent_folder']}",
-                }
-            ]
-
-            void_count = int(config['front']['width']) * int(config['front']['height'])
-            for _ in range(void_count-1):
-                config['front']['buttons'][folder['name']].append({"VOID": "VOID"})
-
-            print("NEW FOLDER :", folder['name'])
-        folders_to_create = []
+    config = create_folders(config)
+    config = save_config(config)
 
     config['front']['height'] = old_height
     config['front']['width'] = old_width
@@ -1120,34 +1103,9 @@ def save_buttons_only():
     for folder in temp_order_list:
         sorted_buttons[folder] = new_config.get(folder)
 
-
     config['front']['buttons'] = sorted_buttons
-
-    with open('config.json', 'w', encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-    with open('config.json', encoding="utf-8") as f:
-        config = json.load(f)
-
-        print(folders_to_create)
-        for folder in folders_to_create:
-                
-            config['front']['buttons'][folder['name']] = [
-                {
-                    "image": "back10.svg",
-                    "image_size": "110%",
-                    "message": f"/folder {folder['parent_folder']}",
-                    "name": f"back to {folder['parent_folder']}",
-                }
-            ]
-
-            void_count = int(config['front']['width']) * int(config['front']['height'])
-            for _ in range(void_count-1):
-                config['front']['buttons'][folder['name']].append({"VOID": "VOID"})
-
-            print("NEW FOLDER :", folder['name'])
-        folders_to_create = []
-
-
+    config = create_folders(config)
+    config = save_config(config)
     return jsonify({'success': True})
 
 @app.route('/get_config', methods=['GET'])
@@ -1157,25 +1115,7 @@ def get_config():
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
     
-    
-    print(folders_to_create)
-    for folder in folders_to_create:
-            
-        config['front']['buttons'][folder['name']] = [
-            {
-                "image": "back10.svg",
-                "image_size": "110%",
-                "message": f"/folder {folder['parent_folder']}",
-                "name": f"back to {folder['parent_folder']}",
-            }
-        ]
-
-        void_count = int(config['front']['width']) * int(config['front']['height'])
-        for _ in range(void_count-1):
-            config['front']['buttons'][folder['name']].append({"VOID": "VOID"})
-
-        print("NEW FOLDER :", folder['name'])
-    folders_to_create = []
+    config = create_folders(config)
 
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
@@ -1226,11 +1166,8 @@ def create_folder():
                 "parent_folder": f"{parent_folder_name}"
             }
         )
-
-        print(folders_to_create)    
         return jsonify({'success': True})
-    else:
-        print(folders_to_create)    
+    else:   
         return jsonify({'success': False})
 
 def kill_nircmd():
