@@ -787,6 +787,9 @@ input::placeholder {
   justify-content: center;
   flex-direction: row;
 }
+.delete-button {
+  right: 0;
+}
 
 
 .add-button {
