@@ -1,10 +1,10 @@
 # WebDeck
 
-Le WebDeck est une application Flask qui permet à l'utilisateur de contrôler son ordinateur à distance depuis n'importe quel appareil doté d'un navigateur et d'un écran tactile. Contrairement au StreamDeck d'Elgato, qui nécessite un équipement physique, le WebDeck utilise une application Flask que l'utilisateur héberge sur son propre ordinateur.
+Le WebDeck est une application qui permet à l'utilisateur de contrôler son ordinateur à distance depuis n'importe quel appareil doté d'un navigateur et d'un écran tactile. Contrairement au StreamDeck d'Elgato, qui nécessite un équipement physique, le WebDeck utilise une application Flask que l'utilisateur héberge sur son propre ordinateur.
 
 <div align="center">
-  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="Bannière WebDeck" height="75%" width="75%">
-  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c601d4f6-cbb3-460b-874d-b74ec5e71696" alt="Exemple d'image WebDeck" width="45%" height="45%">
+  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="Bannière WebDeck">
+  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c32cce97-bef4-418a-872e-8ceec3f1df79" alt="WebDeck example image" width="55%" height="55%">
   
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
   [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
