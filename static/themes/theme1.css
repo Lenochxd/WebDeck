@@ -698,7 +698,7 @@ textarea.black-theme::placeholder {
 }
 input[type="text"].spotify-setting,
 input[type="password"].spotify-setting {
-  width: 400px;
+  width: 320px;
 }
 
 .password-container {
@@ -1208,7 +1208,7 @@ div.choose-bg-element-image > img {
   height: 110%;
   background-size: cover;
   margin-left: 10px;
-  filter: blur(10px);
+  filter: blur(3px);
 }
 
 
