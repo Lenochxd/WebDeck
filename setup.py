@@ -40,7 +40,7 @@ setup(name='WebDeck',
 
 
 exclude_folders = [
-    '!buttons', '.git', '.vscode', '__pycache__', 'build',
+    '!buttons', 'addons', '.git', '.github', '.vscode', '__pycache__', 'build',
     'webdeck', '%.html%WebDeck', 'testmic', 'build.bat',
     'WD_main.exe', 'WebDeck.exe', 'WD_updater.exe'
 ]
