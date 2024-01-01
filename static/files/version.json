@@ -1,6 +1,36 @@
 {
     "versions": [
         {
+            "version": "1.6.4",
+            "release_date": {
+                "day": "01",
+                "month": "01",
+                "year": "2024",
+                "hour": "23",
+                "minute": "23"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Resolved the create folder bug"
+                ],
+                "nobody_cares": [
+                    "Improved code quality"
+                ]
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction du bug de création de dossier"
+                ],
+                "nobody_cares": [
+                    "Qualité du code améliorée"
+                ]
+            }
+        },
+        {
             "version": "1.6.3",
             "release_date": {
                 "day": "30",
