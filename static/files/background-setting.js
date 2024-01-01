@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Créer un pseudo-élément ::before pour contenir l'image de fond
                     var pseudoElement = document.createElement("div");
                     pseudoElement.classList.add("choose-bg-pseudo-element");
-                    pseudoElement.style.backgroundImage = "url(" + imageFile + ")";
+                    pseudoElement.style.backgroundImage = 'url("' + imageFile + '")';
                     divElement.appendChild(pseudoElement);
                     
                     
