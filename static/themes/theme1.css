@@ -1037,7 +1037,8 @@ svg.editbutton-config-modal.black-theme {
 
 /* Add an active class to the active dropdown button */
 .active.black-theme {
-  background-color: green;
+  background-color: #1d1d1d;
+  border-radius: 10px;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
