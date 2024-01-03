@@ -18,6 +18,11 @@
         "soundboard": {
             "mic_input_device": "",
             "vbcable": "cable input"
+        },
+        "obs": {
+            "host": "localhost",
+            "port": 4455,
+            "password": ""
         }
     },
     "front": {
