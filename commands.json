@@ -802,6 +802,234 @@
       }
     }
   },
+  "OBS Studio": {
+    "changeScene": {
+      "command": "/obs_scene",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Scene name",
+          "fr": "Nom de la scène"
+        }
+      ],
+      "name": {
+        "en": "Change scene",
+        "fr": "Changer de scene"
+      },
+      "description": {
+        "en": "Set current scene by name on OBS",
+        "fr": "Changer la scène actuelle avec son nom"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Change scene",
+          "fr": "Changer de scene"
+        }
+      }
+    },
+    "toggleRecording": {
+      "command": "/obs_toggle_rec",
+      "args": [],
+      "name": {
+        "en": "Toggle recording",
+        "fr": "Démarrer/arrêter l'enregistrement"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Toggle recording",
+          "fr": "Débuter/arrêter l'enregistrement"
+        }
+      }
+    },
+    "startRecording": {
+      "command": "/obs_start_rec",
+      "args": [],
+      "name": {
+        "en": "Start recording",
+        "fr": "Démarrer l'enregistrement"
+      },
+      "description": {
+        "en": "Start OBS recording",
+        "fr": "Démarrer l'enregistrement OBS"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Start recording",
+          "fr": "Enregistrer"
+        }
+      }
+    },
+    "stopRecording": {
+      "command": "/obs_stop_rec",
+      "args": [],
+      "name": {
+        "en": "Stop recording",
+        "fr": "Arrêter l'enregistrement"
+      },
+      "description": {
+        "en": "Stop OBS recording",
+        "fr": "Arrêter l'enregistrement OBS"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Stop recording",
+          "fr": "Arrêter l'enregistrement"
+        }
+      }
+    },
+    "toggleRecordingPause": {
+      "command": "/obs_toggle_rec_pause",
+      "args": [],
+      "name": {
+        "en": "Pause/resume toggle",
+        "fr": "Basculer play/pause"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Pause/resume toggle",
+          "fr": "play/pause"
+        }
+      }
+    },
+    "pauseRecording": {
+      "command": "/obs_pause_rec",
+      "args": [],
+      "name": {
+        "en": "Pause recording",
+        "fr": "Mettre l'enregistrement en pause"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Pause recording",
+          "fr": "Pause l'enregistrement"
+        }
+      }
+    },
+    "resumeRecording": {
+      "command": "/obs_resume_rec",
+      "args": [],
+      "name": {
+        "en": "Resume recording",
+        "fr": "Continuer l'enregistrement"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Resume recording",
+          "fr": "Continuer l'enregistrement"
+        }
+      }
+    },
+    "toggleStreaming": {
+      "command": "/obs_toggle_stream",
+      "args": [],
+      "name": {
+        "en": "Toggle streaming",
+        "fr": "Démarrer/arrêter le stream"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Toggle streaming",
+          "fr": "Débuter/arrêter le stream"
+        }
+      }
+    },
+    "startStreaming": {
+      "command": "/obs_start_stream",
+      "args": [],
+      "name": {
+        "en": "Start streaming",
+        "fr": "Démarrer le stream"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Start streaming",
+          "fr": "Streamer"
+        }
+      }
+    },
+    "stopStreaming": {
+      "command": "/obs_stop_stream",
+      "args": [],
+      "name": {
+        "en": "Stop streaming",
+        "fr": "Arrêter le stream"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Stop streaming",
+          "fr": "Arrêter le stream"
+        }
+      }
+    },
+    "toggleVirtualCam": {
+      "command": "/obs_toggle_virtualcam",
+      "args": [],
+      "name": {
+        "en": "Toggle virtual cam",
+        "fr": "Démarrer/arrêter la caméra virtuelle"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Toggle virtual cam",
+          "fr": "Débuter/arrêter la caméra virtuelle"
+        }
+      }
+    },
+    "startVirtualCam": {
+      "command": "/obs_start_virtualcam",
+      "args": [],
+      "name": {
+        "en": "Start virtual cam",
+        "fr": "Démarrer la caméra virtuelle"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Start virtual cam",
+          "fr": "Démarrer la caméra virtuelle"
+        }
+      }
+    },
+    "stopVirtualCam": {
+      "command": "/obs_stop_virtualcam",
+      "args": [],
+      "name": {
+        "en": "Stop virtual cam",
+        "fr": "Arrêter la caméra virtuelle"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "Stop virtual cam",
+          "fr": "Arrêter la caméra virtuelle"
+        }
+      }
+    }
+  },
   "Spotify": {
     "Volume (ONLY WITH SPOTIFY PREMIUM)": {
       "TYPE": "multiple",
