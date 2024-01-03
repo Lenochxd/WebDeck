@@ -47,11 +47,10 @@ import soundfile as sf
 import psutil
 import GPUtil
 import pynvml
-try:
-    import vlc
-except:
-    pass
-from PIL import Image
+try: import vlc
+except: pass
+from obswebsocket import obsws, events
+from obswebsocket import requests as obsrequests
 
 # Numerical and scientific libraries
 import numpy as np
@@ -114,6 +113,12 @@ def check_json_update(config):
         config['settings']['soundboard']['mic_input_device'] = ""
     if 'vbcable' not in config['settings']['soundboard']:
         config['settings']['soundboard']['vbcable'] = "cable input"
+    if 'obs' not in config['settings']:
+        config['settings']['obs'] = {
+            "host": "localhost",
+            "port": 4455,
+            "password": "secret"
+        }
     return config
 
 config = check_json_update(config)
@@ -287,6 +292,7 @@ def should_i_close():
         )
         if not is_handler_opened:
             sb_on = False
+            obs.disconnect()
             sys.exit()
             exit()
 
@@ -562,6 +568,14 @@ socketio = SocketIO(app)
 
 toaster = ToastNotifier()
 
+# Set up the OBS WebSocket client
+obs_host = config['settings']['obs']['host']
+obs_port = config['settings']['obs']['port']
+obs_password = config['settings']['obs']['password']
+
+obs = obsws(obs_host, obs_port, obs_password)
+
+
 # Set up the Spotify API client
 try:
     spotify_redirect_uri = 'http://localhost:8888/callback'
@@ -741,14 +755,9 @@ def has_at_least_5_minutes_difference(timestamp1, timestamp2):
 
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
-    if 'gpu_method' in config['settings']:
-        if config['settings']['gpu_method'] == 'nvidia (pynvml)':
-            try:
-                pynvml.nvmlInit()
-            except pynvml.NVMLError:
-                config['settings']['gpu_method'] = 'AMD'
-    else:
+    if not 'gpu_method' in config['settings']:
         config['settings']['gpu_method'] = 'nvidia (pynvml)'
+    if config['settings']['gpu_method'] == 'nvidia (pynvml)':
         try:
             pynvml.nvmlInit()
         except pynvml.NVMLError:
@@ -757,10 +766,8 @@ with open('config.json', 'w', encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
         
 excluded_disks = {}
-@app.route('/usage', methods=['POST'])
-def usage():
-    should_i_close()
-    
+def get_usage():
+    global excluded_disks
     # CPU
     cpu_percent = psutil.cpu_percent(4)
     computer_info = {'cpu': {'usage_percent': cpu_percent}}
@@ -835,8 +842,11 @@ def usage():
     else:
         computer_info['gpus']['GPU1'] = {}
         
+    return computer_info
 
-    return jsonify(computer_info)
+@app.route('/usage', methods=['POST'])
+def usage():
+    return jsonify(get_usage())
 
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -1177,7 +1187,7 @@ def kill_nircmd():
         pass
     
 def send_data(message=None):
-    global all_func
+    global all_func, obs
     
     message = message.replace('<|§|>', ' ')
     
@@ -1506,9 +1516,7 @@ def send_data(message=None):
             if len(items) > 0:
                 artist_id = items[0]["id"]
             else:
-                print(
-                    f"Impossible de trouver l'artiste '{artist_id}' sur Spotify.")
-                exit()
+                print(f"Impossible de trouver l'artiste '{artist_id}' sur Spotify.")
 
             # Vérifier si l'utilisateur est abonné à l'artiste correspondant
             response = sp.current_user_following_artists(ids=[artist_id])
@@ -1541,7 +1549,6 @@ def send_data(message=None):
             device_id = playback_info['device']['id']
         else:
             print("No active device found.")
-            exit()
 
         # Get the current volume
         current_volume = playback_info['device']['volume_percent']
@@ -1780,9 +1787,131 @@ def send_data(message=None):
             
     elif message.startswith('/clipboard'):
         keyboard.hotkey('win', 'v')
+    
+    
+    # OBS  -  https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md
+    #         https://github.com/Elektordi/obs-websocket-py
+    
+    if message.startswith('/obs_'):
+        try:
+            obs = obsws(obs_host, obs_port, obs_password)
+            obs.connect()
+        except:
+            return jsonify({"success": False, "message": "Failed connection to obs."})
+    
+    
+        if message.startswith('/obs_scene'):
+            scene_name = message.replace('/obs_scene','').lower().strip()
+            
+            scenes = obs.call(obsrequests.GetSceneList())
+            for scene in scenes.getScenes():
+                if scene['sceneName'].lower().strip() == scene_name:    
+                    print(f"Switching to {scene['sceneName']}")
+                    obs.call(obsrequests.SetCurrentProgramScene(sceneName=scene['sceneName']))
+            
+        
+        elif message.startswith('/obs_toggle_rec'):
+            result = obs.call(obsrequests.ToggleRecord())
+            print("Recording toggled successfully.")
+            if 'failed' in str(result):
+                return jsonify({"success": False, "message": "Failed :/"})
+            
+        elif message.startswith('/obs_start_rec'):
+            recording_status = obs.call(obsrequests.GetRecordStatus())
+            if recording_status.getOutputActive():
+                print("OBS is already recording.")
+                return jsonify({"success": False, "message": "OBS is already recording."})
+            else:
+                obs.call(obsrequests.StartRecord())
+                print("Recording started successfully.")
+        
+        elif message.startswith('/obs_stop_rec'):
+            recording_status = obs.call(obsrequests.GetRecordStatus())
+            if recording_status.getOutputActive():
+                obs.call(obsrequests.StopRecord())
+                print("Recording stopped successfully.")
+            else:
+                print("OBS is not recording.")
+                return jsonify({"success": False, "message": "OBS is not recording."})
+            
+        
+        elif message.startswith('/obs_toggle_rec_pause'):
+            result = obs.call(obsrequests.ToggleRecordPause())
+            print("Play/pause toggled successfully.")
+            if 'failed' in str(result):
+                return jsonify({"success": False, "message": "Failed :/"})
+                
+        elif message.startswith('/obs_pause_rec'):
+            recording_status = obs.call(obsrequests.GetRecordStatus())
+            if recording_status.getOutputActive():
+                result = obs.call(obsrequests.PauseRecord())
+                print(result)
+                if 'failed' in str(result):
+                    return jsonify({"success": False, "message": "No recording can be paused"})
+            else:
+                return jsonify({"success": False, "message": "No recording can be paused"})
+                
+        elif message.startswith('/obs_resume_rec'):
+            result = obs.call(obsrequests.ResumeRecord())
+            print(result)
+            if 'failed' in str(result):
+                return jsonify({"success": False, "message": "No recording is paused"})
+                
+        
+        elif message.startswith('/obs_toggle_stream'):
+            result = obs.call(obsrequests.ToggleStream())
+            print("Streaming toggled successfully.")
+            if 'failed' in str(result):
+                return jsonify({"success": False, "message": "Failed :/"})        
+        
+        elif message.startswith('/obs_start_stream'):
+            recording_status = obs.call(obsrequests.GetStreamStatus())
+            if recording_status.getOutputActive():
+                print("OBS is already streaming.")
+                return jsonify({"success": False, "message": "OBS is already streaming."})
+            else:
+                obs.call(obsrequests.StartStream())
+                print("Stream started successfully.")
+        
+        elif message.startswith('/obs_stop_stream'):
+            recording_status = obs.call(obsrequests.GetStreamStatus())
+            if recording_status.getOutputActive():
+                obs.call(obsrequests.StopStream())
+                print("Stream stopped successfully.")
+            else:
+                print("OBS is not streaming.")
+                return jsonify({"success": False, "message": "OBS is not streaming."})
+        
+        
+        elif message.startswith('/obs_toggle_virtualcam'):
+            result = obs.call(obsrequests.ToggleVirtualCam())
+            print("Virtual cam toggled successfully.")
+            if 'failed' in str(result):
+                return jsonify({"success": False, "message": "Failed :/"})        
+        
+        elif message.startswith('/obs_start_virtualcam'):
+            recording_status = obs.call(obsrequests.GetVirtualCamStatus())
+            print(recording_status)
+            if recording_status.getOutputActive():
+                print("Virtual cam is already started.")
+                return jsonify({"success": False, "message": "Virtual cam is already started."})
+            else:
+                obs.call(obsrequests.StartVirtualCam())
+                print("Virtual cam started successfully.")
+        
+        elif message.startswith('/obs_stop_virtualcam'):
+            recording_status = obs.call(obsrequests.GetVirtualCamStatus())
+            if recording_status.getOutputActive():
+                obs.call(obsrequests.StopVirtualCam())
+                print("Virtual cam stopped successfully.")
+            else:
+                print("Virtual cam is already stopped.")
+                return jsonify({"success": False, "message": "Virtual cam is already stopped."})
+        
+        obs.disconnect()
 
 
-    return jsonify({"status": "success"})
+    return jsonify({"success": True})
 
     
 @socketio.event
@@ -1830,8 +1959,7 @@ def compare_versions(version1, version2):
 def check_for_updates():
     with open('static/files/version.json', encoding="utf-8") as f:
         current_version = json.load(f)['versions'][0]['version']
-    url = "https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json"
-    response = requests.get(url)
+    response = requests.get("https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json")
     data = response.json()
     
     files_to_update = []
@@ -2002,3 +2130,4 @@ if check_firewall_permission() == False:
 app.run(host=local_ip, port=config['url']['port'],
         debug=config['settings']['flask-debug'],
         use_reloader=config['settings']['flask-debug'] == 'false')
+obs.disconnect()
