@@ -160,7 +160,7 @@
                   <input type="text" id="background-color-hex_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="Background Color (HEX)" {{default_bgcolor}}>
               </div>
               
-              <label for="button-text-input_{{edit_modal_ID}}">Button Text:</label>
+              <label for="button-text-input_{{edit_modal_ID}}">Button Title:</label>
               {% if "name" in button_settings.keys() and not button_settings['name'].strip() == "" %}
                 <input type="text" id="button-text-input_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}" value="{{ button_name }}">
               {% else %}
@@ -436,7 +436,7 @@
             }
             document.getElementById('{{edit_modal_ID}}_submit').addEventListener('click', function(event) {
               setTimeout(function() {
-                buttonCommand_{{edit_modal_ID}}('{{ edit_modal_ID }}', '{{command_id}}', event);
+                buttonCommand_{{edit_modal_ID}}('{{ edit_modal_ID }}', "{{command_id}}", event);
               }, 1000);
             });
 
