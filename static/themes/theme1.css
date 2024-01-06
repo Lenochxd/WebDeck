@@ -525,6 +525,7 @@ ul {
   list-style-type: none;
   margin-left: -20px;
   margin-bottom: -10px;
+  margin-top: 7px
 }
 
 h1.modal-header, h1.add-button-modal-header, h1.add-button-modal-header-args {
