@@ -182,7 +182,7 @@
                     "color": "#fff",
                     "image": "",
                     "image_size": "100%",
-                    "message": "/usage 'GPU' usage_dict['gpus']['GPU1']['utilization_percent']",
+                    "message": "/usage 'GPU' usage_dict['gpus']['defaultGPU']['usage_percent']",
                     "name": "GPU usage"
                 }
             ],
