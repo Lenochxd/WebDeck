@@ -83,7 +83,508 @@
       }
     }
   },
+  "Display": {
+    "CATEGORY-SETTINGS": {
+      "NAME": {
+        "fr": "Affichage"
+      }
+    },
+    "CPU": {
+      "command": "/usage '",
+      "args": [
+        {
+          "TYPE": "input usage-title-text",
+          "value": "CPU",
+          "en": "Button text",
+          "fr": "Nom affiché"
+        },
+        {
+          "TYPE": "text",
+          "value": "' usage_dict['cpu']['usage_percent']"
+        }
+      ],
+      "name": {
+        "en": "CPU usage %",
+        "fr": "Utilisation du CPU (%)"
+      },
+      "style": {
+        "image": "",
+        "image_size": "",
+        "name": {
+          "en": "CPU usage",
+          "fr": "Utilisation processeur"
+        }
+      }
+    },
+    "Memory": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "Memory (RAM)",
+        "fr": "Memoire (RAM)"
+      },
+      "commands": [
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "RAM",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['memory']['usage_percent']"
+            }
+          ],
+          "name": {
+            "en": "RAM usage (%)",
+            "fr": "Utilisation de la RAM (%)"
+          },
+          "style": {
+            "name": {
+              "en": "RAM usage",
+              "fr": "Utilisation de la RAM"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "RAM",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['memory']['used_gb']"
+            }
+          ],
+          "name": {
+            "en": "RAM usage (gb)",
+            "fr": "Utilisation de la RAM (gb)"
+          },
+          "style": {
+            "name": {
+              "en": "RAM usage",
+              "fr": "Utilisation de la RAM"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "RAM",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['memory']['available_gb']"
+            }
+          ],
+          "name": {
+            "en": "Available RAM (gb)",
+            "fr": "RAM disponible (gb)"
+          },
+          "style": {
+            "name": {
+              "en": "Available RAM",
+              "fr": "RAM disponible"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "RAM",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['memory']['total_gb']"
+            }
+          ],
+          "name": {
+            "en": "total RAM (gb)",
+            "fr": "RAM totale (gb)"
+          },
+          "style": {
+            "name": {
+              "en": "total RAM",
+              "fr": "RAM totale"
+            }
+          }
+        }
+      ]
+    },
+    "Disks": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "Disks",
+        "fr": "Disques"
+      },
+      "commands": [
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "Disk",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['disks']['"
+            },
+            {
+              "TYPE": "input disk-letter",
+              "value": "Disk",
+              "en": "Disk letter",
+              "fr": "Lettre du disque"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['usage_percent']"
+            }
+          ],
+          "name": {
+            "en": "Disk usage (%)",
+            "fr": "Utilisation du disque (%)"
+          },
+          "style": {
+            "name": {
+              "en": "Disk usage",
+              "fr": "Utilisation du disque"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "Disk",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['disks']['"
+            },
+            {
+              "TYPE": "input disk-letter",
+              "value": "Disk",
+              "en": "Disk letter",
+              "fr": "Lettre du disque"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['free_gb']"
+            }
+          ],
+          "name": {
+            "en": "Storage available (gb)",
+            "fr": "Stockage disponible (gb)"
+          },
+          "style": {
+            "name": {
+              "en": "Storage available",
+              "fr": "Stockage disponible"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "Disk",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['disks']['"
+            },
+            {
+              "TYPE": "input disk-letter",
+              "value": "Disk",
+              "en": "Disk letter",
+              "fr": "Lettre du disque"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['used_gb']"
+            }
+          ],
+          "name": {
+            "en": "Disk usage (gb)",
+            "fr": "Stockage utilisé (gb)"
+          },
+          "style": {
+            "name": {
+              "en": "Disk usage",
+              "fr": "Utilisation du disque"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "Disk",
+              "en": "Button text",
+              "fr": "Nom affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['disks']['"
+            },
+            {
+              "TYPE": "input disk-letter",
+              "value": "Disk",
+              "en": "Disk letter",
+              "fr": "Lettre du disque"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['total_gb']"
+            }
+          ],
+          "name": {
+            "en": "Total disk storage (gb)",
+            "fr": "Capacité totale du disque (gb)"
+          },
+          "style": {
+            "name": {
+              "en": "Total disk storage",
+              "fr": "Capacité totale du disque"
+            }
+          }
+        }
+      ]
+    },
+    "GPU": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "GPU",
+        "fr": "GPU"
+      },
+      "commands": [
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "GPU",
+              "en": "Button text",
+              "fr": "Texte affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['gpus']['"
+            },
+            {
+              "TYPE": "input webdeck_available_gpus",
+              "en": "Select GPU",
+              "fr": "GPU sélectionné"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['usage_percent']"
+            }
+          ],
+          "name": {
+            "en": "GPU usage %",
+            "fr": "Utilisation du GPU (%)"
+          },
+          "style": {
+            "name": {
+              "en": "GPU usage",
+              "fr": "Utilisation du GPU"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "GPU",
+              "en": "Button text",
+              "fr": "Texte affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['gpus']['"
+            },
+            {
+              "TYPE": "input webdeck_available_gpus",
+              "en": "Select GPU",
+              "fr": "GPU sélectionné"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['used_mb']"
+            }
+          ],
+          "name": {
+            "en": "VRAM usage (mb)",
+            "fr": "Utilisation de la VRAM (mb)"
+          },
+          "style": {
+            "name": {
+              "en": "VRAM usage",
+              "fr": "Utilisation de la VRAM"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "GPU",
+              "en": "Button text",
+              "fr": "Texte affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['gpus']['"
+            },
+            {
+              "TYPE": "input webdeck_available_gpus",
+              "en": "Select GPU",
+              "fr": "GPU sélectionné"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['total_mb']"
+            }
+          ],
+          "name": {
+            "en": "Available VRAM (mb)",
+            "fr": "VRAM disponible (mb)"
+          },
+          "style": {
+            "name": {
+              "en": "Available VRAM",
+              "fr": "VRAM disponible"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "GPU",
+              "en": "Button text",
+              "fr": "Texte affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['gpus']['"
+            },
+            {
+              "TYPE": "input webdeck_available_gpus",
+              "en": "Select GPU",
+              "fr": "GPU sélectionné"
+            },
+            {
+              "TYPE": "text",
+              "value": "']['total_mb']"
+            }
+          ],
+          "name": {
+            "en": "total VRAM (mb)",
+            "fr": "VRAM totale (mb)"
+          },
+          "style": {
+            "name": {
+              "en": "total VRAM",
+              "fr": "VRAM totale"
+            }
+          }
+        }
+      ]
+    },
+    "Network": {
+      "TYPE": "multiple",
+      "name": {
+        "en": "Network",
+        "fr": "Réseau"
+      },
+      "commands": [
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "Upload",
+              "en": "Button text",
+              "fr": "Texte affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['network']['bytes_sent']"
+            }
+          ],
+          "name": {
+            "en": "Network upload (bytes)",
+            "fr": "Upload réseau (octets)"
+          },
+          "style": {
+            "name": {
+              "en": "Network upload",
+              "fr": "Upload réseau"
+            }
+          }
+        },
+        {
+          "command": "/usage '",
+          "args": [
+            {
+              "TYPE": "input usage-title-text",
+              "value": "Download",
+              "en": "Button text",
+              "fr": "Texte affiché"
+            },
+            {
+              "TYPE": "text",
+              "value": "' usage_dict['network']['bytes_recv']"
+            }
+          ],
+          "name": {
+            "en": "Network download (bytes)",
+            "fr": "Download réseau (octets)"
+          },
+          "style": {
+            "name": {
+              "en": "Network download",
+              "fr": "Download réseau"
+            }
+          }
+        }
+      ]
+    }
+  },
   "System": {
+    "CATEGORY-SETTINGS": {
+      "NAME": {
+        "fr": "Système"
+      }
+    },
     "Volume": {
       "TYPE": "multiple",
       "name": {
@@ -537,6 +1038,11 @@
     }
   },
   "Text": {
+    "CATEGORY-SETTINGS": {
+      "NAME": {
+        "fr": "Texte"
+      }
+    },
     "Press a key": {
       "command": "/key",
       "args": [
@@ -851,10 +1357,6 @@
       "name": {
         "en": "Start recording",
         "fr": "Démarrer l'enregistrement"
-      },
-      "description": {
-        "en": "Start OBS recording",
-        "fr": "Démarrer l'enregistrement OBS"
       },
       "style": {
         "image": "obs_logo2.svg",
