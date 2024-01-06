@@ -319,7 +319,6 @@ def create_matrix(config):
     return matrix
 
 def unmatrix(matrix):
-    
     for folder_count, folder in enumerate(matrix):
         folderName = list(config['front']['buttons'])[folder_count]
         config["front"]["buttons"][folderName] = []
@@ -569,12 +568,14 @@ socketio = SocketIO(app)
 toaster = ToastNotifier()
 
 # Set up the OBS WebSocket client
-obs_host = config['settings']['obs']['host']
-obs_port = config['settings']['obs']['port']
-obs_password = config['settings']['obs']['password']
+def reload_obs():
+    obs_host = config['settings']['obs']['host']
+    obs_port = int(config['settings']['obs']['port'])
+    obs_password = config['settings']['obs']['password']
 
-obs = obsws(obs_host, obs_port, obs_password)
+    obs = obsws(obs_host, obs_port, obs_password)
 
+reload_obs()
 
 # Set up the Spotify API client
 try:
@@ -1007,6 +1008,10 @@ def saveconfig():
         not config['settings']['soundboard']
         == new_config['settings']['soundboard']
     )
+    obs_reload = (
+        not config['settings']['obs']
+        == new_config['settings']['obs']
+    )
     config = check_json_update(config)
     new_config = check_json_update(new_config)
 
@@ -1048,6 +1053,8 @@ def saveconfig():
 
     if soundboard_restart:
         restart_soundboard()
+    if obs_reload:
+        reload_obs()
 
     print(config['settings']['show-console'])
 
