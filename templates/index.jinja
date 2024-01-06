@@ -499,9 +499,64 @@
                   </select>
                 </div>
 
+                <div class="setting soundboard {{black_theme}}">
+                  <div class="settings-title-info">
+                    <label for="soundboard" style="margin-top: 3px;">Soundboard</label>
+                    {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard" %}
+                    {% if config.settings.language == "fr" %}
+                      {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-ma-soundboard-" %}
+                    {% endif %}
+                    <a href="{{soundboard_info}}" target="_blank">
+                        <!-- source: https://phosphoricons.com/ -->
+                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                    </a>
+                  </div>
+
+
+                  <div class="setting mic_input_device">
+                    <label for="mic_input_device">Input device</label>
+                    <select id="mic_input_device" name="settings.soundboard.mic_input_device">
+                      {% set audio_devices = select_audio_device() %}
+                      {% for device in audio_devices %}
+                        {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
+                        {% if not device.endswith(')') and '(' in device %}
+                          {% set device = device + "..." %}
+                        {% endif %}
+                        <option value="{{device.replace('...','')}}" {% if mic_input_device[mic_input_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
+                          {{device}}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                    
+                  <div class="setting mic_output_device">
+                    <label for="mic_output_device">Output device (vbcable)</label>
+                    <select id="mic_output_device" name="settings.soundboard.vbcable">
+                      {% set audio_devices = select_audio_device('output') %}
+                      {% for device in audio_devices %}
+                        {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
+                        {% if not device.endswith(')') and '(' in device %}
+                          {% set device = device + "..." %}
+                        {% endif %}
+                        <option value="{{device.replace('...','')}}" {% if mic_output_device[mic_output_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
+                          {{device}}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="setting ear-soundboard">
+                    <p>Ear Soundboard</p>
+                    <label for="ear-soundboard" class="switch">
+                      <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+
                 <div class="setting spotify-api">
                   <div class="settings-title-info">
-                    <label for="spotify" style="margin-top: 3;">Spotify API</label>
+                    <label for="spotify" style="margin-top: 3px;">Spotify API</label>
                     {% set spotify_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account" %}
                     {% if config.settings.language == "fr" %}
                       {% set spotify_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-connecter-mon-compte-spotify-" %}
@@ -515,15 +570,45 @@
                   <ul>
                     <li>
                       <label for="spotify-USERNAME">Username</label>
-                      <input class="spotify-setting {{black_theme}}" type="text" class="spotify-setting" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%}value="{{config['settings']['spotify-api']['USERNAME']}}"{% endif %}>
+                      <input class="spotify-setting {{black_theme}}" type="text" class="spotify-setting" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%} value="{{config['settings']['spotify-api']['USERNAME']}}" {% endif %}>
                       
                       <label for="spotify-CLIENT_ID">Client ID</label>
-                      <input class="spotify-setting {{black_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify-api.CLIENT_ID" {% if not config['settings']['spotify-api']['CLIENT_ID'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_ID']}}"{% endif %}>
+                      <input class="spotify-setting {{black_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify-api.CLIENT_ID" {% if not config['settings']['spotify-api']['CLIENT_ID'].strip() == ''%} value="{{config['settings']['spotify-api']['CLIENT_ID']}}" {% endif %}>
                       
                       <label for="spotify-CLIENT_SECRET">Client Secret</label>
                       <div class="password-container">
-                        <input class="spotify-setting {{black_theme}}" type="password"id="spotify-CLIENT_SECRET" name="settings.spotify-api.CLIENT_SECRET" {% if not config['settings']['spotify-api']['CLIENT_SECRET'].strip() == ''%}value="{{config['settings']['spotify-api']['CLIENT_SECRET']}}"{% endif %}>
-                        <span class="show-password" onclick="togglePasswordVisibility()"></span>
+                        <input class="spotify-setting {{black_theme}}" type="password" id="spotify-CLIENT_SECRET" name="settings.spotify-api.CLIENT_SECRET" {% if not config['settings']['spotify-api']['CLIENT_SECRET'].strip() == ''%} value="{{config['settings']['spotify-api']['CLIENT_SECRET']}}" {% endif %}>
+                        <span id="show-password-spotify" class="show-password" onclick="togglePasswordVisibility('spotify-CLIENT_SECRET', 'show-password-spotify')"></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="setting obs-ws">
+                  <div class="settings-title-info">
+                    <label for="obs" style="margin-top: 3px;">OBS Studio</label>
+                    {% set obs_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account" %}
+                    {% if config.settings.language == "fr" %}
+                      {% set obs_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-connecter-mon-compte-spotify-" %}
+                    {% endif %}
+                    <a href="{{obs_info}}" target="_blank">
+                        <!-- source: https://phosphoricons.com/ -->
+                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                    </a>
+                  </div>
+
+                  <ul>
+                    <li>
+                      <label for="obs-HOST">Host</label>
+                      <input class="obs-setting {{black_theme}}" type="text" class="obs-setting" id="obs-HOST" name="settings.obs.host" {% if not config['settings']['obs']['host'].strip() == ''%} value="{{config['settings']['obs']['host']}}" {% endif %}>
+                      
+                      <label for="obs-PORT">Port</label>
+                      <input class="obs-setting {{black_theme}}" type="text" id="obs-PORT" name="settings.obs.port" {% if not config['settings']['obs']['port'] == '' %} value="{{config['settings']['obs']['port']}}" {% endif %}>
+                      
+                      <label for="obs-PASSWORD">Password</label>
+                      <div class="password-container">
+                        <input class="obs-setting {{black_theme}}" type="password" id="obs-PASSWORD" name="settings.obs.password" {% if not config['settings']['obs']['password'].strip() == ''%} value="{{config['settings']['obs']['password']}}" {% endif %}>
+                        <span id="show-password-obs" class="show-password" onclick="togglePasswordVisibility('obs-PASSWORD', 'show-password-obs')"></span>
                       </div>
                     </li>
                   </ul>
@@ -601,62 +686,6 @@
                 </div>
               </div>
 
-              <div class="setting-category soundboard black-theme">
-                <div class="settings-title-info">
-                  <h1 class="config-title">Soundboard</h1>
-                  {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard" %}
-                  {% if config.settings.language == "fr" %}
-                    {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-ma-soundboard-" %}
-                  {% endif %}
-                  <a href="{{soundboard_info}}" target="_blank">
-                      <!-- source: https://phosphoricons.com/ -->
-                      {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
-                  </a>
-                </div>
-
-
-                <div class="setting mic_input_device">
-                  <label for="mic_input_device">Input device</label>
-                  <select id="mic_input_device" name="settings.soundboard.mic_input_device">
-                    {% set audio_devices = select_audio_device() %}
-                    {% for device in audio_devices %}
-                      {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
-                      {% if not device.endswith(')') and '(' in device %}
-                        {% set device = device + "..." %}
-                      {% endif %}
-                      <option value="{{device.replace('...','')}}" {% if mic_input_device[mic_input_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
-                        {{device}}
-                      </option>
-                    {% endfor %}
-                  </select>
-                </div>
-                  
-                <div class="setting mic_output_device">
-                  <label for="mic_output_device">Output device (vbcable)</label>
-                  <select id="mic_output_device" name="settings.soundboard.vbcable">
-                    {% set audio_devices = select_audio_device('output') %}
-                    {% for device in audio_devices %}
-                      {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
-                      {% if not device.endswith(')') and '(' in device %}
-                        {% set device = device + "..." %}
-                      {% endif %}
-                      <option value="{{device.replace('...','')}}" {% if mic_output_device[mic_output_device.find("(") + 1:].lower() in device.lower() %}selected{% endif %}>
-                        {{device}}
-                      </option>
-                    {% endfor %}
-                  </select>
-                </div>
-
-                <div class="setting ear-soundboard">
-                  <p>Ear Soundboard</p>
-                  <label for="ear-soundboard" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-
-              </div>
-
               <div class="setting-category experimental black-theme">
                 <h1 class="config-title">Experimental</h1>
                 
@@ -674,7 +703,7 @@
                 </div>
                 
                 <div class="setting open-settings-in-browser">
-                  <p>Open settings in browser</p>
+                  <p>Open settings in default browser</p>
                   <label for="open-settings-in-browser" class="switch">
                     <input class="{{black_theme}}" type="checkbox" id="open-settings-in-browser" name="settings.open-settings-in-browser" {% if config['settings']['open-settings-in-browser'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
@@ -942,15 +971,15 @@
       }
 
 
-      function togglePasswordVisibility() {
-        var motDePasseInput = document.getElementById("spotify-CLIENT_SECRET");
-        var showPasswordIcon = document.querySelector(".show-password");
+      function togglePasswordVisibility(id, iconid) {
+        var passwordInput = document.getElementById(id);
+        var showPasswordIcon = document.getElementById(iconid);
       
-        if (motDePasseInput.type === "password") {
-          motDePasseInput.type = "text";
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
           showPasswordIcon.classList.add("active");
         } else {
-          motDePasseInput.type = "password";
+          passwordInput.type = "password";
           showPasswordIcon.classList.remove("active");
         }
       }
