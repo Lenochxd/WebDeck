@@ -68,6 +68,21 @@ Suivez ces étapes pour configurer la soundboard de l'application:
 Vous avez maintenant configuré avec succès la soundboard de l'application. Appuyez sur le bouton associé pour jouer votre son.
 
 
+## Comment configurer OBS Studio?
+
+Suivez ces étapes simples pour configurer OBS pour WebDeck:
+
+1. Ouvrez OBS Studio puis allez dans `Outils > Paramètres du serveur WebSocket`
+
+2. Vérifiez que la case "Activer le serveur WebSocket" est cocheé
+
+3. Dans la section du dessous (Paramètres du serveur), cliquez en bas sur "Afficher les informations de connexion"
+
+4. Copiez le port et le mot de passe généré aléatoirement par OBS pour les entrer dans les paramètres du webdeck.
+
+6. Enregistrez la configuration et voilà, OBS est connecté au WebDeck !
+
+
 ## Comment connecter mon compte Spotify ?
 
 Suivez ces étapes simples pour connecter votre compte Spotify à WebDeck :

@@ -34,6 +34,7 @@ If you prefer to use a language other than English, you can follow these simple 
 
 This way, you can customize the application's language according to your linguistic preferences.
 
+
 ## How to Set Up My Soundboard?
 
 Follow these steps to configure the application's soundboard:
@@ -69,6 +70,21 @@ Follow these steps to configure the application's soundboard:
    - Import your audio file **in MP3 format**.
 
 You have now successfully configured the application's soundboard. Press the associated button to play your sound.
+
+
+## How to Set Up OBS Studio?
+
+Follow these steps to configure the OBS websocket:
+
+1. Open OBS Studio and go on `Tools > WebSocket Server Settings`
+
+2. Ensure that the "Enable WebSocket server" checkbox is checked.
+
+3. In the section below (Server Settings), click on "Show Connection Information" at the bottom.
+
+4. Copy the randomly generated port and password provided by OBS and enter them in the WebDeck settings.
+
+5. Save the configuration, and there you have it! OBS is now connected to WebDeck!
 
 
 ## How to connect your Spotify account
