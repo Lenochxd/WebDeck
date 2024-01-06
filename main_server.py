@@ -826,7 +826,7 @@ def get_usage():
             handle = pynvml.nvmlDeviceGetHandleByIndex(count)
             utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
             computer_info['gpus'][f'GPU{count + 1}'] = {
-                'utilization_percent': int(utilization.gpu),
+                'usage_percent': int(utilization.gpu),
             }
     elif config['settings']['gpu_method'] == 'nvidia (GPUtil)':
         
@@ -835,18 +835,23 @@ def get_usage():
         for count, gpu in enumerate(gpus):
             computer_info['gpus'][f'GPU{count + 1}'] = {
                 'name': gpu.name,
-                'memory_used_mb': gpu.memoryUsed,
-                'memory_total_mb': gpu.memoryTotal,
-                'utilization_percent': int(gpu.load * 100),
+                'used_mb': gpu.memoryUsed,
+                'total_mb': gpu.memoryTotal,
+                'available_mb': gpu.memoryTotal - gpu.memoryUsed,
+                'usage_percent': int(gpu.load * 100),
             }
     else:
-        computer_info['gpus']['GPU1'] = {}
+        computer_info['gpus']['defaultGPU'] = {}
         
     return computer_info
 
+usage_example = get_usage()
+print(usage_example)
 @app.route('/usage', methods=['POST'])
 def usage():
-    return jsonify(get_usage())
+    global usage_example
+    usage_example = get_usage()
+    return jsonify(usage_example)
 
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -943,7 +948,7 @@ def home():
     
     return render_template("index.jinja",
                             config=config, themes=themes, commands=commands, versions=versions,
-                            is_exe=is_exe, langs=['en','fr'], random_bg=random_bg,
+                            is_exe=is_exe, langs=['en','fr'], random_bg=random_bg, usage_example=usage_example,
                             int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open, isfile=os.path.isfile
                             )
 
@@ -2059,7 +2064,6 @@ def soundboard():
                             output_device_index=output_device)
     
     print("soundboard: ON")
-    soundboard_on = True
     
     try:
         while sb_on == True:
