@@ -152,14 +152,15 @@
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
       Open folder: 
       {% for folder_id, value in config["front"]["buttons"].items() %}
-        <button class="button EditorButtons-Folder" onclick="folder_{{ folder_id }}()">
+        {% set folder_id = folder_id.replace('"', '&quot;') %}
+        <button class="button EditorButtons-Folder" onclick="folder('{{ folder_id }}')">
           {{ folder_id }}
         </button>
       {% endfor %}
     </div>
 
     {% for folder_id, value in config["front"]["buttons"].items() %}
-      <div id="folder-{{ folder_id }}" class="buttons-center">
+      <div id="folder-{{ folder_id }}" class="buttons-center invisible">
         <div id="folder-{{ folder_id }}" class="all-buttons">
           {% set edit_modal_ID1 = loop.index0 %}
           {% for button_config in config["front"]["buttons"][folder_id] %}
@@ -241,7 +242,7 @@
                 {% endif %}
 
                 {% if button_config["message"] and button_config["message"].startswith("/folder") %}
-                  {% set onclick = 'onclick="' + 'folder_' + button_config['message'].replace('/folder ', '') + '()" onclickhandler="' + 'folder_' + button_config['message'].replace('/folder ', '') + '()"' %}
+                  {% set onclick = "onclick=\"folder('" + button_config['message'].replace('/folder ', '') + "')\" onclickhandler=\"folder('" + button_config['message'].replace('/folder ', '') + "')\"" %}
                   <div class="swapMode-open-folder" {{ onclick }} style="display: none;">
                     Open Folder
                   </div>
@@ -260,8 +261,8 @@
                   <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
                     <!--|||||||||||||||||||||||-->
                     {% if button_config['message'].startswith('/usage') %}
-                      {% set name = button_config['message'].replace("'",'"',2).split('"')[1].replace('<|§|>','').strip() %}
-                      {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
+                      {% set name = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[1].strip() %}
+                      {% set path = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[2] %}
                       {% if button_config['message'].split()[1] %}
                         <div class="usage">
                           <div class="usage-title {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
@@ -300,8 +301,8 @@
                     
                     <!--|||||||||||||||||||||||-->
                     {% if button_config["message"] and button_config['message'].startswith('/usage') %}
-                      {% set name = button_config['message'].replace("'",'"',2).split('"')[1].replace('<|§|>','').strip() %}
-                      {% set path = button_config['message'].replace("'",'"',2).split('"')[2] %}
+                      {% set name = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[1].strip() %}
+                      {% set path = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[2] %}
                       {% if button_config['message'].split()[1] %}
                         <div class="usage">
                           <div class="usage-title {{ path.replace("'",'"').replace('"]["','.').replace('"]','').replace('["','.') }}" style="{{fill}}">
@@ -662,7 +663,7 @@
                 <div class="setting usage-reload-time">
                   <label for="usage-reload-time">Usage buttons reload time (ms)</label>
                   <input required class="{{black_theme}}" type="number" min="0" pattern="[0-9]*"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                    oninput="this.value = this.value.replaceAll(/[^0-9]/g, '');"
                     id="usage-reload-time" name="front.computer-usage-reload-time"
                     {% if not config['front']['computer-usage-reload-time'].strip() == '' %}
                       value="{{ config['front']['computer-usage-reload-time'] }}"
@@ -744,103 +745,118 @@
             
             <div class="all-commands {{black_theme}}">
               {% for category, category_value in commands.items() %}
-                <button class="dropdown-btn {{black_theme}}" dropdown-category="{{category}}">{{category}}</button>
+                {% set category_name = category %}
+                {% if category_value['CATEGORY-SETTINGS'] %}
+                  {% if category_value['CATEGORY-SETTINGS']["NAME"] %}
+                    {% if category_value['CATEGORY-SETTINGS']["NAME"][config.settings.language] %}
+                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"][config.settings.language] %}
+                    {% elif category_value['CATEGORY-SETTINGS']["NAME"]["en"] %}
+                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"]["en"] %}
+                    {% elif category_value['CATEGORY-SETTINGS']["NAME"][0] %}
+                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"][0] %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+
+                <button class="dropdown-btn {{black_theme}}" dropdown-category="{{category_name}}">{{category_name}}</button>
                 <div class="dropdown-container">
                   {% set arg_modal_ID1 = loop.index0 %}
                   {% for command, command_value in category_value.items() %}
-                    {% set arg_modal_ID = str(arg_modal_ID1) + "X" + str(loop.index0) %}
-                    {# {{ mdebug(command) }} #}
-                    <div class="dropdown-item-container">
-                      {% set command_name = command %}
-                      {% if command_value["name"] %}
-                        {% if command_value["name"][config.settings.language] %}
-                          {% set command_name = command_value["name"][config.settings.language] %}
-                        {% elif command_value["name"]["en"] %}
-                          {% set command_name = command_value["name"]["en"] %}
-                        {% elif command_value["name"][0] %}
-                          {% set command_name = command_value["name"][0] %}
-                        {% endif %}
-                      {% endif %}
-                      {% set command_desc = "" %}
-                      {% if command_value["description"] %}
-                        {% if command_value["description"][config.settings.language] %}
-                          {% set command_desc = command_value["description"][config.settings.language] %}
-                        {% elif command_value["description"]["en"] %}
-                          {% set command_desc = command_value["description"]["en"] %}
-                        {% elif command_value["description"][0] %}
-                          {% set command_desc = command_value["description"][0] %}
-                        {% endif %}
-                      {% endif %}
-                      {% set command_id = command_value["command"] %}
-
-                      {% if command_value["description"] %}
-                        <div class="addbutton-description">
-                          <p>{{command_desc}}</p>
-                        </div>
-                      {% endif %}
-
-                      {% if not command_value["TYPE"] == "multiple" %}
-                        
-                        {# <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}" onclick="argsInput('commands[\'{{category}}\'][\'{{command}}\']')" > {{command_name}} </button> #}
-                        <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
-                      
-                        {% include 'addbutton_modal.jinja' %}
-
-                      {% else %}
-                        {# si type = multiple #}
-
+                    {% if not command == "CATEGORY-SETTINGS" %}
+                      {% set arg_modal_ID = str(arg_modal_ID1) + "X" + str(loop.index0) %}
+                      {# {{ mdebug(command) }} #}
+                      <div class="dropdown-item-container">
+                        {% set command_name = command %}
                         {% if command_value["name"] %}
                           {% if command_value["name"][config.settings.language] %}
-                            {% set command = command_value["name"][config.settings.language] %}
+                            {% set command_name = command_value["name"][config.settings.language] %}
                           {% elif command_value["name"]["en"] %}
-                            {% set command = command_value["name"]["en"] %}
+                            {% set command_name = command_value["name"]["en"] %}
                           {% elif command_value["name"][0] %}
-                            {% set command = command_value["name"][0] %}
+                            {% set command_name = command_value["name"][0] %}
                           {% endif %}
                         {% endif %}
-                        {% set command_values = command_value["commands"] %}
-                        <button class="dropdown-btn {{black_theme}}" dropdown-category="{{command}}">{{command}}</button>
-                        <div class="dropdown-container">
-                          <div class="dropdown-item-container">
-                            {% for command_value in command_values %}
-                              {% set arg_modal_ID = str(arg_modal_ID) + "X" + str(loop.index0) %}
-                              {% set command = command_value["command"].replace('/','') %}
-                              {# {{ mdebug(command) }} #}
-                              {% set command_name = command %}
-                              {% if command_value["name"] %}
-                                {% if command_value["name"][config.settings.language] %}
-                                  {% set command_name = command_value["name"][config.settings.language] %}
-                                {% elif command_value["name"]["en"] %}
-                                  {% set command_name = command_value["name"]["en"] %}
-                                {% elif command_value["name"][0] %}
-                                  {% set command_name = command_value["name"][0] %}
-                                {% endif %}
-                              {% endif %}
-                              {% set command_desc = "" %}
-                              {% if command_value["description"] %}
-                                {% if command_value["description"][config.settings.language] %}
-                                  {% set command_desc = command_value["description"][config.settings.language] %}
-                                {% elif command_value["description"]["en"] %}
-                                  {% set command_desc = command_value["description"]["en"] %}
-                                {% elif command_value["description"][0] %}
-                                  {% set command_desc = command_value["description"][0] %}
-                                {% endif %}
-                              {% endif %}
-                              {% set command_id = command_value["command"] %}
-                              {% if command_value["description"] %}
-                                <div class="addbutton-description">
-                                  <p>{{command_desc}}</p>
-                                </div>
-                              {% endif %}
-                              
-                              <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
-                              
-                              {% include 'addbutton_modal.jinja' %}
-                            {% endfor %}
+                        {% set command_desc = "" %}
+                        {% if command_value["description"] %}
+                          {% if command_value["description"][config.settings.language] %}
+                            {% set command_desc = command_value["description"][config.settings.language] %}
+                          {% elif command_value["description"]["en"] %}
+                            {% set command_desc = command_value["description"]["en"] %}
+                          {% elif command_value["description"][0] %}
+                            {% set command_desc = command_value["description"][0] %}
+                          {% endif %}
+                        {% endif %}
+                        {% set command_id = command_value["command"] %}
+
+                        {% if command_value["description"] %}
+                          <div class="addbutton-description">
+                            <p>{{command_desc}}</p>
                           </div>
-                        </div>
-                      {% endif %}
-                    </div>
+                        {% endif %}
+
+                        {% if not command_value["TYPE"] == "multiple" %}
+                          
+                          {# <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}" onclick="argsInput('commands[\'{{category}}\'][\'{{command}}\']')" > {{command_name}} </button> #}
+                          <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                        
+                          {% include 'addbutton_modal.jinja' %}
+
+                        {% else %}
+                          {# si type = multiple #}
+
+                          {% if command_value["name"] %}
+                            {% if command_value["name"][config.settings.language] %}
+                              {% set command = command_value["name"][config.settings.language] %}
+                            {% elif command_value["name"]["en"] %}
+                              {% set command = command_value["name"]["en"] %}
+                            {% elif command_value["name"][0] %}
+                              {% set command = command_value["name"][0] %}
+                            {% endif %}
+                          {% endif %}
+                          {% set command_values = command_value["commands"] %}
+                          <button class="dropdown-btn {{black_theme}}" dropdown-category="{{command}}">{{command}}</button>
+                          <div class="dropdown-container">
+                            <div class="dropdown-item-container">
+                              {% for command_value in command_values %}
+                                {% set arg_modal_ID = str(arg_modal_ID) + "X" + str(loop.index0) %}
+                                {% set command = command_value["command"].replace('/','') %}
+                                {# {{ mdebug(command) }} #}
+                                {% set command_name = command %}
+                                {% if command_value["name"] %}
+                                  {% if command_value["name"][config.settings.language] %}
+                                    {% set command_name = command_value["name"][config.settings.language] %}
+                                  {% elif command_value["name"]["en"] %}
+                                    {% set command_name = command_value["name"]["en"] %}
+                                  {% elif command_value["name"][0] %}
+                                    {% set command_name = command_value["name"][0] %}
+                                  {% endif %}
+                                {% endif %}
+                                {% set command_desc = "" %}
+                                {% if command_value["description"] %}
+                                  {% if command_value["description"][config.settings.language] %}
+                                    {% set command_desc = command_value["description"][config.settings.language] %}
+                                  {% elif command_value["description"]["en"] %}
+                                    {% set command_desc = command_value["description"]["en"] %}
+                                  {% elif command_value["description"][0] %}
+                                    {% set command_desc = command_value["description"][0] %}
+                                  {% endif %}
+                                {% endif %}
+                                {% set command_id = command_value["command"] %}
+                                {% if command_value["description"] %}
+                                  <div class="addbutton-description">
+                                    <p>{{command_desc}}</p>
+                                  </div>
+                                {% endif %}
+                                
+                                <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                                
+                                {% include 'addbutton_modal.jinja' %}
+                              {% endfor %}
+                            </div>
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
                   {% endfor %}
                 </div>
               {% endfor %}
@@ -907,18 +923,24 @@
           }
       }
 
-      {% for folder_id, value in config["front"]["buttons"].items() %}
-        function folder_{{ folder_id }}() {
-          // console.log("{{folder_id}} opened")
-          {% for folder_id2, value in config["front"]["buttons"].items() %}
-            {% if folder_id2 == folder_id %}
-              document.getElementById('folder-{{ folder_id2 }}').classList.remove('invisible');
-            {% else %}
-              document.getElementById('folder-{{ folder_id2 }}').classList.add('invisible');
-            {% endif %}
-          {% endfor %}
+      function folder(folder_id) {
+        var elements = document.querySelectorAll('.buttons-center');
+
+        // Parcourt chaque élément
+        elements.forEach(function(element) {
+          if (!element.classList.contains('invisible')) {
+            element.classList.add('invisible');
+          }
+        });
+
+        var folderElement = document.getElementById('folder-' + folder_id);
+        if (folderElement.classList.contains('invisible')) {
+          folderElement.classList.remove('invisible');
+        } else {
+          folderElement.classList.add('invisible');
         }
-      {% endfor %}
+      }
+
 
       function togglePasswordVisibility() {
         var motDePasseInput = document.getElementById("spotify-CLIENT_SECRET");
@@ -1078,7 +1100,7 @@
 
 
       window.addEventListener('load', function() {
-        folder_{{str(config["front"]["buttons"].keys()).split("'")[1]}}();
+        folder('{{str(config["front"]["buttons"].keys()).split("'")[1]}}');
         auto_resize();
 
         const usageValueDivs = document.querySelectorAll('.usage-value');
@@ -1114,25 +1136,27 @@
                     const divElements = document.querySelectorAll('.usage-value');
                     divElements.forEach(divElement => {
                       const otherClass = divElement.classList[1];
-                      if (otherClass !== undefined || eval(otherClass).replace(' ','') !== '-') {
-                        try {
-                          let newValue;
-                          if (otherClass.includes('percent')) {
-                            newValue = eval(otherClass) + '%';
-                          } else if (otherClass.includes('_gb')) {
-                            newValue = eval(otherClass) + ' gb';
-                          } else if (otherClass.includes('_mb')) {
-                            newValue = eval(otherClass) + ' mb';
-                          } else if (otherClass.includes('bytes')) {
-                            newValue = eval(otherClass) + ' bytes';
-                          } else {
-                            newValue = eval(otherClass);
+                      if (otherClass !== undefined && otherClass.includes('.')) {
+                        if (eval(otherClass) !== '-') {
+                          try {
+                            let newValue;
+                            if (otherClass.includes('percent')) {
+                              newValue = eval(otherClass) + '%';
+                            } else if (otherClass.includes('_gb')) {
+                              newValue = eval(otherClass) + ' gb';
+                            } else if (otherClass.includes('_mb')) {
+                              newValue = eval(otherClass) + ' mb';
+                            } else if (otherClass.includes('bytes')) {
+                              newValue = eval(otherClass) + ' bytes';
+                            } else {
+                              newValue = eval(otherClass);
+                            }
+                            if (!newValue.includes('undefined')) {
+                              divElement.textContent = newValue;
+                            }
+                          } catch (error) {
+                            return;
                           }
-                          if (!newValue.includes('undefined')) {
-                            divElement.innerHTML = newValue;
-                          }
-                        } catch (error) {
-                          return;
                         }
                       }
                     });
@@ -1788,10 +1812,10 @@
 
         document.addEventListener('keydown', function(event) {
           if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0 && document.getElementById('modal-container').style.opacity !== '1') {
-            if (event.key === 'e') {
+            if (event.key.toLowerCase() === 'e') {
               SaveExitEditor(tempEditorConfig);
             }
-            if (event.key === 'q') {
+            if (event.key.toLowerCase() === 'q') {
               editorMode = editorMode === 0 ? 1 : 0;
               toggleEditorMode();
               editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Quit editor mode';
@@ -1822,7 +1846,7 @@
                   // }
                   location.reload();
                 }
-                swapEditorButtonFunction()
+                swapEditorButtonFunction();
                 editorMode = 0;
                 toggleEditorMode();
                 editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
@@ -1830,34 +1854,33 @@
               }
             }
             if (editorMode === 1) {
-              if (event.key === 's') {
-                swapEditorButtonFunction()
+              if (event.key.toLowerCase() === 's') {
+                swapEditorButtonFunction();
               }
-              if (event.key === 'z' && event.ctrlKey && swapMode === 1) {
+              if (event.key.toLowerCase() === 'z' && event.ctrlKey && swapMode === 1) {
                 console.log('Ctrl + Z');
-                undoSwap()
+                undoSwap();
               }
               if (event.ctrlKey && event.shiftKey && event.key === 'Z' && swapMode === 1) {
                 console.log('Ctrl + Shift + Z');
-                undoUNSwap()
+                undoUNSwap();
               }
-              if (event.key === 'y' && event.ctrlKey && swapMode === 1) {
+              if (event.key.toLowerCase() === 'y' && event.ctrlKey && swapMode === 1) {
                 console.log('Ctrl + Y');
-                undoUNSwap()
+                undoUNSwap();
               }
             }
-            let modal = document.querySelector('.modal-container');
-            if (event.key === 'Escape' && modal.style.opacity === '1') {
-              console.log('Esc (closed modal)');
-              hide_modal()
-            }
-            if (event.key === 'c' || event.key === 'm') {
+          }
+          if (event.key === 'Escape') {
+            hide_last_modal();
+          }
+          let modal = document.querySelector('.modal-container');
+          if (event.key.toLowerCase() === 'c' || event.key.toLowerCase() === 'm') {
+            if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0) {
               if (modal.style.opacity !== '1') {
-                console.log('M or C (opened config modal)');
-                show_modal()
+                show_modal();
               } else {
-                console.log('M or C (closed config modal)');
-                hide_modal()
+                hide_modal();
               }
             }
           }
@@ -2054,7 +2077,7 @@
                             newValue = eval(otherClass);
                           }
                           if (!newValue.includes('undefined')) {
-                            divElement.innerHTML = newValue;
+                            divElement.textContent = newValue;
                           }
                         } catch (error) {
                           return;
@@ -2069,6 +2092,24 @@
         });
         
 
+        let lastModals = [];
+        
+        function hide_last_modal() {
+          switch (lastModals[lastModals.length - 1]) {
+            case 'config-modal':
+              hide_modal();
+              break;
+            case 'addbutton-modal':
+              hide_addbutton_modal();
+              break;
+            case 'addbuttonArgs-modal':
+              hide_addbutton_args_modal();
+              break;
+            case 'editbutton-modal':
+              hide_editbutton_modal();
+              break;
+          }
+        }
 
 
         // Sélectionner tous les boutons qui ont la classe open-config-modal
@@ -2081,10 +2122,12 @@
         let modal_close_button = document.querySelector(".modal-close");
 
         function show_modal() {
+          lastModals.push("config-modal");
           modal.style.opacity = "100%";
           modal.style.display = "block";
         }
         function hide_modal() {
+          lastModals.splice(lastModals.indexOf("config-modal"), 1);
           let intervalId = setInterval(function() {
             let currentOpacity = parseFloat(getComputedStyle(modal).opacity);
             if (currentOpacity <= 0) {
@@ -2135,6 +2178,7 @@
         let is_addbutton_modal_opened = 0;
 
         function show_addbutton_modal(addFolder, addId) {
+          lastModals.push("addbutton-modal");
           addbutton_modal.style.opacity = "100%";
           addbutton_modal.style.display = "block";
           is_addbutton_modal_opened = 1;
@@ -2142,6 +2186,7 @@
           document.querySelector('#addbutton-modal-content').setAttribute('add_ID', addId);
         }
         function hide_addbutton_modal() {
+          lastModals.splice(lastModals.indexOf("addbutton-modal"), 1);
           document.querySelector('#addbutton-modal-content').removeAttribute('add_ID');
           document.querySelector('#addbutton-modal-content').removeAttribute('add_FOLDER');
           let intervalId = setInterval(function() {
@@ -2196,15 +2241,17 @@
         
 
         function show_addbutton_args_modal(modalId) {
+          lastModals.push("addbuttonArgs-modal");
           let modal = document.getElementById("modal-container-" + modalId);
           if (modal) {
             modal.style.opacity = "100%";
             modal.style.display = "block";
-            is_addbutton_modal_opened = 1;
+            is_addbutton_args_modal_opened = 1;
           }
         }
         
         function hide_addbutton_args_modal() {
+          lastModals.splice(lastModals.indexOf("addbuttonArgs-modal"), 1);
           let intervalId = setInterval(function() {
             let currentOpacity = parseFloat(getComputedStyle(addbutton_args_modal[0]).opacity);
             if (currentOpacity <= 0) {
@@ -2225,7 +2272,7 @@
                 element.style.opacity = (currentOpacity - 3.5).toFixed(2);
               }
             }, 10); // Répéter toutes les 0.01s (10ms)
-          is_addbutton_modal_opened = 0;
+          is_addbutton_args_modal_opened = 0;
         }
         
         // Ajouter des écouteurs d'événements sur chaque bouton pour ouvrir la modal correspondante
@@ -2271,6 +2318,7 @@
         const editbutton_modal_containers = document.querySelectorAll(".editbutton-modal-container");
         
         function show_editbutton_modal(modalId) {
+          lastModals.push("editbutton-modal");
           const modal = document.getElementById("edit-modal-container-" + modalId);
           if (modal) {
             modal.style.opacity = "100%";
@@ -2280,7 +2328,7 @@
         }
         
         function hide_editbutton_modal(modalId) {
-          console.log(modalId);
+          lastModals.splice(lastModals.indexOf("editbutton-modal"), 1);
           const editbutton_modal = document.getElementById("edit-modal-container-" + modalId);
           if (editbutton_modal) {
             let intervalId = setInterval(function() {
@@ -2333,9 +2381,6 @@
 
 
 
-
-
-
         // fullscreen
         
         const fullscreenBtn = document.querySelector('.fullscreen-btn');
@@ -2355,7 +2400,7 @@
             }
             auto_resize();
           } else {
-            console.log('Fullscreen mode not supported');
+            showError('Fullscreen is not supported on your device.');
           }
         });
 
