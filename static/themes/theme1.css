@@ -224,6 +224,7 @@ p.buttontext {
 
 
 div.usage {
+  position: absolute;
   max-height: 80px;
   max-width: 120px;
   display: flex;
