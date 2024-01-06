@@ -68,7 +68,7 @@ Suivez ces étapes pour configurer la soundboard de l'application:
 Vous avez maintenant configuré avec succès la soundboard de l'application. Appuyez sur le bouton associé pour jouer votre son.
 
 
-## Comment configurer OBS Studio?
+## Comment configurer OBS Studio ?
 
 Suivez ces étapes simples pour configurer OBS pour WebDeck:
 
