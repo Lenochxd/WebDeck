@@ -53,7 +53,7 @@
                           const parent_folder = parent_folder_id.id.replace(/^folder-/, '');
               
                           var data = {
-                            "name": folderName,
+                            "name": folderName.replaceAll('"', ''),
                             "parent_folder": parent_folder
                             };
                           console.log(data)
@@ -142,7 +142,7 @@
                     </div>
                     
                     <div style="display: none;" class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
-                      {# <h2> {{ choice_name }} </h2> #}
+                      {% set arg = choice %}
                       {% include 'args.jinja' %}
                     </div>
                   {% endfor %}
@@ -163,6 +163,8 @@
                   
                   
                 </script>
+              {% elif "text" in arg['TYPE'] and arg['value'] %}
+                <input class="invisible" type="text" size="10" value="{{arg['value']}}">
               {% endif %}
             {% endfor %}
           </div>
@@ -186,8 +188,12 @@
                   {% set class = "wd_button" %}
                   {% if command_value["style"]["image"] == "" or not command_value["style"]["image"] %}
                     <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="
-                        width: {{ 112*(50/100) + 3}}px;">
+                      <img id="button-image_{{arg_modal_ID}}" draggable="false" alt="" style="width: {{ 112*(50/100) + 3}}px;">
+                      
+                      <div class="usage">
+                        <div id="usage-title_{{arg_modal_ID}}" class="usage-title" style="{{fill}}"></div>
+                        <div id="usage-value_{{arg_modal_ID}}" class="usage-value" style="{{fill}}"></div>
+                      </div>
                     </button>
                   {% else %}
                     {% if command_value["style"]["image"].startswith('http') %}
@@ -209,6 +215,10 @@
                             {{fill}}"
                           >
                         {% endif %}
+                        <div class="usage">
+                          <div id="usage-title_{{arg_modal_ID}}" class="usage-title" style="{{fill}}"></div>
+                          <div id="usage-value_{{arg_modal_ID}}" class="usage-value" style="{{fill}}"></div>
+                        </div>
                       
                     </button>
                   {% endif %}
@@ -270,7 +280,7 @@
                 <input type="text" id="background-color-hex_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="Background Color (HEX)">
               </div>
               
-              <label for="button-text-input_{{arg_modal_ID}}">Button Text:</label>
+              <label for="button-text-input_{{arg_modal_ID}}">Button Title:</label>
               <input type="text" id="button-text-input_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
             </div>
           </div>
@@ -286,6 +296,54 @@
           
           <input type="submit" value="Save" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
+              function getCommand(command, arg_modal_ID) {
+                var form = document.querySelector('form[arg_modal_ID="' + arg_modal_ID + '"] .args-container'); // Get the form element with the specified arg_modal_ID
+                var inputs = form.querySelectorAll('input, select, textarea'); // Get all input, select, and textarea elements within the form
+                var values = Array.from(inputs).filter(function(input) {
+                    // Exclude inputs with "display:none" in parent's style
+                    var parent = input.parentElement;
+                    if (parent && window.getComputedStyle(parent).display === 'none') {
+                        return false;
+                    }
+
+                    // Exclude inputs with "choice" class
+                    if (input.classList.contains('choice')) {
+                        return false;
+                    }
+                    // Exclude inputs within divs with "editorStyle" class or "webdeck_foldername_div" class
+                    var ancestorDivs = input.closest('.editorStyle, .webdeck_foldername_div');
+                    if (ancestorDivs) {
+                        return false;
+                    }
+
+                    return true;
+                }).map(function(input) {
+                    if (input.tagName === 'SELECT') {
+                        var selectedOption = input.options[input.selectedIndex]; // Get the selected option
+                        return selectedOption.value; // Extract the value of the selected option
+                    } else if (input.type === 'radio' || input.type === 'checkbox') {
+                        if (input.checked) {
+                            return input.value; // Extract the value if the radio or checkbox is checked
+                        } else {
+                            return ''; // Return an empty string if the radio or checkbox is not checked
+                        }
+                    } else if (input.type === 'submit' || input.type === 'button') {
+                        return ''; // Return an empty string for submit buttons and buttons
+                    } else {
+                        if (input.value.startsWith('/folder')) {
+                          input.value = input.value.replaceAll('"', '');
+                        }
+                        return input.value; // Extract the value from the input element
+                    }
+                }).filter(function(value) {
+                    return value !== ''; // Filter out empty values
+                });
+
+                var commandString = command + ' ' + values.join('<|§|>'); // Concatenate the command and values
+
+                return commandString;
+              }
+              
               function updateImageSize(arg_modal_ID, imageSizeSlider, imageSizeValue, imageElement, button) {
                   imageSizeSlider.addEventListener('input', function () {
                       var imageSize = this.value;
@@ -368,8 +426,51 @@
                   return value;
               }
 
+              function reloadAddbuttonUsagePreview_{{arg_modal_ID}}() {
+                var commandString_{{arg_modal_ID}} = getCommand(command_{{arg_modal_ID}}, "{{arg_modal_ID}}").replaceAll('<|§|>', '').replaceAll('[object HTMLInputElement]', '');
+
+                let message = "/usage '"+commandString_{{arg_modal_ID}};
+                if (message.startsWith('/usage')) {
+                  let path = message.replaceAll("']['", '.').replaceAll("['", '.').replaceAll("']", '')
+                  path = path.substring(path.lastIndexOf("'") + 1).replaceAll(' ','');
+                  usageTitlePreview_{{arg_modal_ID}}.classList.add(`${path}`);
+                  usageValuePreview_{{arg_modal_ID}}.classList.add(`${path}`);
+                }
+              }
+
+              var usageInput_{{arg_modal_ID}} = document.getElementById('usage-title-input_{{arg_modal_ID}}');
+              
+              if (usageInput_{{arg_modal_ID}}) {
+                var usageTitlePreview_{{arg_modal_ID}} = document.getElementById('usage-title_{{arg_modal_ID}}');
+                var usageValuePreview_{{arg_modal_ID}} = document.getElementById('usage-value_{{arg_modal_ID}}');
+                
+                // set default text on page load
+                var text_{{arg_modal_ID}} = usageInput_{{arg_modal_ID}}.value;
+                usageTitlePreview_{{arg_modal_ID}}.textContent = text_{{arg_modal_ID}};
+                usageValuePreview_{{arg_modal_ID}}.textContent = '-';
+
+                usageInput_{{arg_modal_ID}}.addEventListener('input', function() {
+                    var text_{{arg_modal_ID}} = this.value;
+                    usageTitlePreview_{{arg_modal_ID}}.textContent = text_{{arg_modal_ID}};
+                    button_{{arg_modal_ID}}.name = text_{{arg_modal_ID}};
+                });
+
+                reloadAddbuttonUsagePreview_{{arg_modal_ID}}();
+                var diskLetter_{{arg_modal_ID}} = document.getElementById('disk-letter_{{arg_modal_ID}}');
+                if (diskLetter_{{arg_modal_ID}}) {
+                  diskLetter_{{arg_modal_ID}}.addEventListener('change', function() {
+                    var element = diskLetter_{{arg_modal_ID}}
+                    console.log('changed!');
+                    usageValuePreview_{{arg_modal_ID}}.textContent = '-';
+                    usageTitlePreview_{{arg_modal_ID}}.classList.remove(usageTitlePreview_{{arg_modal_ID}}.classList.item(1));
+                    usageValuePreview_{{arg_modal_ID}}.classList.remove(usageValuePreview_{{arg_modal_ID}}.classList.item(1));
+                    reloadAddbuttonUsagePreview_{{arg_modal_ID}}();
+                  });
+                }
+              }
+
+
               document.getElementById('image-input_{{arg_modal_ID}}').addEventListener('change', function () {
-                  console.log('image-input_{{arg_modal_ID}} just got changed!');
 
                   var input_{{arg_modal_ID}} = this;
                   var file = input_{{arg_modal_ID}}.files[0];
@@ -445,58 +546,14 @@
                   buttonPreview_{{arg_modal_ID}}.textContent = text_{{arg_modal_ID}};
                   button_{{arg_modal_ID}}.name = text_{{arg_modal_ID}};
               });
-              
-              function buttonCommand_{{arg_modal_ID}}(argModalID_{{arg_modal_ID}}, command_{{arg_modal_ID}}, event) {
-                  if (argModalID_{{arg_modal_ID}} === "NONE") {
+
+              function buttonCommand_{{arg_modal_ID}}(command_{{arg_modal_ID}}, arg_modal_ID) {
+                  if ("{{arg_modal_ID}}" === "NONE") {
                       var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}};
                   } else {
-                      event.preventDefault(); // Prevent the form from submitting
-          
-                      var form_{{arg_modal_ID}} = document.querySelector('form[arg_modal_ID="' + argModalID_{{arg_modal_ID}} + '"]'); // Get the form element with the specified arg_modal_ID
-                      var inputs_{{arg_modal_ID}} = form_{{arg_modal_ID}}.querySelectorAll('input, select, textarea'); // Get all input, select, and textarea elements within the form
-          
-                      var values_{{arg_modal_ID}} = Array.from(inputs_{{arg_modal_ID}}).filter(function(input_{{arg_modal_ID}}) {
-                          // Exclude inputs with "display:none" in parent's style
-                          var parent_{{arg_modal_ID}} = input_{{arg_modal_ID}}.parentElement;
-                          if (parent_{{arg_modal_ID}} && window.getComputedStyle(parent_{{arg_modal_ID}}).display === 'none') {
-                              return false;
-                          }
-          
-                          // Exclude inputs with "choice" class
-                          if (input_{{arg_modal_ID}}.classList.contains('choice')) {
-                              return false;
-                          }
-                          // Exclude inputs within divs with "editorStyle" class or "webdeck_foldername_div" class
-                          var ancestorDivs_{{arg_modal_ID}} = input_{{arg_modal_ID}}.closest('.editorStyle, .webdeck_foldername_div');
-                          if (ancestorDivs_{{arg_modal_ID}}) {
-                              return false;
-                          }
-          
-                          return true;
-                      }).map(function(input_{{arg_modal_ID}}) {
-                          if (input_{{arg_modal_ID}}.tagName === 'SELECT') {
-                              var selectedOption_{{arg_modal_ID}} = input_{{arg_modal_ID}}.options[input_{{arg_modal_ID}}.selectedIndex]; // Get the selected option
-                              return selectedOption_{{arg_modal_ID}}.value; // Extract the value of the selected option
-                          } else if (input_{{arg_modal_ID}}.type === 'radio' || input_{{arg_modal_ID}}.type === 'checkbox') {
-                              if (input_{{arg_modal_ID}}.checked) {
-                                  return input_{{arg_modal_ID}}.value; // Extract the value if the radio or checkbox is checked
-                              } else {
-                                  return ''; // Return an empty string if the radio or checkbox is not checked
-                              }
-                          } else if (input_{{ arg_modal_ID }}.type === 'submit' || input_{{ arg_modal_ID }}.type === 'button') {
-                            return ''; // Return an empty string for submit buttons and buttons
-                          } else {
-                              return input_{{ arg_modal_ID }}.value; // Extract the value from the input element
-                          }
-                      }).filter(function(value_{{arg_modal_ID}}) {
-                          return value_{{arg_modal_ID}} !== ''; // Filter out empty values
-                      });
-          
-                      var commandString_{{arg_modal_ID}} = command_{{arg_modal_ID}} + ' ' + values_{{arg_modal_ID}}.join('<|§|>'); // Concatenate the command and values
-          
-                      // Reset the form if needed
-                      // form_{{arg_modal_ID}}.reset();
+                      var commandString_{{arg_modal_ID}} = getCommand(command_{{arg_modal_ID}}, arg_modal_ID);
                   }
+                  console.log(commandString_{{arg_modal_ID}});
           
           
                   button_{{arg_modal_ID}}.message = commandString_{{arg_modal_ID}};
@@ -548,9 +605,14 @@
                   element.removeAttribute('add_ID');
                   element.removeAttribute('add_FOLDER');
               }
+
+
               document.getElementById('{{arg_modal_ID}}_submit').addEventListener('click', function(event) {
+                  if ("{{ arg_modal_ID }}" !== "NONE") {
+                    event.preventDefault();
+                  }
                   setTimeout(function() {
-                      buttonCommand_{{arg_modal_ID}}('{{ arg_modal_ID }}', '{{command_id}}', event);
+                      buttonCommand_{{arg_modal_ID}}("{{command_id}}", "{{arg_modal_ID}}");
                   }, 1000);
               });
               
