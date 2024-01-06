@@ -39,7 +39,7 @@
                 "fixes": [
                     "Correction des boutons /copy text et /paste text",
                     "Correction des contrôles au clavier qui ne fonctionnaient pas avec les lettres majuscules",
-                    "Correction des dossiers avec des points (`.`) causant des plantages; désormais fonctionnant correctement"
+                    "Correction des dossiers avec des points (`.`) causant des plantages; désormais fonctionnel"
                 ],
                 "nobody_cares": [
                     "Amélioration de la qualité du code et des performances générales"
