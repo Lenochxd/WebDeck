@@ -285,14 +285,12 @@
             </div>
           </div>
 
-          {% if config['settings']['dev-mode'].lower() == 'true' %}
-            <div class="editorStyle-bar {{black_theme}}" style="display: none;"></div>
-
-            <div class="arg_container" arg_modal_ID="{{arg_modal_ID}}" style="display: none;">
-              <label for="command_{{arg_modal_ID}}">Command (experimental):</label>
-              <input class="{{black_theme}}" type="text" name="" id="command_{{arg_modal_ID}}" value="{{ command_value['command'] }}" readonly>
-            </div>
-          {% endif %}
+          <div class="editorStyle-bar {{black_theme}}" style="display: none;"></div>
+          
+          <div class="arg_container" arg_modal_ID="{{arg_modal_ID}}" style="display: none;">
+            <label for="command_{{arg_modal_ID}}">Command (experimental):</label>
+            <input class="{{black_theme}}" type="text" name="" id="command_{{arg_modal_ID}}" value="{{ command_value['command'] }}" readonly>
+          </div>
           
           <input type="submit" value="Save" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
