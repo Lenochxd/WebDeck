@@ -1,6 +1,52 @@
 {
     "versions": [
         {
+            "version": "1.7.0",
+            "release_date": {
+                "day": "06",
+                "month": "01",
+                "year": "2024",
+                "hour": "18",
+                "minute": "43"
+            },
+            "en": {
+                "updates": [
+                    "Added OBS support (Streamlabs OBS not available yet)",
+                    "Added buttons to display component usage of the computer",
+                    "Added the Escape key functionality to close the last menu"
+                ],
+                "minor_enhancements": [
+                    "Improved CSS"
+                ],
+                "fixes": [
+                    "Fixed issues with /copy text and /paste text buttons",
+                    "Fixed keyboard controls that previously did not function with uppercase letters",
+                    "Fixed folders with dots (`.`) causing crashes; now functioning properly"
+                ],
+                "nobody_cares": [
+                    "Enhanced code quality and overall performance"
+                ]
+            },
+            "fr": {
+                "updates": [
+                    "Ajout du support d'OBS (Streamlabs OBS pas encore disponible)",
+                    "Ajout de boutons pour afficher l'utilisation des composants de l'ordinateur",
+                    "Ajout de la touche Échap pour fermer le dernier menu"
+                ],
+                "minor_enhancements": [
+                    "Amélioration du CSS"
+                ],
+                "fixes": [
+                    "Correction des boutons /copy text et /paste text",
+                    "Correction des contrôles au clavier qui ne fonctionnaient pas avec les lettres majuscules",
+                    "Correction des dossiers avec des points (`.`) causant des plantages; désormais fonctionnant correctement"
+                ],
+                "nobody_cares": [
+                    "Amélioration de la qualité du code et des performances générales"
+                ]
+            }
+        },
+        {
             "version": "1.6.4",
             "release_date": {
                 "day": "01",
