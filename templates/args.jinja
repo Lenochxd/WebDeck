@@ -30,10 +30,33 @@
             {% endif %}
         {% endif %}
     {% endfor %}
-{% elif "longtext" in arg['TYPE'] %}
+{% elif "longtext" in arg['TYPE'] or "textarea" in arg['TYPE'] %}
     <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
-{% elif "text" in arg['TYPE'] %}
-    <input class="{{black_theme}}" type="text" name="{{file}}" size="10" >
+{% elif "usage-title-text" in arg['TYPE'] and "input" in arg['TYPE'] %}
+    <input id="usage-title-input_{{arg_modal_ID}}" class="{{black_theme}}" type="text" name="{{file}}" size="10"
+        {% if arg['value'] %}
+            value="{{arg['value']}}"
+        {% endif %}
+    >
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var usageInput_{{arg_modal_ID}} = document.getElementById('usage-title-input_{{arg_modal_ID}}');
+                
+            if (usageInput_{{arg_modal_ID}}) {
+                var usagePreview_{{arg_modal_ID}} = document.getElementById('usage-title_{{arg_modal_ID}}');
+                
+                var text_{{arg_modal_ID}} = usageInput_{{arg_modal_ID}}.value;
+                usagePreview_{{arg_modal_ID}}.textContent = text_{{arg_modal_ID}};
+                button_{{arg_modal_ID}}.name = text_{{arg_modal_ID}};
+            }
+        });
+    </script>
+{% elif "text" in arg['TYPE'] and "input" in arg['TYPE'] %}
+    <input class="{{black_theme}}" type="text" name="{{file}}" size="10"
+        {% if arg['value'] %}
+            value="{{arg['value']}}"
+        {% endif %}
+    >
 {% elif "dropdown" in arg['TYPE'] %}
     {# lister toutes les options #}
     <select name="{{file}}" >
@@ -50,4 +73,23 @@
     </select>
 {% elif "path-soundboard-audio" in arg['TYPE'] %}
     <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept=".mp3">
+{% elif "webdeck_available_gpus" in arg['TYPE'] %}
+    <select name="{{file}}" >
+        {% for gpu, usage in usage_example['gpus'].items() %}
+            {% if usage['name'] %}
+                {% set gpu = usage['name'] %}
+            {% endif %}
+            <option value="{{ gpu }}"> {{ gpu }} </option>
+        {% endfor %}
+    </select>
+{% elif "disk-letter" in arg['TYPE'] %}
+    <select id="disk-letter_{{arg_modal_ID}}" name="{{file}}" >
+        {% for disk, usage in usage_example['disks'].items() %}
+            <option value="{{disk}}"
+                {% if disk == "C" %}
+                    selected
+                {% endif %}
+            > {{ disk }} </option>
+        {% endfor %}
+    </select>
 {% endif %}
