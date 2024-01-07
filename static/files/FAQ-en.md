@@ -35,7 +35,7 @@ If you prefer to use a language other than English, you can follow these simple 
 This way, you can customize the application's language according to your linguistic preferences.
 
 
-## How to Set Up My Soundboard?
+## How to set up my soundboard?
 
 Follow these steps to configure the application's soundboard:
 
@@ -72,7 +72,7 @@ Follow these steps to configure the application's soundboard:
 You have now successfully configured the application's soundboard. Press the associated button to play your sound.
 
 
-## How to Set Up OBS Studio?
+## How to set up OBS Studio?
 
 Follow these steps to configure the OBS websocket:
 
@@ -155,7 +155,7 @@ Yes, but no. Indeed, WebDeck establishes communication with a server, but that s
 If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
 
 
-## Why is VLC Media Player Necessary?
+## Why is VLC Media Player necessary?
 
 WebDeck needs the `python-vlc` library for sound playback on the soundboard. Therefore, it is essential to have VLC media player installed on your computer, even if you do not use the VLC software interface. Unfortunately, to date, no alternative solution has been identified to bypass this requirement.
 
@@ -184,7 +184,7 @@ I have no idea, but it's open source, so if you're concerned about malicious cod
 But don't worry, WebDeck is obviously NOT a malicious application.
 
 
-## Can I compile the software yourself?
+## Can you compile the software yourself?
 
 If you prefer to compile the executable files yourself for security reasons, here are the steps to follow:
 
