@@ -40,31 +40,9 @@ If your question is not addressed in the FAQ, feel free to ask us on our [Discor
 
 To check the compatibility of your device and browser with WebDeck, you can refer to the  [test table](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). This table details the results of various experiments on different devices and browsers. You can also contribute to the table using https://bishokus.fr/webdeck/test-it
 
-### 💻 Operating System Support
+#### 💻 Operating System Support
 
 WebDeck currently supports Windows. We plan to develop versions for Linux and macOS in the future. Unfortunately, Wine emulation is not a viable solution for Linux compatibility. We appreciate your patience as we work on expanding our supported platforms.
-
-
-## Compilation (Nerds only)
-
-<details>
-  <summary>If you wish to compile the software into .exe yourself, follow these steps:</summary>
-
-1. Download the source code and extract it.
-2. Open a terminal in the source code folder.
-3. Create a virtual environment:\
-`python -m venv webdeck`\
-`webdeck\Scripts\activate.bat`
-4. Install the dependencies:\
-`pip install -r requirements.txt`
-5. Start the compilation:\
-`python setup.py build`
-6. (Optional) If you want to sign the executables with signtool, follow the instructions provided in [this link](https://stackoverflow.com/a/52963704/17100464).
-7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe`
-8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_main.exe`
-9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe`
-
-</details>
 
 
 ## ⭐ Contributors
@@ -129,15 +107,15 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 
 ## 🙏 Donate
 
-If you appreciate the project, consider [buying me a coffee](https://buymeacoffee.com/bishokus).
+If you appreciate the project, consider [buying us a coffee](https://ko-fi.com/lenoch)! ♥
 
 ---
 
-WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to open an issue on GitHub, submit a pull request with your upgrades, or if you're not a nerd, contact me elsewhere:
+WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/LeLenoch/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
 - Discord: Lenoch
 - Discord Server: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
-- Twitter: [https://twitter.com/LenochJ](https://twitter.com/LenochJ)
+- Twitter: [https://twitter.com/WebDeckJ](https://twitter.com/WebDeckJ)
 - Email (?): contact.lenoch@gmail.com
 
 <br>

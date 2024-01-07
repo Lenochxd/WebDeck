@@ -38,31 +38,9 @@ Si votre question n'est pas abordée dans la FAQ, n'hésitez pas à nous la pose
 
 Pour vérifier la compatibilité de votre appareil et navigateur avec WebDeck, vous pouvez consulter le [tableau des tests](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). Celui-ci détaille les résultats de différentes expériences sur divers appareils et navigateurs. Vous pouvez vous aussi contribuer au tableau avec https://bishokus.fr/webdeck/test-it
 
-### 💻 Systèmes d'Exploitation
+#### 💻 Systèmes d'Exploitation
 
 Le WebDeck prend actuellement en charge Windows. Il est prévu de développer des versions pour Linux et macOS à l'avenir. Malheureusement, l'émulation Wine n'est pas une solution viable pour la compatibilité Linux. Nous vous remercions de votre patience pendant que nous travaillons à étendre nos plates-formes prises en charge.
-
-
-## Compilation (Pour les nerds)
-
-<details>
-  <summary>Si vous souhaitez compiler le logiciel en .exe vous-même, suivez ces étapes :</summary>
-
-1. Téléchargez le code source et extrayez-le.
-2. Ouvrez un terminal dans le dossier du code source.
-3. Créez un environnement virtuel :\
-`python -m venv webdeck`\
-`webdeck\Scripts\activate.bat`
-4. Installez les dépendances :\
-`pip install -r requirements.txt`
-5. Lancez la compilation :\
-`python setup.py build`
-6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pour l'installer: https://stackoverflow.com/a/52963704/17100464.
-7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
-8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
-9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
-
-</details>
 
 
 ## ⭐ Contributeurs
@@ -127,15 +105,15 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
 
 ## 🙏 Faire un don
 
-Si vous appréciez le projet, envisagez de [m'offrir un café](https://buymeacoffee.com/bishokus).
+Si vous appréciez le projet, envisagez de [m'offrir un café](https://ko-fi.com/lenoch) ! ♥
 
 ---
 
-WebDeck est un projet en constante évolution, et nous apprécions vos contributions pour l'améliorer davantage. Si vous rencontrez des problèmes, n'hésitez pas à ouvrir un problème sur GitHub, soumettre une demande d'extraction avec vos améliorations, ou si vous n'êtes pas un nerd, contactez-moi ailleurs:
+WebDeck est un projet en constante évolution, et nous apprécions vos contributions pour l'améliorer davantage. Si vous rencontrez des problèmes, n'hésitez pas à [ouvrir un problème (issue)](https://github.com/LeLenoch/WebDeck/issues) sur GitHub, soumettre une demande d'extraction avec vos améliorations, ou si vous n'êtes pas un nerd, vous pouvez aussi me contacter ailleurs:
 
 - Discord: Lenoch
 - Serveur Discord: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
-- Twitter: [https://twitter.com/LenochJ](https://twitter.com/LenochJ)
+- Twitter: [https://twitter.com/WebDeckJ](https://twitter.com/WebDeckJ)
 - Email (?): contact.lenoch@gmail.com
 
 <br>
