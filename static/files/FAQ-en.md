@@ -150,7 +150,7 @@ This way, you can customize the button backgrounds to your preferences with just
 
 ## Does the software communicate with a server?
 
-Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is you. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
+Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is in fact your computer. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
 
 If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
 
@@ -184,20 +184,20 @@ I have no idea, but it's open source, so if you're concerned about malicious cod
 But don't worry, WebDeck is obviously NOT a malicious application.
 
 
-## Can I compile the `WebDeck.exe` file yourself?
+## Can I compile the software yourself?
 
-If you prefer to compile the WebDeck.exe file yourself for security reasons, even though WebDeck is open source, here are the steps to follow:
+If you prefer to compile the executable files yourself for security reasons, here are the steps to follow:
 
-1. Téléchargez le code source et extrayez-le.
-2. Ouvrez un terminal dans le dossier du code source.
-3. Créez un environnement virtuel :\
+1. Download the source code and extract it.
+2. Open a terminal in the source code folder.
+3. Create a virtual environment:\
 `python -m venv webdeck`\
 `webdeck\Scripts\activate.bat`
-4. Installez les dépendances :\
+4. Install the dependencies:\
 `pip install -r requirements.txt`
-5. Effectuez la compilation :\
+5. Start the compilation:\
 `python setup.py build`
-6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pourl'installer: https://stackoverflow.com/a/52963704/17100464.
-7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
-8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
-9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
+6. (Optional) If you want to sign the executables with signtool, follow the instructions provided in [this link](https://stackoverflow.com/a/52963704/17100464).
+7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe`
+8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_main.exe`
+9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe`

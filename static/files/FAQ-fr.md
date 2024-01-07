@@ -153,7 +153,7 @@ WebDeck utilise la bibliothèque `python-vlc` pour la lecture des sons sur la so
 
 ## Le logiciel communique-t-il avec un serveur ?
 
-Oui, mais non. En effet, le WebDeck établit une communication avec un serveur, mais ce serveur, c'est vous. Le WebDeck sur votre appareil mobile n'est rien de plus qu'une simple page web, et le "serveur" auquel il se connecte est en réalité votre ordinateur. La communication entre ces deux appareils s'effectue par le biais de votre réseau local. Autrement dit, votre ordinateur agit comme un serveur, mais l'accès à ce serveur est strictement réservé à vous seul.
+Oui, mais non. En effet, le WebDeck établit une communication avec un serveur, mais ce serveur, c'est votre propre ordinateur. Le WebDeck sur votre appareil mobile n'est rien de plus qu'une simple page web, et le "serveur" auquel il se connecte est en réalité votre ordinateur. La communication entre ces deux appareils s'effectue par le biais de votre réseau local. Autrement dit, votre ordinateur agit comme un serveur, mais l'accès à ce serveur est strictement réservé à vous seul.
 
 Si votre question porte sur la communication du logiciel avec un **autre** serveur que celui de votre ordinateur, alors la réponse est non. Pour garantir un maximum de sécurité, aucune donnée ne sort de votre réseau. Les seules données envoyées à l'extérieur de votre domicile sont les requêtes API vers Spotify, mais ces données ne transitent pas par des serveurs dédiés au WebDeck, elles sont dirigées directement vers les serveurs de Spotify.
 
@@ -182,7 +182,7 @@ Je n'ai aucune explication à ce sujet, cependant, le code source étant accessi
 
 ## Comment compiler le fichier `WebDeck.exe` par vous-même ?
 
-Si vous préférez compiler le fichier `WebDeck.exe` vous-même par mesure de sécurité, même si WebDeck est open source, voici les étapes à suivre :
+Si vous préférez compiler le fichier `WebDeck.exe` vous-même par mesure de sécurité, voici les étapes à suivre :
 
 1. Téléchargez le code source et extrayez-le.
 2. Ouvrez un terminal dans le dossier du code source.
@@ -193,7 +193,7 @@ Si vous préférez compiler le fichier `WebDeck.exe` vous-même par mesure de s�
 `pip install -r requirements.txt`
 5. Effectuez la compilation :\
 `python setup.py build`
-6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pourl'installer: https://stackoverflow.com/a/52963704/17100464.
+6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pour l'installer: https://stackoverflow.com/a/52963704/17100464.
 7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
 8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
 9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
