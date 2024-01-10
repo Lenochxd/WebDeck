@@ -117,7 +117,7 @@ def check_json_update(config):
         config['settings']['obs'] = {
             "host": "localhost",
             "port": 4455,
-            "password": "secret"
+            "password": ""
         }
     return config
 
