@@ -1969,22 +1969,26 @@ def compare_versions(version1, version2):
     return 0
 
 def check_for_updates():
-    with open('static/files/version.json', encoding="utf-8") as f:
-        current_version = json.load(f)['versions'][0]['version']
-    response = requests.get("https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json")
-    data = response.json()
-    
-    files_to_update = []
-    for version_data in reversed(data["versions"]):
-        version = version_data["version"]
-        if compare_versions(version, current_version) > 0:
-            print(f"New version available: {version}")
-            try:
-                subprocess.Popen(['WD_updater.exe'])
-            except:
-                pass
-            
-            break
+    try:
+        with open('static/files/version.json', encoding="utf-8") as f:
+            current_version = json.load(f)['versions'][0]['version']
+        response = requests.get("https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json")
+        data = response.json()
+        
+        files_to_update = []
+        for version_data in reversed(data["versions"]):
+            version = version_data["version"]
+            if compare_versions(version, current_version) > 0:
+                print(f"New version available: {version}")
+                try:
+                    subprocess.Popen(['WD_updater.exe'])
+                except:
+                    pass
+                
+                break
+    except Exception as e:
+        print2(f"Error while updating WebDeck, please update it manually from https://github.com/LeLenoch/WebDeck \n\nError: {e}")
+        pass
         
 def check_for_updates_loop():
     while True:
