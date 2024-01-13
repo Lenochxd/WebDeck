@@ -1,0 +1,105 @@
+// Errors
+failed=Failed
+error=Error
+error_occurred=An error has occurred
+
+auto_update_error=Error while updating WebDeck, please update it manually from https://github.com/LeLenoch/WebDeck
+
+no_files_found_error=No files were found
+
+vlc_not_installed_error=VLC is not installed!
+mp3_loading_error=Error while loading MP3 file named.
+
+obs_failed_connection_error=Failed connection to obs.
+obs_already_recording=OBS is already recording.
+obs_already_streaming=OBS is already streaming.
+obs_already_vcam=Virtual cam is already started.
+obs_not_recording=OBS is not recording.
+obs_not_streaming=OBS is not streaming.
+obs_no_vcam=Virtual cam is already stopped.
+obs_no_recording_can_be_paused=No recording can be paused.
+obs_no_recording_is_paused=No recording is paused.
+
+
+// Success
+downloaded_successfully=File downloaded successfully
+
+
+// Editor
+enter_editor_mode=Enter editor mode
+exit_editor_mode=Exit editor mode
+
+open_folder=Open Folder
+
+quit_without_saving=Quit without saving
+save_and_exit=Save and exit
+swap_buttons=Swap 2 Buttons
+stop_swap_mode=Stop Swap Mode
+
+
+// Settings tab
+configuration=Configuration
+settings=Settings
+
+language=Language
+config-windows_startup=Start on Windows startup
+auto_updates=Auto updates
+
+soundboard=Soundboard
+input_device=Input device
+output_device=Output device (vbcable)
+ear_soundboard=Ear Soundboard
+
+spotify_api=Spotify API
+username=Username
+
+obs_studio=OBS Studio
+host=Host
+port=Port
+password=Password
+
+
+visuals=Visuals
+
+gridsize=Grid-size
+height=height
+width=height
+
+theme=Theme
+
+background_image=Background image
+open_background_image_menu=Open the backgrounds menu
+
+dark_theme=Dark theme
+
+show_btn_names=Show button names
+
+
+experimental=Experimental
+
+usage_btn_reload_time=Usage buttons reload time (ms)
+
+open_settings_in_default_browser=Open settings in default browser
+
+gpu_usage_method=GPU usage method (if the gpu usage does not show)
+doesnt_work=doesn't work
+lmao=lmao
+none=None
+
+show_console=Show console
+
+dev_mode=Dev mode
+
+
+random_bg_menu_title=Random backgrounds list
+
+background_color=Background Color
+add_background_color=Add a color backgroud
+or=or
+
+remove_background=Remove this background
+
+
+
+save=Save
+back=Back
