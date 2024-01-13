@@ -1,0 +1,105 @@
+// Errors
+failed=Échec
+error=Erreur
+error_occurred=Une erreur s'est produite
+
+auto_update_error=Erreur lors de la mise à jour de WebDeck, veuillez le mettre à jour manuellement depuis https://github.com/LeLenoch/WebDeck
+
+no_files_found_error=Aucun fichier trouvé
+
+vlc_not_installed_error=VLC n'est pas installé !
+mp3_loading_error=Erreur lors du chargement du fichier MP3 nommé.
+
+obs_failed_connection_error=Échec de la connexion à l'obs.
+obs_already_recording=OBS est déjà en train d'enregistrer.
+obs_already_streaming=OBS est déjà en streaming.
+obs_already_vcam=La caméra virtuelle est déjà démarrée.
+obs_not_recording=OBS n'est pas en train d'enregistrer.
+obs_not_streaming=OBS n'est pas en streaming.
+obs_no_vcam=La caméra virtuelle est déjà arrêtée.
+obs_no_recording_can_be_paused=Aucun enregistrement ne peut être mis en pause.
+obs_no_recording_is_paused=Aucun enregistrement n'est en pause.
+
+
+// Success
+downloaded_successfully=Fichier téléchargé avec succès
+
+
+// Editor
+enter_editor_mode=Passer en mode éditeur
+exit_editor_mode=Quitter le mode éditeur
+
+open_folder=Ouvrir le dossier
+
+quit_without_saving=Quitter sans sauvegarder
+save_and_exit=Sauvegarder et quitter
+swap_buttons=Échanger des boutons
+stop_swap_mode=Arrêter d'échanger
+
+
+// Settings tab
+configuration=Configuration
+settings=Paramètres
+
+language=Langue
+config-windows_startup=Démarrer avec Windows
+auto_updates=Mises à jour automatiques
+
+soundboard=Soundboard
+input_device=Périphérique d'entrée
+output_device=Périphérique de sortie (vbcable)
+ear_soundboard=Entendre la soundboard
+
+spotify_api=Spotify API
+username=Nom d'utilisateur
+
+obs_studio=OBS Studio
+host=Host
+port=Port
+password=Mot de passe
+
+
+visuals=Visuels
+
+gridsize=Taille de la grille
+height=hauteur
+width=largeur
+
+theme=Thème
+
+background_image=Fond d'écran
+open_background_image_menu=Ouvrir le menu des fond d'écrans
+
+dark_theme=Thème sombre
+
+show_btn_names=Afficher les noms des boutons
+
+
+experimental=Expérimental
+
+usage_btn_reload_time=Temps de rechargement des boutons d'utilisation (ms)
+
+open_settings_in_default_browser=Ouvrir les paramètres dans le navigateur par défaut
+
+gpu_usage_method=Méthode GPU (si l'utilisation du GPU ne s'affiche pas)
+doesnt_work=ne fonctionne pas
+lmao=?? ptdrr
+none=Aucun
+
+show_console=Afficher la console
+
+dev_mode=Mode développeur
+
+
+random_bg_menu_title=Liste d'arrière-plans aléatoires
+
+background_color=Couleur du fond
+add_background_color=Ajouter la couleur
+or=ou
+
+remove_background=Supprimer ce fond
+
+
+
+save=Enregistrer
+back=Retour
