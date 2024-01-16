@@ -1,6 +1,32 @@
 {
     "versions": [
         {
+            "version": "1.7.1",
+            "release_date": {
+                "day": "16",
+                "month": "01",
+                "year": "2024",
+                "hour": "20",
+                "minute": "39"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Resolved OBS connection error"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction de l'erreur de connexion à OBS"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.7.0",
             "release_date": {
                 "day": "06",
