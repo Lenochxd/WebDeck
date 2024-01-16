@@ -574,8 +574,9 @@ def reload_obs():
     obs_password = config['settings']['obs']['password']
 
     obs = obsws(obs_host, obs_port, obs_password)
+    return obs_host, obs_port, obs_password
 
-reload_obs()
+obs_host, obs_port, obs_password = reload_obs()
 
 # Set up the Spotify API client
 try:
@@ -1054,7 +1055,7 @@ def saveconfig():
     if soundboard_restart:
         restart_soundboard()
     if obs_reload:
-        reload_obs()
+        obs_host, obs_port, obs_password = reload_obs()
 
     print(config['settings']['show-console'])
 
@@ -1808,8 +1809,8 @@ def send_data(message=None):
         try:
             obs = obsws(obs_host, obs_port, obs_password)
             obs.connect()
-        except:
-            return jsonify({"success": False, "message": "Failed connection to obs."})
+        except Exception as e:
+            return jsonify({"success": False, "message": f"Failed connection to obs, {e}"})
     
     
         if message.startswith('/obs_scene'):
