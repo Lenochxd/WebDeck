@@ -1,4 +1,10 @@
-// Errors
+lang = English
+lang_alt = en
+credits = Lenoch
+
+
+// -- Errors --
+server_disconnected=Server Disconnected
 failed=Failed
 error=Error
 error_occurred=An error has occurred
@@ -11,6 +17,8 @@ vlc_not_installed_error=VLC is not installed!
 mp3_loading_error=Error while loading MP3 file named.
 
 obs_failed_connection_error=Failed connection to obs.
+obs_error_10061=The websocket server cannot be found. (WinError 10061)
+obs_error_incorrect_password=Password may be incorrect.
 obs_already_recording=OBS is already recording.
 obs_already_streaming=OBS is already streaming.
 obs_already_vcam=Virtual cam is already started.
@@ -20,12 +28,14 @@ obs_no_vcam=Virtual cam is already stopped.
 obs_no_recording_can_be_paused=No recording can be paused.
 obs_no_recording_is_paused=No recording is paused.
 
+spotify_apply_volume_error=Error, unable to apply volume
+spotify_volume_prenium_error=Error, unable to apply volume because Spotify Prenium is required
 
 // Success
 downloaded_successfully=File downloaded successfully
 
 
-// Editor
+// -- Editor --
 enter_editor_mode=Enter editor mode
 exit_editor_mode=Exit editor mode
 
@@ -87,9 +97,9 @@ lmao=lmao
 none=None
 
 show_console=Show console
-
 dev_mode=Dev mode
-
+authorize_windows_firewall=Authorize WebDeck via Windows Firewall
+automatic_firewall_bypass=Automatic firewall bypass at startup
 
 random_bg_menu_title=Random backgrounds list
 
