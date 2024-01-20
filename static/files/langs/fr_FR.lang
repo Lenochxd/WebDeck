@@ -1,4 +1,10 @@
-// Errors
+lang = French
+lang_alt = fr
+credits = Lenoch
+
+
+// -- Errors --
+server_disconnected=Reconnexion
 failed=Échec
 error=Erreur
 error_occurred=Une erreur s'est produite
@@ -11,6 +17,8 @@ vlc_not_installed_error=VLC n'est pas installé !
 mp3_loading_error=Erreur lors du chargement du fichier MP3 nommé.
 
 obs_failed_connection_error=Échec de la connexion à l'obs.
+obs_error_10061=Le serveur websockets d'OBS est introuvable. (WinError 10061)
+obs_error_incorrect_password=Le mot de passe est peut-être incorrect.
 obs_already_recording=OBS est déjà en train d'enregistrer.
 obs_already_streaming=OBS est déjà en streaming.
 obs_already_vcam=La caméra virtuelle est déjà démarrée.
@@ -19,6 +27,9 @@ obs_not_streaming=OBS n'est pas en streaming.
 obs_no_vcam=La caméra virtuelle est déjà arrêtée.
 obs_no_recording_can_be_paused=Aucun enregistrement ne peut être mis en pause.
 obs_no_recording_is_paused=Aucun enregistrement n'est en pause.
+
+spotify_apply_volume_error=Erreur, impossible d'appliquer le volume
+spotify_volume_prenium_error=Erreur, impossible d'appliquer le volume car Spotify Prenium est requis
 
 
 // Success
@@ -87,9 +98,9 @@ lmao=?? ptdrr
 none=Aucun
 
 show_console=Afficher la console
-
 dev_mode=Mode développeur
-
+authorize_windows_firewall=Autoriser WebDeck via le pare feu windows
+automatic_firewall_bypass=Contournement automatique du pare-feu au démarrage
 
 random_bg_menu_title=Liste d'arrière-plans aléatoires
 
