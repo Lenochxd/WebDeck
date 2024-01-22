@@ -1,7 +1,16 @@
-lang = English
-lang_alt = en
-credits = Lenoch
+# en_US.lang file written by Lenoch, feel free to make a PR for any mistakes
+# https://github.com/LeLenoch/WebDeck/pulls
+# or just tell us on discord: https://discord.gg/tUPsYHAGfm
 
+lang_name=English
+lang_short=en
+credits=Lenoch
+
+// -- Tray icon --
+
+qr_code=QR Code
+open_config=Open Config
+exit=Quit
 
 // -- Errors --
 server_disconnected=Server Disconnected
@@ -31,8 +40,23 @@ obs_no_recording_is_paused=No recording is paused.
 spotify_apply_volume_error=Error, unable to apply volume
 spotify_volume_prenium_error=Error, unable to apply volume because Spotify Prenium is required
 
-// Success
+
+// -- Success messages --
 downloaded_successfully=File downloaded successfully
+
+
+// -- Button configuration --
+configure_your_button=Configure your button
+
+image=Image
+image_size=Image Size
+background_color=Background Color
+background_color_hex=Background Color (HEX)
+button_title=Button Title
+edit_command=Command (experimental)
+
+select_your_file=Select your file
+no_file_chosen=No file chosen
 
 
 // -- Editor --
@@ -58,6 +82,7 @@ auto_updates=Auto updates
 soundboard=Soundboard
 input_device=Input device
 output_device=Output device (vbcable)
+toggle_soundboard=Soundboard enabled
 ear_soundboard=Ear Soundboard
 
 spotify_api=Spotify API
@@ -89,7 +114,7 @@ experimental=Experimental
 
 usage_btn_reload_time=Usage buttons reload time (ms)
 
-open_settings_in_default_browser=Open settings in default browser
+open_settings_in_integrated_browser=Open settings in a dedicated browser
 
 gpu_usage_method=GPU usage method (if the gpu usage does not show)
 doesnt_work=doesn't work
@@ -103,7 +128,7 @@ automatic_firewall_bypass=Automatic firewall bypass at startup
 
 random_bg_menu_title=Random backgrounds list
 
-background_color=Background Color
+wallpaper_color=Background Color
 add_background_color=Add a color backgroud
 or=or
 
