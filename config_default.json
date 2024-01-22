@@ -8,14 +8,16 @@
         "ear-soundboard": "true",
         "gpu_method": "nvidia (pynvml)",
         "show-console": "false",
-        "open-settings-in-browser": "true",
+        "open-settings-in-integrated-browser": "false",
         "data-transfer-method": "http",
+        "automatic-firewall-bypass": "false",
         "spotify-api": {
             "CLIENT_ID": "",
             "CLIENT_SECRET": "",
             "USERNAME": ""
         },
         "soundboard": {
+            "enabled": "false",
             "mic_input_device": "",
             "vbcable": "cable input"
         },
