@@ -1239,18 +1239,18 @@
       "args": [],
       "name": {
         "en": "Clear clipboard",
-        "fr": "Supprimer le presse-papier"
+        "fr": "Vider le presse-papier"
       },
       "description": {
         "en": "",
-        "fr": "Supprime l'historique presse-papier"
+        "fr": "Vide presse-papier"
       },
       "style": {
         "image": "clipboard-clear.png",
         "image_size": "75%",
         "name": {
           "en": "Clear clipboard",
-          "fr": "Supprime tout le presse-papier"
+          "fr": "Vider le presse-papier"
         }
       }
     }
