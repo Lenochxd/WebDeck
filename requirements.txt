@@ -26,6 +26,7 @@ simple-websocket
 deepdiff==6.3.0
 pystray
 tk
+easygui
 qrcode
 pywebview
 cx_Freeze
