@@ -9,10 +9,9 @@ Le WebDeck est une application qui permet à l'utilisateur de contrôler son ord
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
   [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
   [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/stargazers)
-  [![GitHub watchers](https://img.shields.io/github/watchers/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/watchers)
   [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
   [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/issues)
-  [![Discord](https://discordapp.com/api/guilds/391919052563546112/widget.png?style=shield)](https://discord.gg/tUPsYHAGfm)
+  [![Discord](https://img.shields.io/discord/391919052563546112?style=flat&logo=Discord&logoColor=fff&label=Discord&color=5e6ae8&link=https%3A%2F%2Fdiscord.gg%2FtUPsYHAGfm)](https://discord.gg/tUPsYHAGfm)
 </div>
 
 
@@ -49,35 +48,35 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
   <tr>
     <td align="center">
       <a href="https://twitter.com/Nico_Sinban">
-        <img src="https://cdn.discordapp.com/avatars/260325467406598144/a_13aa90e91c3dd999c74c02a2bbbf1922.png" alt="Nico Sinban" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://cdn.discordapp.com/avatars/260325467406598144/a_13aa90e91c3dd999c74c02a2bbbf1922.png" alt="CONTRIBUTEUR-Nico Sinban" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Nico Sinban
       </a>
     </td>
     <td align="center">
       <a href="https://twitter.com/ZeyaTsu">
-        <img src="https://pbs.twimg.com/profile_images/1571127084449136641/NKWj3-CK_400x400.jpg" alt="ZeyaTsu" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://pbs.twimg.com/profile_images/1571127084449136641/NKWj3-CK_400x400.jpg" alt="CONTRIBUTEUR-ZeyaTsu" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         ZeyaTsu
       </a>
     </td>
     <td align="center">
       <a href="https://twitter.com/pepijaaj">
-        <img src="https://pbs.twimg.com/profile_images/1623676018136342530/A3-lR6fP_400x400.jpg" alt="pepijaaj" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://pbs.twimg.com/profile_images/1623676018136342530/A3-lR6fP_400x400.jpg" alt="CONTRIBUTEUR-pepijaaj" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Pepijaaj
       </a>
     </td>
     <td align="center">
       <a href="https://twitter.com/HLeheurteur">
-        <img src="https://images-ext-2.discordapp.net/external/Zpj31ZXa_MQ_UQzJleHXayFMXljDQzGknDVE63-4Ow4/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/513036764286550039/135b087469229643d6f409885824c033.png" alt="CONTRIBUTEUR2" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://images-ext-2.discordapp.net/external/Zpj31ZXa_MQ_UQzJleHXayFMXljDQzGknDVE63-4Ow4/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/513036764286550039/135b087469229643d6f409885824c033.png" alt="CONTRIBUTEUR-Horizuwu" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Horizuwu
       </a>
     </td>
     <td align="center">
       <a href="https://twitter.com/LenochJ">
-        <img src="https://cdn.discordapp.com/avatars/390265556357611521/205d253b7e742b8f70174fdac8ca701d.png" alt="CONTRIBUTEUR2" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://cdn.discordapp.com/avatars/390265556357611521/205d253b7e742b8f70174fdac8ca701d.png" alt="CONTRIBUTEUR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Lenoch
       </a>
@@ -101,13 +100,20 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
     </td>
   </tr>
 </table>
+
+
+### 🙏 Sponsors
+
+<a href="https://twitter.com/mady2ouf" title="mady2ouf">
+  <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+
 <br>
 
-## 🙏 Faire un don
+Si vous appréciez webdeck, vous pouvez envisager de [soutenir le projet](https://ko-fi.com/lenoch) ! ♥
 
-Si vous appréciez le projet, envisagez de [m'offrir un café](https://ko-fi.com/lenoch) ! ♥
 
----
+# ⚠️ Problèmes
 
 WebDeck est un projet en constante évolution, et nous apprécions vos contributions pour l'améliorer davantage. Si vous rencontrez des problèmes, n'hésitez pas à [ouvrir un problème (issue)](https://github.com/LeLenoch/WebDeck/issues) sur GitHub, soumettre une demande d'extraction avec vos améliorations, ou si vous n'êtes pas un nerd, vous pouvez aussi me contacter ailleurs:
 
