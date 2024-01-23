@@ -35,6 +35,9 @@ body {
 
 #loading-screen {
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 9999;
   top: 0;
   left: 0;
@@ -43,7 +46,6 @@ body {
   background-color: rgb(20,20,20);
   color: #fbfbfd;
   text-align: center;
-  padding-top: 30vh;
   font-size: 3rem;
   opacity: 1;
   transition: opacity 0.5s ease-out;
@@ -52,10 +54,11 @@ body {
   opacity: 0;
   pointer-events: none;
 }
-#loading-screen::before {
-  /* preload checked.svg */
-  content: url(/static/files/images/checked.svg);
-  opacity: 0;
+#loading-screen.transparent {
+  background-color: rgb(0 0 0 / 70%);
+}
+#server-disconnected {
+  font-size: xx-large;
 }
 
 
@@ -557,7 +560,7 @@ div.fakeform-container {
   margin-bottom: 10;
   margin-right: 20;
   width: fit-content;
-  background-size: 500%;
+  background-size: 700%;
   background-position: 25% 93%;
 }
 div.fakeform-container.black-theme {
@@ -569,8 +572,10 @@ div.fakeform-container.black-theme {
   display: flex;
   justify-content: right;
   align-items: flex-start;
-  margin-bottom: 23.5px;
   cursor: pointer;
+  padding: 15px;
+  margin: -15px;
+  margin-bottom: 0;
 }
 .modal-close:hover,
 .modal-close:focus,
@@ -852,19 +857,21 @@ div.swapMode-open-folder {
   font-family: system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 10px;
   font-weight: 600;
+  text-decoration: none;
+  text-align: center;
   line-height: 1.25;
 
   min-height: 26px;
   padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
   position: absolute;
   z-index: 1;
-  text-decoration: none;
   transition: all 250ms;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: fill;
   vertical-align: baseline;
-  width: 26px;
+  width: 88px;
   margin-left: 55px;
   margin-top: 65px;
 }
@@ -1107,6 +1114,7 @@ svg.editbutton-config-modal.black-theme {
 div.setting > p {
   display: block;
   margin-bottom: 5px;
+  text-align: left;
   font-weight: bold;
   font-size: 16;
 }
