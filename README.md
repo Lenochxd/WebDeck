@@ -1,25 +1,25 @@
-[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/LeLenoch/WebDeck/blob/master/README-fr.md)
+[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/README-fr.md)
 
 # WebDeck
 
 The WebDeck is a Flask application that allows users to control their computer remotely from any device with a browser and a touchscreen. Unlike Elgato's StreamDeck, which requires physical equipment, WebDeck uses a Flask application that the user hosts on their computer.
 
 <div align="center">
-  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="WebDeck banner">
-  <img src="https://github.com/LeLenoch/WebDeck/assets/101269524/c32cce97-bef4-418a-872e-8ceec3f1df79" alt="WebDeck example image" width="55%" height="55%">
+  <img src="https://github.com/Lenochxd/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="WebDeck banner">
+  <img src="https://github.com/Lenochxd/WebDeck/assets/101269524/c32cce97-bef4-418a-872e-8ceec3f1df79" alt="WebDeck example image" width="55%" height="55%">
   
-  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
-  [![GitHub downloads](https://img.shields.io/github/downloads/LeLenoch/WebDeck/total.svg?style=flat)](https://github.com/LeLenoch/WebDeck/releases)
-  [![GitHub stars](https://img.shields.io/github/stars/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/stargazers)
-  [![CodeFactor](https://www.codefactor.io/repository/github/LeLenoch/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/LeLenoch/WebDeck)
-  [![GitHub issues](https://img.shields.io/github/issues/LeLenoch/WebDeck.svg?style=flat)](https://github.com/LeLenoch/WebDeck/issues)
+  [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
+  [![GitHub downloads](https://img.shields.io/github/downloads/Lenochxd/WebDeck/total.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
+  [![GitHub stars](https://img.shields.io/github/stars/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/stargazers)
+  [![CodeFactor](https://www.codefactor.io/repository/github/Lenochxd/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/Lenochxd/WebDeck)
+  [![GitHub issues](https://img.shields.io/github/issues/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/issues)
   [![Discord](https://img.shields.io/discord/391919052563546112?style=flat&logo=Discord&logoColor=fff&label=Discord&color=5e6ae8&link=https%3A%2F%2Fdiscord.gg%2FtUPsYHAGfm)](https://discord.gg/tUPsYHAGfm)
 </div>
 
 
 ## 🖥️🚀 Installation
 
-1. Download the latest version of WebDeck from the [Releases](https://github.com/LeLenoch/WebDeck/releases) section on GitHub.
+1. Download the latest version of WebDeck from the [Releases](https://github.com/Lenochxd/WebDeck/releases) section on GitHub.
 
 2. Extract the contents of `WebDeck-win-amd64-portable.zip` to the location of your choice on your computer.
 
@@ -30,7 +30,7 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 ## 📋 Frequently Asked Questions (FAQ)
 
-Before asking questions, please check our [FAQ](https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
+Before asking questions, please check our [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
 
 If your question is not addressed in the FAQ, feel free to ask us on our [Discord server](https://discord.gg/tUPsYHAGfm).
 
@@ -117,7 +117,7 @@ If you appreciate the project, consider [buying us a coffee](https://ko-fi.com/l
 
 # ⚠️ Issues
 
-WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/LeLenoch/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
+WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
 - Discord: Lenoch
 - Discord Server: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
@@ -128,4 +128,4 @@ WebDeck is an ever-evolving project, and we appreciate your contributions to fur
 
 ---
 
-[![wakatime](https://wakatime.com/badge/github/LeLenoch/WebDeck.svg)](https://wakatime.com/badge/github/LeLenoch/WebDeck) : (only since July 3rd, 2023, started on December 16th, 2022)
+[![wakatime](https://wakatime.com/badge/github/Lenochxd/WebDeck.svg)](https://wakatime.com/badge/github/Lenochxd/WebDeck) : (only since July 3rd, 2023, started on December 16th, 2022)
