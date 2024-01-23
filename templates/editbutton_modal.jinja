@@ -2,11 +2,7 @@
   <div class="editbutton-modal-content {{black_theme}}">
 
     <div class="editbutton-modal-header bold edit-modal-container-{{ edit_modal_ID }}">
-      {% if command_name == None %}
-        <h1 class="editbutton-modal">Configure your button</h1>
-      {% else %}
-        <h1 class="editbutton-modal">Configure your button: {{command_name}}</h1>
-      {% endif %}
+      <h1 class="editbutton-modal"> {{text['configure_your_button']}} </h1>
       <div class="editbutton-modal-close">
         <svg class="editbutton-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -76,8 +72,12 @@
                         {% if imagelink.endswith('.svg') %}
                           {{ open(imagelink).read().replace('<svg','<svg id="button-image_' + edit_modal_ID + '" style="width:' + str(112*(int(button_settings["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(button_settings["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
                         {% else %}
+                          {% set image_size = '70%' %}
+                          {% if button_settings['image_size'] %}
+                            {% set image_size = button_settings['image_size'] %}
+                          {% endif %}
                           <img id="button-image_{{edit_modal_ID}}" src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
-                            width: {{ 112*(int(button_settings['image_size'].replace('%', '')) /100) + 3}}px;
+                            width: {{ 112*(int(image_size.replace('%', '')) /100) + 3}}px;
                             {{fill}}"
                           >
                         {% endif %}
@@ -95,8 +95,8 @@
                       {% if "name" in button_settings.keys() and not button_settings['name'].strip() == "" %}
                         {% if button_settings["name"] is string %}
                           {% set button_name = button_settings["name"] %}
-                        {% elif button_settings["name"][config.settings.language] %}
-                          {% set button_name = button_settings["name"][config.settings.language] %}
+                        {% elif button_settings["name"][language] %}
+                          {% set button_name = button_settings["name"][language] %}
                         {% elif button_settings["name"]["en"] %}
                           {% set button_name = button_settings["name"]["en"] %}
                         {% elif button_settings["name"][0] %}
@@ -105,8 +105,8 @@
                       {% else %}
                         {% if command_value["style"]["name"] is string %}
                           {% set button_name = command_value["style"]["name"] %}
-                        {% elif command_value["style"]["name"][config.settings.language] %}
-                          {% set button_name = command_value["style"]["name"][config.settings.language] %}
+                        {% elif command_value["style"]["name"][language] %}
+                          {% set button_name = command_value["style"]["name"][language] %}
                         {% elif command_value["style"]["name"]["en"] %}
                           {% set button_name = command_value["style"]["name"]["en"] %}
                         {% elif command_value["style"]["name"][0] %}
@@ -132,7 +132,7 @@
             </div>
             {# edit le style #}
             <div class="inputs_container">
-              <label for="image-input_{{edit_modal_ID}}">Image:</label>
+              <label for="image-input_{{edit_modal_ID}}"> {{text['image']}}: </label>
               <input type="file" id="image-input_{{edit_modal_ID}}" class="{{black_theme}}">
               
               <div class="slider-container">
@@ -140,13 +140,13 @@
                 {% if button_settings['image_size'] and not button_settings['image_size'].strip() == '' %}
                   {% set default_size = button_settings['image_size'].strip().replace('%','') %}
                 {% endif %}
-                <label for="image-size-slider_{{edit_modal_ID}}">Image Size:</label>
+                <label for="image-size-slider_{{edit_modal_ID}}"> {{text['image_size']}}: </label>
                 <input type="range" id="image-size-slider_{{edit_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="{{default_size}}" step="1">
                 <input type="number" id="image-size-value_{{edit_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="{{default_size}}">
                 %
               </div>
               
-              <label for="background-color-input_{{edit_modal_ID}}">Background Color:</label>
+              <label for="background-color-input_{{edit_modal_ID}}"> {{text['background_color']}}: </label>
               <div class="background-color-input-container">
                 {% set default_bgcolor = '' %}
                 {% if button_settings['background-color'] and not button_settings['background-color'].strip() == '' %}
@@ -157,10 +157,10 @@
                   {% endif %}
                 {% endif %}
                   <input type="color" class="background-color-input {{black_theme}}" id="background-color-input_{{edit_modal_ID}}" {{default_bgcolor}}>
-                  <input type="text" id="background-color-hex_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="Background Color (HEX)" {{default_bgcolor}}>
+                  <input type="text" id="background-color-hex_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{text['background_color_hex']}}" {{default_bgcolor}}>
               </div>
               
-              <label for="button-text-input_{{edit_modal_ID}}">Button Title:</label>
+              <label for="button-text-input_{{edit_modal_ID}}"> {{text['button_title']}}: </label>
               {% if "name" in button_settings.keys() and not button_settings['name'].strip() == "" %}
                 <input type="text" id="button-text-input_{{edit_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}" value="{{ button_name }}">
               {% else %}
@@ -173,12 +173,16 @@
             <div class="editorStyle-bar {{black_theme}}"></div>
 
             <div class="arg_container" edit_modal_ID="{{edit_modal_ID}}">
-              <label for="command_{{edit_modal_ID}}">Command (experimental):</label>
-              <input class="{{black_theme}}" type="text" name="" id="command_{{edit_modal_ID}}" value="{{ button_settings['message'] }}">
+              <label for="command_{{edit_modal_ID}}"> {{text['edit_command']}} </label>
+              {% set message = button_settings['message'] %}
+              {% if button_settings['message'].startswith('/folder') %}
+                {% set message = message.replace('"','') %}
+              {% endif %}
+              <input class="{{black_theme}}" type="text" name="" id="command_{{edit_modal_ID}}" value="{{ message }}">
             </div>
           {% endif %}
           
-          <input type="submit" value="Save" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
+          <input type="submit" value="{{text['save']}}" id="{{edit_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
             function updateImageSize(edit_modal_ID, imageSizeSlider, imageSizeValue, imageElement, button) {
                 imageSizeSlider.addEventListener('input', function () {
@@ -278,22 +282,35 @@
                         console.log('Fichier téléchargé avec succès!');
                         var element = document.getElementById('button-image_{{edit_modal_ID}}');
 
+                        var imgElement, image_{{edit_modal_ID}}, imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}};
+                        var filePath = 'static/files/uploaded/' + input_{{edit_modal_ID}}.files[0].name;
+
                         if (element.tagName.toLowerCase() === 'svg') {
-                            var imgElement = document.createElement('img');
-                            imgElement.setAttribute('id', 'button-image_{{edit_modal_ID}}');
-                            imgElement.setAttribute('draggable', false);
-                            imgElement.setAttribute('src', 'static/files/uploaded/' + input_{{edit_modal_ID}}.files[0].name);
-                            imgElement.setAttribute('style', 'width: 87px;');
+                            imgElement = document.createElement('img');
+                            imgElement.id = 'button-image_{{edit_modal_ID}}';
+                            imgElement.draggable = false;
+                            imgElement.src = filePath;
+                            imgElement.style.width = '87px';
                             element.parentNode.replaceChild(imgElement, element);
 
-                            var image_{{edit_modal_ID}} = document.getElementById('button-image_{{edit_modal_ID}}');
-                            var imageSizeSlider_{{edit_modal_ID}} = document.getElementById('image-size-slider_{{edit_modal_ID}}');
-                            var imageSizeValue_{{edit_modal_ID}} = document.getElementById('image-size-value_{{edit_modal_ID}}');
-
-                            updateImageSize('{{edit_modal_ID}}', imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}}, image_{{edit_modal_ID}}, button_{{edit_modal_ID}});
+                            image_{{edit_modal_ID}} = document.getElementById('button-image_{{edit_modal_ID}}');
                         } else {
-                            element.setAttribute('src', 'static/files/uploaded/' + input_{{edit_modal_ID}}.files[0].name);
+                            element.src = filePath;
+                            image_{{edit_modal_ID}} = document.getElementById('button-image_{{edit_modal_ID}}');
                         }
+
+                        imageSizeSlider_{{edit_modal_ID}} = document.getElementById('image-size-slider_{{edit_modal_ID}}');
+                        imageSizeValue_{{edit_modal_ID}} = document.getElementById('image-size-value_{{edit_modal_ID}}');
+
+                        imageSizeSlider_{{edit_modal_ID}}.value = '70';
+                        imageSizeValue_{{edit_modal_ID}}.value = '70';
+                        image_{{edit_modal_ID}}.style.width = '81.4';
+
+                        button_{{edit_modal_ID}}.image_size = '70';
+
+
+                        updateImageSize('{{edit_modal_ID}}', imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}}, image_{{edit_modal_ID}}, button_{{edit_modal_ID}});
+
 
                         button_{{edit_modal_ID}}.image = "**uploaded/" + input_{{edit_modal_ID}}.files[0].name;
                     } else {
