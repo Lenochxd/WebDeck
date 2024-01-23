@@ -2172,7 +2172,7 @@ def fix_firewall_permission():
     ]
     subprocess.run(command)
 
-if config['settings']['automatic-firewall-bypass'] == 'false' and check_firewall_permission() == False:
+if config['settings']['automatic-firewall-bypass'] == 'true' and check_firewall_permission() == False:
     fix_firewall_permission()
 
 app.run(host=local_ip, port=config['url']['port'],

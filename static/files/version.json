@@ -1,6 +1,76 @@
 {
     "versions": [
         {
+            "version": "1.7.2",
+            "release_date": {
+                "day": "23",
+                "month": "01",
+                "year": "2024",
+                "hour": "21",
+                "minute": "55"
+            },
+            "en": {
+                "updates": [
+                    "Introduced a language system with support for French and English. Anyone can now translate to a new language using the .lang files located in static/files/langs/*",
+                    "Added the option to disable the soundboard"
+                ],
+                "minor_enhancements": [
+                    "Added a reconnection screen in case the server becomes inaccessible",
+                    "Added a button in the settings to easily authorize the application through the Windows firewall",
+                    "Increased the hitbox size for closing menus",
+                    "SVG files are now loaded during the loading process, preventing display issues"
+                ],
+                "fixes": [
+                    "Fixed the 'Open' button; it is now possible to create new ones easily",
+                    "Fix: No need to restart the application when changing the OBS password",
+                    "Fix: No need to restart the application when changing the dedicated browser settings",
+                    "Fix: Configuration no longer closes when pressing 'c' or 'm' in a text field",
+                    "Fixed ability to scroll on mobile in button configuration pages",
+                    "Fixed button image resizing not automatically reverting to 70% after changing the image.",
+                    "Fixed the wallpaper size in the button preview in edit mode",
+                    "Fixed the auto-update that performed the update even if disabled",
+                    "Removed the unnecessary PowerShell window at startup",
+                    "Minor bug fixes"
+                ],
+                "nobody_cares": [
+                    "Improved code quality",
+                    "Added the 'Automatic Firewall Bypass on Startup' parameter",
+                    "Fixed the 'Quit' button in the tray when launched from Python",
+                    "Fixed default GPU problem (tried, I can't test it atm since I don't have nvidia graphics card)"
+                ]
+            },
+            "fr": {
+                "updates": [
+                    "Ajout d'un système de langues avec prise en charge du français et de l'anglais. Il est désormais possible à n'importe qui de traduire vers une nouvelle langue en utilisant les fichiers .lang situés dans static/files/langs/*",
+                    "Ajout du paramètre permettant de désactiver la soundboard"
+                ],
+                "minor_enhancements": [
+                    "Ajout d'un écran de reconnexion si jamais le serveur n'est plus accessible",
+                    "Ajout d'un bouton dans les paramètres pour autoriser l'application via le pare-feu windows facilement",
+                    "Augmentation de la taille de la hitbox pour fermer les menus",
+                    "Les fichiers SVG sont maintenant chargés pendant le  chargement, ce qui évite les problèmes d'affichage"
+                ],
+                "fixes": [
+                    "Correction du bouton 'Ouvrir', il est désormais possible d'en créer de nouveaux facilement",
+                    "Correction : Plus besoin de redémarrer l'application lors du changement du mot de passe OBS",
+                    "Correction : Plus besoin de redémarrer l'application lors du changement du paramètre du navigateur dédié",
+                    "Correction : La configuration ne se ferme plus en appuyant sur 'c' ou 'm' dans un champ de texte",
+                    "Correction: Possibilité de scroller sur mobile dans les pages de configuration de boutons",
+                    "Correction du redimensionnement des images des boutons, qui ne revenait pas automatiquement à 70% après avoir modifié l'image.",
+                    "Correction de la taille du fond d'écran dans l'aperçu des boutons en mode édition",
+                    "Correction de l'auto-update qui effectuait la mise à jour même si désactivé",
+                    "Suppression de la fenêtre PowerShell inutile au démarrage",
+                    "Corrections de bugs mineurs"
+                ],
+                "nobody_cares": [
+                    "Qualité du code améliorée",
+                    "Ajout du paramètre 'Contournement automatique du pare-feu au démarrage'",
+                    "Réparation du bouton 'Quitter' dans le tray lorsqu'il est lancé depuis Python",
+                    "Correction d'un problème de GPU par défaut (essayé, je ne peux pas le tester mtn j'ai pas de cg nvidia)"
+                ]
+            }
+        },
+        {
             "version": "1.7.1",
             "release_date": {
                 "day": "16",

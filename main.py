@@ -26,7 +26,7 @@ import webview
 def reload_config():
     port = 5000
     black_theme = "true"
-    open_in_default_browser = "true"
+    open_in_integrated_browser = "true"
     language = "en_US"
 
     if os.path.exists("config.json"):
@@ -34,26 +34,24 @@ def reload_config():
             config = json.load(f)
             settings = config.get('settings', {})
             integrated_browser_key = 'open-settings-in-integrated-browser'
-            if integrated_browser_key not in settings:
-                browser_key = 'open-settings-in-browser'
-
-                if browser_key in config['settings']:
-                    open_in_default_browser = settings.get(browser_key, 'false') == 'true'
-                    settings[integrated_browser_key] = 'false' if open_in_default_browser else 'true'
-                    settings.pop(browser_key, None)
-                else:
-                    config['settings'][integrated_browser_key] = 'false'
+            browser_key = 'open-settings-in-browser'
+            
+            if browser_key in config['settings']:
+                settings[integrated_browser_key] = 'false' if open_in_integrated_browser else 'true'
+                settings.pop(browser_key, None)
                 
-                with open('config.json', 'w', encoding="utf-8") as json_file:
-                    json.dump(config, json_file, indent=4)
+            open_in_integrated_browser = settings.get(integrated_browser_key, 'false') == 'true'
+            print(open_in_integrated_browser)
+            with open('config.json', 'w', encoding="utf-8") as json_file:
+                json.dump(config, json_file, indent=4)
 
             port = config['url']['port']
             black_theme = config['front']['black-theme']
             language = config['settings']['language']
 
-    return port, black_theme, language, open_in_default_browser
+    return port, black_theme, language, open_in_integrated_browser
 
-port, black_theme, language, open_in_default_browser = reload_config()
+port, black_theme, language, open_in_integrated_browser = reload_config()
 
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
@@ -186,16 +184,16 @@ if if_webdeck == False:
     local_ip = get_local_ip()
 
     def open_config():
-        port, black_theme, language, open_in_default_browser = reload_config()
-        if open_in_default_browser.lower() == 'true':
-            webbrowser.open(f"http://{local_ip}:{port}?config=show")
-        else:
+        port, black_theme, language, open_in_integrated_browser = reload_config()
+        if open_in_integrated_browser == True:
             webview.create_window('WebDeck Config', url=f'http://{local_ip}:{port}?config=show', background_color='#141414')
             webview.start()
             foreground_window = win32gui.GetForegroundWindow()
             window_title = win32gui.GetWindowText(foreground_window)
             if "webdeck" in window_title.lower():
                 win32gui.ShowWindow(foreground_window, win32con.SW_MAXIMIZE)
+        else:
+            webbrowser.open(f"http://{local_ip}:{port}?config=show")
 
     def close_window(event=None):
         global window
