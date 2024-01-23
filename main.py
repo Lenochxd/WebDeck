@@ -23,23 +23,37 @@ from tkinter import PhotoImage
 from io import BytesIO
 import webview
 
-if not os.path.exists("config.json"):
+def reload_config():
     port = 5000
     black_theme = "true"
-    open_browser = "true"
-else:
-    with open('config.json', encoding="utf-8") as f:
-        config = json.load(f)
-        if 'open-settings-in-browser' not in config['settings']:
-            config['settings']['open-settings-in-browser'] = 'true'
-            with open('config.json', 'w', encoding="utf-8") as json_file:
-                json.dump(config, json_file, indent=4)
-            open_browser = 'true'
-        else:
-            open_browser = config['settings']['open-settings-in-browser']
-        port = config['url']['port']
-        black_theme = config['front']['black-theme']
-        del config
+    open_in_default_browser = "true"
+    language = "en_US"
+
+    if os.path.exists("config.json"):
+        with open('config.json', encoding="utf-8") as f:
+            config = json.load(f)
+            settings = config.get('settings', {})
+            integrated_browser_key = 'open-settings-in-integrated-browser'
+            if integrated_browser_key not in settings:
+                browser_key = 'open-settings-in-browser'
+
+                if browser_key in config['settings']:
+                    open_in_default_browser = settings.get(browser_key, 'false') == 'true'
+                    settings[integrated_browser_key] = 'false' if open_in_default_browser else 'true'
+                    settings.pop(browser_key, None)
+                else:
+                    config['settings'][integrated_browser_key] = 'false'
+                
+                with open('config.json', 'w', encoding="utf-8") as json_file:
+                    json.dump(config, json_file, indent=4)
+
+            port = config['url']['port']
+            black_theme = config['front']['black-theme']
+            language = config['settings']['language']
+
+    return port, black_theme, language, open_in_default_browser
+
+port, black_theme, language, open_in_default_browser = reload_config()
 
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
@@ -94,8 +108,29 @@ if if_webdeck == False:
     else:
         subprocess.Popen('python main_server.py', shell=True)
         
-    
-    def quit_program():
+    def load_lang_file(lang):
+        lang_dictionary = {}
+        lang_path = f"static/files/langs/{lang}.lang"
+        if not os.path.isfile(f"static/files/langs/{lang}.lang"):
+            for root, dirs, files in os.walk('static/files/langs'):
+                for file in files:
+                    if file.endswith('.lang') and file.startswith(lang):
+                        lang_path = f"static/files/langs/{file}"
+                        
+        with open(lang_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            for line in lines:
+                if line.replace(' ', '').replace('\n','') != '' and not line.startswith('//') and not line.startswith('#'):
+                    try:
+                        key, value = line.strip().split('=')
+                        lang_dictionary[key] = value.strip()
+                    except:
+                        print(line)
+        return lang_dictionary
+
+    text = load_lang_file(language)
+
+    def exit_program():
         global icon, window
 
         wmi = win32com.client.GetObject("winmgmts:")
@@ -113,7 +148,7 @@ if if_webdeck == False:
                 subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
             except Exception as e:
                 print(f"Failed to terminate process {process_name}: {e}")
-                
+
         for process in processes:
             if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
                 print(f"Stopping process: {process.Properties_('Name').Value}")
@@ -126,6 +161,11 @@ if if_webdeck == False:
                 else:
                     print("Failed to terminate process.")
 
+        if not getattr(sys, 'frozen', False):
+            try:
+                subprocess.Popen("taskkill /f /IM python.exe", shell=True)
+            except Exception as e:
+                print(f"Failed to terminate process {process_name}: {e}")
 
         close_window()
         icon.stop()  # Arrêter l'icône Tray
@@ -146,7 +186,8 @@ if if_webdeck == False:
     local_ip = get_local_ip()
 
     def open_config():
-        if open_browser.lower() == 'true':
+        port, black_theme, language, open_in_default_browser = reload_config()
+        if open_in_default_browser.lower() == 'true':
             webbrowser.open(f"http://{local_ip}:{port}?config=show")
         else:
             webview.create_window('WebDeck Config', url=f'http://{local_ip}:{port}?config=show', background_color='#141414')
@@ -158,9 +199,9 @@ if if_webdeck == False:
 
     def close_window(event=None):
         global window
-        window.destroy()
-        del window
-        window = None
+        if window:
+            window.destroy()
+            window = None
     
     url = f"http://{local_ip}:{port}"
     qr = qrcode.QRCode(
@@ -187,7 +228,7 @@ if if_webdeck == False:
         global window
         if window is None:
             window = tk.Tk()
-            window.title("QR Code")
+            window.title(text['qr_code'])
             
             image_tk = ImageTk.PhotoImage(image=qr_pil_image)
             
@@ -216,9 +257,9 @@ if if_webdeck == False:
         image = Image.open("static/files/icon.ico")
 
         menu = (
-            item('QR Code', lambda: show_qrcode(), default=True),
-            item('Open config', lambda: open_config()),
-            item('Quit', lambda: quit_program()),
+            item(text['qr_code'], lambda: show_qrcode(), default=True),
+            item(text['open_config'], lambda: open_config()),
+            item(text['exit'], lambda: exit_program()),
         )
 
         # Créer l'icône Tray
