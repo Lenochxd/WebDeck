@@ -74,7 +74,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             backgrounds_array.push(colorHex);
-            divElement.textContent = "Background color : " + colorHex;
+            
+            
+            var container = document.getElementById('choose-backgrounds-container');
+            var divs = container.getElementsByTagName('div');
+            var background_color_text = divs[0].getAttribute("background_color_text");
+            
+            divElement.textContent = background_color_text + " : " + colorHex;
             divElement.setAttribute("background", colorHex);
             
             var chooseBackgroundsContainer = document.getElementById("choose-backgrounds-container");
