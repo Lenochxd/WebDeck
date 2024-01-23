@@ -37,6 +37,8 @@
     <script src="/static/files/upload_file.js"></script>
     {# <script src="/static/files/buttonclick.js"></script> #}
 
+    {% set language = text['lang_short'] %}
+
     {% set black_theme = '' %}
     {% if config['front']['black-theme'] == 'true' %}
       {% set black_theme = ' black-theme' %}
@@ -57,13 +59,24 @@
   </head>
   <body>
     <div id="loading-screen">
-      {# <p>Chargement...</p> #}
-      <div class="loadingspinner">
-        <div id="square1"></div>
-        <div id="square2"></div>
-        <div id="square3"></div>
-        <div id="square4"></div>
-        <div id="square5"></div>
+      <div>
+        <p id="server-disconnected" class="invisible">
+          {{text['server_disconnected']}}...
+        </p>
+
+        <div class="loadingspinner">
+          <div id="square1"></div>
+          <div id="square2"></div>
+          <div id="square3"></div>
+          <div id="square4"></div>
+          <div id="square5"></div>
+        </div>
+      </div>
+
+      <div class="invisible">
+        {% for svg in svgs %}
+          <img src="{{svg}}"> 
+        {% endfor %}
       </div>
     </div>
 
@@ -100,10 +113,7 @@
           }
           div.fakeform-container {
             background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
-            background-size: cover;
-            background-position: center;
             background-color: transparent;
-            background-position: center;
           }
           @media (orientation: portrait) {
             html::before {
@@ -150,10 +160,10 @@
     </style>
 
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
-      Open folder: 
+      {{text['open_folder']}}: 
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% set folder_id = folder_id.replace('"', '&quot;') %}
-        <button class="button EditorButtons-Folder" onclick="folder('{{ folder_id }}')">
+        <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)">
           {{ folder_id }}
         </button>
       {% endfor %}
@@ -242,9 +252,9 @@
                 {% endif %}
 
                 {% if button_config["message"] and button_config["message"].startswith("/folder") %}
-                  {% set onclick = "onclick=\"folder('" + button_config['message'].replace('/folder ', '') + "')\" onclickhandler=\"folder('" + button_config['message'].replace('/folder ', '') + "')\"" %}
+                  {% set onclick = "onclick=\"folder(`" + button_config['message'].replace('/folder ', '').replace('"','') + "`)\" onclickhandler=\"folder(`" + button_config['message'].replace('/folder ', '').replace('"','') + "`)\"" %}
                   <div class="swapMode-open-folder" {{ onclick }} style="display: none;">
-                    Open Folder
+                    {{text['open_folder']}}
                   </div>
                 {% endif %}
 
@@ -258,7 +268,7 @@
                   {% endif %}
                 {% if config["front"]["buttons"][folder_id][button_id]["image"] == "" or not config["front"]["buttons"][folder_id][button_id]["image"] %}
                 
-                  <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
+                  <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; max-height: 89.6px;">
                     <!--|||||||||||||||||||||||-->
                     {% if button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[1].strip() %}
@@ -278,26 +288,30 @@
                   </button>
                 {% else %}
                   {% if config["front"]["buttons"][folder_id][button_id]["image"].startswith('http') %}
-                    {% set imagelink = config["front"]["buttons"][folder_id][button_id]["image"] %}
+                    {% set imagepath = config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% elif ':' in config["front"]["buttons"][folder_id][button_id]["image"] %}
-                    {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
+                    {% set imagepath = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
                   {% elif config["front"]["buttons"][folder_id][button_id]["image"].startswith('**uploaded/') %}
-                    {% set imagelink = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                    {% set imagepath = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                   {% else %}
-                    {% set imagelink = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
+                    {% set imagepath = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% endif %}
                   
-                  <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
-                      {% if isfile(imagelink) %}
-                        {% if imagelink.endswith('.svg') %}
-                          {{ open(imagelink).read().replace('<svg ','<svg style="width:' + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
-                        {% else %}
-                          <img src="{{ imagelink }}" draggable="false" alt="{{ imagelink }}" style="
-                            width: {{ 112 * (int(config["front"]["buttons"][folder_id][button_id]["image_size"].replace("%", "")) / 100) + 3 }}px;
-                            {{fill}}"
-                          >
-                        {% endif %}
+                  <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; max-height: 89.6px;">
+                    {% set image_size = '70%' %}
+                    {% if config["front"]["buttons"][folder_id][button_id]["image_size"] %}
+                      {% set image_size = config["front"]["buttons"][folder_id][button_id]["image_size"] %}
+                    {% endif %}
+                    {% if isfile(imagepath) %}
+                      {% if imagepath.endswith('.svg') %}
+                        {{ open(imagepath).read().replace('<svg ','<svg style="width:' + str(112*(int(image_size.replace("%", "")) /100) + 3) + 'px; height:'  + str(112*(int(image_size.replace("%", "")) /100) + 3) + '; ' + fill + '" ') }}
+                      {% else %}
+                        <img src="{{ imagepath }}" draggable="false" alt="{{ imagepath }}" style="
+                          width: {{ 112 * (int(image_size.replace("%", "")) / 100) + 3 }}px;
+                          {{fill}}"
+                        >
                       {% endif %}
+                    {% endif %}
                     
                     <!--|||||||||||||||||||||||-->
                     {% if button_config["message"] and button_config['message'].startswith('/usage') %}
@@ -364,13 +378,13 @@
     <div id="EditorButtons" style="display: none;">
       <button class="button" id="SaveExitEditorButton">
         <img src="static/files/images/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
-        [E] Save and exit
+        [E] {{text['save_and_exit']}}
       </button>
-      <button class="button" id="exitEditorButton">[Q] Quit without saving</button>
+      <button class="button" id="exitEditorButton"> [Q] {{text['quit_without_saving']}} </button>
       
       <button class="button" id="swapEditorButton">
         <img src="static/files/images/swap.png" width="20" height="20" id="EditorButtonLogo">
-        [S] Swap 2 Buttons
+        [S] {{text['swap_buttons']}}
       </button>
     </div>
 
@@ -379,7 +393,7 @@
       <div class="modal-content {{black_theme}}">
 
         <div class="modal-header bold">
-          <h1 class="config-modal">Configuration</h1>
+          <h1 class="config-modal"> {{text['configuration']}} </h1>
           <div class="modal-close">
             <svg class="config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -394,17 +408,17 @@
           <div class="config-container choose-background {{black_theme}}" id="choose-background" style="display: none;">
             <
             <button type="button" id="setting-background-back" class="{{black_theme}}">
-              Back
+              {{text['back']}}
             </button>
-            <h1 class="config-title">Random backgrounds list</h1>
+            <h1 class="config-title"> {{text['random_bg_menu_title']}} </h1>
             <div class="background-color-input-container">
               <input type="color" class="background-color-input {{black_theme}}" id="background-color-input">
-              <input type="text" id="background-color-hex" class="background-color-setting {{black_theme}}" placeholder="Background Color (HEX)">
+              <input type="text" id="background-color-hex" class="background-color-setting {{black_theme}}" placeholder="{{text['wallpaper_color']}} (HEX)">
             </div>
 
             <div id="create-bg-choices">
-              <button class="{{black_theme}}" id="create-color-bg">Add a color backgroud</button>
-              or
+              <button class="{{black_theme}}" id="create-color-bg"> {{text['add_background_color']}} </button>
+              {{text['or']}}
               <input type="file" id="create-image-bg" class="{{black_theme}}" accept="image/jpeg, image/png, image/gif">
             </div>
             
@@ -414,8 +428,12 @@
 
               {% for bg in config["front"]["background"] %}
                 {% if bg.replace('//','').startswith('rgb(') or bg.replace('//','').startswith('#') %}
-                  <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{black_theme}}" background="{{bg}}" style="background-color: {{bg.replace('//','')}};">
-                    Background color : {{bg.replace('//','')}}
+                  <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{black_theme}}"
+                    background="{{bg}}" 
+                    background_color_text="{{text['background_color']}}" 
+                    style="background-color: {{bg.replace('//','')}};"
+                  >
+                    {{text['background_color']}} : {{bg.replace('//','')}}
                     <div class="choose-bg-buttons">
 
                       {% if bg.startswith('//') %}
@@ -425,7 +443,7 @@
                       {% endif %}
 
                       <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <title>Remove this background</title>
+                        <title> {{text['remove_background']}} </title>
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
                       </svg>
@@ -443,7 +461,7 @@
                       {% endif %}
                     
                       <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <title>Remove this background</title>
+                        <title> {{text['remove_background']}} </title>
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
                       </svg>
@@ -455,14 +473,23 @@
           </div>
 
           <div class="config-container {{black_theme}}" id="config-container" style="display: block;">
-            <button class="button modal-button" id="editorButton">[Q] Enter editor mode</button>
+            <button class="button modal-button" id="editorButton"> [Q] {{text['enter_editor_mode']}} </button>
             <form id="config-form" class="config-form">
-              <div class="setting-category settings black-theme">
-                <h1 class="config-title">Settings</h1>
+              <div class="setting-category settings {{black_theme}}">
+                <h1 class="config-title"> {{text['settings']}} </h1>
+
+                <div class="setting language">
+                  <label for="language"> {{text['language']}} </label>
+                  <select id="language" name="settings.language">
+                    {% for lang in langs %}
+                      <option value="{{lang}}" {% if config['settings']['language'].lower() == lang.lower() %}selected{% endif %}>{{lang}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
 
                 {% if is_exe == True %}
                   <div class="setting windows-startup">
-                    <p>Start on Windows startup</p>
+                    <p> {{text['config-windows_startup']}} </p>
                     <label for="windows-startup" class="switch">
                       {% if 'windows-startup' in config['settings'].keys() %}
                         <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'].lower() == 'true'%}checked{% endif %}>
@@ -474,7 +501,7 @@
                   </div>
 
                   <div class="setting auto-updates">
-                    <p>Auto updates</p>
+                    <p> {{text['auto_updates']}} </p>
                     <label for="auto-updates" class="switch">
                       {% if 'auto-updates' in config['settings'].keys() %}
                         <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" {% if config['settings']['auto-updates'].lower() == 'true'%}checked{% endif %}>
@@ -485,25 +512,12 @@
                     </label>
                   </div>
                 {% endif %}
-
-                {# <div class="setting language">
-                  <label for="language">Language</label>
-                  <input class="{{black_theme}}" type="text" id="language" name="settings.language" {% if not config['settings']['language'].strip() == ''%}value="{{config['settings']['language']}}"{% endif %}>  
-                </div> #}
-                <div class="setting language">
-                  <label for="language">Language</label>
-                  <select id="language" name="settings.language">
-                    {% for lang in langs %}
-                      <option value="{{lang}}" {% if config['settings']['language'].lower() == lang.lower() %}selected{% endif %}>{{lang}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-
+                
                 <div class="setting soundboard {{black_theme}}">
                   <div class="settings-title-info">
-                    <label for="soundboard" style="margin-top: 3px;">Soundboard</label>
+                    <label for="soundboard" style="margin-top: 3px;"> {{text['soundboard']}} </label>
                     {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard" %}
-                    {% if config.settings.language == "fr" %}
+                    {% if language == "fr" %}
                       {% set soundboard_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-ma-soundboard-" %}
                     {% endif %}
                     <a href="{{soundboard_info}}" target="_blank">
@@ -514,7 +528,7 @@
 
 
                   <div class="setting mic_input_device">
-                    <label for="mic_input_device">Input device</label>
+                    <label for="mic_input_device"> {{text['input_device']}} </label>
                     <select id="mic_input_device" name="settings.soundboard.mic_input_device">
                       {% set audio_devices = select_audio_device() %}
                       {% for device in audio_devices %}
@@ -530,7 +544,7 @@
                   </div>
                     
                   <div class="setting mic_output_device">
-                    <label for="mic_output_device">Output device (vbcable)</label>
+                    <label for="mic_output_device"> {{text['output_device']}} </label>
                     <select id="mic_output_device" name="settings.soundboard.vbcable">
                       {% set audio_devices = select_audio_device('output') %}
                       {% for device in audio_devices %}
@@ -546,9 +560,17 @@
                   </div>
 
                   <div class="setting ear-soundboard">
-                    <p>Ear Soundboard</p>
+                    <p> {{text['ear_soundboard']}} </p>
                     <label for="ear-soundboard" class="switch">
                       <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  
+                  <div class="setting toggle-soundboard">
+                    <p> {{text['toggle_soundboard']}} </p>
+                    <label for="toggle-soundboard" class="switch">
+                      <input class="{{black_theme}}" type="checkbox" id="toggle-soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'].lower() == 'true'%}checked{% endif %}>
                       <span class="slider round"></span>
                     </label>
                   </div>
@@ -556,9 +578,9 @@
 
                 <div class="setting spotify-api">
                   <div class="settings-title-info">
-                    <label for="spotify" style="margin-top: 3px;">Spotify API</label>
+                    <label for="spotify" style="margin-top: 3px;"> {{text['spotify_api']}} </label>
                     {% set spotify_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account" %}
-                    {% if config.settings.language == "fr" %}
+                    {% if text['lang_short'] == "fr" %}
                       {% set spotify_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-connecter-mon-compte-spotify-" %}
                     {% endif %}
                     <a href="{{spotify_info}}" target="_blank">
@@ -569,7 +591,7 @@
 
                   <ul>
                     <li>
-                      <label for="spotify-USERNAME">Username</label>
+                      <label for="spotify-USERNAME"> {{text['username']}} </label>
                       <input class="spotify-setting {{black_theme}}" type="text" class="spotify-setting" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%} value="{{config['settings']['spotify-api']['USERNAME']}}" {% endif %}>
                       
                       <label for="spotify-CLIENT_ID">Client ID</label>
@@ -586,9 +608,9 @@
 
                 <div class="setting obs-ws">
                   <div class="settings-title-info">
-                    <label for="obs" style="margin-top: 3px;">OBS Studio</label>
+                    <label for="obs" style="margin-top: 3px;"> {{text['obs_studio']}} </label>
                     {% set obs_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-obs-studio" %}
-                    {% if config.settings.language == "fr" %}
+                    {% if language == "fr" %}
                       {% set obs_info = "https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-obs-studio-" %}
                     {% endif %}
                     <a href="{{obs_info}}" target="_blank">
@@ -599,13 +621,13 @@
 
                   <ul>
                     <li>
-                      <label for="obs-HOST">Host</label>
+                      <label for="obs-HOST"> {{text['host']}} </label>
                       <input class="obs-setting {{black_theme}}" type="text" class="obs-setting" id="obs-HOST" name="settings.obs.host" {% if not config['settings']['obs']['host'].strip() == ''%} value="{{config['settings']['obs']['host']}}" {% endif %}>
                       
-                      <label for="obs-PORT">Port</label>
+                      <label for="obs-PORT"> {{text['port']}} </label>
                       <input class="obs-setting {{black_theme}}" type="text" id="obs-PORT" name="settings.obs.port" {% if not config['settings']['obs']['port'] == '' %} value="{{config['settings']['obs']['port']}}" {% endif %}>
                       
-                      <label for="obs-PASSWORD">Password</label>
+                      <label for="obs-PASSWORD"> {{text['password']}} </label>
                       <div class="password-container">
                         <input class="obs-setting {{black_theme}}" type="password" id="obs-PASSWORD" name="settings.obs.password" {% if not config['settings']['obs']['password'].strip() == ''%} value="{{config['settings']['obs']['password']}}" {% endif %}>
                         <span id="show-password-obs" class="show-password" onclick="togglePasswordVisibility('obs-PASSWORD', 'show-password-obs')"></span>
@@ -616,21 +638,21 @@
                 
               </div>
               
-              <div class="setting-category visuals black-theme">
-                <h1 class="config-title">Visuals</h1>
+              <div class="setting-category visuals {{black_theme}}">
+                <h1 class="config-title"> {{text['visuals']}} </h1>
 
                 <div class="setting gridsize">
-                  <p>Grid-size</p>
+                  <p> {{text['gridsize']}} </p>
                   <div class="gridsize-container">
                     <div class="gridsize-height">
-                      <label for="gridsize-height">height</label>
+                      <label for="gridsize-height"> {{text['height']}} </label>
                       <input min="1" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                         class="{{black_theme}}" type="number" id="gridsize-height" name="front.height" {% if not config['front']['height'].strip() == ''%}value="{{config['front']['height']}}"{% endif %}>
                     </div>
 
                     <div class="gridsize-width">
-                      <label for="gridsize-width">width</label>
+                      <label for="gridsize-width"> {{text['width']}} </label>
                       <input min="1" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                         class="{{black_theme}}" type="number" id="gridsize-width" name="front.width" {% if not config['front']['width'].strip() == ''%}value="{{config['front']['width']}}"{% endif %}>
@@ -648,15 +670,15 @@
                 </div>
 
                 <div class="setting background">
-                  <label for="setting-background">Background image</label>
+                  <label for="setting-background"> {{text['background_image']}} </label>
                   <button type="button" id="setting-background" class="{{black_theme}}">
-                    Open the backgrounds menu
+                    {{text['open_background_image_menu']}}
                   </button>
                   <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{config["front"]["background"]}}">
                 </div>
 
-                <div class="setting black-theme">
-                  <p>Black theme</p>
+                <div class="setting {{black_theme}}">
+                  <p> {{text['dark_theme']}} </p>
                   <label for="black-theme" class="switch">
                     <input class="{{black_theme}}" type="checkbox" id="black-theme" name="front.black-theme" {% if config['front']['black-theme'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
@@ -665,7 +687,7 @@
                 
                 
                 <div class="setting show-names">
-                  <p>Show button names</p>
+                  <p> {{text['show_btn_names']}} </p>
                   <label for="show-names"  class="switch">
                     <input class="{{black_theme}}" type="checkbox" id="show-names" name="front.show-names" {% if config['front']['show-names'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
@@ -686,11 +708,12 @@
                 </div>
               </div>
 
-              <div class="setting-category experimental black-theme">
-                <h1 class="config-title">Experimental</h1>
+              <div class="setting-category experimental {{black_theme}}">
+                <h1 class="config-title"> {{text['experimental']}} </h1>
+                
                 
                 <div class="setting usage-reload-time">
-                  <label for="usage-reload-time">Usage buttons reload time (ms)</label>
+                  <label for="usage-reload-time"> {{text['usage_btn_reload_time']}} </label>
                   <input required class="{{black_theme}}" type="number" min="0" pattern="[0-9]*"
                     oninput="this.value = this.value.replaceAll(/[^0-9]/g, '');"
                     id="usage-reload-time" name="front.computer-usage-reload-time"
@@ -702,22 +725,22 @@
                   >  
                 </div>
                 
-                <div class="setting open-settings-in-browser">
-                  <p>Open settings in default browser</p>
-                  <label for="open-settings-in-browser" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-browser" name="settings.open-settings-in-browser" {% if config['settings']['open-settings-in-browser'].lower() == 'true'%}checked{% endif %}>
+                <div class="setting open-settings-in-integrated-browser">
+                  <p> {{text['open_settings_in_integrated_browser']}} </p>
+                  <label for="open-settings-in-integrated-browser" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
 
                 <div class="setting gpu_method">
-                  <label for="gpu_method">GPU usage method (if the gpu usage does not show)</label>
+                  <label for="gpu_method"> {{text['gpu_usage_method']}} </label>
                   <select id="gpu_method" name="settings.gpu_method">
                     <option value="nvidia (pynvml)" {% if config['settings']['gpu_method'].lower() == 'nvidia (pynvml)' %}selected{% endif %}>nvidia (pynvml)</option>
                     <option value="nvidia (GPUtil)" {% if config['settings']['gpu_method'].lower() == 'nvidia (gputil)' %}selected{% endif %}>nvidia (GPUtil)</option>
-                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'amd' %}selected{% endif %}>AMD (doesn't work)</option>
-                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel (lmao)</option>
-                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}>None</option>
+                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'amd' %}selected{% endif %}>AMD ({{text['doesnt_work']}})</option>
+                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel ({{text['lmao']}})</option>
+                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}> {{text['none']}} </option>
                   </select>
                 </div>
                 
@@ -730,15 +753,26 @@
                 </div> #}
 
                 <div class="setting show-console">
-                  <p>Show console</p>
+                  <p> {{text['show_console']}} </p>
                   <label for="show-console" class="switch">
                     <input class="{{black_theme}}" type="checkbox" id="show-console" name="settings.show-console" {% if config['settings']['show-console'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
-
+                
+                <div class="setting automatic-firewall-bypass">
+                  <button type="button" onclick="send_data('/bypass-windows-firewall')" class="button" id="authorize-windows-firewall">
+                    {{text['authorize_windows_firewall']}}
+                  </button>
+                  <p> {{text['automatic_firewall_bypass']}} </p>
+                  <label for="automatic-firewall-bypass" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="automatic-firewall-bypass" name="settings.automatic-firewall-bypass" {% if config['settings']['automatic-firewall-bypass'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                
                 <div class="setting dev-mode">
-                  <p>Dev mode</p>
+                  <p> {{text['dev_mode']}} </p>
                   <label for="dev-mode" class="switch">
                     <input class="{{black_theme}}" type="checkbox" id="dev-mode" name="settings.dev-mode" {% if config['settings']['dev-mode'].lower() == 'true'%}checked{% endif %}>
                     <span class="slider round"></span>
@@ -746,7 +780,7 @@
                 </div>
               </div>
               
-              <input type="submit" value="Save" class="modal-button save-config {{black_theme}}">
+              <input type="submit" value="{{text['save']}}" class="modal-button save-config {{black_theme}}">
             </form>
           </div>
           
@@ -777,8 +811,8 @@
                 {% set category_name = category %}
                 {% if category_value['CATEGORY-SETTINGS'] %}
                   {% if category_value['CATEGORY-SETTINGS']["NAME"] %}
-                    {% if category_value['CATEGORY-SETTINGS']["NAME"][config.settings.language] %}
-                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"][config.settings.language] %}
+                    {% if category_value['CATEGORY-SETTINGS']["NAME"][language] %}
+                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"][language] %}
                     {% elif category_value['CATEGORY-SETTINGS']["NAME"]["en"] %}
                       {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"]["en"] %}
                     {% elif category_value['CATEGORY-SETTINGS']["NAME"][0] %}
@@ -797,8 +831,8 @@
                       <div class="dropdown-item-container">
                         {% set command_name = command %}
                         {% if command_value["name"] %}
-                          {% if command_value["name"][config.settings.language] %}
-                            {% set command_name = command_value["name"][config.settings.language] %}
+                          {% if command_value["name"][language] %}
+                            {% set command_name = command_value["name"][language] %}
                           {% elif command_value["name"]["en"] %}
                             {% set command_name = command_value["name"]["en"] %}
                           {% elif command_value["name"][0] %}
@@ -807,8 +841,8 @@
                         {% endif %}
                         {% set command_desc = "" %}
                         {% if command_value["description"] %}
-                          {% if command_value["description"][config.settings.language] %}
-                            {% set command_desc = command_value["description"][config.settings.language] %}
+                          {% if command_value["description"][language] %}
+                            {% set command_desc = command_value["description"][language] %}
                           {% elif command_value["description"]["en"] %}
                             {% set command_desc = command_value["description"]["en"] %}
                           {% elif command_value["description"][0] %}
@@ -834,8 +868,8 @@
                           {# si type = multiple #}
 
                           {% if command_value["name"] %}
-                            {% if command_value["name"][config.settings.language] %}
-                              {% set command = command_value["name"][config.settings.language] %}
+                            {% if command_value["name"][language] %}
+                              {% set command = command_value["name"][language] %}
                             {% elif command_value["name"]["en"] %}
                               {% set command = command_value["name"]["en"] %}
                             {% elif command_value["name"][0] %}
@@ -852,8 +886,8 @@
                                 {# {{ mdebug(command) }} #}
                                 {% set command_name = command %}
                                 {% if command_value["name"] %}
-                                  {% if command_value["name"][config.settings.language] %}
-                                    {% set command_name = command_value["name"][config.settings.language] %}
+                                  {% if command_value["name"][language] %}
+                                    {% set command_name = command_value["name"][language] %}
                                   {% elif command_value["name"]["en"] %}
                                     {% set command_name = command_value["name"]["en"] %}
                                   {% elif command_value["name"][0] %}
@@ -862,8 +896,8 @@
                                 {% endif %}
                                 {% set command_desc = "" %}
                                 {% if command_value["description"] %}
-                                  {% if command_value["description"][config.settings.language] %}
-                                    {% set command_desc = command_value["description"][config.settings.language] %}
+                                  {% if command_value["description"][language] %}
+                                    {% set command_desc = command_value["description"][language] %}
                                   {% elif command_value["description"]["en"] %}
                                     {% set command_desc = command_value["description"]["en"] %}
                                   {% elif command_value["description"][0] %}
@@ -1026,6 +1060,24 @@
         console.log('INFO: ', text);
       }
 
+      function send_data(message) {
+        fetch('/send-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message: message })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success === false) {
+              showError(data.message);
+            } else {
+              console.log(data);
+            }
+          })
+          .catch(error => console.error(error));
+      }
 
       {#
       function loop() {
@@ -1052,6 +1104,7 @@
       }
       setInterval(loop, 5000); #}
 
+      var disconnectCount = 0
 
       var config = {};
       var tempEditorConfig = {};
@@ -1160,6 +1213,11 @@
               })
                 .then(response => response.json())
                 .then(usage_dict => {
+                  if (disconnectCount > 0) {
+                    var loadingScreen = document.getElementById("loading-screen");
+                    loadingScreen.classList.add("hidden");
+                    disconnectCount = 0;
+                  }
                   // console.log(usage_dict);
                   forms.forEach(form => {
                     const divElements = document.querySelectorAll('.usage-value');
@@ -1191,7 +1249,14 @@
                     });
                   });
                 })
-                .catch(error => console.error(error));
+                .catch(function (error) {
+                  disconnectCount ++;
+
+                  if (disconnectCount > 3) {
+                    var loadingScreen = document.getElementById("loading-screen");
+                    loadingScreen.classList.remove("hidden");
+                  }
+                });
             } catch (e) {
               console.log(e.message);
             }
@@ -1504,7 +1569,7 @@
         editorButton.addEventListener('click', function () {
             editorMode = editorMode === 0 ? 1 : 0;
             toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
+            editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
             console.log('La valeur de editorMode a été modifiée :', editorMode);
             if (editorMode === 1) {
                 fetch('/get_config')
@@ -1535,13 +1600,13 @@
               editorMode = 0;
               swapMode = 0;
               showEditorPartially()
-              swapEditorButton.childNodes[1].nodeValue = '[S] Swap 2 Buttons'
+              swapEditorButton.childNodes[1].nodeValue = `[S] {{text["swap_buttons"]}}`
               swapFirstBtn = 0;
               swapSecondBtn = 0;
               swapChanges = []
               console.log(`swapChanges: ${swapChanges}`);
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
+              editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
         });
@@ -1551,7 +1616,7 @@
         exitEditorButton.addEventListener('click', function () {
           editorMode = editorMode === 0 ? 1 : 0;
             toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
+            editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
             console.log('La valeur de editorMode a été modifiée :', editorMode);
             if (editorMode === 1) {
               fetch('/get_config')
@@ -1583,7 +1648,7 @@
               swapEditorButtonFunction()
               editorMode = 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
+              editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
         });
@@ -1594,7 +1659,7 @@
           swapMode = 0;
           showEditorPartially()
           swapEditorButtonFunction()
-          swapEditorButton.childNodes[1].nodeValue = '[S] Swap 2 Buttons'
+          swapEditorButton.childNodes[1].nodeValue = `[S] {{text["swap_buttons"]}}`
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           swapChanges = []
@@ -1647,7 +1712,7 @@
         function swapEditorButtonFunction(event) {
           swapMode = swapMode === 0 ? 1 : 0;
           const swapEditorButton = document.getElementById('swapEditorButton');
-          swapEditorButton.childNodes[1].nodeValue = swapMode === 0 ? '[S] Swap 2 Buttons' : '[S] Stop Swap Mode';
+          swapEditorButton.childNodes[1].nodeValue = swapMode === 0 ? `[S] {{text["swap_buttons"]}}` : `[S] {{text["stop_swap_mode"]}}`;
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           console.log('La valeur de swapMode a été modifiée :', swapMode);
@@ -1655,7 +1720,7 @@
           var checkboxDivs = document.querySelectorAll('div.checkbox');
           var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
           if (editorMode === 1 && swapMode === 1) {
-            swapEditorButton.childNodes[1].nodeValue = '[S] Stop Swap Mode';
+            swapEditorButton.childNodes[1].nodeValue = `[S] {{text["stop_swap_mode"]}}`;
             hideEditorPartially()
             // afficher swapMode-open-folder
             for (var i = 0; i < openFolderDivs.length; i++) {
@@ -1684,7 +1749,7 @@
               }
             }
           } else {
-            swapEditorButton.childNodes[1].nodeValue = '[S] Swap 2 Buttons';
+            swapEditorButton.childNodes[1].nodeValue = `[S] {{text["swap_buttons"]}}`;
             swapMode = 0;
             showEditorPartially()
 
@@ -1847,7 +1912,7 @@
             if (event.key.toLowerCase() === 'q') {
               editorMode = editorMode === 0 ? 1 : 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Quit editor mode';
+              editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
               if (editorMode === 1) {
                 fetch('/get_config')
@@ -1878,7 +1943,7 @@
                 swapEditorButtonFunction();
                 editorMode = 0;
                 toggleEditorMode();
-                editorButton.textContent = editorMode === 0 ? '[Q] Enter editor mode' : '[Q] Exit editor mode';
+                editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
                 console.log('La valeur de editorMode a été modifiée :', editorMode);
               }
             }
@@ -1904,14 +1969,19 @@
             hide_last_modal();
           }
           let modal = document.querySelector('.modal-container');
-          if (event.key.toLowerCase() === 'c' || event.key.toLowerCase() === 'm') {
-            if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0) {
-              if (modal.style.opacity !== '1') {
-                show_modal();
-              } else {
-                hide_modal();
+
+          // Check if focus element is a text field
+          var focusedElement = document.activeElement;
+          if (!(focusedElement.tagName === 'INPUT' || focusedElement.tagName === 'TEXTAREA')) {
+              if (event.key.toLowerCase() === 'c' || event.key.toLowerCase() === 'm') {
+                  if (is_editbutton_modal_opened === 0 && is_addbutton_modal_opened === 0) {
+                      if (modal.style.opacity !== '1') {
+                          show_modal();
+                      } else {
+                          hide_modal();
+                      }
+                  }
               }
-            }
           }
         });
       
@@ -2058,22 +2128,7 @@
                 {% if config['settings']['data-transfer-method'] == 'socket' %}
                   socket.emit('message_from_socket', message);
                 {% else %}
-                  fetch('/send-data', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: message })
-                  })
-                    .then(response => response.json())
-                    .then(data => {
-                      if (data.success === false) {
-                        showError(data.message);
-                      } else {
-                        console.log(data);
-                      }
-                    })
-                    .catch(error => console.error(error));
+                  send_data(message);
                 {% endif %}
               } else if (message.startsWith("/reload") && swapMode !== 1) {
                 console.log('reloading...');
@@ -2536,65 +2591,6 @@
           auto_resize();
         };
 
-        /* Empêcher le défilement */
-        document.addEventListener('touchmove', function(e) {
-          if (!e.target.closest('.modal-content')) {
-            e.preventDefault();
-          }
-        }, { passive: false }); // Empêcher le défilement sur les appareils mobiles
-
-        // document.addEventListener('wheel', function(e) {
-        //   e.preventDefault();
-        // }); // Empêcher le défilement sur les ordinateurs
-
-
-
-
-
-        // Get the button element in the form
-        //onst button = form.querySelector('.button');
-
-        //  let buttonClicked = false;
-        //  // Définissez une fonction qui vérifie l'état de l'événement touchend
-        //  function checkTouchEnd() {
-        //    if (buttonClicked) {
-        //      button.classList.add('activee');
-        //      console.log("added")
-        //    }
-        //    else {
-        //      button.classList.remove('activee');
-        //      console.log("removed")
-        //    }
-        //  }
-        //  // Utilisez setInterval pour exécuter la fonction toutes les 0,1 secondes
-        //  setInterval(checkTouchEnd, 300);
-
-
-        // const print1 = document.getElementById('print1');
-        // const print2 = document.getElementById('print2');
-
-        //  // Add the mousedown event handler
-        //  button.addEventListener('mousedown', function() {
-        //    print2.innerHTML = 'mouseup: not active';
-        //  });
-
-        //  // Add the mouseup event handler
-        //  button.addEventListener('mouseup', function() {
-        //    print2.innerHTML = 'mouseup: active';
-        //  });
-
-        //  
-        //  // Add the touchstart event handler
-        //  button.addEventListener('touchstart', function() {
-        //    buttonClicked = true;
-        //    print1.innerHTML = 'touchstart: active';
-        //  });
-
-        //  // Add the touchend event handler
-        //  button.addEventListener('touchend', function() {
-        //    buttonClicked = false;
-        //    print1.innerHTML = 'touchstart: not active';
-        //  });
 
       });
 
