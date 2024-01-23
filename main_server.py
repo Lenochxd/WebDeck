@@ -41,6 +41,7 @@ import win32gui
 from win32com.client import Dispatch
 from win10toast import ToastNotifier
 import tkinter as tk
+import easygui
 from tkinter import filedialog
 import sounddevice as sd
 import soundfile as sf
@@ -92,6 +93,28 @@ if not os.path.exists("static/files/uploaded"):
     
 with open('config.json', encoding="utf-8") as f:
     config = json.load(f)
+    
+def load_lang_file(lang):
+    lang_dictionary = {}
+    lang_path = f"static/files/langs/{lang}.lang"
+    if not os.path.isfile(f"static/files/langs/{lang}.lang"):
+        for root, dirs, files in os.walk('static/files/langs'):
+            for file in files:
+                if file.endswith('.lang') and file.startswith(lang):
+                    lang_path = f"static/files/langs/{file}"
+                    
+    with open(lang_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        for line in lines:
+            if line.replace(' ', '').replace('\n','') != '' and not line.startswith('//') and not line.startswith('#'):
+                try:
+                    key, value = line.strip().split('=')
+                    lang_dictionary[key] = value.strip()
+                except:
+                    print(line)
+    return lang_dictionary
+
+text = load_lang_file(config['settings']['language'])
 
 def check_json_update(config):
     if 'auto-updates' not in config['settings']:
@@ -100,8 +123,10 @@ def check_json_update(config):
         config['settings']['windows-startup'] = 'false'
     if 'flask-debug' not in config['settings']:
         config['settings']['flask-debug'] = 'true'
-    if 'open-settings-in-browser' not in config['settings']:
-        config['settings']['open-settings-in-browser'] = 'true'
+    if 'open-settings-in-browser' in config['settings']:
+        del config['settings']['open-settings-in-browser']
+    if 'open-settings-in-integrated-browser' not in config['settings']:
+        config['settings']['open-settings-in-integrated-browser'] = 'false'
     if 'portrait-rotate' not in config['front']:
         config['front']['portrait-rotate'] = '90'
     if 'soundboard' not in config['settings']:
@@ -113,12 +138,21 @@ def check_json_update(config):
         config['settings']['soundboard']['mic_input_device'] = ""
     if 'vbcable' not in config['settings']['soundboard']:
         config['settings']['soundboard']['vbcable'] = "cable input"
+    if 'enabled' not in config['settings']['soundboard']:
+        if config['settings']['soundboard']['mic_input_device'] != '':
+            config['settings']['soundboard']['enabled'] = 'true'
+        else:
+            config['settings']['soundboard']['enabled'] = 'true'
+            
     if 'obs' not in config['settings']:
         config['settings']['obs'] = {
             "host": "localhost",
             "port": 4455,
             "password": ""
         }
+    if 'automatic-firewall-bypass' not in config['settings']:
+        config['settings']['automatic-firewall-bypass'] = 'false'
+        
     return config
 
 config = check_json_update(config)
@@ -172,13 +206,13 @@ def select_audio_device(channels_type='input'):
                     if device[device.find('(') + 1:] in device_info['name'][device_info['name'].find('(') + 1:]:
                         ok = False
                 if ok and not "microsoft - input" in device_info['name'].lower():
-                    print(f"Appareil {i}: {device_info['name']}")
+                    print(f"Device {i}: {device_info['name']}")
                     all_devices.append(device_info['name'])
         del ok
         print(f"ALL: {len(all_devices)}")
         print(p.get_default_output_device_info())
     except Exception as e:
-        print(f"Une erreur s'est produite : {str(e)}")
+        print(f"An error has occurred : {str(e)}")
     finally:
         p.terminate()
     return all_devices
@@ -210,7 +244,7 @@ def playsound(file_path: str, sound_volume, ear_soundboard=True):
     global cable_input_device, player
     if not vlc_installed:
         print("VLC is not installed!")
-        return jsonify({'success': False, 'message': 'VLC is not installed!'})
+        return jsonify({'success': False, 'message': text['vlc_not_installed_error']})
     else:
         print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
         print(len(player_vbcable))
@@ -265,7 +299,7 @@ def remove_player(sb_type, p_id):
 def stop_soundboard():
     if not vlc_installed:
         print("VLC is not installed!")
-        return jsonify({'success': False, 'message': 'VLC is not installed!'})
+        return jsonify({'success': False, 'message': text['vlc_not_installed_error']})
     else:
         global player_vbcable, player_ear_soundboard
         while True:
@@ -381,15 +415,8 @@ def update_gridsize(config, new_height, new_width):
                                     if x == True:
                                         break
                                 if x == False:
-                                    print("PAS ASSEZ DE PLACE")
+                                    print("NOT ENOUGH SPACE")
                         folder.pop(-1)
-
-
-
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # we need to be able to remove à row even if theres no row full of voids.
-        # and I DON'T KNOW how to do that I need help
-
 
     # if width has changed
     if old_width != new_width:
@@ -428,17 +455,18 @@ def update_gridsize(config, new_height, new_width):
                                 if element == {"VOID": "VOID"}:
                                     row.pop(element_count)
                                     element_to_del -= 1
-                                    if element_to_del==0: break
-                        if element_to_del>0:
+                                    if element_to_del == 0:
+                                        break
+                        if element_to_del > 0:
                             for row in folder:
                                 for element_count, element in enumerate(row):
                                     if element == {"VOID": "VOID"} :
                                         row.pop(element_count)
                                         element_to_del -= 1
-                                        if element_to_del==0: break
-                                if element_to_del==0: break
-                        if element_to_del>0:
-                            print("PAS ASSEZ DE PLACE")
+                                        if element_to_del == 0: break
+                                if element_to_del == 0: break
+                        if element_to_del > 0:
+                            print("NOT ENOUGH SPACE")
 
 
 
@@ -468,14 +496,9 @@ def getarg(message, arg):
 def swapPositions(list, pos1, pos2):
     try:
         list[pos1], list[pos2] = list[pos2], list[pos1]
-    except Exception:
-        print(f"error swapping {pos1} with {pos2}")
+    except Exception as e:
+        print(f"error swapping {pos1} with {pos2}; {e}")
     return list
-
-letters = 'abcdefghijklmnopqrstuvwxyz'
-def convert_position(size, position):
-    position = (letters.index(position[0])*int(size.split('x')[0])) + int(position[1]) - 1
-    return position
 
 
 # for folder_name, folder_content in config["front"]["buttons"].items():
@@ -574,9 +597,10 @@ def reload_obs():
     obs_password = config['settings']['obs']['password']
 
     obs = obsws(obs_host, obs_port, obs_password)
-    return obs_host, obs_port, obs_password
+    
+    return obs_host, obs_port, obs_password, obs
 
-obs_host, obs_port, obs_password = reload_obs()
+obs_host, obs_port, obs_password, obs = reload_obs()
 
 # Set up the Spotify API client
 try:
@@ -715,6 +739,7 @@ def get_window_by_name(name):
 
 p = pyaudio.PyAudio()
 def set_microphone_by_name(name):
+    # TODO
     # Rechercher le périphérique d'enregistrement avec le nom spécifié
     command = f"PowerShell -Command \"Get-WmiObject Win32_SoundDevice | Where-Object {{ $_.Name -like '*{name}*' -and $_.ConfigManagerErrorCode -eq 0 }} | Select-Object -First 1 | Invoke-CimMethod -MethodName SetDefault\""
     subprocess.run(command, shell=True)
@@ -730,25 +755,6 @@ def set_speakers_by_name(speakers_name):
             win32api.SendMessage(win32con.HWND_BROADCAST, win32con.WM_APPCOMMAND, 0, win32api.LPARAM(0x30290 + i))
             break
 
-
-
-# try: os.remove("static/style.css")
-# except OSError: pass
-# try:
-#    shutil.copyfile(f"themes/{config['front']['theme']}", "static/style.css")
-# except:
-#    shutil.copy(f"themes/{config['front']['theme']}", "static/style.css")
-
-
-# p = subprocess.Popen([sys.executable, 'mic2.py'],
-#                    stdout=subprocess.PIPE,
-#                    stderr=subprocess.STDOUT)
-
-# p2 = subprocess.Popen([sys.executable, 'playsound.py'],
-#                      stdin=subprocess.PIPE,
-#                      stdout=subprocess.PIPE,
-#                      stderr=subprocess.STDOUT)
-# stdout_data, stderr_data = p2.communicate(input=bytes(f"aaaaaaaaaaaaaaa", 'utf-8'))
 
 def has_at_least_5_minutes_difference(timestamp1, timestamp2):
     difference = abs(timestamp1 - timestamp2)
@@ -844,6 +850,8 @@ def get_usage():
             }
     else:
         computer_info['gpus']['defaultGPU'] = {}
+    if 'GPU1' in computer_info['gpus']:
+        computer_info['gpus']['defaultGPU'] = computer_info['gpus']['GPU1']
         
     return computer_info
 
@@ -869,7 +877,7 @@ local_ip = get_local_ip()
 if config['url']['ip'] == 'local_ip':
     config['url']['ip'] = local_ip
 
-# Middleware pour vérifier l'adresse IP de la demande
+# Middleware to check request IP address
 @app.before_request
 def check_local_network():
     remote_ip = request.remote_addr
@@ -884,6 +892,22 @@ def utility_functions():
         print(message)
 
     return dict(mdebug=print_in_console)
+
+# function to get all the svgs from the theme file, so we can load them during the loading screen
+def get_svgs():
+    svgs = []
+    
+    with open(f"static/themes/{config['front']['theme']}", 'r') as f:
+        content = f.read()
+
+        # url(...)
+        matches = re.findall(r'url\(([^)]+)\)', content)
+
+        for match in matches:
+            if match.endswith('.svg'):
+                svgs.append(match)
+            
+    return svgs
 
 dict_func = {}
 all_func = {}
@@ -947,20 +971,19 @@ def home():
         for file_name in os.listdir("static/themes/")
         if file_name.endswith(".css")
     ]
+    langs = [
+        file_name.replace('.lang','')
+        for file_name in os.listdir("static/files/langs/")
+        if file_name.endswith(".lang")
+    ]
     
     return render_template("index.jinja",
                             config=config, themes=themes, commands=commands, versions=versions,
-                            is_exe=is_exe, langs=['en','fr'], random_bg=random_bg, usage_example=usage_example,
-                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open, isfile=os.path.isfile
+                            random_bg=random_bg, usage_example=usage_example, langs=langs,
+                            text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe,
+                            int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
+                            isfile=os.path.isfile
                             )
-
-
-@app.route("/config")
-@app.route("/settings")
-def update_config():
-    with open('config.json', encoding="utf-8") as f:
-        config_json = json.load(f)
-    return render_template("config.html", config=config_json)
 
 
 def print_dict_differences(dict1, dict2):
@@ -989,15 +1012,13 @@ def merge_dicts(d1, d2):
 folders_to_create = []
 @app.route('/save_config', methods=['POST'])
 def saveconfig():
-    global folders_to_create
+    global folders_to_create, obs_host, obs_port, obs_password, obs
 
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f) 
 
     # Récupère les données du formulaire
     new_config = request.get_json()
-    print(new_config)
-    print(config['settings']['show-console'])
 
     new_height = new_config['front']['height']
     new_width = new_config['front']['width']
@@ -1013,6 +1034,15 @@ def saveconfig():
         not config['settings']['obs']
         == new_config['settings']['obs']
     )
+    
+    soundboard_start = False
+    soundboard_stop = False
+    if not config['settings']['soundboard']['enabled'] == new_config['settings']['soundboard']['enabled']:
+        if new_config['settings']['soundboard']['enabled'] == 'true':
+            soundboard_start = True
+        else:
+            soundboard_stop = True
+
     config = check_json_update(config)
     new_config = check_json_update(new_config)
 
@@ -1052,12 +1082,14 @@ def saveconfig():
     with open('config.json', 'w', encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
 
-    if soundboard_restart:
-        restart_soundboard()
-    if obs_reload:
-        obs_host, obs_port, obs_password = reload_obs()
 
-    print(config['settings']['show-console'])
+    if soundboard_stop:
+        stop_soundboard()
+    elif soundboard_restart or soundboard_start:
+        restart_soundboard()
+        
+    if obs_reload:
+        obs_host, obs_port, obs_password, obs = reload_obs()
 
     return jsonify({'success': True})
 
@@ -1120,7 +1152,6 @@ def save_buttons_only():
     new_config = new_config['front']['buttons']
 
     temp_order_list = [key for key, value in config['front']['buttons'].items()]
-    print(temp_order_list)
 
     sorted_buttons = {}
     for folder in temp_order_list:
@@ -1145,19 +1176,16 @@ def get_config():
         
     return jsonify(config)
 
-root = tk.Tk()
-root.withdraw()  # Cache la fenêtre principale
-root.iconbitmap("static/files/icon.ico")
 @app.route('/upload_filepath', methods=['POST'])
 def upload_filepath():
-    return filedialog.askopenfilename()
+    return easygui.fileopenbox()
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
-    print(request)
-    print(request.files)
+    print('request:', request)
+    print('request.files:', request.files)
     if 'file' not in request.files:
-        return jsonify({'success': False, 'message': 'Aucun fichier trouvé'})
+        return jsonify({'success': False, 'message': text['no_files_found_error']})
     
     uploaded_file = request.files['file']
     
@@ -1170,7 +1198,7 @@ def upload_file():
         file_name, extension = os.path.splitext(os.path.basename(save_path))
         img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
 
-    return jsonify({'success': True, 'message': 'Fichier téléchargé avec succès'})
+    return jsonify({'success': True, 'message': text['downloaded_successfully']})
 
 @app.route('/create_folder', methods=['POST'])
 def create_folder():
@@ -1200,12 +1228,12 @@ def kill_nircmd():
         pass
     
 def send_data(message=None):
-    global all_func, obs
+    global all_func, obs, obs_host, obs_port, obs_password, obs
     
     message = message.replace('<|§|>', ' ')
     
-    try: os.remove('temp/mic-temp')
-    except: pass
+    if message == '/bypass-windows-firewall':
+        fix_firewall_permission()
     
     if not message.strip().replace("\n", "").replace("\r", "") == "":
         print('command recieved: ' + message)
@@ -1216,7 +1244,6 @@ def send_data(message=None):
     
     elif message.startswith("/exit"):
         sys.exit("/exit received")
-
 
         
     elif message.startswith('/stop_sound'):
@@ -1261,7 +1288,7 @@ def send_data(message=None):
             print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
             print("ERROR:      ", e)
             print("ERROR LINE: ", exc_tb.tb_lineno)
-            print2("Error while loading MP3 file named " + sound_file)
+            print2(f"{text['mp3_loading_error']} {sound_file}")
 
     elif message.startswith('/exec'):
         exec(message.replace('/exec', '').strip())
@@ -1329,9 +1356,9 @@ def send_data(message=None):
         window_name = message.replace('/kill', '').replace('/taskill', '').replace('/taskkill', '').replace('/forceclose', '')
         hwnd = get_window_by_name(window_name)
         if hwnd:
-            print(f"Fenêtre '{window_name}' trouvée avec handle : {hwnd}")
+            print(f"Window '{window_name}' found with handle : {hwnd}")
         else:
-            print(f"Fenêtre '{window_name}' non trouvée")
+            print(f"Window '{window_name}' not found")
         try:
             close_window(hwnd)
         except:
@@ -1457,7 +1484,7 @@ def send_data(message=None):
                 sp.start_playback(context_uri=playlist_uri)
                 break
         else:
-            print(f"Playlist '{playlist_name}' non trouvée.")
+            print(f"Playlist '{playlist_name}' not found.")
     
     elif message.startswith('/spotify likesong'):
         sp = spotipy.Spotify(auth=spotify_token)
@@ -1506,10 +1533,10 @@ def send_data(message=None):
                 if track_uri in track_uris:
                     sp.playlist_remove_all_occurrences_of_items(
                         playlist_id, [track_uri])
-                    print("La piste a été retirée de la playlist.")
+                    print("The track has been removed from the playlist.")
                 else:
                     sp.playlist_add_items(playlist_id, [track_id])
-                    print("La piste a été ajoutée à la playlist.")
+                    print("The track has been added to the playlist.")
             elif 'add_to_playlist' in message:
                 sp.playlist_add_items(playlist_id, [track_id])
             elif 'remove_from_playlist' in message:
@@ -1529,28 +1556,27 @@ def send_data(message=None):
             if len(items) > 0:
                 artist_id = items[0]["id"]
             else:
-                print(f"Impossible de trouver l'artiste '{artist_id}' sur Spotify.")
+                print(f"Unable to find artist '{artist_id}' on Spotify.")
 
             # Vérifier si l'utilisateur est abonné à l'artiste correspondant
             response = sp.current_user_following_artists(ids=[artist_id])
             is_following = response[0]
 
             if is_following:
-                print(f"L'utilisateur est abonné à l'artiste '{artist_id}'.")
+                print(f"The user is subscribed to the artist '{artist_id}'.")
                 sp.user_unfollow_artists([artist_id])
-                print("L'artiste a bien été retiré de la liste d'abonnements.")
+                print("The artist has been removed from the subscription list.")
             else:
-                print(
-                    f"L'utilisateur n'est pas abonné à l'artiste '{artist_id}'.")
+                print(f"The user is not subscribed to the artist '{artist_id}'.")
                 sp.user_follow_artists([artist_id])
-                print("L'artiste a bien été ajouté à la liste d'abonnements.")
+                print("The artist has been added to the subscription list.")
 
         elif 'unfollow_artist' in message:
             sp.user_unfollow_artists([artist_id])
-            print("L'artiste a bien été retiré de la liste d'abonnements.")
+            print("The artist has been removed from the subscription list.")
         elif 'follow_artist' in message:
             sp.user_follow_artists([artist_id])
-            print("L'artiste a bien été ajouté à la liste d'abonnements.")
+            print("The artist has been added to the subscription list.")
 
     elif message.startswith(('/spotify volume +', '/spotify volume -', '/spotify volume set')):
         sp = spotipy.Spotify(auth=spotify_token)
@@ -1561,7 +1587,7 @@ def send_data(message=None):
         if playback_info and playback_info['is_playing'] and playback_info['device']:
             device_id = playback_info['device']['id']
         else:
-            print("No active device found.")
+            print("No active devices on Spotify found.")
 
         # Get the current volume
         current_volume = playback_info['device']['volume_percent']
@@ -1580,9 +1606,9 @@ def send_data(message=None):
         elif 'set' in message:
             try:
                 target_volume = int(message.replace('/spotify volume set', ''))
-            except:
-                target_volume = current_volume
-                print2('Error, unable to apply volume')
+            except Exception as e:
+                print(f"{text['spotify_apply_volume_error']}: {e}")
+                return jsonify({"success": False, "message": f"{text['spotify_apply_volume_error']}: {e}"})
         if isinstance(target_volume, int):
             if target_volume > 100:
                 target_volume = 100
@@ -1591,8 +1617,9 @@ def send_data(message=None):
             target_volume = int(target_volume)
             try:
                 sp.volume(target_volume, device_id=device_id)
-            except:
-                print2('Error, unable to apply volume because Spotify Prenium is required')
+            except Exception as e:
+                print(f"{text['spotify_volume_prenium_error']}: {e}")
+                return jsonify({"success": False, "message": f"{text['spotify_volume_prenium_error']}: {e}"})
 
             # Get the updated volume
             playback_info = sp.current_playback()
@@ -1701,7 +1728,7 @@ def send_data(message=None):
                 for type_found, value in types_found.items():
                     if type.upper() in type_found:
                         if 'HEX' in type.upper() and remove_hex_sharp == 'True':
-                                types_found_final[type.upper()] = value.replace('#','')
+                            types_found_final[type.upper()] = value.replace('#','')
                         else:
                             types_found_final[type.upper()] = value
             print(types_found_final)
@@ -1765,9 +1792,9 @@ def send_data(message=None):
         if hwnd:
             win32gui.SetForegroundWindow(hwnd)
             keyboard2.press('ENTER')
-            print(f"Fenêtre '{window_name}' mise au premier plan")
+            print(f"Window '{window_name}' brought to the foreground")
         else:
-            print(f"Fenêtre '{window_name}' non trouvée")
+            print(f"Window '{window_name}' not found")
 
     elif message.startswith('/setmicrophone'):
         set_microphone_by_name(message.replace('/setmicrophone','').strip())
@@ -1810,7 +1837,11 @@ def send_data(message=None):
             obs = obsws(obs_host, obs_port, obs_password)
             obs.connect()
         except Exception as e:
-            return jsonify({"success": False, "message": f"Failed connection to obs, {e}"})
+            if '10061' in str(e):
+                e = text['obs_error_10061']
+            elif 'password may be inco' in str(e):
+                e = text['obs_error_incorrect_password']
+            return jsonify({"success": False, "message": f"{text['obs_failed_connection_error'].replace('.','')}: {e}"})
     
     
         if message.startswith('/obs_scene'):
@@ -1827,13 +1858,13 @@ def send_data(message=None):
             result = obs.call(obsrequests.ToggleRecord())
             print("Recording toggled successfully.")
             if 'failed' in str(result):
-                return jsonify({"success": False, "message": "Failed :/"})
+                return jsonify({"success": False, "message": f"{text['failed']} :/"})
             
         elif message.startswith('/obs_start_rec'):
             recording_status = obs.call(obsrequests.GetRecordStatus())
             if recording_status.getOutputActive():
                 print("OBS is already recording.")
-                return jsonify({"success": False, "message": "OBS is already recording."})
+                return jsonify({"success": False, "message": text['obs_already_recording']})
             else:
                 obs.call(obsrequests.StartRecord())
                 print("Recording started successfully.")
@@ -1845,43 +1876,41 @@ def send_data(message=None):
                 print("Recording stopped successfully.")
             else:
                 print("OBS is not recording.")
-                return jsonify({"success": False, "message": "OBS is not recording."})
+                return jsonify({"success": False, "message": text['obs_not_recording']})
             
         
         elif message.startswith('/obs_toggle_rec_pause'):
             result = obs.call(obsrequests.ToggleRecordPause())
             print("Play/pause toggled successfully.")
             if 'failed' in str(result):
-                return jsonify({"success": False, "message": "Failed :/"})
+                return jsonify({"success": False, "message": f"{text['failed']} :/"})
                 
         elif message.startswith('/obs_pause_rec'):
             recording_status = obs.call(obsrequests.GetRecordStatus())
             if recording_status.getOutputActive():
                 result = obs.call(obsrequests.PauseRecord())
-                print(result)
                 if 'failed' in str(result):
-                    return jsonify({"success": False, "message": "No recording can be paused"})
+                    return jsonify({"success": False, "message": text['obs_no_recording_can_be_paused']})
             else:
-                return jsonify({"success": False, "message": "No recording can be paused"})
+                return jsonify({"success": False, "message": text['obs_no_recording_can_be_paused']})
                 
         elif message.startswith('/obs_resume_rec'):
             result = obs.call(obsrequests.ResumeRecord())
-            print(result)
             if 'failed' in str(result):
-                return jsonify({"success": False, "message": "No recording is paused"})
+                return jsonify({"success": False, "message": text['obs_no_recording_is_paused']})
                 
         
         elif message.startswith('/obs_toggle_stream'):
             result = obs.call(obsrequests.ToggleStream())
             print("Streaming toggled successfully.")
             if 'failed' in str(result):
-                return jsonify({"success": False, "message": "Failed :/"})        
+                return jsonify({"success": False, "message": f"{text['failed']} :/"})        
         
         elif message.startswith('/obs_start_stream'):
             recording_status = obs.call(obsrequests.GetStreamStatus())
             if recording_status.getOutputActive():
                 print("OBS is already streaming.")
-                return jsonify({"success": False, "message": "OBS is already streaming."})
+                return jsonify({"success": False, "message": text['obs_already_streaming']})
             else:
                 obs.call(obsrequests.StartStream())
                 print("Stream started successfully.")
@@ -1893,21 +1922,21 @@ def send_data(message=None):
                 print("Stream stopped successfully.")
             else:
                 print("OBS is not streaming.")
-                return jsonify({"success": False, "message": "OBS is not streaming."})
+                return jsonify({"success": False, "message": text['obs_not_streaming']})
         
         
         elif message.startswith('/obs_toggle_virtualcam'):
             result = obs.call(obsrequests.ToggleVirtualCam())
             print("Virtual cam toggled successfully.")
             if 'failed' in str(result):
-                return jsonify({"success": False, "message": "Failed :/"})        
+                return jsonify({"success": False, "message": f"{text['failed']} :/"})        
         
         elif message.startswith('/obs_start_virtualcam'):
             recording_status = obs.call(obsrequests.GetVirtualCamStatus())
-            print(recording_status)
+            print("obs recording_status: ", recording_status)
             if recording_status.getOutputActive():
                 print("Virtual cam is already started.")
-                return jsonify({"success": False, "message": "Virtual cam is already started."})
+                return jsonify({"success": False, "message": text['obs_already_vcam']})
             else:
                 obs.call(obsrequests.StartVirtualCam())
                 print("Virtual cam started successfully.")
@@ -1919,7 +1948,7 @@ def send_data(message=None):
                 print("Virtual cam stopped successfully.")
             else:
                 print("Virtual cam is already stopped.")
-                return jsonify({"success": False, "message": "Virtual cam is already stopped."})
+                return jsonify({"success": False, "message": text['obs_no_vcam']})
         
         obs.disconnect()
 
@@ -1933,7 +1962,7 @@ def send(data):
     
 @socketio.on('connect')
 def socketio_connect():
-    print('Client connected')
+    print('Socketio client connected')
     with open('config.json', encoding="utf-8") as f:
         config = json.load(f)
     
@@ -1946,11 +1975,6 @@ def send_data_socketio(message):
 def send_data_route():
     return send_data(message=request.get_json()["message"])
 
-
-try:
-    os.remove('temp/mic-temp')
-except:
-    pass
 
 def compare_versions(version1, version2):
     v1_components = list(map(int, version1.split('.')))
@@ -1988,7 +2012,7 @@ def check_for_updates():
                 
                 break
     except Exception as e:
-        print2(f"Error while updating WebDeck, please update it manually from https://github.com/LeLenoch/WebDeck \n\nError: {e}")
+        print2(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
         pass
         
 def check_for_updates_loop():
@@ -2042,12 +2066,12 @@ def soundboard():
             break
     
     if mic_index is None:
-        print("Impossible de trouver le microphone.")
+        print("Cannot find microphone.")
     else:
         print(f"Microphone '{microphone_name}' found at index {mic_index}")
     
     if output_device is None:
-        print("Impossible de trouver les haut-parleurs.")
+        print("Cannot find speakers.")
     else:
         print(f"Speaker '{output_name}' found at index {output_device}")
     
@@ -2084,7 +2108,7 @@ def soundboard():
     except KeyboardInterrupt:
         pass
     finally:
-        print("Arrêt de la soundboard.")
+        print("Stopping soundboard ...")
     
         if stream_in is not None:
             stream_in.stop_stream()
@@ -2096,22 +2120,28 @@ def soundboard():
     
         audio.terminate()
 
+def stop_soundboard():
+    global sb_on
+    sb_on = False
 def restart_soundboard():
     global soundboard_thread, sb_on
     sb_on = False
     time.sleep(0.2)
     soundboard_thread = threading.Thread(target=soundboard, daemon=True)
     soundboard_thread.start()
-    print('sb thread revived')
+    print('Soundboard thread revived')
 
 
 auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
-soundboard_thread = threading.Thread(target=soundboard, daemon=True)
-
 auto_closing_loop_thread.start()
-soundboard_thread.start()
 
-check_for_updates()
+if config['settings']['auto-updates'].lower().strip() == 'true':
+    check_for_updates()
+
+if config['settings']['soundboard']['enabled'] == 'true':
+    soundboard_thread = threading.Thread(target=soundboard, daemon=True)
+    soundboard_thread.start()
+
 
 def check_firewall_permission():
     try:
@@ -2121,20 +2151,19 @@ def check_firewall_permission():
 
         for app in authorized_applications:
             if app.ProcessImageFileName.lower() == sys.executable.lower():
-                print(f"L'application ({sys.executable}) a l'autorisation de passer à travers le pare-feu.")
+                print(f"The application ({sys.executable}) has permission to pass through the firewall.")
                 return True
 
-        print(f"L'application ({sys.executable}) n'a pas l'autorisation de passer à travers le pare-feu.")
+        print(f"The application ({sys.executable}) does not have permission to pass through the firewall.")
         return False
     except Exception as e:
-        print(f"Erreur lors de la vérification du pare-feu : {e}")
+        print(f"Error checking firewall : {e}")
         return True
-
-if check_firewall_permission() == False:
+    
+def fix_firewall_permission():
     command = [
         'powershell',
         '-NoProfile',
-        '-WindowStyle', 'Hidden',
         'New-NetFirewallRule',
         '-DisplayName', '"WebDeck"',
         '-Direction', 'Inbound',
@@ -2143,7 +2172,9 @@ if check_firewall_permission() == False:
     ]
     subprocess.run(command)
 
+if config['settings']['automatic-firewall-bypass'] == 'false' and check_firewall_permission() == False:
+    fix_firewall_permission()
+
 app.run(host=local_ip, port=config['url']['port'],
         debug=config['settings']['flask-debug'],
         use_reloader=config['settings']['flask-debug'] == 'false')
-obs.disconnect()
