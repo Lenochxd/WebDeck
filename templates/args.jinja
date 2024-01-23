@@ -1,5 +1,5 @@
 {% if "webdeck_foldername" in arg['TYPE'] %}
-    <!-- lister tous les dossiers -->
+    <!-- list all folders -->
     <div class="webdeck_foldername_ALL">
         {% for key in config["front"]["buttons"] %}
             <div class="webdeck_foldername">
@@ -10,8 +10,8 @@
     </div>
 {% elif "file" in arg['TYPE'] or "path-windowsapp" in arg['TYPE'] %}
     <div class="filepath">
-        <button class="filepath">Select your file</button>
-        <input type="text" class="filepath {{black_theme}}" placeholder="No file chosen"></input>
+        <button class="filepath"> {{text['select_your_file']}} </button>
+        <input type="text" class="filepath {{black_theme}}" placeholder="{{text['no_file_chosen']}}">
     </div>
 {% elif "url" in arg['TYPE'] %}
     <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com">
@@ -61,8 +61,8 @@
     {# lister toutes les options #}
     <select name="{{file}}" >
         {% for option in arg['options'] %}
-            {% if option[config.settings.language] %}
-                {% set option_name = option[config.settings.language] %}
+            {% if option[language] %}
+                {% set option_name = option[language] %}
             {% elif arg["en"] %}
                 {% set option_name = option["en"] %}
             {% else %}
