@@ -1,5 +1,5 @@
 # en_US.lang file written by Lenoch, feel free to make a PR for any mistakes
-# https://github.com/LeLenoch/WebDeck/pulls
+# https://github.com/Lenochxd/WebDeck/pulls
 # or just tell us on discord: https://discord.gg/tUPsYHAGfm
 
 lang_name=English
@@ -18,7 +18,7 @@ failed=Failed
 error=Error
 error_occurred=An error has occurred
 
-auto_update_error=Error while updating WebDeck, please update it manually from https://github.com/LeLenoch/WebDeck
+auto_update_error=Error while updating WebDeck, please update it manually from https://github.com/Lenochxd/WebDeck/releases/latest
 
 no_files_found_error=No files were found
 
