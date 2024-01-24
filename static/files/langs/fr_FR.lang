@@ -1,5 +1,5 @@
 # fr_FR.lang écrit par Lenoch, n'hésitez pas à faire un PR pour toute erreur
-# https://github.com/LeLenoch/WebDeck/pulls
+# https://github.com/Lenochxd/WebDeck/pulls
 # ou alors dites nous sur discord: https://discord.gg/tUPsYHAGfm
 
 lang_name=French
@@ -18,7 +18,7 @@ failed=Échec
 error=Erreur
 error_occurred=Une erreur s'est produite
 
-auto_update_error=Erreur lors de la mise à jour de WebDeck, veuillez le mettre à jour manuellement depuis https://github.com/LeLenoch/WebDeck
+auto_update_error=Erreur lors de la mise à jour de WebDeck, veuillez le mettre à jour manuellement depuis https://github.com/Lenochxd/WebDeck/releases/latest
 
 no_files_found_error=Aucun fichier trouvé
 
