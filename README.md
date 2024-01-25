@@ -109,6 +109,9 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 <a href="https://twitter.com/mady2ouf" title="mady2ouf">
   <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
 </a>
+<a href="https://twitter.com/francois_2008" title="francois_2008">
+  <img src="https://images-ext-2.discordapp.net/external/PloDgfmvuoJQ3PveswNDOx2sNqDPWg8XBI9CHqv44tA/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/789908888676728873/71d199a38880518a8ea6d5abe23e111d.png" alt="SPONSOR-francois_2008" width="60px" height="60px" style="border-radius: 50%;">
+</a>
 
 <br>
 
