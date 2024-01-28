@@ -232,7 +232,8 @@ def get_device(vbcable_device):
                     device = mod.device
                     return device
                 mod = mod.next
-    except:
+    except Exception as e:
+        print(e)
         return 'ERROR_NO_VLC'
             
 cable_input_device = get_device(config['settings']['soundboard']['vbcable'])
@@ -1178,7 +1179,10 @@ def get_config():
 
 @app.route('/upload_filepath', methods=['POST'])
 def upload_filepath():
-    return easygui.fileopenbox()
+    path = easygui.fileopenbox()
+    if path is None:
+        path = ''
+    return path
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
