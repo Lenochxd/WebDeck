@@ -1,4 +1,4 @@
-[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/LeLenoch/WebDeck/blob/master/static/files/FAQ-fr.md)
+[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md)
 
 # Welcome to the WebDeck FAQ!
 You can use `ctrl+f` to search for what you want.
@@ -13,7 +13,7 @@ The WebDeck is an application that allows the user to control their computer fro
 
 ## How do I install WebDeck?
 
-1. Download the latest version of WebDeck from the [Releases](https://github.com/LeLenoch/WebDeck/releases) section on GitHub.
+1. Download the latest version of WebDeck from the [Releases](https://github.com/Lenochxd/WebDeck/releases) section on GitHub.
 
 2. Extract the contents of `WebDeck-win-amd64-portable.zip` to the location of your choice on your computer.
 

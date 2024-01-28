@@ -11,7 +11,7 @@ Le WebDeck est une application qui permet à l'utilisateur de controller son ord
 
 ## Comment installer le WebDeck ?
 
-1. Téléchargez la dernière version de WebDeck depuis la section [Releases](https://github.com/LeLenoch/WebDeck/releases) sur GitHub.
+1. Téléchargez la dernière version de WebDeck depuis la section [Releases](https://github.com/Lenochxd/WebDeck/releases) sur GitHub.
 
 2. Extrayez le contenu de `WebDeck-win-amd64-portable.zip` dans l'emplacement de votre choix sur votre ordinateur.
 
