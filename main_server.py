@@ -140,7 +140,7 @@ def check_json_update(config):
         config['settings']['soundboard']['vbcable'] = "cable input"
     if 'enabled' not in config['settings']['soundboard']:
         if config['settings']['soundboard']['mic_input_device'] != '':
-            config['settings']['soundboard']['enabled'] = 'true'
+            config['settings']['soundboard']['enabled'] = 'false'
         else:
             config['settings']['soundboard']['enabled'] = 'true'
             
@@ -2001,7 +2001,7 @@ def check_for_updates():
     try:
         with open('static/files/version.json', encoding="utf-8") as f:
             current_version = json.load(f)['versions'][0]['version']
-        response = requests.get("https://raw.githubusercontent.com/LeLenoch/WebDeck/master/static/files/version.json")
+        response = requests.get("https://raw.githubusercontent.com/Lenochxd/WebDeck/master/static/files/version.json")
         data = response.json()
         
         files_to_update = []
@@ -2009,10 +2009,13 @@ def check_for_updates():
             version = version_data["version"]
             if compare_versions(version, current_version) > 0:
                 print(f"New version available: {version}")
-                try:
-                    subprocess.Popen(['WD_updater.exe'])
-                except:
-                    pass
+                
+                if not os.path.exists("static/updates"):
+                    os.makedirs("static/updates")
+                    shutil.copyfile("WD_updater.exe", "static/updates/WD_updater.exe")
+                    shutil.copytree("lib", "static/updates/lib")
+                    
+                subprocess.Popen(['static/updates/WD_updater.exe'])
                 
                 break
     except Exception as e:
