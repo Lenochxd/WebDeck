@@ -1,6 +1,6 @@
 {
     "settings": {
-        "language": "en",
+        "language": "en_US",
         "windows-startup": "false",
         "auto-updates": "true",
         "dev-mode": "false",
