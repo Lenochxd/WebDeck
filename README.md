@@ -115,7 +115,8 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 
 <br>
 
-If you appreciate the project, consider [buying us a coffee](https://ko-fi.com/lenoch)! ♥
+<br>
+<a href='https://ko-fi.com/lenoch' target='_blank'><img height='35' style='height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' alt='Buy Me a Coffee at ko-fi.com' />
 
 
 # ⚠️ Issues
