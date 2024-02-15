@@ -26,11 +26,11 @@ The WebDeck is a Flask application that allows users to control their computer r
 5. [Sponsors](#sponsors)
 6. [How do I contribute?](#how-do-i-contribute)
     - [Tools for Learning Basics](#need-to-start-from-the-beginning-here-are-some-tools-that-may-help-you-learn-the-basics)
-    - [Issues](#⚠️-issues)
+    - [Issues](#⚠-issues)
     - [Before Making a Pull Request](#before-making-a-pull-request)
       
 
-## 🖥️🚀 Installation
+## Installation
 
 1. Download the latest version of WebDeck from the [Releases](https://github.com/Lenochxd/WebDeck/releases) section on GitHub.
 
@@ -41,23 +41,23 @@ The WebDeck is a Flask application that allows users to control their computer r
 4. There is nothing to install on your mobile device, you simply need to scan the QR code by clicking on the tray icon.
 
 
-## 📋 Frequently Asked Questions (FAQ)
+## Frequently Asked Questions (FAQ)
 
 Before asking questions, please check our [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
 
 If your question is not addressed in the FAQ, feel free to ask us on our [Discord server](https://discord.gg/tUPsYHAGfm).
 
 
-## 📱❔ Compatibility
+## Compatibility
 
 To check the compatibility of your device and browser with WebDeck, you can refer to the  [test table](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). This table details the results of various experiments on different devices and browsers. You can also contribute to the table using https://bishokus.fr/webdeck/test-it
 
-#### 💻 Operating System Support
+#### Operating System Support
 
 WebDeck currently supports Windows. We plan to develop versions for Linux and macOS in the future. Unfortunately, Wine emulation is not a viable solution for Linux compatibility. We appreciate your patience as we work on expanding our supported platforms.
 
 
-## ⭐ Contributors
+## Contributors
 
 <table align="center">
   <tr>
@@ -117,7 +117,7 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 </table>
 
 
-### 🙏 Sponsors
+### Sponsors
 
 <a href="https://twitter.com/mady2ouf" title="mady2ouf">
   <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
@@ -141,7 +141,6 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 
 
 ### ⚠️ Issues
-// Issues
 
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
