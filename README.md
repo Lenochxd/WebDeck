@@ -28,7 +28,7 @@ The WebDeck is a Flask application that allows users to control their computer r
     - [Tools for Learning Basics](#need-to-start-from-the-beginning-here-are-some-tools-that-may-help-you-learn-the-basics)
     - [Issues](#⚠️-issues)
     - [Before Making a Pull Request](#before-making-a-pull-request)
-    - 
+      
 
 ## 🖥️🚀 Installation
 
