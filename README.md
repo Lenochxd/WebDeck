@@ -141,6 +141,7 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 
 
 ### ⚠️ Issues
+// Issues
 
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
