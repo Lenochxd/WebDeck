@@ -18,7 +18,7 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 ## Table of Contents
 
-1. [Installation](#🖥️🚀installation)
+1. [Installation](#🖥installation)
 2. [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
 3. [Compatibility](#compatibility)
     - [Operating System Support](#operating-system-support)
@@ -26,7 +26,7 @@ The WebDeck is a Flask application that allows users to control their computer r
 5. [Sponsors](#sponsors)
 6. [How do I contribute?](#how-do-i-contribute)
     - [Tools for Learning Basics](#need-to-start-from-the-beginning-here-are-some-tools-that-may-help-you-learn-the-basics)
-    - [Issues](#⚠-issues)
+    - [Issues](#issues)
     - [Before Making a Pull Request](#before-making-a-pull-request)
       
 
@@ -140,7 +140,7 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 - [Creating a Pull Request](https://opensource.com/article/19/7/create-pull-request-github)
 
 
-### ⚠️ Issues
+### Issues
 
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
