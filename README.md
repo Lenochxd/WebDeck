@@ -25,8 +25,12 @@ The WebDeck is a Flask application that allows users to control their computer r
 4. [Contributors](#contributors)
 5. [Sponsors](#sponsors)
 6. [How do I contribute?](#how-do-i-contribute)
+    - [Tools for Learning Basics](#need-to-start-from-the-beginning-here-are-some-tools-that-may-help-you-learn-the-basics)
+    - [Issues](#issues)
+    - [Before Making a Pull Request](#before-making-a-pull-request)
+    - 
 
-## 🖥️🚀 Installation
+## 🖥️🚀 ##Installation
 
 1. Download the latest version of WebDeck from the [Releases](https://github.com/Lenochxd/WebDeck/releases) section on GitHub.
 
