@@ -16,6 +16,18 @@ The WebDeck is a Flask application that allows users to control their computer r
   [![Discord](https://img.shields.io/discord/391919052563546112?style=flat&logo=Discord&logoColor=fff&label=Discord&color=5e6ae8&link=https%3A%2F%2Fdiscord.gg%2FtUPsYHAGfm)](https://discord.gg/tUPsYHAGfm)
 </div>
 
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
+3. [Compatibility](#compatibility)
+    - [Operating System Support](#operating-system-support)
+4. [Contributors](#contributors)
+5. [Sponsors](#sponsors)
+6. [How do I contribute?](#how-do-i-contribute)
+    - [Tools for Learning Basics](#need-to-start-from-the-beginning-here-are-some-tools-that-may-help-you-learn-the-basics)
+    - [Issues](#issues)
+    - [Before Making a Pull Request](#before-making-a-pull-request)
 
 ## 🖥️🚀 Installation
 
@@ -118,8 +130,16 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 <br>
 <a href='https://ko-fi.com/lenoch' target='_blank'><img height='35' style='height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' alt='Buy Me a Coffee at ko-fi.com' />
 
+# How do I contribute?
 
-# ⚠️ Issues
+### Need to start from the beginning? Here are some tools that may help you learn the basics:
+
+- [Forking a Repo](https://help.github.com/en/github/getting-started-with-github/fork-a-repo)
+- [Cloning a Repo](https://help.github.com/en/desktop/contributing-to-projects/creating-an-issue-or-pull-request)
+- [Creating a Pull Request](https://opensource.com/article/19/7/create-pull-request-github)
+
+
+### ⚠️ Issues
 
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
@@ -127,6 +147,15 @@ WebDeck is an ever-evolving project, and we appreciate your contributions to fur
 - Discord Server: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
 - Twitter: [https://twitter.com/WebDeckJ](https://twitter.com/WebDeckJ)
 - Email (?): contact.lenoch@gmail.com
+
+  *Please include a proper description of the issue.
+
+### Before Making a Pull Request
+
+- Ensure that you have reviewed your code
+- Include a detailed description of the code
+- Add the proper documentation
+- Wait patiently while the pull request is reviewed
 
 <br>
 
