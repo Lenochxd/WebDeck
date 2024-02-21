@@ -1,9 +1,5 @@
-import ctypes, sys
-
-if not ctypes.windll.shell32.IsUserAnAdmin():
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-    sys.exit()
-
+import ctypes
+import sys
 import os
 import shutil
 import json
@@ -165,9 +161,12 @@ def replace_files():
     os.system(exe_path)
 
 
-# if __name__ != "__main__":
 if __name__ == "__main__":
     print('Starting updater...')
+    
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        sys.exit()
     
     current_dir = os.path.abspath(os.path.dirname(__file__))
     wd_dir = os.path.abspath(os.path.join(current_dir, *([".."] * 2)))
