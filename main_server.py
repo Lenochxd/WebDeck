@@ -2178,24 +2178,23 @@ def check_for_updates():
     try:
         with open("static/files/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
-        response = requests.get(
-            "https://raw.githubusercontent.com/Lenochxd/WebDeck/master/static/files/version.json"
-        )
-        data = response.json()
+        
+        url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
+        response = requests.get(url)
+        releases = response.json()
+        latest_release = next((release for release in releases if not release["draft"]), None)
+        latest_version = latest_release["tag_name"].replace('v', '')
+        
+        if compare_versions(latest_version, current_version) > 0:
+            print(f"New version available: {latest_version}")
 
-        for version_data in reversed(data["versions"]):
-            version = version_data["version"]
-            if compare_versions(version, current_version) > 0:
-                print(f"New version available: {version}")
+            if not os.path.exists("static/updates"):
+                os.makedirs("static/updates")
+                shutil.copyfile("WD_updater.exe", "static/updates/WD_updater.exe")
+                shutil.copytree("lib", "static/updates/lib")
 
-                if not os.path.exists("static/updates"):
-                    os.makedirs("static/updates")
-                    shutil.copyfile("WD_updater.exe", "static/updates/WD_updater.exe")
-                    shutil.copytree("lib", "static/updates/lib")
+            subprocess.Popen(["static/updates/WD_updater.exe"])
 
-                subprocess.Popen(["static/updates/WD_updater.exe"])
-
-                break
     except Exception as e:
         print2(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
         pass

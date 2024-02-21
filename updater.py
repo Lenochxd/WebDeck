@@ -67,11 +67,12 @@ def compare_versions(version1, version2):
 
 
 def check_updates(current_version):
-    url = "https://api.github.com/repos/Lenochxd/WebDeck/releases/latest"
+    url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
     response = requests.get(url)
-    data = response.json()
-
-    latest_version = data["tag_name"].replace('v','')
+    releases = response.json()
+    latest_release = next((release for release in releases if not release["draft"]), None)
+    latest_version = latest_release["tag_name"].replace('v', '')
+    
     if compare_versions(latest_version, current_version) > 0:
         print(f"New version available: {latest_version}")
 
@@ -84,8 +85,8 @@ def check_updates(current_version):
 
             process_names = ["WebDeck.exe", "WD_main.exe"]
             close_processes(process_names)
-            for file_url in data["assets"]:
-                if file_url["browser_download_url"].endswith('.zip'):
+            for file_url in latest_release["assets"]:
+                if file_url["browser_download_url"].endswith('portable.zip') and file_url["state"] == "uploaded":
                     download_and_extract(file_url["browser_download_url"])
                     break
                     
