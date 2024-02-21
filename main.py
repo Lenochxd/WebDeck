@@ -166,7 +166,7 @@ if if_webdeck == False:
                 print(f"Failed to terminate process {process_name}: {e}")
 
         close_window()
-        icon.stop()  # Arrêter l'icône Tray
+        icon.stop()  # Stop Tray Icon
 
         sys.exit()
         exit()
@@ -174,7 +174,7 @@ if if_webdeck == False:
     def get_local_ip():
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
-            # N'importe quelle adresse et port, ici on utilise Google DNS
+            # Any address and port, here we use Google DNS
             s.connect(("8.8.8.8", 80))
             local_ip = s.getsockname()[0]
         finally:
@@ -211,7 +211,7 @@ if if_webdeck == False:
     qr.add_data(url)
     qr.make(fit=True)
 
-    # Création de l'image du QR code sous forme de bytes
+    # Creation of the QR code image in bytes
     img_stream = BytesIO()
     # if black_theme.lower() == "true":
     #     qr.make_image(fill_color="white", back_color="black").save(img_stream, format='PNG')
@@ -219,7 +219,7 @@ if if_webdeck == False:
     qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')
     img_stream.seek(0)
 
-    # Convertir l'image en format PIL pour EasyGUI
+    # Convert image to PIL format for EasyGUI
     qr_pil_image = Image.open(img_stream)
 
     def show_qrcode():
@@ -260,7 +260,7 @@ if if_webdeck == False:
             item(text['exit'], lambda: exit_program()),
         )
 
-        # Créer l'icône Tray
+        # Create the Tray Icon
         if getattr(sys, 'frozen', False):
             icon = pystray.Icon("name", image, "WebDeck", menu)
         else:
