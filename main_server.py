@@ -66,6 +66,9 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 import math
 
+# WebDeck imports
+from updater import compare_versions
+
 os.add_dll_directory(os.getcwd())
 
 
@@ -169,6 +172,55 @@ def check_json_update(config):
 
     return config
 
+def color_distance(color1, color2):
+    """
+    Calculate the distance between two colors using the Euclidean formula
+    """
+    r1, g1, b1 = [int(color1[i : i + 2], 16) for i in range(1, 7, 2)]
+    r2, g2, b2 = [int(color2[i : i + 2], 16) for i in range(1, 7, 2)]
+    return math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
+
+def sort_colorsjson():
+    with open("colors.json", "r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+        except Exception:
+            shutil.copyfile("static/files/colorsbcp.json", "colors.json")
+            with open("colors.json", "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+    # Sort colors using the distance between each pair of colors
+    sorted_colors = [data[0]]  # The first color is always the same
+    data.pop(0)
+
+    while data:
+        current_color = sorted_colors[-1]["hex_code"]
+        nearest_color = min(
+            data, key=lambda c: color_distance(current_color, c["hex_code"])
+        )
+        sorted_colors.append(nearest_color)
+        data.remove(nearest_color)
+
+    if not sorted_colors == data:
+        with open("colors.json", "w", encoding="utf-8") as f:
+            json.dump(sorted_colors, f, indent=4)
+sort_colorsjson()
+
+
+def download_nircmd():
+    url = "https://www.nirsoft.net/utils/nircmd.zip"
+    urllib.request.urlretrieve(url, "nircmd.zip")
+
+    with zipfile.ZipFile("nircmd.zip", "r") as zip_ref:
+        zip_ref.extractall("")
+
+    os.remove("nircmd.zip")
+    os.remove("NirCmd.chm")
+    os.remove("nircmdc.exe")
+    
+if not os.path.isfile("nircmd.exe"):
+    download_nircmd()
+    
 
 config = check_json_update(config)
 with open("config.json", "w", encoding="utf-8") as json_file:
@@ -548,53 +600,6 @@ def update_gridsize(config, new_height, new_width):
 #                 pass
 
 
-def color_distance(color1, color2):
-    """
-    Calculate the distance between two colors using the Euclidean formula
-    """
-    r1, g1, b1 = [int(color1[i : i + 2], 16) for i in range(1, 7, 2)]
-    r2, g2, b2 = [int(color2[i : i + 2], 16) for i in range(1, 7, 2)]
-    return math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
-
-
-# Ouvrir le fichier colors.json
-with open("colors.json", "r", encoding="utf-8") as f:
-    try:
-        data = json.load(f)
-    except Exception:
-        shutil.copyfile("static/files/colorsbcp.json", "colors.json")
-        with open("colors.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-# Sort colors using the distance between each pair of colors
-sorted_colors = [data[0]]  # The first color is always the same
-data.pop(0)
-
-while data:
-    current_color = sorted_colors[-1]["hex_code"]
-    nearest_color = min(
-        data, key=lambda c: color_distance(current_color, c["hex_code"])
-    )
-    sorted_colors.append(nearest_color)
-    data.remove(nearest_color)
-
-if not sorted_colors == data:
-    with open("colors.json", "w", encoding="utf-8") as f:
-        json.dump(sorted_colors, f, indent=4)
-
-
-if not os.path.isfile("nircmd.exe"):
-    url = "https://www.nirsoft.net/utils/nircmd.zip"
-    urllib.request.urlretrieve(url, "nircmd.zip")
-
-    with zipfile.ZipFile("nircmd.zip", "r") as zip_ref:
-        zip_ref.extractall("")
-
-    os.remove("nircmd.zip")
-    os.remove("NirCmd.chm")
-    os.remove("nircmdc.exe")
-
-
 for filename in os.listdir("static/files/images"):
     if " " in filename and not filename.startswith("!!"):
         new_filename = filename.replace(" ", "_")
@@ -694,7 +699,7 @@ def getarg(message, arg):
         ),
         None,
     )
-    
+
 
 def find_color(hex_code, colors):
     try:
@@ -1002,8 +1007,6 @@ all_func = {}
 @app.route("/")
 def home():
     global all_func
-
-    should_i_close()
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
@@ -1613,9 +1616,7 @@ def send_data(message=None):
         playlist_name = message.replace("/spotify playplaylist", "").strip()
 
         sp = spotipy.Spotify(auth=spotify_token)
-        playlists = (
-            sp.current_user_playlists()
-        )  # Retrieve current user's playlists
+        playlists = sp.current_user_playlists() # Retrieve current user's playlists
 
         for playlist in playlists["items"]:
             if playlist_name.lower().strip() in playlist["name"].lower().strip():
@@ -2173,24 +2174,6 @@ def send_data_route():
     return send_data(message=request.get_json()["message"])
 
 
-def compare_versions(version1, version2):
-    v1_components = list(map(int, version1.split(".")))
-    v2_components = list(map(int, version2.split(".")))
-
-    for v1, v2 in zip(v1_components, v2_components):
-        if v1 > v2:
-            return 1
-        elif v1 < v2:
-            return -1
-
-    if len(v1_components) > len(v2_components):
-        return 1
-    elif len(v1_components) < len(v2_components):
-        return -1
-
-    return 0
-
-
 def check_for_updates():
     try:
         with open("static/files/version.json", encoding="utf-8") as f:
@@ -2405,6 +2388,6 @@ if (
 app.run(
     host=local_ip,
     port=config["url"]["port"],
-    debug=config["settings"]["flask-debug"],
+    debug=config["settings"]["flask-debug"] == "true",
     use_reloader=config["settings"]["flask-debug"] == "false",
 )
