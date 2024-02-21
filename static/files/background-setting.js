@@ -154,9 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
             xhr.open('POST', '/upload_file', true);
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    console.log('Fichier téléchargé avec succès!');
+                    console.log('File downloaded successfully');
                     var fileName = "**uploaded/" + input.files[0].name;
-                    console.log('Image envoyée avec succès ! Nom du fichier :', fileName);
+                    console.log('Image sent successfully! File name :', fileName);
                     // Faire quelque chose avec le nom du fichier
                     // button.image = "**uploaded/" + fileName;
 
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                         removeBackgroundFromArray()
                 } else {
-                    console.error('Échec du téléchargement du fichier.');
+                    console.error('Failed to download file.');
                 }
             }
             xhr.send(formData);

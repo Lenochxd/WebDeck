@@ -8,7 +8,7 @@ function handleFilepathButtonClick() {
     })
     .then(response => response.text())
     .then(filePath => {
-        console.log('Chemin du fichier:', filePath);
+        console.log('File path:', filePath);
         const filepathText = document.querySelectorAll('input.filepath');
         if (filePath !== "") {
             filepathText.forEach(textElement => {
@@ -17,7 +17,7 @@ function handleFilepathButtonClick() {
         }
     })
     .catch(error => {
-        console.error('Erreur lors de la requête:', error);
+        console.error('Error during request:', error);
     });
 }
 

@@ -18,6 +18,9 @@ failed=Échec
 error=Erreur
 error_occurred=Une erreur s'est produite
 
+settings_load_error=Une erreur est survenue lors du chargement des paramètres.
+settings_save_error=Une erreur est survenue lors de l'enregistrement des paramètres.
+
 auto_update_error=Erreur lors de la mise à jour de WebDeck, veuillez le mettre à jour manuellement depuis https://github.com/Lenochxd/WebDeck/releases/latest
 
 no_files_found_error=Aucun fichier trouvé
@@ -42,8 +45,9 @@ spotify_volume_prenium_error=Erreur, impossible d'appliquer le volume car Spotif
 
 
 // -- Success messages --
+settings_save_success=Les paramètres ont été enregistrés avec succès.
 downloaded_successfully=Fichier téléchargé avec succès
-
+folder_created_successfully=Dossier créé avec succès !
 
 // -- Button configuration --
 configure_your_button=Configurez votre bouton
@@ -58,6 +62,8 @@ edit_command=Commande (expérimental)
 select_your_file=Choisir un fichier
 no_file_chosen=Aucun fichier choisi
 
+choose_option=Choisissez une option
+
 
 // -- Editor --
 enter_editor_mode=Passer en mode éditeur
@@ -69,7 +75,6 @@ quit_without_saving=Quitter sans sauvegarder
 save_and_exit=Sauvegarder et quitter
 swap_buttons=Échanger des boutons
 stop_swap_mode=Arrêter d'échanger
-
 
 // Settings tab
 configuration=Configuration

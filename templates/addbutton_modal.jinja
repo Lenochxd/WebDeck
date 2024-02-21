@@ -77,7 +77,7 @@
                             if (data && data.hasOwnProperty('success')) {
                               if (data.success) {
                                 // Faire quelque chose si la valeur de "success" est True
-                                console.log("Dossier créé avec succès !");
+                                console.log(`{{text["folder_created_successfully"]}}`);
               
                                 // Sélectionnez toutes les divs avec la classe "webdeck_foldername_ALL"
                                 var divs = document.querySelectorAll('.webdeck_foldername_ALL');
@@ -110,7 +110,7 @@
                                 
                               } else {
                                 // Faire quelque chose si la valeur de "success" est False
-                                console.log("La création du dossier a échoué car le dossier existe déjà.");
+                                console.log("Folder creation failed because the folder already exists.");
               
                               }
                             }
@@ -127,7 +127,7 @@
               {% elif "choice" in arg['TYPE'] %}
                 
                 <div class="choices_ALL">
-                  <label for="choice">Choisissez une option :</label><br>
+                  <label for="choice">{{text["choose_option"]}} :</label><br>
                   {% set language = text['lang_short'] %}
                   {% for choice in arg['options'] %}
                     {% if choice[language] %}
@@ -481,7 +481,7 @@
 
                   xhr.onload = function () {
                       if (xhr.status === 200) {
-                        console.log('Fichier téléchargé avec succès!');
+                        console.log('File downloaded successfully!');
                         var element = document.getElementById('button-image_{{arg_modal_ID}}');
 
                         var imgElement, image_{{arg_modal_ID}}, imageSizeSlider_{{arg_modal_ID}}, imageSizeValue_{{arg_modal_ID}};
@@ -516,7 +516,7 @@
 
                         button_{{arg_modal_ID}}.image = "**uploaded/" + input_{{arg_modal_ID}}.files[0].name;
                     } else {
-                        console.error('Échec du téléchargement du fichier.');
+                        console.error('Failed to download file.');
                     }
                   };
 
@@ -581,7 +581,7 @@
                       if (response.ok) {
                         return response.json();
                       } else {
-                        throw new Error('Une erreur est survenue lors du chargement des paramètres.');
+                        throw new Error(`{{text["settings_load_error"]}}`);
                       }
                     })
                     .then(function(configData) {
@@ -599,15 +599,15 @@
                       if (response.ok) {
                         return response.json();
                       } else {
-                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                        throw new Error(`{{text["settings_save_error"]}}`);
                       }
                     })
                     .then(function(response) {
                       if (response.success) {
-                        alert('Les paramètres ont été enregistrés avec succès.');
+                        alert(`{{text["settings_save_success"]}}`);
                         location.reload();
                       } else {
-                        throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                        throw new Error(`{{text["settings_save_error"]}}`);
                       }
                     })
                     .catch(function(error) {

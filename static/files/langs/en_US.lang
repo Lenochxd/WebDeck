@@ -18,6 +18,9 @@ failed=Failed
 error=Error
 error_occurred=An error has occurred
 
+settings_load_error=An error occurred while loading settings.
+settings_save_error=An error occurred while saving settings.
+
 auto_update_error=Error while updating WebDeck, please update it manually from https://github.com/Lenochxd/WebDeck/releases/latest
 
 no_files_found_error=No files were found
@@ -42,7 +45,9 @@ spotify_volume_prenium_error=Error, unable to apply volume because Spotify Preni
 
 
 // -- Success messages --
+settings_save_success=Settings saved successfully.
 downloaded_successfully=File downloaded successfully
+folder_created_successfully=Folder created successfully!
 
 
 // -- Button configuration --
@@ -57,6 +62,8 @@ edit_command=Command (experimental)
 
 select_your_file=Select your file
 no_file_chosen=No file chosen
+
+choose_option=Choose an option
 
 
 // -- Editor --

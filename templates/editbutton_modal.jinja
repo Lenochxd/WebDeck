@@ -279,7 +279,7 @@
 
                 xhr.onload = function () {
                     if (xhr.status === 200) {
-                        console.log('Fichier téléchargé avec succès!');
+                        console.log('File downloaded successfully!');
                         var element = document.getElementById('button-image_{{edit_modal_ID}}');
 
                         var imgElement, image_{{edit_modal_ID}}, imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}};
@@ -314,7 +314,7 @@
 
                         button_{{edit_modal_ID}}.image = "**uploaded/" + input_{{edit_modal_ID}}.files[0].name;
                     } else {
-                        console.error('Échec du téléchargement du fichier.');
+                        console.error('Failed to download file.');
                     }
                 };
 
@@ -434,15 +434,15 @@
                   if (response.ok) {
                     return response.json();
                   } else {
-                    throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    throw new Error(`{{text["settings_save_error"]}}`);
                   }
                 })
                 .then(function(response) {
                   if (response.success) {
-                    alert('Les paramètres ont été enregistrés avec succès.');
+                    alert(`{{text["settings_save_success"]}}`);
                     location.reload();
                   } else {
-                    throw new Error('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+                    throw new Error(`{{text["settings_save_error"]}}`);
                   }
                 })
                 .catch(function(error) {

@@ -8,9 +8,9 @@ function upload_file(element) {
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            console.log('Fichier téléchargé avec succès!');
+            console.log('File downloaded successfully!');
         } else {
-            console.error('Échec du téléchargement du fichier.');
+            console.error('Failed to download file.');
         }
     };
 
