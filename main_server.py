@@ -1010,6 +1010,13 @@ def home():
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
+
+    new_config = check_json_update(config)
+    if not config == new_config:
+        with open("config.json", "w", encoding="utf-8") as json_file:
+            json.dump(new_config, json_file, indent=4)
+        config = new_config
+    
     with open("commands.json", encoding="utf-8") as f:
         commands = json.load(f)
     with open("static/files/version.json", encoding="utf-8") as f:
