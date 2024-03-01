@@ -122,7 +122,7 @@ WebDeck est un projet en constante évolution, et nous apprécions vos contribut
 
 - Discord: Lenoch
 - Serveur Discord: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
-- Twitter: [https://twitter.com/WebDeckJ](https://twitter.com/WebDeckJ)
+- Twitter: [https://twitter.com/WebDeckApp](https://twitter.com/WebDeckApp)
 - Email (?): contact.lenoch@gmail.com
 
 <br>
