@@ -65,6 +65,8 @@ no_file_chosen=Aucun fichier choisi
 
 choose_option=Choisissez une option
 
+button_delete_confirmation=Souhaitez-vous vraiment supprimer ce bouton ?
+
 
 // -- Editor --
 enter_editor_mode=Passer en mode éditeur

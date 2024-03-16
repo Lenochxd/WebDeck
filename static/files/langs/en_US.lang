@@ -65,6 +65,8 @@ no_file_chosen=No file chosen
 
 choose_option=Choose an option
 
+button_delete_confirmation=Do you really want to remove this button?
+
 
 // -- Editor --
 enter_editor_mode=Enter editor mode
