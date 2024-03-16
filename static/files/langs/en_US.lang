@@ -76,6 +76,7 @@ quit_without_saving=Quit without saving
 save_and_exit=Save and exit
 swap_buttons=Swap 2 Buttons
 stop_swap_mode=Stop Swap Mode
+no_changes_to_undo=There are no changes to undo.
 
 
 // Settings tab

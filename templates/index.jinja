@@ -1791,7 +1791,7 @@
           console.log(`Last change: ${lastChange}`)
           
           if (lastChange === undefined) {
-            showError("There are no changes to undo.");
+            showError(`{{text["no_changes_to_undo"]}}`);
           } else {
             let [swapFirstBtn, swapSecondBtn] = lastChange.split(" > ");
             const [parentId1, formNumber1] = swapFirstBtn.split(";;;");
@@ -1848,7 +1848,7 @@
           console.log(`Last change: ${lastChange}`)
           
           if (lastChange === undefined) {
-            showError("There are no changes to undo.");
+            showError(`{{text["no_changes_to_undo"]}}`);
           } else {
 
           

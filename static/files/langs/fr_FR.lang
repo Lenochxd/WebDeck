@@ -49,6 +49,7 @@ settings_save_success=Les paramètres ont été enregistrés avec succès.
 downloaded_successfully=Fichier téléchargé avec succès
 folder_created_successfully=Dossier créé avec succès !
 
+
 // -- Button configuration --
 configure_your_button=Configurez votre bouton
 
@@ -75,6 +76,8 @@ quit_without_saving=Quitter sans sauvegarder
 save_and_exit=Sauvegarder et quitter
 swap_buttons=Échanger des boutons
 stop_swap_mode=Arrêter d'échanger
+no_changes_to_undo=Aucune modification ne peut être annulée.
+
 
 // Settings tab
 configuration=Configuration
