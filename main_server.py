@@ -905,13 +905,21 @@ def get_usage():
     # GPU
     computer_info["gpus"] = {}
     if config["settings"]["gpu_method"] == "nvidia (pynvml)":
-        num_gpus = pynvml.nvmlDeviceGetCount()
-        for count in range(num_gpus):
-            handle = pynvml.nvmlDeviceGetHandleByIndex(count)
-            utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
-            computer_info["gpus"][f"GPU{count + 1}"] = {
-                "usage_percent": int(utilization.gpu),
-            }
+        try:
+            num_gpus = pynvml.nvmlDeviceGetCount()
+            for count in range(num_gpus):
+                handle = pynvml.nvmlDeviceGetHandleByIndex(count)
+                utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
+                computer_info["gpus"][f"GPU{count + 1}"] = {
+                    "usage_percent": int(utilization.gpu),
+                }
+        except pynvml.nvml.NVML_ERROR_NOT_SUPPORTED:
+            computer_info["gpus"]["defaultGPU"] = {}
+            
+            config["settings"]["gpu_method"] = "None"
+            with open("config.json", "w", encoding="utf-8") as json_file:
+                json.dump(config, json_file, indent=4)
+                
     elif config["settings"]["gpu_method"] == "nvidia (GPUtil)":
 
         gpus = GPUtil.getGPUs()
@@ -924,8 +932,10 @@ def get_usage():
                 "available_mb": gpu.memoryTotal - gpu.memoryUsed,
                 "usage_percent": int(gpu.load * 100),
             }
+            
     else:
         computer_info["gpus"]["defaultGPU"] = {}
+        
     if "GPU1" in computer_info["gpus"]:
         computer_info["gpus"]["defaultGPU"] = computer_info["gpus"]["GPU1"]
 
