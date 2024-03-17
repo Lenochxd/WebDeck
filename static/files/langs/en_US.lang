@@ -10,6 +10,7 @@ credits=Lenoch
 
 qr_code=QR Code
 open_config=Open Config
+fix_firewall=Fix firewall
 exit=Quit
 
 // -- Errors --

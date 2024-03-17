@@ -182,6 +182,22 @@ if if_webdeck == False:
         return local_ip
 
     local_ip = get_local_ip()
+    
+    def fix_firewall_permission():
+        command = [
+            "powershell",
+            "-NoProfile",
+            "New-NetFirewallRule",
+            "-DisplayName",
+            '"WebDeck"',
+            "-Direction",
+            "Inbound",
+            "-Program",
+            f'"{sys.executable}"',
+            "-Action",
+            "Allow",
+        ]
+        subprocess.run(command)
 
     def open_config():
         port, black_theme, language, open_in_integrated_browser = reload_config()
@@ -257,6 +273,7 @@ if if_webdeck == False:
         menu = (
             item(text['qr_code'], lambda: show_qrcode(), default=True),
             item(text['open_config'], lambda: open_config()),
+            item(text['fix_firewall'], lambda: fix_firewall_permission()),
             item(text['exit'], lambda: exit_program()),
         )
 
