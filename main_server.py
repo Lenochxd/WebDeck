@@ -2192,6 +2192,9 @@ def send_data_route():
 
 
 def check_for_updates():
+    if os.path.exists("update"):
+        shutil.rmtree("update", ignore_errors=True)
+        
     try:
         with open("static/files/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
@@ -2205,12 +2208,15 @@ def check_for_updates():
         if compare_versions(latest_version, current_version) > 0:
             print(f"New version available: {latest_version}")
 
-            if not os.path.exists("static/updates"):
-                os.makedirs("static/updates")
-                shutil.copyfile("WD_updater.exe", "static/updates/WD_updater.exe")
-                shutil.copytree("lib", "static/updates/lib")
+            os.makedirs("update")
+            shutil.copyfile("python3.dll", "update/python3.dll")
+            shutil.copyfile("python311.dll", "update/python311.dll")
+            shutil.copyfile("WD_updater.exe", "update/WD_updater.exe")
+            shutil.copytree("lib", "update/lib")
 
-            subprocess.Popen(["static/updates/WD_updater.exe"])
+            subprocess.Popen(["update/WD_updater.exe"])
+            
+            sys.exit()
 
     except Exception as e:
         print2(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
