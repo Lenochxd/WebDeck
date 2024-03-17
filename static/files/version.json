@@ -1,6 +1,54 @@
 {
     "versions": [
         {
+            "version": "1.7.3",
+            "release_date": {
+                "day": "17",
+                "month": "3",
+                "year": "2024",
+                "hour": "18",
+                "minute": "00"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Added a 'Fix Firewall' button in the tray icon",
+                    "Soundboard now disabled by default (no need to enable it before selecting a microphone)",
+                    "Manually added obsolete configuration files will now be updated automatically",
+                    "Added forgotten translations"
+                ],
+                "fixes": [
+                    "Fixed: Unable to add or move a button to the same location as a previously deleted button",
+                    "Fixed automatic updates, now repaired and improved; no need for manual updates anymore",
+                    "Fixed the 'Open' button if the file selection window was canceled",
+                    "Fixed an English text"
+                ],
+                "nobody_cares": [
+                    "Improved code quality",
+                    "Improved file exclusion using .gitignore and fnmatch during build"
+                ]
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Ajout d'un bouton 'Réparer pare-feu' dans l'icône minimisée",
+                    "Soundboard désormais désactivée par défaut (inutile de l'activer avant d'avoir sélectionné un microphone)",
+                    "Les fichiers de configuration obsolètes ajoutés manuellement désormais mis à jour automatiquement",
+                    "Ajout de traductions"
+                ],
+                "fixes": [
+                    "Correction : impossible d'ajouter ou de déplacer un bouton au même emplacement qu'un bouton précédemment supprimé",
+                    "Correction des mises à jour automatiques qui ont étés réparées et améliorées; plus besoin de mettre à jour manuellement",
+                    "Correction du bouton 'Ouvrir' si la fenêtre de sélection de fichier était annulée",
+                    "Correction d'un texte en anglais"
+                ],
+                "nobody_cares": [
+                    "Amélioration de la qualité du code",
+                    "Amélioration de l'exclusion de fichiers en utilisant .gitignore et fnmatch lors du build"
+                ]
+            }
+        },
+        {
             "version": "1.7.2",
             "release_date": {
                 "day": "23",
@@ -55,7 +103,7 @@
                     "Correction : Plus besoin de redémarrer l'application lors du changement du mot de passe OBS",
                     "Correction : Plus besoin de redémarrer l'application lors du changement du paramètre du navigateur dédié",
                     "Correction : La configuration ne se ferme plus en appuyant sur 'c' ou 'm' dans un champ de texte",
-                    "Correction: Possibilité de scroller sur mobile dans les pages de configuration de boutons",
+                    "Correction : Possibilité de scroller sur mobile dans les pages de configuration de boutons",
                     "Correction du redimensionnement des images des boutons, qui ne revenait pas automatiquement à 70% après avoir modifié l'image.",
                     "Correction de la taille du fond d'écran dans l'aperçu des boutons en mode édition",
                     "Correction de l'auto-update qui effectuait la mise à jour même si désactivé",
