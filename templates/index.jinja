@@ -1357,12 +1357,12 @@
             //     console.log("Le bouton a été ajouté.");
             //     ifModif = 1;
             // }
-            console.log("Le bouton est en train d'être ajouté");
+            console.log("The button is being added");
         }
       
         // Fonction pour afficher la boîte de dialogue de confirmation de suppression
         function showDeleteConfirmation(event) {
-            if (editorMode === 1 && confirm("Souhaitez-vous vraiment supprimer ce bouton ?")) {
+            if (editorMode === 1 && confirm(`{{text["button_delete_confirmation"]}}`)) {
                 ifModif = 1;
 
                 let closest_form = event.target.closest('form.form');
@@ -1390,6 +1390,7 @@
                 svg.appendChild(path);
                 addButtonDiv.appendChild(svg);
                 voidDiv.appendChild(addButtonDiv);
+
       
                 const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
                 const formClass = closest_form.className;
@@ -1397,6 +1398,9 @@
                 const formNumber = formClassMatch ? formClassMatch[1] : '';
                 const formIndex = parseInt(formNumber) - 1;
                 console.log(`${parentId} > ${formNumber}`);
+                
+                addButtonDiv.setAttribute('add_FOLDER', parentId);
+                addButtonDiv.setAttribute('add_ID', formNumber);
 
                 if (tempEditorConfig === null || tempEditorConfig == {}) {
                   loadConfig().then((config) => {
@@ -1412,6 +1416,8 @@
                 console.log("Le bouton a été supprimé.");
                 console.log(tempEditorConfig);
                 config = tempEditorConfig;
+
+                reloadEditorEvents();
 
             }
         }
@@ -1988,31 +1994,48 @@
 
         const EditorButtons = document.getElementById('EditorButtons');
         const EditorButtonsFolders = document.getElementById('EditorButtons-Folders');
-      
-        let addButtonElements = document.querySelectorAll('.add-button');
-        let editButtonElements = document.querySelectorAll('.edit-button');
-        let deleteButtonElements = document.querySelectorAll('.delete-button');
-      
-        var AllButtons1 = document.querySelectorAll('form.form');
-        var AllButtons2 = document.querySelectorAll('div.void');
-        var AllButtons = Array.from(AllButtons1).concat(Array.from(AllButtons2));
-      
-        // Ajouter un gestionnaire d'événement pour le clic sur le bouton +
-        for (let i = 0; i < addButtonElements.length; i++) {
-            addButtonElements[i].addEventListener('click', showAddConfirmation);
+
+        function reloadEditorEvents() {
+          console.log('reloading editor events');
+          let addButtonElements = document.querySelectorAll('.add-button');
+          let editButtonElements = document.querySelectorAll('.edit-button');
+          let deleteButtonElements = document.querySelectorAll('.delete-button');
+        
+          var AllButtons1 = document.querySelectorAll('form.form');
+          var AllButtons2 = document.querySelectorAll('div.void');
+          var AllButtons = Array.from(AllButtons1).concat(Array.from(AllButtons2));
+        
+          // Ajouter un gestionnaire d'événement pour le clic sur le bouton +
+          for (let i = 0; i < addButtonElements.length; i++) {
+              addButtonElements[i].addEventListener('click', showAddConfirmation);
+          }
+          // Ajouter un gestionnaire d'événement pour le clic sur le bouton edit
+          for (let i = 0; i < editButtonElements.length; i++) {
+              editButtonElements[i].addEventListener('click', showEditWindow);
+          }
+          // Ajouter un gestionnaire d'événement pour le clic sur le bouton delete
+          for (let i = 0; i < deleteButtonElements.length; i++) {
+              deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
+          }
+          // Ajouter un gestionnaire d'événement pour le clic sur le bouton swap
+          for (let i = 0; i < AllButtons.length; i++) {
+              AllButtons[i].addEventListener('click', swapButton);
+          }
+
+          // Ajouter un écouteur d'événement sur chaque bouton pour ouvrir la modal addbutton
+          let open_modal_addbutton = document.querySelectorAll("div.add-button");
+          for (let button of open_modal_addbutton) {
+            button.addEventListener("click", function() {
+              if (swapMode !== 1) {
+                var addIdValue = button.getAttribute('add_ID');
+                var addFolderValue = button.getAttribute('add_FOLDER');
+                show_addbutton_modal(addFolderValue, addIdValue);
+              }
+            });
+          }
         }
-        // Ajouter un gestionnaire d'événement pour le clic sur le bouton edit
-        for (let i = 0; i < editButtonElements.length; i++) {
-            editButtonElements[i].addEventListener('click', showEditWindow);
-        }
-        // Ajouter un gestionnaire d'événement pour le clic sur le bouton delete
-        for (let i = 0; i < deleteButtonElements.length; i++) {
-            deleteButtonElements[i].addEventListener('click', showDeleteConfirmation);
-        }
-        // Ajouter un gestionnaire d'événement pour le clic sur le bouton swap
-        for (let i = 0; i < AllButtons.length; i++) {
-            AllButtons[i].addEventListener('click', swapButton);
-        }
+
+        reloadEditorEvents();
 
         // =========== EDITORMODE ======== END
 

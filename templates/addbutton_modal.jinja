@@ -612,6 +612,7 @@
                     })
                     .catch(function(error) {
                       alert(error.message);
+                      throw new Error(error);
                     });
                   
                   element.removeAttribute('add_ID');
