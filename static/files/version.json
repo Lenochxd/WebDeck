@@ -20,6 +20,7 @@
                 "fixes": [
                     "Fixed: Unable to add or move a button to the same location as a previously deleted button",
                     "Fixed automatic updates, now repaired and improved; no need for manual updates anymore",
+                    "Fixed error regarding unsupported old Nvidia GPUs",
                     "Fixed the 'Open' button if the file selection window was canceled",
                     "Fixed an English text"
                 ],
@@ -39,6 +40,7 @@
                 "fixes": [
                     "Correction : impossible d'ajouter ou de déplacer un bouton au même emplacement qu'un bouton précédemment supprimé",
                     "Correction des mises à jour automatiques qui ont étés réparées et améliorées; plus besoin de mettre à jour manuellement",
+                    "Correction de l'erreur de non prise en charge des anciennes cartes graphiques Nvidia",
                     "Correction du bouton 'Ouvrir' si la fenêtre de sélection de fichier était annulée",
                     "Correction d'un texte en anglais"
                 ],
