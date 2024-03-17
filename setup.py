@@ -12,6 +12,7 @@ build_options = {
                 }
 
 import sys, os, json, shutil
+import fnmatch
 import time
 start_time = time.time()
 sys.setrecursionlimit(10000)
@@ -39,11 +40,29 @@ setup(name='WebDeck',
     executables = executables)
 
 
-exclude_folders = [
+def is_excluded(file_path, exclude_list):
+    rel_path = os.path.relpath(file_path)
+    
+    for exclude_pattern in exclude_list:
+        if fnmatch.fnmatch(rel_path, exclude_pattern):
+            return True
+        
+    return False
+
+ignored_files = [
     '!buttons', 'addons', '.git', '.github', '.vscode', '__pycache__', 'build', 'requirements.txt',
     'webdeck', '%.html%WebDeck', 'testmic', 'build.bat',
     'WD_main.exe', 'WebDeck.exe', 'WD_updater.exe'
 ]
+
+if os.path.isfile('.gitignore'):
+    with open('.gitignore', 'r') as gitignore_file:
+        for line in gitignore_file:
+            if line.strip() != '' and not line.strip().startswith('#'):
+                if line.startswith("\\"):
+                    line = line.replace('\\', '', 1)
+                ignored_files.append(line.strip())
+
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(script_dir, 'build')
@@ -54,7 +73,7 @@ if os.path.exists(build_dir):
     
     for item in os.listdir(script_dir):
         item_path = os.path.join(script_dir, item)
-        if item != target_dir and item not in exclude_folders and item.endswith('.py') == False and item.endswith('.md') == False:
+        if item != target_dir and not is_excluded(item, ignored_files) and item.endswith('.py') == False and item.endswith('.md') == False:
             if os.path.isdir(item_path):
                 shutil.copytree(item_path, os.path.join(target_dir, item))
             else:
