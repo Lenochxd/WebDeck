@@ -1364,17 +1364,29 @@
         function showDeleteConfirmation(event) {
             if (editorMode === 1 && confirm(`{{text["button_delete_confirmation"]}}`)) {
                 ifModif = 1;
-
+                
                 let closest_form = event.target.closest('form.form');
                 if (closest_form === null) {
                     closest_form = event.target.closest('div.void');
                 }
+
+                const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
+                const formClass = closest_form.className;
+                const formClassMatch = formClass.match(/form-(\d+)/);
+                const formNumber = formClassMatch ? formClassMatch[1] : '';
+                const formIndex = parseInt(formNumber) - 1;
+
                 const voidDiv = document.createElement('div');
                 voidDiv.classList.add('void');
+                voidDiv.classList.add(`form-${formNumber}`);
+                voidDiv.id = closest_form.id;
                 const addButtonDiv = document.createElement('div');
                 addButtonDiv.classList.add('add-button');
                 addButtonDiv.style.display = 'flex';
                 addButtonDiv.style.top = '40.3675';
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.classList.add('checkbox');
+                checkboxDiv.style.display = 'none';
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
                 svg.setAttribute('width', '20');
@@ -1389,14 +1401,9 @@
       
                 svg.appendChild(path);
                 addButtonDiv.appendChild(svg);
+                voidDiv.appendChild(checkboxDiv);
                 voidDiv.appendChild(addButtonDiv);
-
-      
-                const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
-                const formClass = closest_form.className;
-                const formClassMatch = formClass.match(/form-(\d+)/);
-                const formNumber = formClassMatch ? formClassMatch[1] : '';
-                const formIndex = parseInt(formNumber) - 1;
+                
                 console.log(`${parentId} > ${formNumber}`);
                 
                 addButtonDiv.setAttribute('add_FOLDER', parentId);
@@ -1413,7 +1420,7 @@
                 };
                 closest_form.parentNode.replaceChild(voidDiv, closest_form);
 
-                console.log("Le bouton a été supprimé.");
+                console.log("The button has been removed.");
                 console.log(tempEditorConfig);
                 config = tempEditorConfig;
 
