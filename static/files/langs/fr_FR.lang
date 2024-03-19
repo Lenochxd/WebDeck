@@ -26,6 +26,7 @@ auto_update_error=Erreur lors de la mise à jour de WebDeck, veuillez le mettre 
 
 no_files_found_error=Aucun fichier trouvé
 
+ffmpeg_not_installed_error=Installation de FFMPEG en cours...
 vlc_not_installed_error=VLC n'est pas installé !
 mp3_loading_error=Erreur lors du chargement du fichier MP3 nommé.
 
