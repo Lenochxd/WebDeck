@@ -11,6 +11,7 @@
         "open-settings-in-integrated-browser": "false",
         "data-transfer-method": "http",
         "automatic-firewall-bypass": "false",
+        "fix-stop-soundboard": "false",
         "spotify-api": {
             "CLIENT_ID": "",
             "CLIENT_SECRET": "",
