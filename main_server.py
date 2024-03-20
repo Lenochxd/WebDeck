@@ -2431,13 +2431,16 @@ def soundboard():
     finally:
         print("Stopping soundboard ...")
 
-        if stream_in is not None:
-            stream_in.stop_stream()
-            stream_in.close()
+        try:
+            if stream_in is not None:
+                stream_in.stop_stream()
+                stream_in.close()
 
-        if stream_out is not None:
-            stream_out.stop_stream()
-            stream_out.close()
+            if stream_out is not None:
+                stream_out.stop_stream()
+                stream_out.close()
+        except OSError:
+            restart_soundboard()
 
         audio.terminate()
 
