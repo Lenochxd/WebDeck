@@ -770,6 +770,14 @@
                     <span class="slider round"></span>
                   </label>
                 </div>
+
+                <div class="setting fix-stop-soundboard">
+                  <p> {{text['fix_stop_soundboard']}} </p>
+                  <label for="fix-stop-soundboard" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="fix-stop-soundboard" name="settings.fix-stop-soundboard" {% if config['settings']['fix-stop-soundboard'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
                 
                 <div class="setting dev-mode">
                   <p> {{text['dev_mode']}} </p>
