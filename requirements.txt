@@ -32,3 +32,4 @@ pywebview
 cx_Freeze
 python-vlc
 obs-websocket-py
+pydub
