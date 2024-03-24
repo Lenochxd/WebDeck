@@ -144,7 +144,7 @@
                       {% set checked = "checked" %}
                       {% set style = "" %}
                     {% endif %}
-
+                    
                     <div class="choice">
                       <input {{checked}} class="choice {{black_theme}}" type="radio" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
                       <label for="{{ choice_name }}">{{ choice_name }}</label>
