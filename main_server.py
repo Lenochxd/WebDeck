@@ -685,12 +685,6 @@ def update_gridsize(config, new_height, new_width):
 
 
 
-
-
-
-
-
-
 # for folder_name, folder_content in config["front"]["buttons"].items():
 #     for button in folder_content:
 #         if 'action' not in button.keys():
@@ -758,6 +752,12 @@ try:
 except:
     pass
 
+
+python_threads = []
+def execute_python_file(file_path):
+    with open(file_path, "r") as file:
+        file_content = file.read()
+    exec(file_content)
 
 def get_current_volume():
     devices = AudioUtilities.GetSpeakers()
@@ -1522,7 +1522,7 @@ def send_data(message=None):
                 "static\\files\\uploaded\\",
             ]
         ):
-            # si il est stocké directement dans static/files/uploaded et pas dans C:\example
+            # if it is stored directly in static/files/uploaded and not in C:\example
             sound_file = f"static/files/uploaded/{sound_file}"
 
         ear_soundboard = config["settings"]["ear-soundboard"].lower() == "true"
@@ -1554,7 +1554,30 @@ def send_data(message=None):
             show_error(f"{text['mp3_loading_error']} {sound_file}")
 
     elif message.startswith("/exec"):
-        exec(message.replace("/exec", "").strip())
+        if "type:uploaded_file" in message:
+            message = message.replace("C:\\fakepath\\", "").replace("/exec ", "").replace("type:uploaded_file", "").strip()
+            if all(
+                substring not in message
+                for substring in [
+                    ":",
+                    "static/files/uploaded/",
+                    "static\\files\\uploaded\\",
+                ]
+            ):
+                # if it is stored directly in static/files/uploaded and not in C:\example
+                python_file = f"static/files/uploaded/{message}"
+                print(message)
+                print(python_file)
+                
+                python_threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
+                python_threads[-1].start()
+        elif "type:file_path" in message:
+            python_file = message.replace("/exec ", "").replace("type:file_path", "").strip()
+            
+            python_threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
+            python_threads[-1].start()
+        else:
+            exec(message.replace("/exec", "").strip())
 
     elif message.startswith("/batch"):
         subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)

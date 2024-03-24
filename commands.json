@@ -990,9 +990,53 @@
       "command": "/exec",
       "args": [
         {
-          "TYPE": "input longtext",
-          "en": "Python code",
-          "fr": "Code Python"
+          "TYPE": "choice",
+          "en": "Option",
+          "fr": "Option",
+          "options": [
+            {
+              "TYPE": "multiple",
+              "en": "Python file (upload)",
+              "fr": "Fichier Python (upload)",
+              "items": [
+                {
+                  "TYPE": "text",
+                  "value": "type:uploaded_file"
+                },
+                {
+                  "TYPE": "input filetype['.py']"
+                }
+              ]
+            },
+            {
+              "TYPE": "multiple",
+              "en": "Python file (path)",
+              "fr": "Fichier Python (chemin)",
+              "items": [
+                {
+                  "TYPE": "text",
+                  "value": "type:file_path"
+                },
+                {
+                  "TYPE": "input filepath['.py']"
+                }
+              ]
+            },
+            {
+              "TYPE": "multiple",
+              "en": "Python code (single line)",
+              "fr": "Code Python (une seule ligne)",
+              "items": [
+                {
+                  "TYPE": "text",
+                  "value": "type:single_line"
+                },
+                {
+                  "TYPE": "input text"
+                }
+              ]
+            }
+          ]
         }
       ],
       "name": {
@@ -1260,7 +1304,7 @@
       "command": "/playsound",
       "args": [
         {
-          "TYPE": "input path-soundboard-audio",
+          "TYPE": "input filetype['.mp3']",
           "en": "Audio file (.mp3)",
           "fr": "Fichier audio (.mp3)"
         },
