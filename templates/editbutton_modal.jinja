@@ -175,9 +175,7 @@
             <div class="arg_container" edit_modal_ID="{{edit_modal_ID}}">
               <label for="command_{{edit_modal_ID}}"> {{text['edit_command']}} </label>
               {% set message = button_settings['message'] %}
-              {% if button_settings['message'].startswith('/folder') %}
-                {% set message = message.replace('"','') %}
-              {% endif %}
+              {% set message = message.replace('"','&quot;') %}
               <input class="{{black_theme}}" type="text" name="" id="command_{{edit_modal_ID}}" value="{{ message }}">
             </div>
           {% endif %}
