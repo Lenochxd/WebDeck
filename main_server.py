@@ -327,6 +327,8 @@ def get_device(vbcable_device):
         return "ERROR_NO_VLC"
 
 def get_ffmpeg():
+    if os.path.isfile("ffmpeg.exe"):
+        return os.path.abspath("ffmpeg.exe")
 
     base_path = Path("C:/Users")
 
@@ -362,9 +364,16 @@ def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
     except FileNotFoundError as e:
         print(e)
         ffmpeg_path = get_ffmpeg()
-        AudioSegment.converter = ffmpeg_path # TODO
+        
+        shutil.copyfile(ffmpeg_path, "ffmpeg.exe")
+        shutil.copyfile(ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe'), "ffprobe.exe")
+        
+        ffmpeg_path = os.path.abspath("ffmpeg.exe")
+        ffprobe_path = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
+
+        AudioSegment.converter = ffmpeg_path
         AudioSegment.ffmpeg = ffmpeg_path
-        AudioSegment.ffprobe = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
+        AudioSegment.ffprobe = ffprobe_path
         if AudioSegment.converter is None:
             return False
     else:
@@ -400,7 +409,7 @@ def playsound(file_path: str, sound_volume, ear_soundboard=True):
         print("VLC is not installed!")
         return jsonify({"success": False, "message": text["vlc_not_installed_error"]})
     else:
-        if config["fix-stop-soundboard"] == "true":
+        if config["settings"]["fix-stop-soundboard"] == "true":
             file_path = silence_path(file_path)
             if file_path == False:
                 return jsonify({"success": False, "message": text["ffmpeg_not_installed_error"]})
