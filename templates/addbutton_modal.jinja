@@ -144,7 +144,13 @@
                     
                     <div style="display: none;" class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                       {% set arg = choice %}
-                      {% include 'args.jinja' %}
+                      {% if choice["TYPE"] == "multiple" %}
+                        {% for arg in choice["items"] %}
+                          {% include 'args.jinja' %}
+                        {% endfor %}
+                      {% else %}
+                        {% include 'args.jinja' %}
+                      {% endif %}
                     </div>
                   {% endfor %}
                 </div>

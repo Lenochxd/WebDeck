@@ -82,6 +82,8 @@
             value="{{arg['value']}}"
         {% endif %}
     >
+{% elif "text" in arg['TYPE'] and arg['value'] %}
+    <input class="invisible" type="text" size="10" value="{{arg['value']}}">
 {% elif "dropdown" in arg['TYPE'] %}
     {# lister toutes les options #}
     <select name="{{file}}" >
