@@ -137,14 +137,22 @@
                     {% else %}
                       {% set choice_name = "choice_name is missing!" %}
                     {% endif %}
+
+                    {% set checked = "" %}
+                    {% set style = 'style="display: none;"' %}
+                    {% if "checked" in choice["TYPE"] %}
+                      {% set checked = "checked" %}
+                      {% set style = "" %}
+                    {% endif %}
+
                     <div class="choice">
-                      <input class="choice {{black_theme}}" type="radio" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
+                      <input {{checked}} class="choice {{black_theme}}" type="radio" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
                       <label for="{{ choice_name }}">{{ choice_name }}</label>
                     </div>
                     
-                    <div style="display: none;" class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
+                    <div {{style}} class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                       {% set arg = choice %}
-                      {% if choice["TYPE"] == "multiple" %}
+                      {% if "multiple" in choice["TYPE"] %}
                         {% for arg in choice["items"] %}
                           {% include 'args.jinja' %}
                         {% endfor %}
