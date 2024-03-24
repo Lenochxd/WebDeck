@@ -204,7 +204,7 @@
                 </div>
 
                 
-                <input type="hidden" class="message {{black_theme}}" value="{{ button_config['message'] }}">
+                <input type="hidden" class="message {{black_theme}}" value="{{ button_config['message'].replace('"','&quot;')  }}">
                 <div class="checkbox" style="display: none;"></div>
                 
                 {% set class = "wd_button" %}
