@@ -1,5 +1,9 @@
-function handleFilepathButtonClick() {
-    fetch('/upload_filepath', {
+function handleFilepathButtonClick(filetypes) {
+    let filetypesString = ""
+    if (filetypes != null && filetypes.length > 0) {
+        filetypesString = `?filetypes=${filetypes}`
+    }
+    fetch(`/upload_filepath${filetypesString}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,8 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const filepathButtons = document.querySelectorAll('button.filepath');
 
     filepathButtons.forEach(button => {
+        let filetypes = button.getAttribute('filetypes');
         button.addEventListener('click', () => {
-            handleFilepathButtonClick();
+            handleFilepathButtonClick(filetypes);
         });
     });
 

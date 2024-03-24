@@ -1423,9 +1423,17 @@ def get_config():
 
 @app.route("/upload_filepath", methods=["POST"])
 def upload_filepath():
-    path = easygui.fileopenbox()
+    filetypes = request.args.get("filetypes")
+    default = '*'
+    if filetypes is not None:
+        filetypes = filetypes.split('_')
+        filetypes = [f"*{item}" for item in filetypes]
+        default = filetypes[0]
+
+    path = easygui.fileopenbox(filetypes=filetypes, default=default)
     if path is None:
         path = ""
+        
     return path
 
 

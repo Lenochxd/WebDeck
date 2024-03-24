@@ -8,6 +8,31 @@
             </div>
         {% endfor %}
     </div>
+{% elif "path-soundboard-audio" in arg['TYPE'] %}
+    <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept=".mp3">
+{% elif "filetype" in arg['TYPE'] %}
+    {% set string_list = arg['TYPE'].split(" ") %}
+    {% set filetypes = [] %}
+    {% for i in string_list %}
+        {% if i.startswith('filetype') %}
+            {% set filetypes = eval(i.replace('filetype', '')) %}
+            {% set filetypes_string = ", ".join(filetypes) %}
+            <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept="{{filetypes_string}}">
+        {% endif %}
+    {% endfor %}
+{% elif "filepath" in arg['TYPE'] %}
+    {% set string_list = arg['TYPE'].split(" ") %}
+    {% set filetypes = [] %}
+    {% for i in string_list %}
+        {% if i.startswith('filepath') %}
+            {% set filetypes = eval(i.replace('filepath', '')) %}
+            {% set filetypes_string = "_".join(filetypes) %}
+            <div class="filepath">
+                <button class="filepath" filetypes="{{filetypes_string}}"> {{text['select_your_file']}} </button>
+                <input type="text" class="filepath {{black_theme}}" placeholder="{{text['no_file_chosen']}}">
+            </div>
+        {% endif %}
+    {% endfor %}
 {% elif "file" in arg['TYPE'] or "path-windowsapp" in arg['TYPE'] %}
     <div class="filepath">
         <button class="filepath"> {{text['select_your_file']}} </button>
@@ -71,8 +96,6 @@
             <option value="{{ option['ID'] }}"> {{ option_name }} </option>
         {% endfor %}
     </select>
-{% elif "path-soundboard-audio" in arg['TYPE'] %}
-    <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept=".mp3">
 {% elif "webdeck_available_gpus" in arg['TYPE'] %}
     <select name="{{file}}" >
         {% for gpu, usage in usage_example['gpus'].items() %}
