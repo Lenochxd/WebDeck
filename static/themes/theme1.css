@@ -254,15 +254,8 @@ div.usage-value {
 
 
 
-
 /* ===== Scrollbar CSS ===== */
-/* Firefox */
-* {
-  scrollbar-width: auto;
-  scrollbar-color: #4b4b4b #292929;
-}
 
-/* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 12px;
 }
@@ -1017,6 +1010,20 @@ svg.addbutton-config-modal.black-theme,
 svg.addbutton-args-config-modal.black-theme,
 svg.editbutton-config-modal.black-theme {
   fill:#fbfbfd!important;
+}
+
+svg.config-modal:hover,
+svg.addbutton-config-modal:hover,
+svg.addbutton-args-config-modal:hover,
+svg.editbutton-config-modal:hover {
+  fill: #2a2a2a!important;
+}
+
+svg.config-modal.black-theme:hover,
+svg.addbutton-config-modal.black-theme:hover,
+svg.addbutton-args-config-modal.black-theme:hover,
+svg.editbutton-config-modal.black-theme:hover {
+  fill: #e6e6e8!important;
 }
 
 .all-commands a, .all-choices a, .dropdown-btn {
