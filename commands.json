@@ -995,7 +995,7 @@
           "fr": "Option",
           "options": [
             {
-              "TYPE": "multiple",
+              "TYPE": "multiple checked",
               "en": "Python file (upload)",
               "fr": "Fichier Python (upload)",
               "items": [
@@ -1187,14 +1187,14 @@
           "fr": "Option",
           "options": [
             {
-              "TYPE": "NONE",
+              "TYPE": "NONE checked",
               "en": "Copy (ctrl+c)",
               "fr": "Copier (ctrl+c)"
             },
             {
               "TYPE": "input text",
               "en": "Copy text in the clipboard",
-              "fr": "Copie le texte voulu dans le presse-papier"
+              "fr": "Copie un texte dans le presse-papier"
             }
           ]
         }
@@ -1221,14 +1221,14 @@
           "fr": "Option",
           "options": [
             {
-              "TYPE": "NONE",
+              "TYPE": "NONE checked",
               "en": "Paste (ctrl+v)",
               "fr": "Coller (ctrl+v)"
             },
             {
               "TYPE": "input text",
               "en": "Paste text",
-              "fr": "Colle le texte voulu"
+              "fr": "Colle un texte voulu"
             }
           ]
         }
