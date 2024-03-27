@@ -1299,6 +1299,33 @@
       }
     }
   },
+  "Utilities": {
+    "CATEGORY-SETTINGS": {
+      "NAME": {
+        "fr": "Utilitaires"
+      }
+    },
+    "Color picker": {
+      "command": "/colorpicker lang:en",
+      "args": [],
+      "name": {
+        "en": "Color picker",
+        "fr": "Color picker"
+      },
+      "description": {
+        "en": "Indicates in a system notification the color pointed by your mouse",
+        "fr": "Indique dans une notification système la couleur pointée par votre souris"
+      },
+      "style": {
+        "image": "eyedropper.svg",
+        "image_size": "50%",
+        "name": {
+          "en": "Color picker",
+          "fr": "Color picker"
+        }
+      }
+    }
+  },
   "Soundboard": {
     "Playsound": {
       "command": "/playsound",
