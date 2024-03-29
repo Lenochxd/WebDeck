@@ -350,7 +350,6 @@ def get_ffmpeg():
                     continue
             continue
     print("ffmpeg.exe not found.")
-    # if ffmpeg not found
     subprocess.Popen("winget install ffmpeg", shell=True)
     return None
     
@@ -1153,7 +1152,7 @@ def home():
 
                 try:
                     module = __import__(f"addons.{module_name}", fromlist=[""])
-                except ImportError as e:
+                except Exception as e:
                     print(f"Error importing module {module_name}: {e}")
                     continue
 
