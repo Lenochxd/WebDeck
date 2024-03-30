@@ -136,11 +136,13 @@ text = load_lang_file(config["settings"]["language"])
 
 def check_json_update(config):
     if "background" in config["front"]:
-        if type(config["front"]["background"]) == "str":
+        if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
+            config["front"]["background"] = [config["front"]["background"]]
+        if type(config["front"]["background"]) == "list" and config["front"]["background"] in [[], [""]]:
             config["front"]["background"] = ["#141414"]
-        if type(config["front"]["background"]) == "list" and config["front"]["background"] == [""]:
-            config["front"]["background"] = ["#141414"]
-            
+    else:
+        config["front"]["background"] = ["#141414"]
+
     if "auto-updates" not in config["settings"]:
         config["settings"]["auto-updates"] = "true"
     if "windows-startup" not in config["settings"]:
@@ -175,7 +177,102 @@ def check_json_update(config):
     if "fix-stop-soundboard" not in config["settings"]:
         config["settings"]["fix-stop-soundboard"] = "false"
 
+    if "theme" not in config["front"]:
+        config["front"]["theme"] = "theme1.css"
+
+    themes = [
+        f"//{file_name}"
+        for file_name in os.listdir("static/themes/")
+        if file_name.endswith(".css") and not file_name.startswith("default_theme") and not file_name == config["front"]["theme"]
+    ]
+    if "themes" not in config["front"]:
+        themes.append(config["front"]["theme"])
+        config["front"]["themes"] = themes
+    else:
+        # check if there's new themes installed
+        installed_themes = config["front"]["themes"]
+        new_themes = [theme for theme in themes if not any(theme.endswith(name) for name in installed_themes)]
+        if new_themes:
+            print("new themes:", new_themes)
+            config["front"]["themes"].extend(iter(new_themes))
+
+    # Check for deleted themes
+    try:
+        config["front"]["themes"] = eval(config["front"]["themes"])
+    except TypeError:
+        pass
+    for theme in config["front"]["themes"][:]:
+        theme_file = theme.replace('//', '')
+        if not os.path.isfile(f"static/themes/{theme_file}"):
+            config["front"]["themes"].remove(theme)
+
+    # Check for duplicates
+    temporary_list = [theme.replace("//", "") for theme in config["front"]["themes"]]
+    duplicates = {
+        theme for theme in temporary_list if temporary_list.count(theme) > 1
+    }
+
+    # Remove duplicates
+    for theme in duplicates:
+        while temporary_list.count(theme) > 1:
+            temporary_list.remove(theme)
+            if f"//{theme}" in config["front"]["themes"]:
+                config["front"]["themes"].remove(f"//{theme}")
+            if theme in config["front"]["themes"]:
+                config["front"]["themes"].remove(theme)
+
+            if theme == config["front"]["theme"]:
+                config["front"]["themes"].append(theme)
+            else:
+                config["front"]["themes"].insert(0, f"//{theme}")
+                
+
+
+    # move the default theme to the bottom
+    if config["front"]["theme"] in config["front"]["themes"]:
+        config["front"]["themes"].remove(config["front"]["theme"])
+    config["front"]["themes"].append(config["front"]["theme"])
+
+
     return config
+
+def parse_css_file(css_file_path):
+    css_data = {}
+    with open(css_file_path, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if line.replace(" ", "").startswith("/*-------"):
+                break
+            if '=' in line:
+                key, value = line.split('=')
+                key = key.strip()
+                value = value.strip()
+                css_data[key.lower()] = value
+        for info in [
+            "theme-name",
+            "theme-description",
+            "theme-logo",
+            "theme-author-github"
+        ]:
+            if info not in css_data.keys():
+                css_data[info] = text["not_specified"]
+        
+        if css_data["theme-logo"] == text["not_specified"]:
+            css_data["theme-logo"] = ""
+        if css_data["theme-name"] == text["not_specified"]:
+            css_data["theme-name"] = os.path.basename(css_file_path)
+        if css_data["theme-description"] == text["not_specified"]:
+            css_data["theme-description"] = css_file_path
+        
+    return css_data
+
+def parse_themes():
+    parsed_themes = {}
+    for file_name in os.listdir("static/themes/"):
+        if file_name.endswith(".css"):
+            parsed_themes[file_name] = parse_css_file(f"static/themes/{file_name}")
+            
+    return parsed_themes
 
 def color_distance(color1, color2):
     """
@@ -1158,18 +1255,19 @@ def load_plugins(commands):
                 
     return commands
 
+with open("commands.json", encoding="utf-8") as f:
+    commands = json.load(f)
+    commands = load_plugins(commands)
 
 @app.route("/")
 def home():
-
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
 
     new_config = check_json_update(config)
-    if not config == new_config:
-        with open("config.json", "w", encoding="utf-8") as json_file:
-            json.dump(new_config, json_file, indent=4)
-        config = new_config
+    with open("config.json", "w", encoding="utf-8") as json_file:
+        json.dump(new_config, json_file, indent=4)
+    config = new_config
 
     with open("commands.json", encoding="utf-8") as f:
         commands = json.load(f)
@@ -1180,11 +1278,6 @@ def home():
     is_exe = bool(getattr(sys, "frozen", False))
 
     random_bg = "//"
-    if str(config["front"]["background"]) in ["", [""], []]:
-        random_bg = "#141414"
-        config["front"]["background"] = ["#141414"]
-        with open("config.json", "w", encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
     while random_bg.startswith("//") == True:
         random_bg = random.choice(config["front"]["background"])
         if random_bg.startswith("**uploaded/"):
@@ -1216,7 +1309,7 @@ def home():
 
     return render_template(
         "index.jinja",
-        config=config, themes=themes, commands=commands, versions=versions,
+        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(), commands=commands, versions=versions,
         random_bg=random_bg, usage_example=usage_example, langs=langs,
         text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe,
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
@@ -1324,6 +1417,10 @@ def saveconfig():
 
     try:
         config["front"]["background"] = eval(config["front"]["background"])
+    except TypeError:
+        pass
+    try:
+        config["front"]["themes"] = eval(config["front"]["themes"])
     except TypeError:
         pass
 
@@ -1594,7 +1691,7 @@ def send_data(message=None):
 
     elif message.startswith("/batch"):
         subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)
-
+        
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
 
@@ -2321,7 +2418,6 @@ def send_data(message=None):
         obs.disconnect()
         
     else:
-        print(all_func)
         for commands in all_func.values():
             for command, func in commands.items():
                 if message.replace('/', '').startswith(command):

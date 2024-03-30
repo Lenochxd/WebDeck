@@ -1,6 +1,11 @@
-.theme-logo {
-  background-image: url(/static/files/images/css_logo.png);
-}
+/*
+
+theme-name = WebDeck
+theme-description = WebDeck default theme
+theme-logo = https://i.imgur.com/qhaL1EU.png
+theme-author-github = Lenochxd
+
+*/
 
 
 
@@ -133,10 +138,10 @@ button.button {
   -webkit-user-select: none;
   touch-action: manipulation;
 }
-button.button.black-theme {
+/* button.button.black-theme {
   background-color: rgba(51, 51, 51, 0.05);
   color: #333333;
-}
+} */
 
 .wd_button, .wd_button:focus {
   align-items: center;
@@ -1187,6 +1192,142 @@ input:checked + .slider:after {
 
 .slider.round:after {
   border-radius: 50%;
+}
+
+
+div#choose-themes-container,
+div#choose-themes-titles {
+  display: flex;
+  width: -webkit-fill-available;
+}
+
+h2.disabled-themes-title,
+h2.enabled-themes-title {
+  align-items: center;
+  font-size: 100%;
+}
+
+div#disabled-themes,
+div#enabled-themes,
+h2.disabled-themes-title,
+h2.enabled-themes-title {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+div.theme-container {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  background-color: #00000024;
+  margin: 2px;
+}
+
+div.theme-icon-container,
+img.theme-icon {
+  height: 45px;
+  width: 45px;
+  margin-left: 3px;
+  margin-right: 8px;
+}
+div.theme-icon-container {
+  background-color: #00000045;
+  display: flex;
+  align-items: center;
+}
+img.theme-icon {
+  height: 90%;
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+div.theme-texts {
+  display: flex;
+  flex-direction: column;
+}
+div.theme-title {
+  font-size: medium;
+}
+div.theme-desc {
+  font-weight: lighter;
+  font-size: small;
+  color: #cecece;
+}
+
+div#disabled-themes {
+  margin-right: 5px;
+}
+div#enabled-themes {
+  margin-left: 5px;
+}
+
+.disable-theme, .enable-theme {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  -webkit-mask-image: url(/static/files/images/caret-up.svg);
+  mask-image: url(/static/files/images/caret-up.svg);
+  background-color: white;
+  mask-repeat: no-repeat;
+  mask-size: cover;
+  cursor: pointer;
+  transform: rotate(270deg);
+  margin-left: -3px;
+}
+.enable-theme {
+  transform: rotate(90deg);
+  margin-left: 9px;
+}
+
+.disable-theme-hitbox, .enable-theme-hitbox {
+  position: absolute;
+  cursor: pointer;
+  z-index: 1;
+  width: 30px;
+  height: 45px;
+}
+.enable-theme-hitbox {
+  width: 45px;
+}
+
+.arrows-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 29px;
+}
+
+.arrow-up, .arrow-down {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  -webkit-mask-image: url(/static/files/images/caret-up.svg);
+  mask-image: url(/static/files/images/caret-up.svg);
+  background-color: white;
+  mask-repeat: no-repeat;
+  mask-size: cover;
+  cursor: pointer;
+  margin-top: 18px;
+  transform: rotate(180deg);
+}
+.arrow-up {
+  margin-top: -18px;
+  transform: rotate(0deg);
+}
+
+.arrow-up-hitbox, .arrow-down-hitbox {
+  position: absolute;
+  cursor: pointer;
+  z-index: 1;
+  width: 17px;
+  height: 17px;
+  margin-top: 18px;
+}
+.arrow-up-hitbox {
+  margin-top: -18px;
 }
 
 
