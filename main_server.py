@@ -13,6 +13,7 @@ import zipfile
 import os
 import importlib
 from pathlib import Path
+import inspect
 
 # Third-party library imports
 import requests
@@ -1119,13 +1120,47 @@ def get_svgs():
     return svgs
 
 
-dict_func = {}
-all_func = {}
+modules = {}
+def load_plugins(commands):
+    global all_func
+    dict_func = {}
+    all_func = {}
+    folder_path = "./addons"
+
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith(".py"):
+                module_path = os.path.join(root, file)
+                module_name = os.path.splitext(os.path.relpath(module_path, folder_path).replace(os.sep, "."))[0]
+                
+                try:
+                    if module_name in modules.keys():
+                        modules[module_name] = importlib.reload(modules[module_name])
+                    else:
+                        modules[module_name] = __import__(f"addons.{module_name}", fromlist=[""])
+                    
+
+                    dict_doc, dict_func, addon_name = (
+                        modules[module_name].WebDeckAddon.instance._dict_doc,
+                        modules[module_name].WebDeckAddon.instance._dict_func,
+                        modules[module_name].WebDeckAddon.instance._addon_name
+                    )
+                    print('addon name: ', addon_name)
+
+                    all_func[addon_name] = dict_func
+                    dict_doc = {x: y._to_dict() for x, y in dict_doc.items()}
+
+                    commands[addon_name] = dict_doc
+                    
+                except Exception as e:
+                    print(f"Error importing module {module_name}: {e}")
+                    continue
+                
+    return commands
 
 
 @app.route("/")
 def home():
-    global all_func
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
@@ -1135,35 +1170,14 @@ def home():
         with open("config.json", "w", encoding="utf-8") as json_file:
             json.dump(new_config, json_file, indent=4)
         config = new_config
-    
+
     with open("commands.json", encoding="utf-8") as f:
         commands = json.load(f)
+        commands = load_plugins(commands)
+        
     with open("static/files/version.json", encoding="utf-8") as f:
         versions = json.load(f)
     is_exe = bool(getattr(sys, "frozen", False))
-
-    folder_path = "./addons"
-
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if file.endswith(".py"):
-                module_path = os.path.join(root, file)
-                module_name = os.path.splitext(os.path.relpath(module_path, folder_path).replace(os.sep, "."))[0]
-
-                try:
-                    module = __import__(f"addons.{module_name}", fromlist=[""])
-                except Exception as e:
-                    print(f"Error importing module {module_name}: {e}")
-                    continue
-
-                dict_doc, dict_func, addon_name = (
-                    module.WebDeckAddon._dict_doc,
-                    module.WebDeckAddon._dict_func,
-                    module.WebDeckAddon._addon_name,
-                )
-                all_func[addon_name] = dict_func
-                dict_doc = {x: y._to_dict() for x, y in dict_doc.items()}
-                commands[addon_name] = dict_doc
 
     random_bg = "//"
     if str(config["front"]["background"]) in ["", [""], []]:
@@ -2305,6 +2319,22 @@ def send_data(message=None):
                 return jsonify({"success": False, "message": text["obs_no_vcam"]})
 
         obs.disconnect()
+        
+    else:
+        print(all_func)
+        for commands in all_func.values():
+            for command, func in commands.items():
+                if message.replace('/', '').startswith(command):
+                    params = inspect.signature(func).parameters
+                    param_names = [param for param in params]
+                    
+                    print("ARGS: ", param_names)
+                    
+                    if param_names == []:
+                        func()
+                    else:
+                        func() # TODO
+            
 
     return jsonify({"success": True})
 
