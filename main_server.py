@@ -1702,9 +1702,22 @@ def send_data(message=None):
 
     elif message.startswith(("/openfolder")):
         path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
-        path = path.replace('\\\\','\\')
+        pathtemp = path.replace('/', '\\').replace('\\\\','\\')
+        
+        if not ":" in pathtemp:
+            path = os.path.join(os.getcwd(), path)
+            if path.startswith(f"C:\\{path.strip()}"):
+                path = os.path.join(os.path.dirname(sys.executable), path)
+                if not os.path.isfile(path):
+                    path = pathtemp
+        else:
+            path = pathtemp
+            
+        path = path.replace('/', '\\').replace('\\\\','\\')
+        
         if not path.endswith('\\'):
             path += '\\'
+            print(path)
         subprocess.Popen(f'explorer "{path}"')
         
     elif message.startswith(("/openfile", "/start")):
