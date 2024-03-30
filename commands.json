@@ -775,6 +775,30 @@
         }
       }
     },
+    "opendir": {
+      "command": "/openfolder",
+      "args": [
+        {
+          "TYPE": "input folderpath",
+          "fr": "Emplacement du dossier",
+          "en": "Folder location"
+        }
+      ],
+      "name": {
+        "en": "Open a directory",
+        "fr": "Ouvrir un dossier"
+      },
+      "description": {
+        "en": "Open the specified directory on the explorer",
+        "fr": "Ouvre le dossier spécifié dans l'explorateur de fichiers"
+      },
+      "style": {
+        "name": {
+          "en": "Open directory",
+          "fr": "Ouvrir le dossier"
+        }
+      }
+    },
     "Open a website": {
       "command": "/start",
       "args": [
@@ -950,7 +974,7 @@
       "command": "/forceclose",
       "args": [
         {
-          "TYPE": "input path-windowsapp",
+          "TYPE": "input filetype['.exe']",
           "en": "Task (app.exe)",
           "fr": "Tache (app.exe)"
         }
@@ -970,7 +994,7 @@
       "command": "/restart",
       "args": [
         {
-          "TYPE": "input path-windowsapp",
+          "TYPE": "input filetype['.exe']",
           "en": "Task (app.exe)",
           "fr": "Tache (app.exe)"
         }

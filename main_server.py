@@ -1531,6 +1531,14 @@ def get_config():
     return jsonify(config)
 
 
+@app.route("/upload_folderpath", methods=["POST"])
+def upload_folderpath():
+    path = easygui.diropenbox()
+    if path is None:
+        path = ""
+        
+    return path
+
 @app.route("/upload_filepath", methods=["POST"])
 def upload_filepath():
     filetypes = request.args.get("filetypes")
@@ -1693,11 +1701,11 @@ def send_data(message=None):
         subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)
 
     elif message.startswith(("/openfolder")):
-        path = message.replace("/openfolder", "", 1)
-        path = os.path.abspath(path).replace(' \\','')
+        path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
+        path = path.replace('\\\\','\\')
         if not path.endswith('\\'):
             path += '\\'
-        subprocess.Popen(f'explorer {path}')
+        subprocess.Popen(f'explorer "{path}"')
         
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()

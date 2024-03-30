@@ -993,12 +993,12 @@ div.args_container {
   justify-content: flex-start;
 }
 
-div.filepath {
+div.filepath, div.folderpath {
   display: flex;
   align-items: center;
   flex-direction: row;
 }
-input.filepath {
+input.filepath, input.folderpath {
   width: -webkit-fill-available;
   margin-left: 4px;
 }
