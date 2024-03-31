@@ -1706,7 +1706,7 @@ def send_data(message=None):
         
         if not ":" in pathtemp:
             path = os.path.join(os.getcwd(), path)
-            if path.startswith(f"C:\\{path.strip()}"):
+            if not os.path.isfile(path):
                 path = os.path.join(os.path.dirname(sys.executable), path)
                 if not os.path.isfile(path):
                     path = pathtemp
@@ -2488,17 +2488,17 @@ def send_data_route():
 def check_for_updates():
     if os.path.exists("update"):
         shutil.rmtree("update", ignore_errors=True)
-        
+
     try:
         with open("static/files/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
-        
+
         url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
         response = requests.get(url)
         releases = response.json()
         latest_release = next((release for release in releases if not release["draft"]), None)
         latest_version = latest_release["tag_name"].replace('v', '')
-        
+
         if compare_versions(latest_version, current_version) > 0:
             print(f"New version available: {latest_version}")
 
@@ -2509,12 +2509,11 @@ def check_for_updates():
             shutil.copytree("lib", "update/lib")
 
             subprocess.Popen(["update/WD_updater.exe"])
-            
+
             sys.exit()
 
     except Exception as e:
         show_error(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
-        pass
 
 
 def check_for_updates_loop():
