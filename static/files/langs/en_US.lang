@@ -115,7 +115,7 @@ width=width
 themes=Themes
 open_theme_menu=Open the themes menu
 
-background_image=Background image
+backgrounds=Background images
 open_background_image_menu=Open the backgrounds menu
 
 dark_theme=Dark theme
