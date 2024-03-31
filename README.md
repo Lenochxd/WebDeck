@@ -70,13 +70,6 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
       </a>
     </td>
     <td align="center">
-      <a href="https://twitter.com/HLeheurteur">
-        <img src="https://images-ext-2.discordapp.net/external/Zpj31ZXa_MQ_UQzJleHXayFMXljDQzGknDVE63-4Ow4/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/513036764286550039/135b087469229643d6f409885824c033.png" alt="CONTRIBUTOR-Horizuwu" width="80px" height="80px" style="border-radius: 50%;">
-        <br>
-        Horizuwu
-      </a>
-    </td>
-    <td align="center">
       <a href="https://twitter.com/LenochJ">
         <img src="https://cdn.discordapp.com/avatars/390265556357611521/205d253b7e742b8f70174fdac8ca701d.png" alt="CONTRIBUTOR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
         <br>
@@ -95,9 +88,6 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
       📈 Maths, beta testing, and <a href="https://bishokus.fr/wdt">bishokus.fr/wdt</a> enjoyer
     </td>
     <td align="center">
-      ➗ Maths (volume modification function)
-    </td>
-    <td align="center">
       🤓 Everything else
     </td>
   </tr>
@@ -109,8 +99,8 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 <a href="https://twitter.com/mady2ouf" title="mady2ouf">
   <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
 </a>
-<a href="https://twitter.com/francois_2008" title="francois_2008">
-  <img src="https://pbs.twimg.com/profile_images/1743758417439715328/ab6TEWvg_400x400.jpg" alt="SPONSOR-francois_2008" width="60px" height="60px" style="border-radius: 50%;">
+<a href="https://twitter.com/Felyz__" title="Felyz__">
+  <img src="https://pbs.twimg.com/profile_images/1743758417439715328/ab6TEWvg_400x400.jpg" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
 </a>
 
 <br>
