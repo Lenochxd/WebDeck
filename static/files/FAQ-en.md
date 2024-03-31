@@ -7,7 +7,7 @@ You can use `ctrl+f` to search for what you want.
 
 The WebDeck is an application that allows the user to control their computer from any device with a browser and a touchscreen. Unlike Elgato's StreamDeck, which requires physical equipment, WebDeck uses a web application that the user hosts on their own computer and accesses from their device with a touchscreen.
 <div align="center">
-  <img src="https://media.discordapp.net/attachments/939294227152662589/1144740939873669221/example.png" alt="WebDeck example image" width="375" height="257">
+  <img src="https://i.imgur.com/OLE1oWk.png" alt="WebDeck example image" width="375" height="257">
 </div>
 
 
@@ -169,13 +169,26 @@ Absolutely! You have the option to select any file, and it will be opened with t
 
 ## I'm a developer, how can I customize the page's CSS?
 
-As a developer, you have the option to customize the CSS of the page according to your preferences. Here's how to do it in a few simple steps:
+As a developer, you have the option to create a theme by customizing the CSS of the page according to your preferences. Here's how to do it in a few simple steps:
 
-1. Access the `static/themes/` directory of the application.
-2. Duplicate the `theme1.css` file.
-3. Restart the application on your computer.
+1. Go to settings > 'Open the themes menu' > 'Open themes folder' to access the `static/themes/` directory of the application.
+2. Create a new CSS file manually or duplicate an existing one to begin your customization.
+3. Edit the theme information as needed in the CSS file you created, ensuring it starts with the following structure:
 
-Once these steps are completed, you can select your own theme in the settings. You will have the freedom to modify the CSS as needed and customize the appearance of the page to your liking. You can even share your `.css` file with other users if you wish.
+```css
+/*
+theme-name = MyTheme
+theme-description = My custom theme description :)
+theme-logo = https://i.imgur.com/qhaL1EU.png
+theme-author-github = YourGithubHere
+*/
+
+/* ------------------------------------------------------ */
+```
+
+4. Reload the WebDeck configuration page.
+
+Once these steps are completed, you can select your own theme in the settings. You will have the freedom to modify the CSS as needed and customize the appearance of the page to your liking. You can even share your .css file with other users if you wish.
 
 
 ## Why is WebDeck detected as malware by my antivirus?
