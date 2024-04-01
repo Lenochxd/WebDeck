@@ -430,16 +430,12 @@
             </button>
 
             <div id="themes-tutorial-container">
-              {% set themes_tutorial = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css" %}
-              {% if text['lang_short'] == "fr" %}
-                {% set themes_tutorial = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#je-suis-un-d%C3%A9veloppeur-comment-puis-je-personnaliser-le-css-de-la-page-" %}
-              {% endif %}
-              <a href="{{themes_tutorial}}" target="_blank" title="{{text['themes_tutorial']}}">
+              <a href="{{text['link_themes']}}" target="_blank" title="{{text['themes_tutorial']}}">
                   <!-- source: https://phosphoricons.com/ -->
                   {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
               </a>
-              <button type="button" onclick="send_data('/openfolder /static/themes')"
-              class="button" id="open-themes-folder">
+
+              <button type="button" onclick="send_data('/openfolder /static/themes')" class="button" id="open-themes-folder">
                 {{text['open_themes_folder']}}
               </button>
             </div>
@@ -671,11 +667,7 @@
                 <div class="setting soundboard {{black_theme}}">
                   <div class="settings-title-info">
                     <label for="soundboard" style="margin-top: 3px;"> {{text['soundboard']}} </label>
-                    {% set soundboard_info = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard" %}
-                    {% if language == "fr" %}
-                      {% set soundboard_info = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-ma-soundboard-" %}
-                    {% endif %}
-                    <a href="{{soundboard_info}}" target="_blank">
+                    <a href="{{text['link_soundboard']}}" target="_blank"  title="{{text['soundboard_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
                         {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
                     </a>
@@ -734,11 +726,7 @@
                 <div class="setting spotify-api">
                   <div class="settings-title-info">
                     <label for="spotify" style="margin-top: 3px;"> {{text['spotify_api']}} </label>
-                    {% set spotify_info = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account" %}
-                    {% if text['lang_short'] == "fr" %}
-                      {% set spotify_info = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#comment-connecter-mon-compte-spotify-" %}
-                    {% endif %}
-                    <a href="{{spotify_info}}" target="_blank">
+                    <a href="{{text['link_spotify']}}" target="_blank" title="{{text['spotify_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
                         {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
                     </a>
@@ -764,11 +752,7 @@
                 <div class="setting obs-ws">
                   <div class="settings-title-info">
                     <label for="obs" style="margin-top: 3px;"> {{text['obs_studio']}} </label>
-                    {% set obs_info = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-obs-studio" %}
-                    {% if language == "fr" %}
-                      {% set obs_info = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-obs-studio-" %}
-                    {% endif %}
-                    <a href="{{obs_info}}" target="_blank">
+                    <a href="{{text['link_obs']}}" target="_blank" title="{{text['obs_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
                         {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
                     </a>
