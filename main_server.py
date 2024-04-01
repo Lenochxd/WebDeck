@@ -14,6 +14,7 @@ import os
 import importlib
 import ipaddress
 from pathlib import Path
+import inspect
 
 # Third-party library imports
 import requests
@@ -136,11 +137,13 @@ text = load_lang_file(config["settings"]["language"])
 
 def check_json_update(config):
     if "background" in config["front"]:
-        if type(config["front"]["background"]) == "str":
+        if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
+            config["front"]["background"] = [config["front"]["background"]]
+        if type(config["front"]["background"]) == "list" and config["front"]["background"] in [[], [""]]:
             config["front"]["background"] = ["#141414"]
-        if type(config["front"]["background"]) == "list" and config["front"]["background"] == [""]:
-            config["front"]["background"] = ["#141414"]
-            
+    else:
+        config["front"]["background"] = ["#141414"]
+
     if "auto-updates" not in config["settings"]:
         config["settings"]["auto-updates"] = "true"
     if "windows-startup" not in config["settings"]:
@@ -175,7 +178,102 @@ def check_json_update(config):
     if "fix-stop-soundboard" not in config["settings"]:
         config["settings"]["fix-stop-soundboard"] = "false"
 
+    if "theme" not in config["front"]:
+        config["front"]["theme"] = "theme1.css"
+
+    themes = [
+        f"//{file_name}"
+        for file_name in os.listdir("static/themes/")
+        if file_name.endswith(".css") and not file_name.startswith("default_theme") and not file_name == config["front"]["theme"]
+    ]
+    if "themes" not in config["front"]:
+        themes.append(config["front"]["theme"])
+        config["front"]["themes"] = themes
+    else:
+        # check if there's new themes installed
+        installed_themes = config["front"]["themes"]
+        new_themes = [theme for theme in themes if not any(theme.endswith(name) for name in installed_themes)]
+        if new_themes:
+            print("new themes:", new_themes)
+            config["front"]["themes"].extend(iter(new_themes))
+
+    # Check for deleted themes
+    try:
+        config["front"]["themes"] = eval(config["front"]["themes"])
+    except TypeError:
+        pass
+    for theme in config["front"]["themes"][:]:
+        theme_file = theme.replace('//', '')
+        if not os.path.isfile(f"static/themes/{theme_file}"):
+            config["front"]["themes"].remove(theme)
+
+    # Check for duplicates
+    temporary_list = [theme.replace("//", "") for theme in config["front"]["themes"]]
+    duplicates = {
+        theme for theme in temporary_list if temporary_list.count(theme) > 1
+    }
+
+    # Remove duplicates
+    for theme in duplicates:
+        while temporary_list.count(theme) > 1:
+            temporary_list.remove(theme)
+            if f"//{theme}" in config["front"]["themes"]:
+                config["front"]["themes"].remove(f"//{theme}")
+            if theme in config["front"]["themes"]:
+                config["front"]["themes"].remove(theme)
+
+            if theme == config["front"]["theme"]:
+                config["front"]["themes"].append(theme)
+            else:
+                config["front"]["themes"].insert(0, f"//{theme}")
+                
+
+
+    # move the default theme to the bottom
+    if config["front"]["theme"] in config["front"]["themes"]:
+        config["front"]["themes"].remove(config["front"]["theme"])
+    config["front"]["themes"].append(config["front"]["theme"])
+
+
     return config
+
+def parse_css_file(css_file_path):
+    css_data = {}
+    with open(css_file_path, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if line.replace(" ", "").startswith("/*-------"):
+                break
+            if '=' in line:
+                key, value = line.split('=')
+                key = key.strip()
+                value = value.strip()
+                css_data[key.lower()] = value
+        for info in [
+            "theme-name",
+            "theme-description",
+            "theme-logo",
+            "theme-author-github"
+        ]:
+            if info not in css_data.keys():
+                css_data[info] = text["not_specified"]
+        
+        if css_data["theme-logo"] == text["not_specified"]:
+            css_data["theme-logo"] = ""
+        if css_data["theme-name"] == text["not_specified"]:
+            css_data["theme-name"] = os.path.basename(css_file_path)
+        if css_data["theme-description"] == text["not_specified"]:
+            css_data["theme-description"] = css_file_path
+        
+    return css_data
+
+def parse_themes():
+    parsed_themes = {}
+    for file_name in os.listdir("static/themes/"):
+        if file_name.endswith(".css"):
+            parsed_themes[file_name] = parse_css_file(f"static/themes/{file_name}")
+            
+    return parsed_themes
 
 def color_distance(color1, color2):
     """
@@ -351,7 +449,6 @@ def get_ffmpeg():
                     continue
             continue
     print("ffmpeg.exe not found.")
-    # if ffmpeg not found
     subprocess.Popen("winget install ffmpeg", shell=True)
     return None
     
@@ -1130,29 +1227,11 @@ def get_svgs():
     return svgs
 
 
-dict_func = {}
-all_func = {}
-
-
-@app.route("/")
-def home():
+modules = {}
+def load_plugins(commands):
     global all_func
-
-    with open("config.json", encoding="utf-8") as f:
-        config = json.load(f)
-
-    new_config = check_json_update(config)
-    if not config == new_config:
-        with open("config.json", "w", encoding="utf-8") as json_file:
-            json.dump(new_config, json_file, indent=4)
-        config = new_config
-    
-    with open("commands.json", encoding="utf-8") as f:
-        commands = json.load(f)
-    with open("static/files/version.json", encoding="utf-8") as f:
-        versions = json.load(f)
-    is_exe = bool(getattr(sys, "frozen", False))
-
+    dict_func = {}
+    all_func = {}
     folder_path = "./addons"
 
     for root, dirs, files in os.walk(folder_path):
@@ -1160,28 +1239,55 @@ def home():
             if file.endswith(".py"):
                 module_path = os.path.join(root, file)
                 module_name = os.path.splitext(os.path.relpath(module_path, folder_path).replace(os.sep, "."))[0]
-
+                
                 try:
-                    module = __import__(f"addons.{module_name}", fromlist=[""])
-                except ImportError as e:
+                    if module_name in modules.keys():
+                        modules[module_name] = importlib.reload(modules[module_name])
+                    else:
+                        modules[module_name] = __import__(f"addons.{module_name}", fromlist=[""])
+                    
+
+                    dict_doc, dict_func, addon_name = (
+                        modules[module_name].WebDeckAddon.instance._dict_doc,
+                        modules[module_name].WebDeckAddon.instance._dict_func,
+                        modules[module_name].WebDeckAddon.instance._addon_name
+                    )
+                    print('addon name: ', addon_name)
+
+                    all_func[addon_name] = dict_func
+                    dict_doc = {x: y._to_dict() for x, y in dict_doc.items()}
+
+                    commands[addon_name] = dict_doc
+                    
+                except Exception as e:
                     print(f"Error importing module {module_name}: {e}")
                     continue
+                
+    return commands
 
-                dict_doc, dict_func, addon_name = (
-                    module.WebDeckAddon._dict_doc,
-                    module.WebDeckAddon._dict_func,
-                    module.WebDeckAddon._addon_name,
-                )
-                all_func[addon_name] = dict_func
-                dict_doc = {x: y._to_dict() for x, y in dict_doc.items()}
-                commands[addon_name] = dict_doc
+with open("commands.json", encoding="utf-8") as f:
+    commands = json.load(f)
+    commands = load_plugins(commands)
+
+@app.route("/")
+def home():
+    with open("config.json", encoding="utf-8") as f:
+        config = json.load(f)
+
+    new_config = check_json_update(config)
+    with open("config.json", "w", encoding="utf-8") as json_file:
+        json.dump(new_config, json_file, indent=4)
+    config = new_config
+
+    with open("commands.json", encoding="utf-8") as f:
+        commands = json.load(f)
+        commands = load_plugins(commands)
+        
+    with open("static/files/version.json", encoding="utf-8") as f:
+        versions = json.load(f)
+    is_exe = bool(getattr(sys, "frozen", False))
 
     random_bg = "//"
-    if str(config["front"]["background"]) in ["", [""], []]:
-        random_bg = "#141414"
-        config["front"]["background"] = ["#141414"]
-        with open("config.json", "w", encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
     while random_bg.startswith("//") == True:
         random_bg = random.choice(config["front"]["background"])
         if random_bg.startswith("**uploaded/"):
@@ -1213,7 +1319,7 @@ def home():
 
     return render_template(
         "index.jinja",
-        config=config, themes=themes, commands=commands, versions=versions,
+        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(), commands=commands, versions=versions,
         random_bg=random_bg, usage_example=usage_example, langs=langs,
         text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe,
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
@@ -1323,6 +1429,10 @@ def saveconfig():
         config["front"]["background"] = eval(config["front"]["background"])
     except TypeError:
         pass
+    try:
+        config["front"]["themes"] = eval(config["front"]["themes"])
+    except TypeError:
+        pass
 
     with open("config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
@@ -1430,6 +1540,14 @@ def get_config():
 
     return jsonify(config)
 
+
+@app.route("/upload_folderpath", methods=["POST"])
+def upload_folderpath():
+    path = easygui.diropenbox()
+    if path is None:
+        path = ""
+        
+    return path
 
 @app.route("/upload_filepath", methods=["POST"])
 def upload_filepath():
@@ -1592,6 +1710,26 @@ def send_data(message=None):
     elif message.startswith("/batch"):
         subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)
 
+    elif message.startswith(("/openfolder")):
+        path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
+        pathtemp = path.replace('/', '\\').replace('\\\\','\\')
+        
+        if not ":" in pathtemp:
+            path = os.path.join(os.getcwd(), path)
+            if not os.path.isfile(path):
+                path = os.path.join(os.path.dirname(sys.executable), path)
+                if not os.path.isfile(path):
+                    path = pathtemp
+        else:
+            path = pathtemp
+            
+        path = path.replace('/', '\\').replace('\\\\','\\')
+        
+        if not path.endswith('\\'):
+            path += '\\'
+            print(path)
+        subprocess.Popen(f'explorer "{path}"')
+        
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
 
@@ -2316,6 +2454,21 @@ def send_data(message=None):
                 return jsonify({"success": False, "message": text["obs_no_vcam"]})
 
         obs.disconnect()
+        
+    else:
+        for commands in all_func.values():
+            for command, func in commands.items():
+                if message.replace('/', '').startswith(command):
+                    params = inspect.signature(func).parameters
+                    param_names = [param for param in params]
+                    
+                    print("ARGS: ", param_names)
+                    
+                    if param_names == []:
+                        func()
+                    else:
+                        func() # TODO
+            
 
     return jsonify({"success": True})
 
@@ -2345,17 +2498,17 @@ def send_data_route():
 def check_for_updates():
     if os.path.exists("update"):
         shutil.rmtree("update", ignore_errors=True)
-        
+
     try:
         with open("static/files/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
-        
+
         url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
         response = requests.get(url)
         releases = response.json()
         latest_release = next((release for release in releases if not release["draft"]), None)
         latest_version = latest_release["tag_name"].replace('v', '')
-        
+
         if compare_versions(latest_version, current_version) > 0:
             print(f"New version available: {latest_version}")
 
@@ -2366,12 +2519,11 @@ def check_for_updates():
             shutil.copytree("lib", "update/lib")
 
             subprocess.Popen(["update/WD_updater.exe"])
-            
+
             sys.exit()
 
     except Exception as e:
         show_error(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
-        pass
 
 
 def check_for_updates_loop():

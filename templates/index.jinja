@@ -6,7 +6,9 @@
       <title>WebDeck DEV</title>
     {% endif %}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="static/themes/{{config['front']['theme']}}">
+    {% for file in config['front']['themes'][::-1] %}
+      <link rel="stylesheet" href="static/themes/{{ file }}">
+    {% endfor %}
     <link rel="stylesheet" href="static/files/loading-squares.css">
     <link rel="icon" href="static\files\icon.ico"/>
     <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -31,8 +33,10 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script src="/static/files/names-color-setting.js"></script>
+    <script src="/static/files/themes-setting.js"></script>
     <script src="/static/files/background-setting.js"></script>
     <script src="/static/files/filepath.js"></script>
+    <script src="/static/files/folderpath.js"></script>
     <script src="/static/files/loadingscreen.js"></script>
     <script src="/static/files/upload_file.js"></script>
     {# <script src="/static/files/buttonclick.js"></script> #}
@@ -405,9 +409,104 @@
         </a>
 
         <div class="modal-main">
+          <div class="config-container choose-themes {{black_theme}}" id="choose-themes" style="display: none;">
+            <
+            <button type="button" id="setting-themes-back" class="button {{black_theme}}">
+              {{text['back']}}
+            </button>
+
+            <button type="button" onclick="send_data('/openfolder /static/themes')"
+            class="button" id="open-themes-folder" style="float: right;">
+              {{text['open_themes_folder']}}
+            </button>
+
+            <h1 class="config-title"> {{text['themes_menu_title']}} </h1>
+            
+            <div class="editorStyle-bar {{black_theme}}"></div>
+
+            <div id="choose-themes-titles">
+              <h2 class="disabled-themes-title"> {{text['disabled_themes']}} </h2>
+              <h2 class="enabled-themes-title"> {{text['enabled_themes']}} </h2>
+            </div>
+            
+            <div id="choose-themes-container">
+
+              <div id="disabled-themes">
+                {% for theme in config["front"]["themes"] %}
+                  {% if theme.startswith("//") %}
+                    <div class="theme-container" filename="{{ theme }}">
+                      {% set theme = theme.replace('//', '') %}
+                      <span class="enable-theme-hitbox"></span>
+                      <span class="enable-theme invisible"></span>
+
+                      <div class="arrows-container invisible">
+                        <span class="arrow-up-hitbox"></span>
+                        <span class="arrow-up"></span>
+                        <span class="arrow-down-hitbox"></span>
+                        <span class="arrow-down"></span>
+                      </div>
+                      <div class="theme-icon-container">
+                        {% if not parsed_themes[theme]['theme-logo'] == "" %}
+                          <img class="theme-icon" src="{{parsed_themes[theme]['theme-logo']}}"/>
+                        {% endif %}
+                      </div>
+
+                      <div class="theme-texts">
+                        <div class="theme-title">
+                          {{parsed_themes[theme]["theme-name"]}}
+                        </div>
+                        <div class="theme-desc">
+                          {{parsed_themes[theme]["theme-description"]}}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              <div id="enabled-themes">
+                {% for theme in config["front"]["themes"] %}
+                  {% if not theme.startswith("//") %}
+                    {% set isdefault = "" %}
+                    {% if theme == default_theme %}
+                      {% set isdefault = "defaulttheme" %}
+                    {% endif %}
+                    <div class="theme-container" filename="{{ theme }}" {{isdefault}}>
+                      {% if theme != default_theme %}
+                        <span class="disable-theme-hitbox"></span>
+                        <span class="disable-theme invisible"></span>
+
+                        <div class="arrows-container invisible">
+                          <span class="arrow-up-hitbox"></span>
+                          <span class="arrow-up"></span>
+                          <span class="arrow-down-hitbox"></span>
+                          <span class="arrow-down"></span>
+                        </div>
+                      {% endif %}
+                      <div class="theme-icon-container">
+                        {% if not parsed_themes[theme]['theme-logo'] == "" %}
+                          <img class="theme-icon" src="{{parsed_themes[theme]['theme-logo']}}"/>
+                        {% endif %}
+                      </div>
+                      <div class="theme-texts">
+                        <div class="theme-title">
+                          {{parsed_themes[theme]["theme-name"]}}
+                        </div>
+                        <div class="theme-desc">
+                          {{parsed_themes[theme]["theme-description"]}}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+            </div>
+          </div>
+
           <div class="config-container choose-background {{black_theme}}" id="choose-background" style="display: none;">
             <
-            <button type="button" id="setting-background-back" class="{{black_theme}}">
+            <button type="button" id="setting-background-back" class="button {{black_theme}}">
               {{text['back']}}
             </button>
             <h1 class="config-title"> {{text['random_bg_menu_title']}} </h1>
@@ -660,21 +759,29 @@
                   </div>
                 </div>
 
-                <div class="setting theme">
+                {# <div class="setting theme">
                   <label for="theme">Theme</label>
                   <select id="theme" name="front.theme">
                     {% for theme in themes %}
                       <option value="{{theme}}" {% if config['front']['theme'].lower() == theme %}selected{% endif %}>{{theme}}</option>
                     {% endfor %}
                   </select>
+                </div> #}
+
+                <div class="setting themes">
+                  <label for="themes"> {{text['themes']}} </label>
+                  <button type="button" id="setting-themes" class="{{black_theme}}">
+                    {{text['open_theme_menu']}}
+                  </button>
+                  <input type="text" name="front.themes" id="choose-themes-handler" class="invisible" value="{{config['front']['themes']}}">
                 </div>
 
                 <div class="setting background">
-                  <label for="setting-background"> {{text['background_image']}} </label>
+                  <label for="background"> {{text['backgrounds']}} </label>
                   <button type="button" id="setting-background" class="{{black_theme}}">
                     {{text['open_background_image_menu']}}
                   </button>
-                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{config["front"]["background"]}}">
+                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{config['front']['background']}}">
                 </div>
 
                 <div class="setting {{black_theme}}">

@@ -112,9 +112,10 @@ gridsize=Grid-size
 height=height
 width=width
 
-theme=Theme
+themes=Themes
+open_theme_menu=Open the themes menu
 
-background_image=Background image
+backgrounds=Background images
 open_background_image_menu=Open the backgrounds menu
 
 dark_theme=Dark theme
@@ -139,7 +140,13 @@ authorize_windows_firewall=Authorize WebDeck via Windows Firewall
 automatic_firewall_bypass=Automatic firewall bypass at startup
 fix_stop_soundboard=Fix stop soundboard button issue (may be unstable)
 
+themes_menu_title=Themes list
 random_bg_menu_title=Random backgrounds list
+
+disabled_themes=Available
+enabled_themes=Selected
+
+open_themes_folder=Open themes folder
 
 wallpaper_color=Background Color
 add_background_color=Add a color backgroud
@@ -148,6 +155,7 @@ or=or
 remove_background=Remove this background
 
 
+not_specified=Not specified
 
 save=Save
 back=Back

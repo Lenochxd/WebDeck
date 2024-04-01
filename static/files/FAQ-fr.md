@@ -5,7 +5,7 @@ Vous pouvez utiliser `ctrl+f` pour cherchez ce que vous voulez
 
 Le WebDeck est une application qui permet à l'utilisateur de controller son ordinateur depuis n'importe quel appareil doté d'un navigateur et d'un écran tactile. Contrairement au StreamDeck d'Elgato, qui nécessite un équipement physique, le WebDeck utilise une application web que l'utilisateur héberge sur son propre ordinateur et utilise sur son appareil avec écran tactile.
 <div align="center">
-  <img src="https://media.discordapp.net/attachments/939294227152662589/1144740939873669221/example.png" alt="WebDeck example image" width="375" height="257">
+  <img src="https://i.imgur.com/OLE1oWk.png" alt="WebDeck example image" width="375" height="257">
 </div>
 
 
@@ -135,7 +135,7 @@ Formats de fichiers acceptés pour l'image du bouton:\
 La personnalisation du fond d'écran est un jeu d'enfant. Suivez ces étapes simples :
 
 1. Ouvrez les paramètres de l'application.
-2. Cliquez sur le bouton "Open the backgrounds menu" (Ouvrir le menu des arrière-plans).
+2. Cliquez sur le bouton "Ouvrir le menu des arrière-plans".
 3. Ce menu vous permettra d'ajouter des couleurs ou des images de fond en toute simplicité. Vous pouvez en ajouter autant que vous le souhaitez.
 4. Lors du chargement de la page, un fond aléatoire sera sélectionné parmi ceux que vous avez ajoutés.
 5. Si vous souhaitez désactiver certains arrière-plans, cochez simplement la case à droite de l'arrière-plan en question.
@@ -163,15 +163,28 @@ Si votre question porte sur la communication du logiciel avec un **autre** serve
 Absolument ! Vous avez la possibilité de sélectionner n'importe quel fichier, et il sera ouvert avec l'application par défaut correspondante. Par exemple, si vous choisissez de ouvrir une image, elle s'ouvrira automatiquement avec votre visionneuse d'images habituelle.
 
 
-## Je suis développeur, comment puis-je personnaliser le CSS de la page ?
+## Je suis un développeur, comment puis-je personnaliser le CSS de la page ?
 
-En tant que développeur, vous avez la possibilité de personnaliser le CSS de la page selon vos préférences. Voici comment procéder en quelques étapes simples :
+En tant que développeur, vous avez la possibilité de créer un thème en personnalisant le CSS de la page selon vos préférences. Voici comment le faire en quelques étapes simples :
 
-1. Accédez au répertoire `static/themes/` de l'application.
-2. Dupliquez le fichier `theme1.css`.
-3. Redémarrez l'application sur votre ordinateur.
+1. Accédez aux paramètres > 'Ouvrir le menu des thèmes' > 'Ouvrir le dossier des thèmes' pour accéder au répertoire `static/themes/` de l'application.
+2. Créez un nouveau fichier CSS manuellement ou dupliquez-en un existant pour commencer votre personnalisation.
+3. Modifiez les informations du thème selon vos besoins dans le fichier CSS que vous avez créé, en vous assurant qu'il commence par la structure suivante :
 
-Une fois ces étapes accomplies, vous pourrez sélectionner votre propre thème dans les paramètres. Vous aurez ainsi la liberté de modifier le CSS selon vos besoins et de personnaliser l'apparence de la page à votre gré. Vous pourrez même partager votre fichier `.css` avec d'autres utilisateurs si vous le souhaitez.
+```css
+/*
+theme-name = MonTheme
+theme-description = Ma description de thème :)
+theme-logo = https://i.imgur.com/qhaL1EU.png
+theme-author-github = VotreGithubIci
+*/
+
+/* ------------------------------------------------------ */
+```
+
+4. Rechargez la page de configuration de WebDeck.
+
+Une fois ces étapes terminées, vous pourrez sélectionner votre propre thème dans les paramètres. Vous aurez la liberté de modifier le CSS selon vos besoins et de personnaliser l'apparence de la page à votre guise. Vous pouvez même partager votre fichier .css avec d'autres utilisateurs si vous le souhaitez.
 
 
 ## Pourquoi le WebDeck est détecté comme un malware par mon antivirus ?

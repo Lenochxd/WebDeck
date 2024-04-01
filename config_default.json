@@ -37,6 +37,9 @@
         "show-names": "true",
         "portrait-rotate": "90",
         "theme": "theme1.css",
+        "themes": [
+            "theme1.css"
+        ],
         "height": "4",
         "width": "8",
         "black-theme": "true",
