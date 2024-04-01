@@ -1737,23 +1737,31 @@ def send_data(message=None):
 
     elif message.startswith(("/openfolder")):
         path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
-        pathtemp = path.replace('/', '\\').replace('\\\\','\\')
+        pathtemp = path.replace('\\\\','\\').replace('\\', '/')
         
         if not ":" in pathtemp:
             path = os.path.join(os.getcwd(), path)
-            if not os.path.isfile(path):
+            if not os.path.isdir(path):
                 path = os.path.join(os.path.dirname(sys.executable), path)
-                if not os.path.isfile(path):
+                if not os.path.isdir(path):
                     path = pathtemp
         else:
             path = pathtemp
             
-        path = path.replace('/', '\\').replace('\\\\','\\')
+        path = path.replace('\\\\','\\').replace('\\', '/')
         
-        if not path.endswith('\\'):
-            path += '\\'
-            print(path)
+        # if not path.endswith('/'):
+        #     path += '/'
+            
+        if not os.path.isdir(path):
+            if path.startswith('/'):
+                path = path[1:]
+            path = f"C:/.Code/WebDeck/{path}" # FIXME
+        
+        path = path.replace('/', '\\')
+        print(path)
         subprocess.Popen(f'explorer "{path}"')
+        # os.startfile(path)
         
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
