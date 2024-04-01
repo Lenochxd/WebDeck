@@ -428,27 +428,51 @@ def get_ffmpeg():
     if os.path.isfile("ffmpeg.exe"):
         return os.path.abspath("ffmpeg.exe")
 
-    base_path = Path("C:/Users")
+    # Search for ffmpeg installation on winget
+    try:
+        base_path = Path("C:/Users")
 
-    # Iterate through user directories
-    for user_dir in base_path.iterdir():
-        if user_dir.is_dir():
-            # Iterate through subdirectories of the user directory
-            for package_dir in user_dir.joinpath("AppData/Local/Microsoft/WinGet/Packages").iterdir():
-                if package_dir.name.startswith("Gyan.FFmpeg"):
-                    # Iterate through subdirectories of the package
-                    for sub_dir in package_dir.iterdir():
-                        if sub_dir.is_dir() and sub_dir.name.startswith("ffmpeg-"):
-                            # Find the ffmpeg.exe file
-                            ffmpeg_path = sub_dir.joinpath("bin/ffmpeg.exe")
-                            # Check if the file exists
-                            if ffmpeg_path.exists():
-                                print("Path found:", ffmpeg_path)
-                                return str(ffmpeg_path)
-                    continue
-            continue
-    print("ffmpeg.exe not found.")
-    subprocess.Popen("winget install ffmpeg", shell=True)
+        # Iterate through user directories
+        for user_dir in base_path.iterdir():
+            if user_dir.is_dir():
+                # Iterate through subdirectories of the user directory
+                for package_dir in user_dir.joinpath("AppData/Local/Microsoft/WinGet/Packages").iterdir():
+                    if package_dir.name.startswith("Gyan.FFmpeg"):
+                        # Iterate through subdirectories of the package
+                        for sub_dir in package_dir.iterdir():
+                            if sub_dir.is_dir() and sub_dir.name.startswith("ffmpeg-"):
+                                # Find the ffmpeg.exe file
+                                ffmpeg_path = sub_dir.joinpath("bin/ffmpeg.exe")
+                                # Check if the file exists
+                                if ffmpeg_path.exists():
+                                    print("Path found:", ffmpeg_path)
+                                    return str(ffmpeg_path)
+                        continue
+                continue
+    except Exception as e:
+        print("FFMPEG: WinGet Error:", e)
+    
+    # Search for ffmpeg installation via webdeck servers
+    if os.path.isfile("ffmpeg.exe"):
+        return "ffmpeg.exe"
+
+    try:
+        print("downloading ffmpeg using webdeck servers...")
+        url = "https://bishokus.fr/dl_ffmpeg"
+        urllib.request.urlretrieve(url, "ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
+        
+        with zipfile.ZipFile("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip", "r") as zip_ref:
+            zip_ref.extractall("")
+            
+        os.remove("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
+        return "ffmpeg.exe"
+    except Exception as e:
+        print("FFMPEG:", e)
+    
+        print("FFMPEG: downloading ffmpeg using winget...")
+        subprocess.Popen("winget install ffmpeg", shell=True)
+    
+    print("FFMPEG: not found.")
     return None
     
 
@@ -462,15 +486,16 @@ def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
         print(e)
         ffmpeg_path = get_ffmpeg()
         
-        shutil.copyfile(ffmpeg_path, "ffmpeg.exe")
-        shutil.copyfile(ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe'), "ffprobe.exe")
-        
-        ffmpeg_path = os.path.abspath("ffmpeg.exe")
-        ffprobe_path = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
+        if ffmpeg_path is not None and ffmpeg_path != "ffmpeg.exe":
+            shutil.copyfile(ffmpeg_path, "ffmpeg.exe")
+            shutil.copyfile(ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe'), "ffprobe.exe")
+            
+            ffmpeg_path = os.path.abspath("ffmpeg.exe")
+            ffprobe_path = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
 
-        AudioSegment.converter = ffmpeg_path
-        AudioSegment.ffmpeg = ffmpeg_path
-        AudioSegment.ffprobe = ffprobe_path
+            AudioSegment.converter = ffmpeg_path
+            AudioSegment.ffmpeg = ffmpeg_path
+            AudioSegment.ffprobe = ffprobe_path
         if AudioSegment.converter is None:
             return False
     else:
