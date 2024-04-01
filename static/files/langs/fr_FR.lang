@@ -124,6 +124,8 @@ dark_theme=Thème sombre
 
 show_btn_names=Afficher les noms des boutons
 
+edit_btn_color=Modifier la couleur par défaut des boutons
+
 
 experimental=Expérimental
 

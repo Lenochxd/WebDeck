@@ -953,7 +953,9 @@ div.editorStyle-bar.black-theme {
   background-color: #515151!important;
 }
 
-div.background-color-input-container, div.names-color-input-container {
+div.background-color-input-container,
+div.names-color-input-container,
+div.buttons-color-input-container {
   display: flex;
   flex-direction: row;
   align-items: center;

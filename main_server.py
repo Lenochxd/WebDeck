@@ -155,6 +155,10 @@ def check_json_update(config):
         config["settings"]["open-settings-in-integrated-browser"] = "false"
     if "portrait-rotate" not in config["front"]:
         config["front"]["portrait-rotate"] = "90"
+    if "edit-buttons-color" not in config["front"]:
+        config["front"]["edit-buttons-color"] = "false"
+    if "buttons-color" not in config["front"]:
+        config["front"]["buttons-color"] = ""
     if "soundboard" not in config["settings"]:
         config["settings"]["soundboard"] = {
             "mic_input_device": "",

@@ -32,6 +32,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
+    <script src="/static/files/buttons-color-setting.js"></script>
     <script src="/static/files/names-color-setting.js"></script>
     <script src="/static/files/themes-setting.js"></script>
     <script src="/static/files/background-setting.js"></script>
@@ -156,6 +157,25 @@
           width: max-content;
         }
       }
+
+      {% if config['front']['buttons-color'] != "" and config['front']['edit-buttons-color'] != "false" %}
+        .wd_button, .wd_button:focus {
+          background-color: {{config['front']['buttons-color']}};
+          box-shadow: {{config['front']['buttons-color']}} 0 1px 3px 0;
+        }
+        .wd_button:hover {
+          transform: translateY(-1px);
+          animation-name: animation-{{ config['front']['buttons-color'].replace('#','') }};
+          animation-duration: 1s;
+        } 
+        .wd_button:active {
+          background-color: #{{ config['front']['buttons-color'].replace('#','') }};
+          border-color: rgba(0, 0, 0, 0.15);
+          box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+          color: rgba(0, 0, 0, 0.65);
+          transform: translateY(0);
+        }
+      {% endif %}
       
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% for button_config in config["front"]["buttons"][folder_id] %}
@@ -884,7 +904,28 @@
                       {% endif %}
                     {% endif %}
                     <input type="color" class="names-color-input {{black_theme}}" id="names-color-input" {{default_names_color}}>
-                    <input type="text" name="front.names-color" id="names-color-hex" class="names-color-setting {{black_theme}}" placeholder="Button Names Color (HEX)" {{default_names_color}}>
+                    <input type="text" name="front.names-color" id="names-color-hex" class="names-color-setting {{black_theme}}" placeholder="Button names color (HEX)" {{default_names_color}}>
+                  </div>
+
+                </div>
+
+                <div class="setting edit-buttons-color">
+                  <p> {{text['edit_btn_color']}} </p>
+                  <label for="edit-buttons-color"  class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="edit-buttons-color" name="front.edit-buttons-color" {% if config['front']['edit-buttons-color'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                  <div class="buttons-color-input-container">
+                    {% set default_buttons_color = '' %}
+                    {% if config['front']['buttons-color'] and not config['front']['buttons-color'].strip() == '' %}
+                      {% if config['front']['buttons-color'].strip().startswith('#') %}
+                        {% set default_buttons_color = 'value="' + config['front']['buttons-color'].strip() + '"' %}
+                      {% else %}
+                        {% set default_buttons_color = 'value="#' + config['front']['buttons-color'].strip() + '"' %}
+                      {% endif %}
+                    {% endif %}
+                    <input type="color" class="buttons-color-input {{black_theme}}" id="buttons-color-input" {{default_buttons_color}}>
+                    <input type="text" name="front.buttons-color" id="buttons-color-hex" class="buttons-color-setting {{black_theme}}" placeholder="Button default color (HEX)" {{default_buttons_color}}>
                   </div>
 
                 </div>

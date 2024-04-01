@@ -33,6 +33,8 @@
             "#141414"
         ],
         "computer-usage-reload-time": "3000",
+        "edit-buttons-color": "false",
+        "buttons-color": "",
         "names-color": "#b3b3b3",
         "show-names": "true",
         "portrait-rotate": "90",
