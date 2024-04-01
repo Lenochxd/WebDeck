@@ -1227,8 +1227,9 @@ div.theme-container {
   display: flex;
   align-items: center;
   height: 50px;
-  background-color: #00000024;
   margin: 2px;
+  background-color: #00000024;
+  border-radius: 5px;
 }
 
 div.theme-icon-container,
@@ -1237,11 +1238,13 @@ img.theme-icon {
   width: 45px;
   margin-left: 3px;
   margin-right: 8px;
+  border-radius: 5px;
 }
 div.theme-icon-container {
   background-color: #00000045;
   display: flex;
   align-items: center;
+  border-radius: 5px;
 }
 img.theme-icon {
   height: 90%;
@@ -1337,6 +1340,9 @@ div#enabled-themes {
   margin-top: -18px;
 }
 
+div#themes-tutorial-container > a > svg {
+  margin-top: 0;
+}
 div#themes-tutorial-container {
   float: right;
   display: flex;
