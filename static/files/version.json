@@ -1,10 +1,70 @@
 {
     "versions": [
         {
+            "version": "1.8.0",
+            "release_date": {
+                "day": "01",
+                "month": "04",
+                "year": "2024",
+                "hour": "19",
+                "minute": "00"
+            },
+            "en": {
+                "updates": [
+                    "Added a theme manager to organize and sort CSS themes",
+                    "Added support for backgrounds in mp4 format",
+                    "Added the ability to execute Python code from a button, either from an uploaded file or a file path, instead of a single line of code as before",
+                    "Added a parameter to modify the default background color of all buttons",
+                    "Added a parameter to modify the rotation direction of the screen in portrait mode",
+                    "Added a button to open a directory on your computer"
+                ],
+                "minor_enhancements": [
+                    "Added a color picker to the button adding menu",
+                    "Improved the stop soundboard button"
+                ],
+                "fixes": [
+                    "Fixed the stop soundboard button, which not only stopped the sound but also the microphone output",
+                    "Fixed instability with activate/deactivate/delete background buttons",
+                    "Added a crash handler for the soundboard"
+                ],
+                "nobody_cares": [
+                    "Improved the stop soundboard button - resolved an issue with FFMPEG and pydub, following VLC's failure to stop the sound when playback was nearing the end",
+                    "Moved tutorial links to language files instead of directly including them in index.jinja",
+                    "Added titles to tutorial buttons (e.g., text:soundboard_tutorial)",
+                    "Improved a text in French"
+                ]
+            },
+            "fr": {
+                "updates": [
+                    "Ajout d'un gestionnaire de thèmes permettant d'organiser et de trier des thèmes CSS",
+                    "Ajout du support des arrière-plans au format mp4",
+                    "Ajout de la possibilité d'exécuter du code Python à partir d'un bouton, soit à partir d'un fichier envoyé, soit à partir d'un chemin de fichier, au lieu d'une seule ligne de code comme auparavant",
+                    "Ajout d'un paramètre pour modifier la couleur de fond par défaut de tous les boutons",
+                    "Ajout d'un paramètre pour modifier le sens de rotation de l'écran en mode portrait",
+                    "Ajout d'un bouton permettant d'ouvrir un répertoire sur votre ordinateur"
+                ],
+                "minor_enhancements": [
+                    "Ajout du color picker dans le menu d'ajout de bouton",
+                    "Amélioration du bouton d'arrêt de la soundboard"
+                ],
+                "fixes": [
+                    "Correction du bouton d'arrêt de la soundboard qui ne stoppait pas seulement le son, mais aussi le micro",
+                    "Correction des boutons d'activation/désactivation/suppression des arrière-plans qui n'étaient pas stables",
+                    "Ajout d'un gestionnaire de crash pour la soundboard"
+                ],
+                "nobody_cares": [
+                    "Amélioration du bouton d'arrêt de la soundboard - résolution d'un problème avec FFMPEG et pydub, suite à un dysfonctionnement de VLC qui ne parvenait pas à arrêter le son si la lecture était proche de la fin",
+                    "Déplacement des liens de tutoriels dans les fichiers de langue au lieu de les inclure directement dans index.jinja",
+                    "Ajout de titres aux boutons tutoriels (ex: text:soundboard_tutorial)",
+                    "Amélioration d'un texte en français"
+                ]
+            }
+        },
+        {
             "version": "1.7.3",
             "release_date": {
                 "day": "17",
-                "month": "3",
+                "month": "03",
                 "year": "2024",
                 "hour": "18",
                 "minute": "00"
