@@ -106,14 +106,6 @@ div.all-buttons {
   width: max-content;
 }
 
-@media (orientation: portrait) {
-  div.buttons-center {
-    transform: rotate(90deg);
-  }
-  div.all-buttons {
-    width: max-content;
-  }
-}
 
 button.button {
   background-color: #F0f0f2;
@@ -646,6 +638,20 @@ form#config-form {
   width: 75px;
 }
 
+.deg {
+  font-size: x-large;
+  margin-top: -13px;
+  margin-right: 5px;
+}
+
+#portrait-rotate-setting-container {
+  display: flex;
+  align-items: center;
+}
+#portrait-rotate-setting-container > .button {
+  margin-left: 3px;
+}
+
 /* style pour le conteneur principal */
 .config-container, .addbutton-container {
   width: 80%;
@@ -1158,7 +1164,7 @@ div.setting > p {
   transition: .4s;
 }
 
-.slider:after {
+.slider::after {
   position: absolute;
   content: "";
   height: 11px;
@@ -1178,7 +1184,7 @@ input:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:after {
+input:checked + .slider::after {
   -webkit-transform: translateX(17px);
   -ms-transform: translateX(17px);
   transform: translateX(17px);
@@ -1189,7 +1195,7 @@ input:checked + .slider:after {
   border-radius: 34px;
 }
 
-.slider.round:after {
+.slider.round::after {
   border-radius: 50%;
 }
 

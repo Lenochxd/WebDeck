@@ -1339,7 +1339,7 @@ def home():
         "index.jinja",
         config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(), commands=commands, versions=versions,
         random_bg=random_bg, usage_example=usage_example, langs=langs,
-        text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe,
+        text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
         isfile=os.path.isfile
     )

@@ -112,6 +112,8 @@ gridsize=Taille de la grille
 height=hauteur
 width=largeur
 
+portrait_rotate=Rotation du mode portrait
+
 themes=Thèmes
 open_theme_menu=Ouvrir le menu des thèmes
 

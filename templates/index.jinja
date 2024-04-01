@@ -147,6 +147,15 @@
           }
         {% endif %}
       {% endif %}
+
+      @media (orientation: portrait) {
+        div.buttons-center {
+          transform: rotate({{portrait_rotate}}deg);
+        }
+        div.all-buttons {
+          width: max-content;
+        }
+      }
       
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% for button_config in config["front"]["buttons"][folder_id] %}
@@ -832,6 +841,32 @@
                   </label>
                 </div>
                 
+                <div class="setting portrait-rotate">
+                  <label for="portrait-rotate"> {{text['portrait_rotate']}} </label>
+                  <div id="portrait-rotate-setting-container">
+                    <input required class="{{black_theme}}" type="number" min="0" pattern="[0-9]*"
+                      style="width: 75px;"
+                      oninput="this.value = this.value.replaceAll(/[^0-9]/g, '');"
+                      id="portrait-rotate" name="front.portrait-rotate"
+                      {% if not config['front']['portrait-rotate'].strip() == '' %}
+                        value="{{ config['front']['portrait-rotate'] }}"
+                      {% else %}
+                        value="90"
+                      {% endif %}
+                    >
+                    <div class="deg">&deg;</div>
+
+                    <button type="button" onclick="document.getElementById('portrait-rotate').value = '270'" class="button">
+                      270&deg;
+                    </button>
+                    <button type="button" onclick="document.getElementById('portrait-rotate').value = '90'" class="button">
+                      90&deg;
+                    </button>
+                    <button type="button" onclick="document.getElementById('portrait-rotate').value = '0'" class="button">
+                      0&deg;
+                    </button>
+                  </div>
+                </div>
                 
                 <div class="setting show-names">
                   <p> {{text['show_btn_names']}} </p>

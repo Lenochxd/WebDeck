@@ -112,6 +112,8 @@ gridsize=Grid-size
 height=height
 width=width
 
+portrait_rotate=Portrait mode rotation degrees
+
 themes=Themes
 open_theme_menu=Open the themes menu
 
