@@ -171,10 +171,12 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           
           // Créer un pseudo-élément ::before pour contenir l'image de fond
-          var pseudoElement = document.createElement("div");
-          pseudoElement.classList.add("choose-bg-pseudo-element");
-          pseudoElement.style.backgroundImage = 'url("' + imageFile + '")';
-          divElement.appendChild(pseudoElement);
+          if (!imageFile.endsWith(".mp4")) {
+            var pseudoElement = document.createElement("div");
+            pseudoElement.classList.add("choose-bg-pseudo-element");
+            pseudoElement.style.backgroundImage = 'url("' + imageFile + '")';
+            divElement.appendChild(pseudoElement);
+          }
           
           
           backgrounds_array.push(fileName);
@@ -185,10 +187,48 @@ document.addEventListener('DOMContentLoaded', function() {
           chooseBackgroundsContainer.appendChild(divElement);
           
 
-          var imgElement = document.createElement("img");
-          
-          imgElement.setAttribute("src", imageFile);
-          divElement.appendChild(imgElement);
+          var mediaElement;
+
+          if (imageFile.endsWith(".mp4")) {
+            // Create video container with blurred background
+            var videoContainerBlurred = document.createElement("div");
+            videoContainerBlurred.className = "video-container choose-bg-pseudo-element"; // Add blurred background class
+            var videoElementBlurred = document.createElement("video");
+            videoElementBlurred.autoplay = true;
+            videoElementBlurred.muted = true;
+            videoElementBlurred.loop = true;
+            videoElementBlurred.className = "blurred-video"; // Add blurred video class
+            var sourceElementBlurred = document.createElement("source");
+            sourceElementBlurred.src = imageFile;
+            sourceElementBlurred.type = "video/mp4";
+            videoElementBlurred.appendChild(sourceElementBlurred);
+            videoContainerBlurred.appendChild(videoElementBlurred);
+        
+            // Create video container without blurred background
+            var videoContainer = document.createElement("div");
+            videoContainer.className = "video-container";
+            var videoElement = document.createElement("video");
+            videoElement.autoplay = true;
+            videoElement.muted = true;
+            videoElement.loop = true;
+            var sourceElement = document.createElement("source");
+            sourceElement.src = imageFile;
+            sourceElement.type = "video/mp4";
+            videoElement.appendChild(sourceElement);
+            videoContainer.appendChild(videoElement);
+        
+            // Set mediaElement to contain both video containers
+            mediaElement = document.createElement("div");
+            mediaElement.appendChild(videoContainerBlurred);
+            mediaElement.appendChild(videoContainer);
+          } else {
+            var imgElement = document.createElement("img");
+            imgElement.setAttribute("src", imageFile);
+            mediaElement = imgElement;
+          }
+
+          divElement.appendChild(mediaElement);
+
           
 
           var chooseBgButtonsDiv = document.querySelector(".choose-bg-buttons");

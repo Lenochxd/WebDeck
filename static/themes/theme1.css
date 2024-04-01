@@ -8,7 +8,6 @@ theme-author-github = Lenochxd
 */
 
 
-
 /* ------------------------------------------------------ */
 
 
@@ -1346,11 +1345,12 @@ div.choose-bg-element.black-theme {
   border: 1px solid #ccc!important;
   box-shadow: 0 0 10px #ccc!important;
 }
-div.choose-bg-element-image > img {
+div.choose-bg-element-image > img,
+div.choose-bg-element-image > div.video-container video {
   border-radius: 15px;
   max-width: -webkit-fill-available;
   margin-left: 10px;
-  width: 87%;
+  width: 87% !important;
   z-index: 1;
 }
 .choose-bg-element {
@@ -1360,11 +1360,11 @@ div.choose-bg-element-image > img {
 
 .choose-bg-pseudo-element {
   content: "";
-  position: absolute;
+  position: absolute !important;
   top: -20;
   left: -70;
-  width: 115%;
-  height: 110%;
+  width: 115% !important;
+  height: 110% !important;
   background-size: cover;
   margin-left: 10px;
   filter: blur(3px);
@@ -1411,4 +1411,38 @@ div.choose-bg-buttons {
   right: 10;
   height: 35.7;
   z-index: 1;
+}
+
+
+.video-container {
+  position: relative;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+div.choose-bg-pseudo-element > video {
+  transform: translate(60px, 15px) scale(1.2);
+}
+.video-container video {
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.background-video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

@@ -84,6 +84,15 @@
       </div>
     </div>
 
+    {% if random_bg.endswith(".mp4") %}
+      <div class="background-video">
+        <video autoplay muted loop class="blurred-video">
+          <source src="{{ 'static/files/uploaded/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+          Your browser does not support the video tag...
+        </video>
+      </div>
+    {% endif %}
+
 
     {% if config["settings"]["show-console"].lower() == "true" %}
       <form class="form">
@@ -96,7 +105,12 @@
     <style>
       
       {% if random_bg and not random_bg.strip() == "" %}
-        {% if '**uploaded/' in random_bg.lower() %}
+        {% if random_bg.endswith('.mp4') %}
+          body, div.fakeform-container {
+            background-color: #00000000!important;
+            background-image: none;
+          }
+        {% elif '**uploaded/' in random_bg.lower() %}
           body, div.fakeform-container {
             background-color: transparent;
           }
@@ -518,7 +532,7 @@
             <div id="create-bg-choices">
               <button class="{{black_theme}}" id="create-color-bg"> {{text['add_background_color']}} </button>
               {{text['or']}}
-              <input type="file" id="create-image-bg" class="{{black_theme}}" accept="image/jpeg, image/png, image/gif">
+              <input type="file" id="create-image-bg" class="{{black_theme}}" accept="image/jpeg, image/png, image/gif, video/mp4">
             </div>
             
             <div class="editorStyle-bar {{black_theme}}"></div>
@@ -528,8 +542,8 @@
               {% for bg in config["front"]["background"] %}
                 {% if bg.replace('//','').startswith('rgb(') or bg.replace('//','').startswith('#') %}
                   <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{black_theme}}"
-                    background="{{bg}}" 
-                    background_color_text="{{text['background_color']}}" 
+                    background="{{bg}}"
+                    background_color_text="{{text['background_color']}}"
                     style="background-color: {{bg.replace('//','')}};"
                   >
                     {{text['background_color']}} : {{bg.replace('//','')}}
@@ -548,9 +562,41 @@
                       </svg>
                     </div>
                   </div>
+                {% elif bg.endswith(".mp4") %}
+                  <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg.replace('//','')}}">
+
+                    <div class="video-container choose-bg-pseudo-element">
+                      <video autoplay muted loop class="blurred-video">
+                        <source src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+                        Your browser does not support the video tag...
+                      </video>
+                    </div>
+
+
+                    <div class="video-container">
+                      <video autoplay muted loop>
+                        <source src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+                        Your browser does not support the video tag...
+                      </video>
+                    </div>
+                    {# <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}"> #}
+                    <div class="choose-bg-buttons">
+                      {% if bg.startswith('//') %}
+                        <div class="choose-bg-activate-button"></div>
+                      {% else %}
+                        <div class="choose-bg-activate-button choose-bg-activate-button-checked"></div>
+                      {% endif %}
+                    
+                      <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <title> {{text['remove_background']}} </title>
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                      </svg>
+                    </div>
+                  </div>
                 {% else %}
                   <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg.replace('//','')}}">
-                    <div class="choose-bg-pseudo-element" style="background-image: url('{{ "static/files/uploaded/" + bg.replace('//','').replace('**uploaded/', '') }}')"></div>
+                    <div class="choose-bg-pseudo-element" style="background-image: url('{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}')"></div>
                     <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}">
                     <div class="choose-bg-buttons">
                       {% if bg.startswith('//') %}
@@ -1397,6 +1443,20 @@
           .catch(function (error) {
             console.error(error);
           });
+
+        const videos = document.querySelectorAll('video');
+
+        videos.forEach(video => {
+          video.addEventListener('loadedmetadata', () => {
+            // When metadata is loaded, set the time of other videos to 0
+            const currentTime = video.currentTime;
+            videos.forEach(otherVideo => {
+              if (otherVideo !== video) {
+                otherVideo.currentTime = 0;
+              }
+            });
+          });
+        });
 
         // =========== EDITORMODE ======== START
         var buttons = document.querySelectorAll('.createbutton_submit');

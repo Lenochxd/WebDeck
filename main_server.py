@@ -1288,12 +1288,15 @@ def home():
                 )
                 random_bg_90_path = f"static/files/uploaded/{file_name}-90{extension}"
                 if not os.path.exists(random_bg_90_path):
-                    img = Image.open(random_bg_path)
-                    img_rotated = img.rotate(-90, expand=True)
-                    file_name, extension = os.path.splitext(
-                        os.path.basename(random_bg_path)
-                    )
-                    img_rotated.save(random_bg_90_path)
+                    try:
+                        img = Image.open(random_bg_path)
+                        img_rotated = img.rotate(-90, expand=True)
+                        file_name, extension = os.path.splitext(
+                            os.path.basename(random_bg_path)
+                        )
+                        img_rotated.save(random_bg_90_path)
+                    except Exception as e:
+                        print(e)
     print(f"random background: {random_bg}")
 
     themes = [
@@ -1568,10 +1571,13 @@ def upload_file():
     uploaded_file.save(save_path)
 
     if request.form.get("info") and request.form.get("info") == "background_image":
-        img = Image.open(save_path)
-        img_rotated = img.rotate(-90, expand=True)
-        file_name, extension = os.path.splitext(os.path.basename(save_path))
-        img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
+        try:
+            img = Image.open(save_path)
+            img_rotated = img.rotate(-90, expand=True)
+            file_name, extension = os.path.splitext(os.path.basename(save_path))
+            img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
+        except Exception as e:
+            print(e)
 
     return jsonify({"success": True, "message": text["downloaded_successfully"]})
 
