@@ -141,18 +141,11 @@ Customizing the background is a breeze. Follow these simple steps:
 1. Open the application settings.
 2. Click the "Open the backgrounds menu" button.
 3. This menu allows you to add colors or background images with ease. You can add as many as you like.
-4. When the page loads, a random background will be selected from those you've added.
+4. When the page loads, a random background will be selected from those selected.
 5. If you want to disable certain backgrounds, simply check the box to the right of the background in question.
 6. To remove a background, click the corresponding delete icon.
 
 This way, you can customize the button backgrounds to your preferences with just a few clicks.
-
-
-## Does the software communicate with a server?
-
-Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is in fact your computer. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
-
-If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
 
 
 ## Why is VLC Media Player necessary?
@@ -160,6 +153,13 @@ If your question concerns the software communicating with a **different** server
 WebDeck needs the `python-vlc` library for sound playback on the soundboard. Therefore, it is essential to have VLC media player installed on your computer, even if you do not use the VLC software interface. Unfortunately, to date, no alternative solution has been identified to bypass this requirement.
 
 **Note:** This dependency is a current limitation, and the WebDeck development team is actively exploring potential alternatives to streamline the user experience in future updates.
+
+
+## Does the software communicate with a server?
+
+Yes, but no. Indeed, WebDeck establishes communication with a server, but that server is in fact your computer. The WebDeck on your mobile device is nothing more than a simple web page, and the "server" it connects to is actually your computer. The communication between these two devices takes place through your local network. In other words, your computer acts as a server, but access to this server is strictly reserved for you alone.
+
+If your question concerns the software communicating with a **different** server than your computer's, then the answer is no. To ensure maximum security, no data leaves your network. The only data sent outside your home are API requests to Spotify, but these data do not pass through dedicated WebDeck servers, they are going straight to Spotify's servers.
 
 
 ## Can I open files other than software via the "Open ..." button?

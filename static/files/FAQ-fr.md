@@ -130,14 +130,14 @@ Formats de fichiers acceptés pour l'image du bouton:\
 `.jpg`, `.jpeg`, `.png`, `.gif`, `.svg`, `.webp`, `.bmp`, `.ico`, `.tiff`, `.tif`, `.heif`, `.heic`, `.apng`, `.mng`
 
 
-## Comment personnaliser le fond d'écran derrière les boutons ?
+## Comment personnaliser le fond d'écran/arrière-plan derrière les boutons ?
 
-La personnalisation du fond d'écran est un jeu d'enfant. Suivez ces étapes simples :
+La personnalisation de l'arrière est un jeu d'enfant. Suivez ces étapes simples :
 
 1. Ouvrez les paramètres de l'application.
 2. Cliquez sur le bouton "Ouvrir le menu des arrière-plans".
 3. Ce menu vous permettra d'ajouter des couleurs ou des images de fond en toute simplicité. Vous pouvez en ajouter autant que vous le souhaitez.
-4. Lors du chargement de la page, un fond aléatoire sera sélectionné parmi ceux que vous avez ajoutés.
+4. Lors du chargement de la page, un fond aléatoire sera sélectionné parmi ceux qui sont sélectionnés.
 5. Si vous souhaitez désactiver certains arrière-plans, cochez simplement la case à droite de l'arrière-plan en question.
 6. Pour supprimer un arrière-plan, cliquez sur l'icône de suppression correspondante.
 
