@@ -334,7 +334,7 @@ function deleteButtonEvent(event) {
     var backgroundAttribute = divElement.getAttribute("background");
     var filteredBackgrounds = backgrounds_array.filter(item => !item.startsWith("//"))
     console.log(filteredBackgrounds.length);
-    if (divElement && (!backgroundAttribute.startsWith("//") && filteredBackgrounds.length !== 1)) {
+    if ((divElement != null && filteredBackgrounds.length != 1) || backgroundAttribute.startsWith("//")) {
       divElement.remove();
       backgrounds_array = removeBackgroundFromArray();
     }
