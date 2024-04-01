@@ -343,18 +343,20 @@ function deleteButtonEvent(event) {
 function activateButtonEvent(event) {
   backgrounds_array = removeBackgroundFromArray();
   var divElement = event.target.closest(".choose-bg-element");
-  if (divElement && backgrounds_array.length !== 1) {
+  if (divElement != null) {
     var backgroundAttribute = divElement.getAttribute("background");
     var activateButton = divElement.querySelector("div.choose-bg-buttons").querySelector(".choose-bg-activate-button");
     var filteredBackgrounds = backgrounds_array.filter(item => !item.startsWith("//"))
+    
     if (backgroundAttribute.startsWith("//")) {
-      if (filteredBackgrounds.length > 0) {
-        divElement.setAttribute("background", backgroundAttribute.replace('//', ''));
-        activateButton.classList.add("choose-bg-activate-button-checked");
-        backgrounds_array = removeBackgroundFromArray();
-      }
+      // activate
+      divElement.setAttribute("background", backgroundAttribute.replace('//', ''));
+      activateButton.classList.add("choose-bg-activate-button-checked");
+      backgrounds_array = removeBackgroundFromArray();
+      
     }
-    else if (filteredBackgrounds.length !==1) {
+    else if (filteredBackgrounds.length !== 1) {
+      // desactivate
       divElement.setAttribute("background", "//" + backgroundAttribute);
       activateButton.classList.remove("choose-bg-activate-button-checked");
       backgrounds_array = removeBackgroundFromArray();
