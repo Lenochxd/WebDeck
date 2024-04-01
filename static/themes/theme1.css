@@ -1329,6 +1329,11 @@ div#enabled-themes {
   margin-top: -18px;
 }
 
+div#themes-tutorial-container {
+  float: right;
+  display: flex;
+}
+
 
 div.choose-bg-element {
   margin: auto;

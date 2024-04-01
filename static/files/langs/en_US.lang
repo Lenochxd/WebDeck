@@ -147,6 +147,7 @@ disabled_themes=Available
 enabled_themes=Selected
 
 open_themes_folder=Open themes folder
+themes_tutorial=Themes tutorial
 
 wallpaper_color=Background Color
 add_background_color=Add a color backgroud

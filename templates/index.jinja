@@ -429,10 +429,20 @@
               {{text['back']}}
             </button>
 
-            <button type="button" onclick="send_data('/openfolder /static/themes')"
-            class="button" id="open-themes-folder" style="float: right;">
-              {{text['open_themes_folder']}}
-            </button>
+            <div id="themes-tutorial-container">
+              {% set themes_tutorial = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css" %}
+              {% if text['lang_short'] == "fr" %}
+                {% set themes_tutorial = "https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#je-suis-un-d%C3%A9veloppeur-comment-puis-je-personnaliser-le-css-de-la-page-" %}
+              {% endif %}
+              <a href="{{themes_tutorial}}" target="_blank" title="{{text['themes_tutorial']}}">
+                  <!-- source: https://phosphoricons.com/ -->
+                  {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+              </a>
+              <button type="button" onclick="send_data('/openfolder /static/themes')"
+              class="button" id="open-themes-folder">
+                {{text['open_themes_folder']}}
+              </button>
+            </div>
 
             <h1 class="config-title"> {{text['themes_menu_title']}} </h1>
             
