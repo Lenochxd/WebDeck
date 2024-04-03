@@ -963,7 +963,9 @@ div.buttons-color-input-container {
   margin-bottom: 10px;
 }
 
-input.background-color-input, input.names-color-input {
+input.background-color-input,
+input.names-color-input,
+input.buttons-color-input {
   position: relative;
   margin-right: 5px;
   height: 30;
