@@ -150,7 +150,6 @@
                     "name": "C disk usage"
                 },
                 {
-                    "background-color": "#ffffff",
                     "image": "settings2.png",
                     "image_size": "75%",
                     "message": "/open-config ",
