@@ -87,6 +87,9 @@ no_changes_to_undo=Aucune modification ne peut être annulée.
 configuration=Configuration
 settings=Paramètres
 
+see_patchnotes=Voir les ajouts
+github_issue=Signaler un problème sur GitHub
+
 language=Langue
 config-windows_startup=Démarrer avec Windows
 auto_updates=Mises à jour automatiques

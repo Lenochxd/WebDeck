@@ -495,7 +495,8 @@ input[type="range"]:disabled::-moz-range-thumb {
   border-radius: 20px;
 }
 
-a#version {
+a#version,
+a#issues {
   text-align: left;
   font-size: 14;
   opacity: 0.25;
@@ -505,10 +506,12 @@ a#version {
   position: relative;
   top: -15px;
 }
-a#version:hover {
+a#version:hover,
+a#issues:hover {
   opacity: 1;
 }
-a#version.black-theme {
+a#version.black-theme,
+a#issues.black-theme {
   color: white;
 }
 

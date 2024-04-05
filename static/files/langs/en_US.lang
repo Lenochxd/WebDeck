@@ -87,6 +87,9 @@ no_changes_to_undo=There are no changes to undo.
 configuration=Configuration
 settings=Settings
 
+see_patchnotes=See patchnotes
+github_issue=Report an issue on GitHub
+
 language=Language
 config-windows_startup=Start on Windows startup
 auto_updates=Auto updates
