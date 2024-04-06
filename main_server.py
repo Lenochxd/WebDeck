@@ -12,6 +12,7 @@ import urllib.request
 import zipfile
 import os
 import importlib
+import ipaddress
 from pathlib import Path
 import inspect
 
@@ -1208,13 +1209,20 @@ if config["url"]["ip"] == "local_ip":
 # Middleware to check request IP address
 @app.before_request
 def check_local_network():
-    remote_ip = request.remote_addr
+    remote_ip = request.remote_addr    
+
+    netmask = '255.255.255.0'
+
+    ip_local = ipaddress.IPv4Network(local_ip + '/' + netmask, strict=False)
+    ip_remote = ipaddress.IPv4Network(remote_ip + '/' + netmask, strict=False)
+    
+    #print(f"local IP is: {local_ip}")
+    #print(f"remote: {remote_ip}")
+    #print(f"IP1: {ip_local} == IP2: {ip_remote} {ip_local == ip_remote}")
+    
     # print(f'new connection established: {remote_ip}')
-    if (
-        remote_ip != local_ip
-        and not remote_ip.startswith("127.")
-        and not remote_ip.startswith("192.168.")
-    ):
+    
+    if ip_remote != ip_local:
         return (
             "Unauthorized access: you are not on the same network as the server.",
             403,
