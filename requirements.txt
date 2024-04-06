@@ -1,7 +1,6 @@
 flask
 flask_socketio
 Flask-Minify
-gevent
 win10toast
 keyboard==0.13.5
 pyautogui==0.9.53
@@ -14,9 +13,6 @@ deep_translator
 mss
 pyperclip
 colormath==3.0.0
-sounddevice
-soundfile
-pywinauto
 pywinrm
 cputil
 gputil

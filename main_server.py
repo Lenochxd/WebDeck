@@ -21,11 +21,7 @@ import requests
 import socket
 import spotipy
 import spotipy.util as util
-from spotipy.oauth2 import SpotifyOAuth
 from deepdiff import DeepDiff
-from uuid import UUID
-import pygetwindow as gw
-from pywinauto import Application
 import mss
 from PIL import Image
 from deep_translator import GoogleTranslator
@@ -33,21 +29,16 @@ import pyautogui as keyboard
 import keyboard as keyboard2
 import webcolors
 import pyaudio
-from flask import Flask, request, jsonify, render_template, redirect, Blueprint
-from flask_socketio import SocketIO, emit
+from flask import Flask, request, jsonify, render_template
+from flask_socketio import SocketIO
 from flask_minify import Minify
-from engineio.async_drivers import gevent
 import pyperclip
 import win32api
 import win32con
 import win32gui
 from win32com.client import Dispatch
 from win10toast import ToastNotifier
-import tkinter as tk
 import easygui
-from tkinter import filedialog
-import sounddevice as sd
-import soundfile as sf
 import psutil
 import GPUtil
 import pynvml
@@ -62,8 +53,6 @@ from obswebsocket import requests as obsrequests
 
 # Numerical and scientific libraries
 import numpy as np
-import bisect
-from ctypes import cast, POINTER, wintypes, WinDLL, Structure, c_char
 import ctypes
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
@@ -889,7 +878,7 @@ def execute_python_file(file_path):
 def get_current_volume():
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
+    volume = ctypes.cast(interface, ctypes.POINTER(IAudioEndpointVolume))
     return volume.GetMasterVolumeLevelScalar()
 
 
@@ -897,7 +886,7 @@ def set_volume(target_volume):
     current_volume = get_current_volume()
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
+    volume = ctypes.cast(interface, ctypes.POINTER(IAudioEndpointVolume))
     while math.isclose(current_volume, target_volume, rel_tol=0.01) == False:
         if current_volume > target_volume:
             current_volume -= 0.01
@@ -1202,6 +1191,7 @@ def get_local_ip():
 
 
 local_ip = get_local_ip()
+
 if config["url"]["ip"] == "local_ip":
     config["url"]["ip"] = local_ip
 
@@ -1216,9 +1206,9 @@ def check_local_network():
     ip_local = ipaddress.IPv4Network(local_ip + '/' + netmask, strict=False)
     ip_remote = ipaddress.IPv4Network(remote_ip + '/' + netmask, strict=False)
     
-    #print(f"local IP is: {local_ip}")
-    #print(f"remote: {remote_ip}")
-    #print(f"IP1: {ip_local} == IP2: {ip_remote} {ip_local == ip_remote}")
+    # print(f"local IP is: {local_ip}")
+    # print(f"remote: {remote_ip}")
+    # print(f"IP1: {ip_local} == IP2: {ip_remote} {ip_local == ip_remote}")
     
     # print(f'new connection established: {remote_ip}')
     
