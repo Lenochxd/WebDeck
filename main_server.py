@@ -156,6 +156,10 @@ def check_json_update(config):
         config["settings"]["open-settings-in-integrated-browser"] = "false"
     if "portrait-rotate" not in config["front"]:
         config["front"]["portrait-rotate"] = "90"
+    if "edit-buttons-color" not in config["front"]:
+        config["front"]["edit-buttons-color"] = "false"
+    if "buttons-color" not in config["front"]:
+        config["front"]["buttons-color"] = ""
     if "soundboard" not in config["settings"]:
         config["settings"]["soundboard"] = {
             "mic_input_device": "",
@@ -429,27 +433,51 @@ def get_ffmpeg():
     if os.path.isfile("ffmpeg.exe"):
         return os.path.abspath("ffmpeg.exe")
 
-    base_path = Path("C:/Users")
+    # Search for ffmpeg installation on winget
+    try:
+        base_path = Path("C:/Users")
 
-    # Iterate through user directories
-    for user_dir in base_path.iterdir():
-        if user_dir.is_dir():
-            # Iterate through subdirectories of the user directory
-            for package_dir in user_dir.joinpath("AppData/Local/Microsoft/WinGet/Packages").iterdir():
-                if package_dir.name.startswith("Gyan.FFmpeg"):
-                    # Iterate through subdirectories of the package
-                    for sub_dir in package_dir.iterdir():
-                        if sub_dir.is_dir() and sub_dir.name.startswith("ffmpeg-"):
-                            # Find the ffmpeg.exe file
-                            ffmpeg_path = sub_dir.joinpath("bin/ffmpeg.exe")
-                            # Check if the file exists
-                            if ffmpeg_path.exists():
-                                print("Path found:", ffmpeg_path)
-                                return str(ffmpeg_path)
-                    continue
-            continue
-    print("ffmpeg.exe not found.")
-    subprocess.Popen("winget install ffmpeg", shell=True)
+        # Iterate through user directories
+        for user_dir in base_path.iterdir():
+            if user_dir.is_dir():
+                # Iterate through subdirectories of the user directory
+                for package_dir in user_dir.joinpath("AppData/Local/Microsoft/WinGet/Packages").iterdir():
+                    if package_dir.name.startswith("Gyan.FFmpeg"):
+                        # Iterate through subdirectories of the package
+                        for sub_dir in package_dir.iterdir():
+                            if sub_dir.is_dir() and sub_dir.name.startswith("ffmpeg-"):
+                                # Find the ffmpeg.exe file
+                                ffmpeg_path = sub_dir.joinpath("bin/ffmpeg.exe")
+                                # Check if the file exists
+                                if ffmpeg_path.exists():
+                                    print("Path found:", ffmpeg_path)
+                                    return str(ffmpeg_path)
+                        continue
+                continue
+    except Exception as e:
+        print("FFMPEG: WinGet Error:", e)
+    
+    # Search for ffmpeg installation via webdeck servers
+    if os.path.isfile("ffmpeg.exe"):
+        return "ffmpeg.exe"
+
+    try:
+        print("downloading ffmpeg using webdeck servers...")
+        url = "https://bishokus.fr/dl_ffmpeg"
+        urllib.request.urlretrieve(url, "ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
+        
+        with zipfile.ZipFile("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip", "r") as zip_ref:
+            zip_ref.extractall("")
+            
+        os.remove("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
+        return "ffmpeg.exe"
+    except Exception as e:
+        print("FFMPEG:", e)
+    
+        print("FFMPEG: downloading ffmpeg using winget...")
+        subprocess.Popen("winget install ffmpeg", shell=True)
+    
+    print("FFMPEG: not found.")
     return None
     
 
@@ -463,15 +491,16 @@ def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
         print(e)
         ffmpeg_path = get_ffmpeg()
         
-        shutil.copyfile(ffmpeg_path, "ffmpeg.exe")
-        shutil.copyfile(ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe'), "ffprobe.exe")
-        
-        ffmpeg_path = os.path.abspath("ffmpeg.exe")
-        ffprobe_path = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
+        if ffmpeg_path is not None and ffmpeg_path != "ffmpeg.exe":
+            shutil.copyfile(ffmpeg_path, "ffmpeg.exe")
+            shutil.copyfile(ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe'), "ffprobe.exe")
+            
+            ffmpeg_path = os.path.abspath("ffmpeg.exe")
+            ffprobe_path = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
 
-        AudioSegment.converter = ffmpeg_path
-        AudioSegment.ffmpeg = ffmpeg_path
-        AudioSegment.ffprobe = ffprobe_path
+            AudioSegment.converter = ffmpeg_path
+            AudioSegment.ffmpeg = ffmpeg_path
+            AudioSegment.ffprobe = ffprobe_path
         if AudioSegment.converter is None:
             return False
     else:
@@ -1181,21 +1210,19 @@ if config["url"]["ip"] == "local_ip":
 @app.before_request
 def check_local_network():
     remote_ip = request.remote_addr    
-    
+
     netmask = '255.255.255.0'
-    
+
     ip_local = ipaddress.IPv4Network(local_ip + '/' + netmask, strict=False)
     ip_remote = ipaddress.IPv4Network(remote_ip + '/' + netmask, strict=False)
-
-   
-   
+    
     #print(f"local IP is: {local_ip}")
     #print(f"remote: {remote_ip}")
     #print(f"IP1: {ip_local} == IP2: {ip_remote} {ip_local == ip_remote}")
-   
-
+    
     # print(f'new connection established: {remote_ip}')
-    if(ip_remote != ip_local):
+    
+    if ip_remote != ip_local:
         return (
             "Unauthorized access: you are not on the same network as the server.",
             403,
@@ -1298,12 +1325,15 @@ def home():
                 )
                 random_bg_90_path = f"static/files/uploaded/{file_name}-90{extension}"
                 if not os.path.exists(random_bg_90_path):
-                    img = Image.open(random_bg_path)
-                    img_rotated = img.rotate(-90, expand=True)
-                    file_name, extension = os.path.splitext(
-                        os.path.basename(random_bg_path)
-                    )
-                    img_rotated.save(random_bg_90_path)
+                    try:
+                        img = Image.open(random_bg_path)
+                        img_rotated = img.rotate(-90, expand=True)
+                        file_name, extension = os.path.splitext(
+                            os.path.basename(random_bg_path)
+                        )
+                        img_rotated.save(random_bg_90_path)
+                    except Exception as e:
+                        print(e)
     print(f"random background: {random_bg}")
 
     themes = [
@@ -1321,7 +1351,7 @@ def home():
         "index.jinja",
         config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(), commands=commands, versions=versions,
         random_bg=random_bg, usage_example=usage_example, langs=langs,
-        text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe,
+        text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
         isfile=os.path.isfile
     )
@@ -1578,10 +1608,13 @@ def upload_file():
     uploaded_file.save(save_path)
 
     if request.form.get("info") and request.form.get("info") == "background_image":
-        img = Image.open(save_path)
-        img_rotated = img.rotate(-90, expand=True)
-        file_name, extension = os.path.splitext(os.path.basename(save_path))
-        img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
+        try:
+            img = Image.open(save_path)
+            img_rotated = img.rotate(-90, expand=True)
+            file_name, extension = os.path.splitext(os.path.basename(save_path))
+            img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
+        except Exception as e:
+            print(e)
 
     return jsonify({"success": True, "message": text["downloaded_successfully"]})
 
@@ -1712,23 +1745,31 @@ def send_data(message=None):
 
     elif message.startswith(("/openfolder")):
         path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
-        pathtemp = path.replace('/', '\\').replace('\\\\','\\')
+        pathtemp = path.replace('\\\\','\\').replace('\\', '/')
         
         if not ":" in pathtemp:
             path = os.path.join(os.getcwd(), path)
-            if not os.path.isfile(path):
+            if not os.path.isdir(path):
                 path = os.path.join(os.path.dirname(sys.executable), path)
-                if not os.path.isfile(path):
+                if not os.path.isdir(path):
                     path = pathtemp
         else:
             path = pathtemp
             
-        path = path.replace('/', '\\').replace('\\\\','\\')
+        path = path.replace('\\\\','\\').replace('\\', '/')
         
-        if not path.endswith('\\'):
-            path += '\\'
-            print(path)
+        # if not path.endswith('/'):
+        #     path += '/'
+            
+        if not os.path.isdir(path):
+            if path.startswith('/'):
+                path = path[1:]
+            path = f"C:/.Code/WebDeck/{path}" # FIXME
+        
+        path = path.replace('/', '\\')
+        print(path)
         subprocess.Popen(f'explorer "{path}"')
+        # os.startfile(path)
         
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
