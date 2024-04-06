@@ -1,6 +1,7 @@
 flask
 flask_socketio
 Flask-Minify
+gevent
 win10toast
 keyboard==0.13.5
 pyautogui==0.9.53

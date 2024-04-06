@@ -32,6 +32,7 @@ import pyaudio
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_minify import Minify
+from engineio.async_drivers import gevent
 import pyperclip
 import win32api
 import win32con
