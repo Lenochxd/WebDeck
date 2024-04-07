@@ -32,10 +32,22 @@
             },
             "fr": {
                 "updates": [],
-                "minor_enhancements": [],
-                "fixes": [],
-                "nobody_cares": []
-            }
+                "minor_enhancements": [
+                    "Ajout d'un bouton 'Signaler un problème sur GitHub' dans les paramètres"
+                ],
+                "fixes": [
+                    "Correction des réseaux qui ne suivent pas la configuration standard 192 ou localhost (par @sylos sur #11)",
+                    "Correction de la marge de saisie de couleur",
+                    "Correction d'une traduction oubliée",
+                    "Suppression de la couleur de fond par défaut inutile du bouton des paramètres"
+                ],
+                "nobody_cares": [
+                    "Amélioration des mises à jour automatiquess : ajout de la possibilité de manipuler les fichiers lors de la mise à jour (suppression/déplacement/renommer)",
+                    "Renommage de 'theme1' en 'default_theme'",
+                    "Nettoyage des imports (suppression de `sounddevice`, `soundfile`, `pywinauto` du fichier requirements.txt)",
+                    "Amélioration de la qualité du code"
+                ]
+            }            
         },
         {
             "version": "1.8.0",
