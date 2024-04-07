@@ -1,6 +1,43 @@
 {
     "versions": [
         {
+            "version": "1.8.1",
+            "release_date": {
+                "day": "07",
+                "month": "04",
+                "hour": "15",
+                "year": "2024",
+                "minute": "15"
+            },
+            "renamed_files": [
+                ["static/themes/theme1.css", "static/themes/default_theme.css"]
+            ],
+            "en": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Added a 'Report an issue on GitHub' button to the settings"
+                ],
+                "fixes": [
+                    "Fixed networks that don't follow the standard 192 or localhost setup (by @sylos on #11)",
+                    "Fixed color input margin",
+                    "Fixed a forgotten translation",
+                    "Removed unnecessary default background color to the settings button"
+                ],
+                "nobody_cares": [
+                    "Improved auto update: added ability to manipulate files on update (delete/move/rename)",
+                    "Renamed 'theme1' to 'default_theme'",
+                    "Cleaned up imports (removed `sounddevice`, `soundfile`, `pywinauto` from requirements.txt)",
+                    "Improved code quality"
+                ]
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.8.0",
             "release_date": {
                 "day": "01",
@@ -80,7 +117,7 @@
                 "fixes": [
                     "Fixed: Unable to add or move a button to the same location as a previously deleted button",
                     "Fixed automatic updates, now repaired and improved; no need for manual updates anymore",
-                    "Fixed error regarding unsupported old Nvidia GPUs",
+                    "Fixed error regarding unsupported old Nvidia GPUs (#7)",
                     "Fixed the 'Open' button if the file selection window was canceled",
                     "Fixed an English text"
                 ],
@@ -100,7 +137,7 @@
                 "fixes": [
                     "Correction : impossible d'ajouter ou de déplacer un bouton au même emplacement qu'un bouton précédemment supprimé",
                     "Correction des mises à jour automatiques qui ont étés réparées et améliorées; plus besoin de mettre à jour manuellement",
-                    "Correction de l'erreur de non prise en charge des anciennes cartes graphiques Nvidia",
+                    "Correction de l'erreur de non prise en charge des anciennes cartes graphiques Nvidia (#7)",
                     "Correction du bouton 'Ouvrir' si la fenêtre de sélection de fichier était annulée",
                     "Correction d'un texte en anglais"
                 ],
