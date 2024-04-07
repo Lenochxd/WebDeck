@@ -173,7 +173,7 @@ def check_json_update(config):
     if "fix-stop-soundboard" not in config["settings"]:
         config["settings"]["fix-stop-soundboard"] = "false"
 
-    if "theme" not in config["front"]:
+    if "theme" not in config["front"] or not os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
         config["front"]["theme"] = "default_theme.css"
 
     themes = [
