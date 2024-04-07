@@ -47,8 +47,11 @@ def check_files(versions_json_path, data_json_path):
                 source, destination = move[0], move[1]
                 update_limit = move[2] if len(move) == 3 else "99.99.99"
                 if compare_versions(update_limit, current_version) > 0:
-                    os.makedirs(os.path.dirname(destination), exist_ok=True)
-                    shutil.move(source, destination)
+                    try:
+                        os.makedirs(os.path.dirname(destination), exist_ok=True)
+                        shutil.move(source, destination)
+                    except FileNotFoundError:
+                        pass
                     print(f'moved {source} -> {destination}')
 
     with open(data_json_path, "w", encoding="utf-8") as f:
