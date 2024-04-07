@@ -18,7 +18,8 @@ def error(message):
 def check_files(versions_json_path, data_json_path):
     with open(versions_json_path, encoding="utf-8") as f:
         versions = json.load(f)
-    
+        current_version = versions["versions"][0]["version"]
+        
     if os.path.isfile(data_json_path):
         with open(data_json_path, encoding="utf-8") as f:
             data_json = json.load(f)
@@ -31,17 +32,25 @@ def check_files(versions_json_path, data_json_path):
             
             if "deleted_files" in version.keys():
                 for file_to_delete in version["deleted_files"]:
-                    try:
-                        os.remove(file_to_delete)
-                    except Exception as e:
-                        print(e)
-            
+                    if type(file_to_delete) == "str":
+                        file_to_delete = [file_to_delete, "99.99.99"]
+                    update_limit = file_to_delete[1] if len(file_to_delete) == 2 else "99.99.99"
+                    if compare_versions(update_limit, current_version) > 0:
+                        try:
+                            os.remove(file_to_delete)
+                        except Exception as e:
+                            print(e)
+                        print(f'deleted {file_to_delete}')
+
             files_to_move = version.get("moved_files", []) + version.get("renamed_files", [])
             for move in files_to_move:
-                source, destination = move
-                os.makedirs(os.path.dirname(destination), exist_ok=True)
-                shutil.move(source, destination)
-            
+                source, destination = move[0], move[1]
+                update_limit = move[2] if len(move) == 3 else "99.99.99"
+                if compare_versions(update_limit, current_version) > 0:
+                    os.makedirs(os.path.dirname(destination), exist_ok=True)
+                    shutil.move(source, destination)
+                    print(f'moved {source} -> {destination}')
+
     with open(data_json_path, "w", encoding="utf-8") as f:
         json.dump(data_json, f, ensure_ascii=False, indent=4)
         
