@@ -61,7 +61,7 @@ import comtypes
 import math
 
 # WebDeck imports
-from updater import compare_versions
+from updater import compare_versions, check_files
 
 os.add_dll_directory(os.getcwd())
 
@@ -96,6 +96,7 @@ if not os.path.exists("static/files/uploaded"):
 with open("config.json", encoding="utf-8") as f:
     config = json.load(f)
 
+check_files("static/files/version.json", "data.json")
 
 def load_lang_file(lang):
     lang_dictionary = {}

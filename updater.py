@@ -15,6 +15,36 @@ def error(message):
     print(message)
     ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Updater Error", 0)
 
+def check_files(versions_json_path, data_json_path):
+    with open(versions_json_path, encoding="utf-8") as f:
+        versions = json.load(f)
+    
+    if os.path.isfile(data_json_path):
+        with open(data_json_path, encoding="utf-8") as f:
+            data_json = json.load(f)
+    else:
+        data_json = {"checked-versions": []}
+        
+    for version in reversed(versions["versions"]):
+        if not version["version"] in data_json["checked-versions"]:
+            data_json["checked-versions"].append(version["version"])
+            
+            if "deleted_files" in version.keys():
+                for file_to_delete in version["deleted_files"]:
+                    try:
+                        os.remove(file_to_delete)
+                    except Exception as e:
+                        print(e)
+            
+            files_to_move = version.get("moved_files", []) + version.get("renamed_files", [])
+            for move in files_to_move:
+                source, destination = move
+                os.makedirs(os.path.dirname(destination), exist_ok=True)
+                shutil.move(source, destination)
+            
+    with open(data_json_path, "w", encoding="utf-8") as f:
+        json.dump(data_json, f, ensure_ascii=False, indent=4)
+        
 
 def move_folder_content(source, destination):
     if not os.path.exists(destination):
@@ -173,6 +203,7 @@ if __name__ == "__main__":
     if not current_dir.endswith("update"):
         sys.exit()
     version_path = os.path.join(wd_dir, "static/files/version.json")
+    data_path = os.path.join(wd_dir, "data.json")
 
     if not ctypes.windll.shell32.IsUserAnAdmin():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
@@ -181,4 +212,5 @@ if __name__ == "__main__":
     with open(version_path, encoding="utf-8") as f:
         current_version = json.load(f)["versions"][0]["version"]
 
+    check_files(version_path, data_path)
     check_updates(current_version)
