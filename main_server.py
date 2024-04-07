@@ -174,7 +174,7 @@ def check_json_update(config):
         config["settings"]["fix-stop-soundboard"] = "false"
 
     if "theme" not in config["front"]:
-        config["front"]["theme"] = "theme1.css"
+        config["front"]["theme"] = "default_theme.css"
 
     themes = [
         f"//{file_name}"
@@ -223,11 +223,12 @@ def check_json_update(config):
                 config["front"]["themes"].insert(0, f"//{theme}")
                 
 
-
     # move the default theme to the bottom
-    if config["front"]["theme"] in config["front"]["themes"]:
-        config["front"]["themes"].remove(config["front"]["theme"])
-    config["front"]["themes"].append(config["front"]["theme"])
+    if os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
+        if config["front"]["theme"] in config["front"]["themes"]:
+            config["front"]["themes"].remove(config["front"]["theme"])
+            
+        config["front"]["themes"].append(config["front"]["theme"])
 
 
     return config
