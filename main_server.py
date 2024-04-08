@@ -24,7 +24,8 @@ import spotipy.util as util
 from deepdiff import DeepDiff
 import mss
 from PIL import Image
-from deep_translator import GoogleTranslator
+try: from deep_translator import GoogleTranslator
+except SyntaxError: pass
 import pyautogui as keyboard
 import keyboard as keyboard2
 import webcolors
@@ -960,12 +961,15 @@ def get_color_distance(hex_code1, hex_code2):
 def translate(word, target_language):
     # Separate words with spaces before each capital letter
     word = "".join([f" {i}" if i.isupper() else i for i in word]).strip()
+    
     if word == "Discord" or target_language.upper() == "EN":
-        result = word
-    else:
-        result = GoogleTranslator(source="en", target=target_language).translate(word)
-
-    return result
+        return word
+        
+    try:
+        return GoogleTranslator(source="en", target=target_language).translate(word)
+    except NameError:
+        return word
+    
 
 
 def bring_window_to_front(window_title):
