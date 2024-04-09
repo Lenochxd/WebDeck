@@ -395,7 +395,7 @@
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input webdeck_available_gpus",
+              "TYPE": "input available_gpus",
               "en": "Select GPU",
               "fr": "GPU sélectionné"
             },
@@ -429,7 +429,7 @@
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input webdeck_available_gpus",
+              "TYPE": "input available_gpus",
               "en": "Select GPU",
               "fr": "GPU sélectionné"
             },
@@ -463,7 +463,7 @@
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input webdeck_available_gpus",
+              "TYPE": "input available_gpus",
               "en": "Select GPU",
               "fr": "GPU sélectionné"
             },
@@ -497,7 +497,7 @@
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input webdeck_available_gpus",
+              "TYPE": "input available_gpus",
               "en": "Select GPU",
               "fr": "GPU sélectionné"
             },

@@ -103,7 +103,7 @@
             <option value="{{ option['ID'] }}"> {{ option_name }} </option>
         {% endfor %}
     </select>
-{% elif "webdeck_available_gpus" in arg['TYPE'] %}
+{% elif "available_gpus" in arg['TYPE'] %}
     <select name="{{file}}" >
         {% for gpu, usage in usage_example['gpus'].items() %}
             {% if usage['name'] %}
