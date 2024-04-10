@@ -1060,6 +1060,25 @@ def has_at_least_5_minutes_difference(timestamp1, timestamp2):
     return difference_in_minutes >= 15
 
 
+def extract_asked_device(input_string):
+    pattern = r"\['(.*?)'\]"
+    matches = re.findall(pattern, input_string)
+    return matches
+    
+def get_asked_devices():
+    devices = []
+    
+    for folder_id, value in config["front"]["buttons"].items():
+        for button in config["front"]["buttons"][folder_id]:
+            if "message" in button.keys() and button["message"].startswith("/usage"):
+                
+                device = extract_asked_device(button["message"])
+                if device is not None:
+                    devices.append(device)
+                        
+    return devices
+
+
 with open("config.json", encoding="utf-8") as f:
     config = json.load(f)
     if not "gpu_method" in config["settings"]:
@@ -1074,116 +1093,130 @@ with open("config.json", "w", encoding="utf-8") as json_file:
 
 excluded_disks = {}
 
-
-def get_usage():
+def get_usage(get_all=False):
     global excluded_disks
+    
+    asked_devices = get_asked_devices()
+    
     # CPU
-    cpu_percent = psutil.cpu_percent(4)
-    computer_info = {"cpu": {"usage_percent": cpu_percent}}
+    if not (get_all or any(item[0] == 'cpu' for item in asked_devices)):
+        computer_info["cpu"] = usage_example["cpu"]
+    else:
+        cpu_percent = psutil.cpu_percent(4)
+        computer_info = {"cpu": {"usage_percent": cpu_percent}}
 
     # Memory
-    memory = psutil.virtual_memory()
-    computer_info["memory"] = {
-        "total_gb": round(memory.total / 1024**3, 2),
-        "used_gb": round(memory.total / 1024**3 - memory.available / 1024**3, 2),
-        "available_gb": round(memory.available / 1024**3, 2),
-        "usage_percent": memory[2],
-    }
+    if not (get_all or any(item[0] == 'memory' for item in asked_devices)):
+        computer_info["memory"] = usage_example["memory"] if "memory" in usage_example else {}
+    else:
+        memory = psutil.virtual_memory()
+        computer_info["memory"] = {
+            "total_gb": round(memory.total / 1024**3, 2),
+            "used_gb": round(memory.total / 1024**3 - memory.available / 1024**3, 2),
+            "available_gb": round(memory.available / 1024**3, 2),
+            "usage_percent": memory[2],
+        }
 
     # Hard disk
-    disks = psutil.disk_partitions()
-    computer_info["disks"] = {}
-    for disk in disks:
-        try:
-            disk_name = disk.device.replace("\\", "").replace(":", "")
+    if not (get_all or any(item[0] == 'disks' for item in asked_devices)):
+        computer_info["disks"] = usage_example["disks"]
+    else:
+        disks = psutil.disk_partitions()
+        computer_info["disks"] = {}
+        for disk in disks:
+            try:
+                disk_name = disk.device.replace("\\", "").replace(":", "")
 
-            # Check if the disk is excluded due to a previous error
-            if disk_name not in excluded_disks.keys():
+                # Check if the disk is excluded due to a previous error
+                if disk_name not in excluded_disks.keys():
 
-                disk_usage = psutil.disk_usage(disk.device)
-                computer_info["disks"][disk_name] = {
-                    "total_gb": round(disk_usage.total / 1024**3, 2),
-                    "used_gb": round(disk_usage.used / 1024**3, 2),
-                    "free_gb": round(disk_usage.free / 1024**3, 2),
-                    "usage_percent": disk_usage.percent,
-                }
-            elif has_at_least_5_minutes_difference(
-                excluded_disks[disk_name.upper()], time.time()
-            ):
-                del excluded_disks[disk_name.upper()]
+                    disk_usage = psutil.disk_usage(disk.device)
+                    computer_info["disks"][disk_name] = {
+                        "total_gb": round(disk_usage.total / 1024**3, 2),
+                        "used_gb": round(disk_usage.used / 1024**3, 2),
+                        "free_gb": round(disk_usage.free / 1024**3, 2),
+                        "usage_percent": disk_usage.percent,
+                    }
+                elif has_at_least_5_minutes_difference(
+                    excluded_disks[disk_name.upper()], time.time()
+                ):
+                    del excluded_disks[disk_name.upper()]
 
-        except Exception as e:
-            error_message = str(e)
-            print("error:", e)
+            except Exception as e:
+                error_message = str(e)
+                print("error:", e)
 
-            if (
-                "[WinError 5]" in error_message
-                or "[WinError 21]" in error_message
-                or "[WinError 1005]" in error_message
-            ):
-                # Extract the disk letter following the error message
-                disk_letter = error_message[-2]
-                excluded_disks[disk_letter.upper()] = time.time()
-                print(
-                    f"Disk '{disk_letter}' excluded from further processing for 15 minutes."
-                )
+                if (
+                    "[WinError 5]" in error_message
+                    or "[WinError 21]" in error_message
+                    or "[WinError 1005]" in error_message
+                ):
+                    # Extract the disk letter following the error message
+                    disk_letter = error_message[-2]
+                    excluded_disks[disk_letter.upper()] = time.time()
+                    print(
+                        f"Disk '{disk_letter}' excluded from further processing for 15 minutes."
+                    )
 
     # Network
-    network_io_counters = psutil.net_io_counters()
-    computer_info["network"] = {
-        "bytes_sent": network_io_counters.bytes_sent,
-        "bytes_recv": network_io_counters.bytes_recv,
-    }
+    if not (get_all or any(item[0] == 'network' for item in asked_devices)):
+        computer_info["network"] = usage_example["network"] if "network" in usage_example else {}
+    else:
+        network_io_counters = psutil.net_io_counters()
+        computer_info["network"] = {
+            "bytes_sent": network_io_counters.bytes_sent,
+            "bytes_recv": network_io_counters.bytes_recv,
+        }
 
     # GPU
-    computer_info["gpus"] = {}
-    if config["settings"]["gpu_method"] == "nvidia (pynvml)":
-        try:
-            num_gpus = pynvml.nvmlDeviceGetCount()
-            for count in range(num_gpus):
-                handle = pynvml.nvmlDeviceGetHandleByIndex(count)
-                utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
+    if not (get_all or any(item[0] == 'gpus' for item in asked_devices)):
+        computer_info["gpus"] = usage_example["gpus"]
+    else:
+        computer_info["gpus"] = {}
+        if config["settings"]["gpu_method"] == "nvidia (pynvml)":
+            try:
+                num_gpus = pynvml.nvmlDeviceGetCount()
+                for count in range(num_gpus):
+                    handle = pynvml.nvmlDeviceGetHandleByIndex(count)
+                    utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
+                    computer_info["gpus"][f"GPU{count + 1}"] = {
+                        "usage_percent": int(utilization.gpu),
+                    }
+            except pynvml.nvml.NVML_ERROR_NOT_SUPPORTED:
+                computer_info["gpus"]["defaultGPU"] = {}
+                
+                config["settings"]["gpu_method"] = "None"
+                with open("config.json", "w", encoding="utf-8") as json_file:
+                    json.dump(config, json_file, indent=4)
+                    
+        elif config["settings"]["gpu_method"] == "nvidia (GPUtil)":
+
+            gpus = GPUtil.getGPUs()
+            computer_info["gpus"] = {}
+            for count, gpu in enumerate(gpus):
                 computer_info["gpus"][f"GPU{count + 1}"] = {
-                    "usage_percent": int(utilization.gpu),
+                    "name": gpu.name,
+                    "used_mb": gpu.memoryUsed,
+                    "total_mb": gpu.memoryTotal,
+                    "available_mb": gpu.memoryTotal - gpu.memoryUsed,
+                    "usage_percent": int(gpu.load * 100),
                 }
-        except pynvml.nvml.NVML_ERROR_NOT_SUPPORTED:
+                
+        else:
             computer_info["gpus"]["defaultGPU"] = {}
             
-            config["settings"]["gpu_method"] = "None"
-            with open("config.json", "w", encoding="utf-8") as json_file:
-                json.dump(config, json_file, indent=4)
-                
-    elif config["settings"]["gpu_method"] == "nvidia (GPUtil)":
-
-        gpus = GPUtil.getGPUs()
-        computer_info["gpus"] = {}
-        for count, gpu in enumerate(gpus):
-            computer_info["gpus"][f"GPU{count + 1}"] = {
-                "name": gpu.name,
-                "used_mb": gpu.memoryUsed,
-                "total_mb": gpu.memoryTotal,
-                "available_mb": gpu.memoryTotal - gpu.memoryUsed,
-                "usage_percent": int(gpu.load * 100),
-            }
-            
-    else:
-        computer_info["gpus"]["defaultGPU"] = {}
-        
-    if "GPU1" in computer_info["gpus"]:
-        computer_info["gpus"]["defaultGPU"] = computer_info["gpus"]["GPU1"]
+        if "GPU1" in computer_info["gpus"]:
+            computer_info["gpus"]["defaultGPU"] = computer_info["gpus"]["GPU1"]
 
     return computer_info
 
 
-usage_example = get_usage()
+usage_example = get_usage(True)
 print(usage_example)
-
 
 @app.route("/usage", methods=["POST"])
 def usage():
-    global usage_example
-    usage_example = get_usage()
-    return jsonify(usage_example)
+    return jsonify(get_usage())
 
 
 def get_local_ip():
@@ -1384,7 +1417,7 @@ folders_to_create = []
 
 @app.route("/save_config", methods=["POST"])
 def saveconfig():
-    global folders_to_create, obs_host, obs_port, obs_password, obs
+    global config, folders_to_create, obs_host, obs_port, obs_password, obs
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
@@ -1555,7 +1588,7 @@ def save_buttons_only():
 
 @app.route("/get_config", methods=["GET"])
 def get_config():
-    global folders_to_create
+    global folders_to_create, config
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
