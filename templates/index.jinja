@@ -2458,8 +2458,8 @@
 
         // ?modal=show ?config=show
         const urlParams = new URLSearchParams(window.location.search);
-        const modalParam = urlParams.get('config');
-        if (modalParam === 'show') {
+        const modalParam = urlParams.get('config').toLowerCase();
+        if (modalParam === 'show' || modalParam === 'true') {
           let modal = document.querySelector('.modal-container');
           modal.style.opacity = '1';
           modal.style.display = 'block';
