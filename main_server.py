@@ -173,6 +173,8 @@ def check_json_update(config):
         config["settings"]["automatic-firewall-bypass"] = "false"
     if "fix-stop-soundboard" not in config["settings"]:
         config["settings"]["fix-stop-soundboard"] = "false"
+    if "optimized-usage-display" not in config["settings"]:
+        config["settings"]["optimized-usage-display"] = "false"
 
     if "theme" not in config["front"] or not os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
         config["front"]["theme"] = "default_theme.css"
@@ -1117,7 +1119,10 @@ with open("config.json", "w", encoding="utf-8") as json_file:
 
 excluded_disks = {}
 
-def get_usage(get_all=False, asked_devices=get_asked_devices()):
+def get_usage(
+    get_all=True if config["settings"]["optimized-usage-display"] == "false" else False,
+    asked_devices=get_asked_devices()
+):
     global excluded_disks
     computer_info = {}
     

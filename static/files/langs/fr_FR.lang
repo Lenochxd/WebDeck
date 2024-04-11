@@ -135,12 +135,14 @@ experimental=Expérimental
 
 usage_btn_reload_time=Temps de rechargement des boutons d'utilisation (ms)
 
-open_settings_in_integrated_browser=Ouvrir les paramètres dans un navigateur dédié
+optimized_usage_display=Boutons d'affichage de l'utilisation optimisés
 
 gpu_usage_method=Méthode GPU (si l'utilisation du GPU ne s'affiche pas)
 doesnt_work=ne fonctionne pas
 lmao=?? ptdr
 none=Aucun
+
+open_settings_in_integrated_browser=Ouvrir les paramètres dans un navigateur dédié
 
 show_console=Afficher la console
 dev_mode=Mode développeur

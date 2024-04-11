@@ -135,12 +135,14 @@ experimental=Experimental
 
 usage_btn_reload_time=Usage buttons reload time (ms)
 
-open_settings_in_integrated_browser=Open settings in a dedicated browser
+optimized_usage_display=Optimized usage display buttons
 
 gpu_usage_method=GPU usage method (if the gpu usage does not show)
 doesnt_work=doesn't work
 lmao=lmao
 none=None
+
+open_settings_in_integrated_browser=Open settings in a dedicated browser
 
 show_console=Show console
 dev_mode=Dev mode

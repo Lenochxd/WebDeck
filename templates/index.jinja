@@ -360,7 +360,7 @@
                     {% endif %}
                     
                     <!--|||||||||||||||||||||||-->
-                    {% if button_config["message"] and button_config['message'].startswith('/usage') %}
+                    {% if button_config['message'] and button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[1].strip() %}
                       {% set path = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[2] %}
                       {% if button_config['message'].split()[1] %}
@@ -397,10 +397,9 @@
               {% set button_settings = config["front"]["buttons"][folder_id][button_id] %}
 
               {% for category, commands_name in commands.items() if command_value == None %}
-                {% for command_name_, command in commands_name.items() if command_value == None %}
+                {% for command_name, command in commands_name.items() if command_value == None %}
                   {% if command['command'] %}
                     {% if button_command.lower().split()[0].strip() == command['command'].lower().strip() %}
-                      {% set command_name = command_name_ %}
                       {% set command_value = command %}
                       {% include 'editbutton_modal.jinja' %}
                     {% endif %}
@@ -952,14 +951,6 @@
                   >  
                 </div>
                 
-                <div class="setting open-settings-in-integrated-browser">
-                  <p> {{text['open_settings_in_integrated_browser']}} </p>
-                  <label for="open-settings-in-integrated-browser" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-
                 <div class="setting gpu_method">
                   <label for="gpu_method"> {{text['gpu_usage_method']}} </label>
                   <select id="gpu_method" name="settings.gpu_method">
@@ -969,6 +960,22 @@
                     <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel ({{text['lmao']}})</option>
                     <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}> {{text['none']}} </option>
                   </select>
+                </div>
+
+                <div class="setting optimized-usage-display">
+                  <p> {{text['optimized_usage_display']}} </p>
+                  <label for="optimized-usage-display" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="optimized-usage-display" name="settings.optimized-usage-display" {% if config['settings']['optimized-usage-display'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <div class="setting open-settings-in-integrated-browser">
+                  <p> {{text['open_settings_in_integrated_browser']}} </p>
+                  <label for="open-settings-in-integrated-browser" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
                 </div>
                 
                 {# <div class="setting data-transfer-method">
