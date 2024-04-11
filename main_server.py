@@ -648,8 +648,32 @@ def show_error(message):
     ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Error", 0)
 
 
-# resize grid ||| start
+def print_dict_differences(dict1, dict2):
+    diff = DeepDiff(dict1, dict2, ignore_order=True)
 
+    print("Differences found :")
+    for key, value in diff.items():
+        print(f"Key : {key}")
+        print(f"Difference : {value}")
+        print("----------------------")
+
+
+def merge_dicts(d1, d2):
+    """
+    Merge two dictionaries taking including subdictionaries.
+    Keys in d2 overwrite corresponding keys in d1, unless they are part of a subdictionary.
+    """
+    for key in d2:
+        if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
+            # Recursively, we merge the subdictionaries with the merge_dict method.
+            merge_dicts(d1[key], d2[key])
+        else:
+            # If the key exists in d1 and it is not a subdictionary, we replace it with that of d2.
+            d1[key] = d2[key]
+    return d1
+
+
+# resize grid ||| start
 
 def create_matrix(config):
     matrix = []
@@ -1093,58 +1117,60 @@ with open("config.json", "w", encoding="utf-8") as json_file:
 
 excluded_disks = {}
 
-def get_usage(get_all=False):
+def get_usage(get_all=False, asked_devices=get_asked_devices()):
     global excluded_disks
-    
-    asked_devices = get_asked_devices()
+    computer_info = {}
     
     # CPU
-    if not (get_all or any(item[0] == 'cpu' for item in asked_devices)):
-        computer_info["cpu"] = usage_example["cpu"]
-    else:
-        cpu_percent = psutil.cpu_percent(4)
-        computer_info = {"cpu": {"usage_percent": cpu_percent}}
+    if get_all or any(item[0] == 'cpu' for item in asked_devices):
+        cpu_percent = psutil.cpu_percent()
+        computer_info["cpu"] = {"usage_percent": cpu_percent}
 
     # Memory
-    if not (get_all or any(item[0] == 'memory' for item in asked_devices)):
-        computer_info["memory"] = usage_example["memory"] if "memory" in usage_example else {}
-    else:
+    if get_all or any(item[0] == 'memory' for item in asked_devices):
         memory = psutil.virtual_memory()
-        computer_info["memory"] = {
-            "total_gb": round(memory.total / 1024**3, 2),
-            "used_gb": round(memory.total / 1024**3 - memory.available / 1024**3, 2),
-            "available_gb": round(memory.available / 1024**3, 2),
-            "usage_percent": memory[2],
-        }
+        computer_info["memory"] = {}
+        
+        if get_all or any(item[1] == 'total_gb' for item in asked_devices):
+            computer_info["memory"]["total_gb"] = round(memory.total / 1024**3, 2)
+        if get_all or any(item[1] == 'used_gb' for item in asked_devices):
+            computer_info["memory"]["used_gb"] = round(memory.total / 1024**3 - memory.available / 1024**3, 2)
+        if get_all or any(item[1] == 'available_gb' for item in asked_devices):
+            computer_info["memory"]["available_gb"] = round(memory.available / 1024**3, 2)
+        if get_all or any(item[1] == 'usage_percent' for item in asked_devices):
+            computer_info["memory"]["usage_percent"] = memory[2]
 
     # Hard disk
-    if not (get_all or any(item[0] == 'disks' for item in asked_devices)):
-        computer_info["disks"] = usage_example["disks"]
-    else:
-        disks = psutil.disk_partitions()
+    if get_all or any(item[0] == 'disks' for item in asked_devices):
         computer_info["disks"] = {}
+        disks = psutil.disk_partitions()
         for disk in disks:
             try:
                 disk_name = disk.device.replace("\\", "").replace(":", "")
-
-                # Check if the disk is excluded due to a previous error
-                if disk_name not in excluded_disks.keys():
-
-                    disk_usage = psutil.disk_usage(disk.device)
-                    computer_info["disks"][disk_name] = {
-                        "total_gb": round(disk_usage.total / 1024**3, 2),
-                        "used_gb": round(disk_usage.used / 1024**3, 2),
-                        "free_gb": round(disk_usage.free / 1024**3, 2),
-                        "usage_percent": disk_usage.percent,
-                    }
-                elif has_at_least_5_minutes_difference(
-                    excluded_disks[disk_name.upper()], time.time()
-                ):
-                    del excluded_disks[disk_name.upper()]
+                if get_all or any(item[1] == disk_name for item in asked_devices):
+                    
+                    # Check if the disk is excluded due to a previous error
+                    if disk_name not in excluded_disks.keys():
+                        computer_info["disks"][disk_name] = {}
+                        disk_usage = psutil.disk_usage(disk.device)
+                        
+                        if get_all or any(item[2] == "total_gb" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["total_gb"] = round(disk_usage.total / 1024**3, 2)
+                        if get_all or any(item[2] == "used_gb" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["used_gb"] = round(disk_usage.used / 1024**3, 2)
+                        if get_all or any(item[2] == "free_gb" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["free_gb"] = round(disk_usage.free / 1024**3, 2)
+                        if get_all or any(item[2] == "usage_percent" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["usage_percent"] = disk_usage.percent
+                        
+                    elif has_at_least_5_minutes_difference(
+                        excluded_disks[disk_name.upper()], time.time()
+                    ):
+                        del excluded_disks[disk_name.upper()]
 
             except Exception as e:
+                print("Usage Disks Error:", e)
                 error_message = str(e)
-                print("error:", e)
 
                 if (
                     "[WinError 5]" in error_message
@@ -1154,14 +1180,10 @@ def get_usage(get_all=False):
                     # Extract the disk letter following the error message
                     disk_letter = error_message[-2]
                     excluded_disks[disk_letter.upper()] = time.time()
-                    print(
-                        f"Disk '{disk_letter}' excluded from further processing for 15 minutes."
-                    )
+                    print(f"Disk '{disk_letter}' excluded from further processing for 15 minutes.")
 
     # Network
-    if not (get_all or any(item[0] == 'network' for item in asked_devices)):
-        computer_info["network"] = usage_example["network"] if "network" in usage_example else {}
-    else:
+    if get_all or any(item[0] == 'network' for item in asked_devices):
         network_io_counters = psutil.net_io_counters()
         computer_info["network"] = {
             "bytes_sent": network_io_counters.bytes_sent,
@@ -1169,9 +1191,7 @@ def get_usage(get_all=False):
         }
 
     # GPU
-    if not (get_all or any(item[0] == 'gpus' for item in asked_devices)):
-        computer_info["gpus"] = usage_example["gpus"]
-    else:
+    if get_all or any(item[0] == 'gpus' for item in asked_devices):
         computer_info["gpus"] = {}
         if config["settings"]["gpu_method"] == "nvidia (pynvml)":
             try:
@@ -1207,7 +1227,9 @@ def get_usage(get_all=False):
             
         if "GPU1" in computer_info["gpus"]:
             computer_info["gpus"]["defaultGPU"] = computer_info["gpus"]["GPU1"]
-
+            
+    if get_all == False:
+        computer_info = merge_dicts(usage_example, computer_info)
     return computer_info
 
 
@@ -1387,33 +1409,7 @@ def home():
     )
 
 
-def print_dict_differences(dict1, dict2):
-    diff = DeepDiff(dict1, dict2, ignore_order=True)
-
-    print("Differences found :")
-    for key, value in diff.items():
-        print(f"Key : {key}")
-        print(f"Difference : {value}")
-        print("----------------------")
-
-
-def merge_dicts(d1, d2):
-    """
-    Merge two dictionaries taking including subdictionaries.
-    Keys in d2 overwrite corresponding keys in d1, unless they are part of a subdictionary.
-    """
-    for key in d2:
-        if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
-            # Recursively, we merge the subdictionaries with the merge_dict method.
-            merge_dicts(d1[key], d2[key])
-        else:
-            # If the key exists in d1 and it is not a subdictionary, we replace it with that of d2.
-            d1[key] = d2[key]
-    return d1
-
-
 folders_to_create = []
-
 
 @app.route("/save_config", methods=["POST"])
 def saveconfig():
@@ -1692,6 +1688,18 @@ def send_data(message=None):
 
     elif message.startswith("/exit"):
         sys.exit("/exit received")
+        
+    elif message.startswith("/usage"): # this is useless btw
+        asked_device = []
+        
+        device = extract_asked_device(message)
+        if device is not None:
+            asked_device.append(device)
+        
+        print(asked_device)
+        usage = get_usage(False, asked_device)
+        print(usage)
+        return jsonify(usage)
 
     elif message.startswith("/stop_sound"):
         return stop_soundboard()
