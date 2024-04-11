@@ -2303,14 +2303,6 @@
         // =========== EDITORMODE ======== END
 
 
-        // ?modal=show ?config=show
-        const urlParams = new URLSearchParams(window.location.search);
-        const modalParam = urlParams.get('config');
-        if (modalParam === 'show') {
-          let modal = document.querySelector('.modal-container');
-          modal.style.opacity = '1';
-          modal.style.display = 'block';
-        }
 
         {% if config['settings']['data-transfer-method'] == 'socket' %}
           // SOCKET CONNECTION
@@ -2463,6 +2455,16 @@
         
 
         let lastModals = [];
+
+        // ?modal=show ?config=show
+        const urlParams = new URLSearchParams(window.location.search);
+        const modalParam = urlParams.get('config');
+        if (modalParam === 'show') {
+          let modal = document.querySelector('.modal-container');
+          modal.style.opacity = '1';
+          modal.style.display = 'block';
+          lastModals.push("config-modal");
+        }
         
         function hide_last_modal() {
           switch (lastModals[lastModals.length - 1]) {
