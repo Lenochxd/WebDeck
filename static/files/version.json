@@ -1,6 +1,46 @@
 {
     "versions": [
         {
+            "version": "1.8.2",
+            "release_date": {
+                "day": "09",
+                "month": "04",
+                "hour": "19",
+                "year": "2024",
+                "minute": "10"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Optimized computer usage buttons",
+                    "Added a setting to enable more usage display optimizations"
+                ],
+                "fixes": [
+                    "Fixed config menu not being able to exit using ESC key after opening with the 'Open config' button",
+                    "Fixed 'SyntaxError' on startup",
+                    "Fixed updater not being able to restart webdeck after update"
+                ],
+                "nobody_cares": [
+                    "Added config=true parameter to the url"
+                ]
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Optimisation des boutons d'affichage de l'utilisation de l'ordinateur",
+                    "Ajout d'un paramètre pour activer davantage d'optimisations pour l'affichage de l'utilisation"
+                ],
+                "fixes": [
+                    "Correction du menu de configuration qui ne pouvait pas être fermé en utilisant la touche ÉCHAP après avoir été ouvert avec le bouton 'Ouvrir la configuration'",
+                    "Correction de l'erreur 'SyntaxError' au démarrage",
+                    "Correction de l'installateur de mise à jour qui ne pouvait pas redémarrer WebDeck"
+                ],
+                "nobody_cares": [
+                    "Ajout du paramètre config=true à l'URL"
+                ]
+            }
+        },
+        {
             "version": "1.8.1",
             "release_date": {
                 "day": "07",
