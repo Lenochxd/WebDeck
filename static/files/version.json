@@ -7,12 +7,12 @@
                 "month": "04",
                 "hour": "19",
                 "year": "2024",
-                "minute": "10"
+                "minute": "6"
             },
             "en": {
                 "updates": [],
                 "minor_enhancements": [
-                    "Optimized computer usage buttons",
+                    "Optimized computer usage display buttons",
                     "Added a setting to enable more usage display optimizations"
                 ],
                 "fixes": [
