@@ -1,13 +1,39 @@
 {
     "versions": [
         {
+            "version": "1.8.3",
+            "release_date": {
+                "day": "09",
+                "month": "04",
+                "hour": "21",
+                "year": "2024",
+                "minute": "56"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Fixed page display issue with unset 'config' parameter in URL"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction d'un problème d'affichage de la page avec le paramètre 'config' non défini dans l'URL"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.8.2",
             "release_date": {
                 "day": "09",
                 "month": "04",
                 "hour": "19",
                 "year": "2024",
-                "minute": "6"
+                "minute": "06"
             },
             "en": {
                 "updates": [],
