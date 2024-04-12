@@ -2458,7 +2458,7 @@
 
         // ?modal=show ?config=show
         const urlParams = new URLSearchParams(window.location.search);
-        const modalParam = urlParams.get('config').toLowerCase();
+        const modalParam = urlParams.get('config');
         if (modalParam === 'show' || modalParam === 'true') {
           let modal = document.querySelector('.modal-container');
           modal.style.opacity = '1';
