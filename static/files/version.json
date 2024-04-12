@@ -17,8 +17,7 @@
                 ],
                 "fixes": [
                     "Fixed config menu not being able to exit using ESC key after opening with the 'Open config' button",
-                    "Fixed 'SyntaxError' on startup",
-                    "Fixed updater not being able to restart webdeck after update"
+                    "Fixed 'SyntaxError' on startup"
                 ],
                 "nobody_cares": [
                     "Added config=true parameter to the url"
@@ -32,8 +31,7 @@
                 ],
                 "fixes": [
                     "Correction du menu de configuration qui ne pouvait pas être fermé en utilisant la touche ÉCHAP après avoir été ouvert avec le bouton 'Ouvrir la configuration'",
-                    "Correction de l'erreur 'SyntaxError' au démarrage",
-                    "Correction de l'installateur de mise à jour qui ne pouvait pas redémarrer WebDeck"
+                    "Correction de l'erreur 'SyntaxError' au démarrage"
                 ],
                 "nobody_cares": [
                     "Ajout du paramètre config=true à l'URL"
