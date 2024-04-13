@@ -2547,11 +2547,13 @@ def send_data(message=None):
                     param_names = [param for param in params]
                     
                     print("ARGS: ", param_names)
+                    commandArgs = message.split()
+                    commandArgs.pop(0)
                     
                     if param_names == []:
                         func()
                     else:
-                        func() # TODO
+                        func(*commandArgs)
             
 
     return jsonify({"success": True})
