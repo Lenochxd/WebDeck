@@ -1679,6 +1679,7 @@ def kill_nircmd():
 def send_data(message=None):
     global all_func, obs, obs_host, obs_port, obs_password, obs
 
+    separated_message = message
     message = message.replace("<|§|>", " ")
 
     if message == "/bypass-windows-firewall":
@@ -2546,8 +2547,7 @@ def send_data(message=None):
                     params = inspect.signature(func).parameters
                     param_names = [param for param in params]
                     
-                    print("ARGS: ", param_names)
-                    commandArgs = message.split()
+                    commandArgs = separated_message.split("<|§|>")
                     commandArgs.pop(0)
                     
                     if param_names == []:
