@@ -216,20 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
             sourceElement.type = "video/mp4";
             videoElement.appendChild(sourceElement);
             videoContainer.appendChild(videoElement);
-        
+            
             // Set mediaElement to contain both video containers
-            mediaElement = document.createElement("div");
-            mediaElement.appendChild(videoContainerBlurred);
-            mediaElement.appendChild(videoContainer);
+            divElement.appendChild(videoContainerBlurred);
+            divElement.appendChild(videoContainer);
+            console.log(mediaElement);
           } else {
             var imgElement = document.createElement("img");
             imgElement.setAttribute("src", imageFile);
             mediaElement = imgElement;
           }
 
-          divElement.appendChild(mediaElement);
-
-          
 
           var chooseBgButtonsDiv = document.querySelector(".choose-bg-buttons");
           var clonedChooseBgButtons = chooseBgButtonsDiv.cloneNode(true);
@@ -333,7 +330,6 @@ function deleteButtonEvent(event) {
     var divElement = event.target.closest(".choose-bg-element");
     var backgroundAttribute = divElement.getAttribute("background");
     var filteredBackgrounds = backgrounds_array.filter(item => !item.startsWith("//"))
-    console.log(filteredBackgrounds.length);
     if ((divElement != null && filteredBackgrounds.length != 1) || backgroundAttribute.startsWith("//")) {
       divElement.remove();
       backgrounds_array = removeBackgroundFromArray();

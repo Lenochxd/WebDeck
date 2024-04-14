@@ -609,7 +609,7 @@
                     </div>
                   </div>
                 {% elif bg.endswith(".mp4") %}
-                  <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg}}">
+                  <div class="choose-bg-element choose-bg-element-image" background="{{bg}}">
 
                     <div class="video-container choose-bg-pseudo-element">
                       <video autoplay muted loop class="blurred-video">
@@ -641,7 +641,7 @@
                     </div>
                   </div>
                 {% else %}
-                  <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg}}">
+                  <div class="choose-bg-element choose-bg-element-image" background="{{bg}}">
                     <div class="choose-bg-pseudo-element" style='background-image: url("{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '').replace("'", '&#39;') }}")'></div>
                     <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}">
                     <div class="choose-bg-buttons">
