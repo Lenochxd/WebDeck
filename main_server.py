@@ -1488,7 +1488,7 @@ def saveconfig():
     config = save_config(config)
 
     try:
-        config["front"]["background"] = config["front"]["background"].replace("['", '["').replace("']", '"]').replace("','", '","')
+        config["front"]["background"] = config["front"]["background"].replace("['", '["').replace("']", '"]').replace("', '", "','").replace("','", '","')
         config["front"]["background"] = ast.literal_eval(config["front"]["background"])
     except TypeError:
         pass
