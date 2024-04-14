@@ -110,7 +110,7 @@
       {% if random_bg and not random_bg.strip() == "" %}
         {% if random_bg.endswith('.mp4') %}
           body, div.fakeform-container {
-            background-color: #00000000!important;
+            background-color: #00000000;
             background-image: none;
           }
         {% elif '**uploaded/' in random_bg.lower() %}
@@ -145,7 +145,7 @@
           }
         {% else %}
           body, div.fakeform-container {
-            background-color: {{random_bg}}!important;
+            background-color: {{random_bg}};
             background-image: none;
           }
         {% endif %}
