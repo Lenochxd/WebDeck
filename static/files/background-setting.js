@@ -390,14 +390,29 @@ function removeBackgroundFromArray() {
   return backgrounds_array;
 }
 
-function calculateBrightness(hexColor) {
-  // hex to RGB
-  var r = parseInt(hexColor.substr(1, 2), 16);
-  var g = parseInt(hexColor.substr(3, 2), 16);
-  var b = parseInt(hexColor.substr(5, 2), 16);
-  
-  // Calculer la luminosité
-  return (r * 299 + g * 587 + b * 114) / 1000;
+function calculateBrightness(color) {
+  // Check if color is in hex format
+  if (color.startsWith("#")) {
+    // Hex to RGB
+    var r = parseInt(color.substr(1, 2), 16);
+    var g = parseInt(color.substr(3, 2), 16);
+    var b = parseInt(color.substr(5, 2), 16);
+  } else if (color.startsWith("rgb(")) {
+    // RGB to values
+    var rgbValues = color.substring(4, color.length - 1).split(",");
+    var r = parseInt(rgbValues[0].trim());
+    var g = parseInt(rgbValues[1].trim());
+    var b = parseInt(rgbValues[2].trim());
+  } else {
+    // Invalid color format
+    console.error("Invalid color format");
+    return NaN;
+  }
+
+  // Calculate brightness
+  var brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+  return brightness;
 }
 
 console.log("background-setting.js loaded");
