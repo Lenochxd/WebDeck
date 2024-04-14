@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var chooseBackground = document.getElementById("choose-background-handler");
   var backgroundsArrayString = chooseBackground.value;
-  backgroundsArrayString = backgroundsArrayString.replace(/'/g, '"');
+  backgroundsArrayString = backgroundsArrayString.replace("['", '["').replace("']", '"]').replace("','", '","');
   var backgrounds_array = JSON.parse(backgroundsArrayString);
 
   document.getElementById("create-color-bg").addEventListener("click", function() {

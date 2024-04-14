@@ -856,7 +856,7 @@
                   <button type="button" id="setting-background" class="{{black_theme}}">
                     {{text['open_background_image_menu']}}
                   </button>
-                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{config['front']['background']}}">
+                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{str(config['front']['background']).replace(', "', ", '").replace('"]', "']")}}">
                 </div>
 
                 <div class="setting {{black_theme}}">
