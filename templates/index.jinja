@@ -89,7 +89,7 @@
 
     {% if random_bg.endswith(".mp4") %}
       <div class="background-video">
-        <video autoplay muted loop class="blurred-video">
+        <video autoplay muted loop class="background-video">
           <source src="{{ 'static/files/uploaded/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
           Your browser does not support the video tag...
         </video>
@@ -147,6 +147,10 @@
           body, div.fakeform-container {
             background-color: {{random_bg}};
             background-image: none;
+          }
+
+          :root {
+            --bg-color: {{random_bg}};
           }
         {% endif %}
       {% endif %}
@@ -856,7 +860,8 @@
                   <button type="button" id="setting-background" class="{{black_theme}}">
                     {{text['open_background_image_menu']}}
                   </button>
-                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{str(config['front']['background']).replace(', "', ", '").replace('"]', "']")}}">
+                  {% set backgrounds = str(config['front']['background']).replace('",', "',").replace(', "', ", '").replace('["', "['").replace('"]', "']") %}
+                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{backgrounds}}">
                 </div>
 
                 <div class="setting {{black_theme}}">
