@@ -193,7 +193,7 @@
             .button-{{ button_config['background-color'].replace('#','') }}, .button-{{ button_config['background-color'].replace('#','') }}:focus {
               background-color: #{{ button_config['background-color'].replace('#','') }};
               box-shadow: #{{ button_config['background-color'].replace('#','') }} 0 1px 3px 0;
-              color: rgba(0, 0, 0, 0.85);
+              color: rgba(0, 0, 0, 0.85) !important;
             }
             .button-{{ button_config['background-color'].replace('#','') }}:hover {
               transform: translateY(-1px);
@@ -202,6 +202,7 @@
             } 
             .button-{{ button_config['background-color'].replace('#','') }}:active {
               background-color: #{{ button_config['background-color'].replace('#','') }};
+              background: #{{ button_config['background-color'].replace('#','') }};
               border-color: rgba(0, 0, 0, 0.15);
               box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
               color: rgba(0, 0, 0, 0.65);
