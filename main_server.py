@@ -15,6 +15,7 @@ import importlib
 import ipaddress
 from pathlib import Path
 import inspect
+import ast
 
 # Third-party library imports
 import requests
@@ -1487,11 +1488,8 @@ def saveconfig():
     config = save_config(config)
 
     try:
-        config["front"]["background"] = eval(config["front"]["background"])
-    except TypeError:
-        pass
-    try:
-        config["front"]["themes"] = eval(config["front"]["themes"])
+        config["front"]["background"] = config["front"]["background"].replace("['", '["').replace("']", '"]').replace("','", '","')
+        config["front"]["background"] = ast.literal_eval(config["front"]["background"])
     except TypeError:
         pass
 
@@ -2554,7 +2552,6 @@ def send_data(message=None):
                         func()
                     else:
                         func(*commandArgs)
-                        
                         
     return jsonify({"success": True})
 
