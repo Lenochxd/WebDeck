@@ -46,6 +46,8 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
 
 ## ⭐ Contributors
 
+Writing and supporting code is fun but it takes time. If you want to thank the author for their work, consider contributing, bug reporting, or providing support to other users.
+
 <table align="center">
   <tr>
     <td align="center">
@@ -93,30 +95,39 @@ WebDeck currently supports Windows. We plan to develop versions for Linux and ma
   </tr>
 </table>
 
+### Pull requests
 
-### 🙏 Sponsors
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="Fixed networks that don't follow the standard 192or localhost setup">
+  <img src="https://avatars.githubusercontent.com/u/716338?v=4" alt="CONTRIBUTOR-sylos" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="Fixed custom plugin arguments">
+  <img src="https://avatars.githubusercontent.com/u/65694808?v=4" alt="CONTRIBUTOR-j-ddd" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore">
+  <img src="https://avatars.githubusercontent.com/u/29630035?v=4" alt="CONTRIBUTOR-busybox11" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+
+### 🙏 Donors
 
 <a href="https://twitter.com/mady2ouf" title="mady2ouf">
   <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
 </a>
 <a href="https://twitter.com/Felyz__" title="Felyz__">
-  <img src="https://pbs.twimg.com/profile_images/1743758417439715328/ab6TEWvg_400x400.jpg" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
+  <img src="https://i.imgur.com/EDvgnLx.png" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
 </a>
 
 <br>
-<br>
 
-<a href="https://ko-fi.com/lenoch" target="_blank"><img height="35" style="height:46px;" src="https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0" alt="Buy Me a Coffee at ko-fi.com" />
+<a href="https://ko-fi.com/lenoch" target="_blank"><img height="35" style="height:46px;" src="https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0" alt="Buy Me a Coffee at ko-fi.com"/>
 
 
-# ⚠️ Issues
+### ⚠️ Issues
 
 WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
 
-- Discord: Lenoch
 - Discord Server: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
 - Twitter: [https://twitter.com/WebDeckApp](https://twitter.com/WebDeckApp)
-- Email (?): contact.lenoch@gmail.com
+- Email: contact.lenoch@gmail.com
 
 <br>
 

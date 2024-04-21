@@ -91,14 +91,25 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
   </tr>
 </table>
 
+### Pull requests
 
-### 🙏 Sponsors
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="Correction des réseaux qui ne suivent pas la configuration standard 192 ou localhost">
+  <img src="https://avatars.githubusercontent.com/u/716338?v=4" alt="CONTRIBUTOR-sylos" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="Correction des arguments de plugins custom">
+  <img src="https://avatars.githubusercontent.com/u/65694808?v=4" alt="CONTRIBUTOR-j-ddd" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore">
+  <img src="https://avatars.githubusercontent.com/u/29630035?v=4" alt="CONTRIBUTOR-busybox11" width="60px" height="60px" style="border-radius: 50%;">
+</a>
+
+### 🙏 Dons
 
 <a href="https://twitter.com/mady2ouf" title="mady2ouf">
   <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
 </a>
 <a href="https://twitter.com/Felyz__" title="Felyz__">
-  <img src="https://pbs.twimg.com/profile_images/1743758417439715328/ab6TEWvg_400x400.jpg" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
+  <img src="https://i.imgur.com/EDvgnLx.png" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
 </a>
 
 <br>
@@ -106,14 +117,13 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
 Si vous appréciez webdeck, vous pouvez envisager de [soutenir le projet](https://ko-fi.com/lenoch) ! ♥
 
 
-# ⚠️ Problèmes
+### ⚠️ Problèmes
 
-WebDeck est un projet en constante évolution, et nous apprécions vos contributions pour l'améliorer davantage. Si vous rencontrez des problèmes, n'hésitez pas à [ouvrir un problème (issue)](https://github.com/Lenochxd/WebDeck/issues) sur GitHub, soumettre une demande d'extraction avec vos améliorations, ou si vous n'êtes pas un nerd, vous pouvez aussi me contacter ailleurs:
+WebDeck est un projet en constante évolution, et nous apprécions vos contributions pour l'améliorer davantage. Si vous rencontrez des problèmes, n'hésitez pas à [ouvrir un problème (issue)](https://github.com/Lenochxd/WebDeck/issues) sur GitHub, faire une pull request avec vos améliorations, ou si vous n'êtes pas un nerd, vous pouvez aussi nous contacter ailleurs:
 
-- Discord: Lenoch
 - Serveur Discord: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
 - Twitter: [https://twitter.com/WebDeckApp](https://twitter.com/WebDeckApp)
-- Email (?): contact.lenoch@gmail.com
+- Email: contact.lenoch@gmail.com
 
 <br>
 
