@@ -1,12 +1,46 @@
 {
     "versions": [
         {
+            "version": "1.8.4",
+            "release_date": {
+                "day": "21",
+                "month": "04",
+                "year": "2024",
+                "hour": "16",
+                "minute": "00"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Resolved issue where disabled themes remained enabled",
+                    "Fixed crashes caused by wallpaper filenames containing the `'` character",
+                    "Corrected theme color priority",
+                    "Fixed custom plugin arguments",
+                    "Fixed broken CSS for new background videos"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Résolution du problème où les thèmes désactivés restaient activés",
+                    "Correction des plantages causés par les noms de fichiers d'arrière-plan contenant le caractère `'`",
+                    "Correction de la priorité des couleurs de thème",
+                    "Correction des arguments de plugins custom",
+                    "Correction du CSS cassé pour les d'arrière-plan vidéos ajoutés"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.8.3",
             "release_date": {
                 "day": "09",
                 "month": "04",
-                "hour": "21",
                 "year": "2024",
+                "hour": "21",
                 "minute": "56"
             },
             "en": {
@@ -31,8 +65,8 @@
             "release_date": {
                 "day": "09",
                 "month": "04",
-                "hour": "19",
                 "year": "2024",
+                "hour": "19",
                 "minute": "06"
             },
             "en": {
@@ -69,8 +103,8 @@
             "release_date": {
                 "day": "07",
                 "month": "04",
-                "hour": "15",
                 "year": "2024",
+                "hour": "15",
                 "minute": "17"
             },
             "renamed_files": [
