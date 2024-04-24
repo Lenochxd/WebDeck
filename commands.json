@@ -99,7 +99,9 @@
   "Display": {
     "CATEGORY-SETTINGS": {
       "NAME": {
-        "fr": "Affichage"
+        "fr": "Affichage",
+        "ko": "디스플레이"
+
       }
     },
     "CPU": {
@@ -650,7 +652,8 @@
   "System": {
     "CATEGORY-SETTINGS": {
       "NAME": {
-        "fr": "Système"
+        "fr": "Système",
+        "ko": "시스템"
       }
     },
     "Volume": {
@@ -1249,7 +1252,8 @@
   "Text": {
     "CATEGORY-SETTINGS": {
       "NAME": {
-        "fr": "Texte"
+        "fr": "Texte",
+        "ko": "텍스트"
       }
     },
     "Press a key": {
@@ -1498,7 +1502,8 @@
   "Utilities": {
     "CATEGORY-SETTINGS": {
       "NAME": {
-        "fr": "Utilitaires"
+        "fr": "Utilitaires",
+        "ko": "유틸리티"
       }
     },
     "Color picker": {
@@ -1526,6 +1531,11 @@
     }
   },
   "Soundboard": {
+    "CATEGORY-SETTINGS": {
+      "NAME": {
+        "ko": "사운드보드"
+      }
+    },
     "Playsound": {
       "command": "/playsound",
       "args": [
