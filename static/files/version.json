@@ -1,6 +1,32 @@
 {
     "versions": [
         {
+            "version": "1.8.5",
+            "release_date": {
+                "day": "24",
+                "month": "04",
+                "year": "2024",
+                "hour": "16",
+                "minute": "23"
+            },
+            "en": {
+                "updates": [
+                    "Added Korean translation"
+                ],
+                "minor_enhancements": [],
+                "fixes": [],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [
+                    "Traduction coréenne ajoutée"
+                ],
+                "minor_enhancements": [],
+                "fixes": [],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.8.4",
             "release_date": {
                 "day": "21",
