@@ -3,7 +3,7 @@
 
 ## WebDeck이란 무엇일까요?
 
-Web은 브라우저와 터치스크린이 있는 모든 장치에서 컴퓨터를 제어할 수 있는 애플리케이션입니다. 물리적 장비가 필요한 Elgato의 StreamDeck과 달리 WebDeck은 사용자가 자신의 컴퓨터에서 호스팅하고 터치스크린이 있는 장치에서 접속하는 웹 애플리케이션을 사용합니다.
+WebDeck은 브라우저와 터치스크린이 있는 모든 장치에서 컴퓨터를 제어할 수 있는 애플리케이션입니다. 물리적 장비가 필요한 Elgato의 StreamDeck과 달리 WebDeck은 사용자가 자신의 컴퓨터에서 호스팅하고 터치스크린이 있는 장치에서 접속하는 웹 애플리케이션을 사용합니다.
 <div align="center">
   <img src="https://i.imgur.com/OLE1oWk.png" alt="WebDeck example image" width="375" height="257">
 </div>
