@@ -1,9 +1,6 @@
-[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/README-fr.md)
-[![Version Korean](https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4%EB%A1%9C-%EC%9D%BD%EA%B8%B0-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/README-ko.md)
-
 # WebDeck
 
-The WebDeck is a Flask application that allows users to control their computer remotely from any device with a browser and a touchscreen. Unlike Elgato's StreamDeck, which requires physical equipment, WebDeck uses a Flask application that the user hosts on their computer.
+WebDeck은 브라우저와 터치스크린이 있는 모든 장치에서 원격으로 컴퓨터를 제어할 수 있는 Flask 애플리케이션입니다. 물리적 장치가 필요한 Elgato의 StreamDeck과 다르게 WebDeck은 사용자가 컴퓨터에서 호스팅하는 Flask 애플리케이션을 사용합니다.
 
 <div align="center">
   <img src="https://github.com/Lenochxd/WebDeck/assets/101269524/c9c02a34-1f98-4a12-9cc0-621e06cfe2e5" alt="WebDeck banner">
@@ -18,36 +15,36 @@ The WebDeck is a Flask application that allows users to control their computer r
 </div>
 
 
-## 🖥️🚀 Installation
+## 🖥️🚀 설치
 
-1. Download the latest version of WebDeck from the [Releases](https://github.com/Lenochxd/WebDeck/releases) section on GitHub.
+1. GitHub의 [Releases](https://github.com/Lenochxd/WebDeck/releases) 에서 최신 버전의 WebDeck을 다운로드하세요.
 
-2. Extract the contents of `WebDeck-win-amd64-portable.zip` to the location of your choice on your computer.
+2. `WebDeck-win-amd64-portable.zip`의 압축을 컴퓨터의 원하는 위치에서 압축 풀기 하세요.
 
-3. Open the chosen location and run  `WebDeck.exe`.
+3. 압축을 푼 폴더의 `WebDeck.exe` 파일을 실행합니다.
 
-4. There is nothing to install on your mobile device, you simply need to scan the QR code by clicking on the tray icon.
-
-
-## 📋 Frequently Asked Questions (FAQ)
-
-Before asking questions, please check our [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
-
-If your question is not addressed in the FAQ, feel free to ask us on our [Discord server](https://discord.gg/tUPsYHAGfm).
+4. 모바일 장치에는 특별히 설치할 것은 없습니다. 작업 표시줄 오른쪽의 WebDeck 아이콘을 클릭하여 QR 코드를 스캔하면 됩니다.
 
 
-## 📱❔ Compatibility
+## 📋 자주 묻는 질문 (FAQ)
 
-To check the compatibility of your device and browser with WebDeck, you can refer to the  [test table](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0). This table details the results of various experiments on different devices and browsers. You can also contribute to the table using https://bishokus.fr/webdeck/test-it
+질문하기 전에 [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-ko.md) 에서 먼저 답변이 있는지 확인해주세요. 빠른 답변을 위해 자주 묻는 질문에 대한 답변을 모아뒀습니다.
 
-#### 💻 Operating System Support
-
-WebDeck currently supports Windows. We plan to develop versions for Linux and macOS in the future. Unfortunately, Wine emulation is not a viable solution for Linux compatibility. We appreciate your patience as we work on expanding our supported platforms.
+FAQ에서 질문이 해결되지 않으면 [Discord 서버](https://discord.gg/tUPsYHAGfm)에 문의해주세요.
 
 
-## ⭐ Contributors
+## 📱❔ 호환성
 
-Writing and supporting code is fun but it takes time. If you want to thank the author for their work, consider contributing, bug reporting, or providing support to other users.
+WebDeck과 장치 및 브라우저의 호환성을 확인하려면  [테스트 테이블](https://docs.google.com/spreadsheets/d/1tyfyFJzIdrOl0-Y6wBXaq9EXqViVVCEJu4zQ2-VMGgM/edit#gid=0)을 참고해주세요. 이 테이블에는 다양한 장치와 브라우저에서의 다양한 실험 결과가 자세히 설명되어 있습니다. https://bishokus.fr/webdeck/test-it 를 통해 테스트 테이블에 도움을 주실 수 있습니다.
+
+#### 💻 운영 체제 지원
+
+WebDeck은 현재 Windows를 지원합니다. 향후 Linux 및 macOS용 버전을 개발할 계획입니다. 아쉽게도 Wine 에뮬레이션을 통한 실행은 Linux 에서 실행되지 않습니다. 지원되는 플랫폼을 확장하는 동안 기다려 주셔서 감사합니다.
+
+
+## ⭐ 기여자
+
+코드를 작성하고 지원하는 것은 즐거운 일이지만 시간이 걸립니다. 제작자의 작업에 대해 감사를 표하고 싶으시다면 기여하기, 버그 보고하기 혹은 다른 사용자를 지원하는것을 고려해 보세요.
 
 <table align="center">
   <tr>
@@ -82,33 +79,33 @@ Writing and supporting code is fun but it takes time. If you want to thank the a
   </tr>
   <tr>
     <td align="center">
-      👨‍💻 Made the algorithm for modifying the grid size
+      👨‍💻 그리드 크기를 수정하는 알고리즘을 만들었습니다.
     </td>
     <td align="center">
-      🎨 Logo and color design
+      🎨 로고 및 색상 디자인을 하였습니다.
     </td>
     <td align="center">
-      📈 Maths, beta testing, and <a href="https://bishokus.fr/wdt">bishokus.fr/wdt</a> enjoyer
+      📈 수식, 베타 테스트 및 <a href="https://bishokus.fr/wdt">bishokus.fr/wdt</a> 즐깁니다.
     </td>
     <td align="center">
-      🤓 Everything else
+      🤓 그 외 모든것을 만들었습니다.
     </td>
   </tr>
 </table>
 
 ### Pull requests
 
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="Fixed networks that don't follow the standard 192or localhost setup">
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="표준 192 또는 로컬 호스트 설정을 따르지 않는 네트워크를 수정하였습니다.">
   <img src="https://avatars.githubusercontent.com/u/716338?v=4" alt="CONTRIBUTOR-sylos" width="60px" height="60px" style="border-radius: 50%;">
 </a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="Fixed custom plugin arguments">
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="사용자 정의 플러그인 인수를 수정하였습니다.">
   <img src="https://avatars.githubusercontent.com/u/65694808?v=4" alt="CONTRIBUTOR-j-ddd" width="60px" height="60px" style="border-radius: 50%;">
 </a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore">
+<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore를 정의하였습니다.">
   <img src="https://avatars.githubusercontent.com/u/29630035?v=4" alt="CONTRIBUTOR-busybox11" width="60px" height="60px" style="border-radius: 50%;">
 </a>
 
-### 🙏 Donors
+### 🙏 기부자
 
 <a href="https://twitter.com/mady2ouf" title="mady2ouf">
   <img src="https://avatars.githubusercontent.com/u/119850615" alt="SPONSOR-masy2ouf" width="60px" height="60px" style="border-radius: 50%;">
@@ -122,12 +119,12 @@ Writing and supporting code is fun but it takes time. If you want to thank the a
 <a href="https://ko-fi.com/lenoch" target="_blank"><img height="35" style="height:46px;" src="https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0" alt="Buy Me a Coffee at ko-fi.com"/>
 
 
-### ⚠️ Issues
+### ⚠️ 이슈
 
-WebDeck is an ever-evolving project, and we appreciate your contributions to further improve it. If you encounter any issues, feel free to [open an issue](https://github.com/Lenochxd/WebDeck/issues) on GitHub, submit a pull request with your upgrades, or if you're not a nerd, you can contact me elsewhere:
+WebDeck은 계속해서 진화하는 프로젝트입니다. 이를 계속 개선해나가는 데 도움을 주셔서 감사합니다. 문제가 발생하면 언제든지 GitHub에서 [이슈 열기](https://github.com/Lenochxd/WebDeck/issues)를 통해 업그레이드를 위한 Pull Request를 요청할 수 있습니다. 또한, 다른 방법으로도 저에게 연락하실 수 있습니다.
 
-- Discord Server: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
-- Twitter: [https://twitter.com/WebDeckApp](https://twitter.com/WebDeckApp)
+- Discord 서버: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
+- X ( 구 twitter ) : [https://twitter.com/WebDeckApp](https://twitter.com/WebDeckApp)
 - Email: contact.lenoch@gmail.com
 
 <br>
