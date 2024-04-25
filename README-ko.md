@@ -123,7 +123,7 @@ WebDeck은 현재 Windows를 지원합니다. 향후 Linux 및 macOS용 버전�
 
 WebDeck은 계속해서 진화하는 프로젝트입니다. 이를 계속 개선해나가는 데 도움을 주셔서 감사합니다. 문제가 발생하면 언제든지 GitHub에서 [이슈 열기](https://github.com/Lenochxd/WebDeck/issues)를 통해 업그레이드를 위한 Pull Request를 요청할 수 있습니다. 또한, 다른 방법으로도 저에게 연락하실 수 있습니다.
 
-- Discord 사바: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
+- Discord 서버: [https://discord.gg/tUPsYHAGfm](https://discord.gg/tUPsYHAGfm)
 - X ( 구 twitter ) : [https://twitter.com/WebDeckApp](https://twitter.com/WebDeckApp)
 - Email: contact.lenoch@gmail.com
 
