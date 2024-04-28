@@ -1,3 +1,10 @@
+import ctypes
+import sys
+
+if not ctypes.windll.shell32.IsUserAnAdmin():
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+    sys.exit()
+
 import threading
 import win32com.client
 from app.functions.is_opened import is_opened

@@ -1,11 +1,3 @@
-import ctypes
-import sys
-
-if not ctypes.windll.shell32.IsUserAnAdmin():
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-    sys.exit()
-
-
 # Standard library imports
 import time
 import threading
@@ -18,6 +10,7 @@ import json
 import urllib.request
 import zipfile
 import os
+import sys
 import importlib
 import ipaddress
 from pathlib import Path
@@ -63,6 +56,7 @@ from obswebsocket import requests as obsrequests
 
 # Numerical and scientific libraries
 import numpy as np
+import ctypes
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
@@ -71,6 +65,7 @@ import math
 # WebDeck imports
 from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
+from app.functions.load_lang_file import load_lang_file
 
 
 os.add_dll_directory(os.getcwd())
@@ -107,31 +102,6 @@ with open("config.json", encoding="utf-8") as f:
     config = json.load(f)
 
 check_files("static/files/version.json", "data.json")
-
-def load_lang_file(lang):
-    lang_dictionary = {}
-    lang_path = f"static/files/langs/{lang}.lang"
-    if not os.path.isfile(f"static/files/langs/{lang}.lang"):
-        for root, dirs, files in os.walk("static/files/langs"):
-            for file in files:
-                if file.endswith(".lang") and file.startswith(lang):
-                    lang_path = f"static/files/langs/{file}"
-
-    with open(lang_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        for line in lines:
-            if (
-                line.replace(" ", "").replace("\n", "") != ""
-                and not line.startswith("//")
-                and not line.startswith("#")
-            ):
-                try:
-                    key, value = line.strip().split("=")
-                    lang_dictionary[key] = value.strip()
-                except:
-                    print(line)
-    return lang_dictionary
-
 
 text = load_lang_file(config["settings"]["language"])
 
