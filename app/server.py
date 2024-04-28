@@ -66,6 +66,7 @@ import math
 from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
+from app.functions.audio_devices import get_audio_devices
 
 
 os.add_dll_directory(os.getcwd())
@@ -351,41 +352,7 @@ def create_folders(config):
     return config
 
 
-def select_audio_device(channels_type="input"):
-    p = pyaudio.PyAudio()
-    all_devices = []
-
-    try:
-        for i in range(p.get_device_count()):
-            device_info = p.get_device_info_by_index(i)
-
-            if channels_type == "input":
-                channels = device_info["maxInputChannels"]
-            else:
-                channels = device_info["maxOutputChannels"]
-            # Vérifier si le périphérique est un périphérique d'entrée actif
-            if channels > 0 and device_info["hostApi"] == 0:
-                ok = True
-                for device in all_devices:
-                    if (
-                        device[device.find("(") + 1 :]
-                        in device_info["name"][device_info["name"].find("(") + 1 :]
-                    ):
-                        ok = False
-                if ok and not "microsoft - input" in device_info["name"].lower():
-                    print(f"Device {i}: {device_info['name']}")
-                    all_devices.append(device_info["name"])
-        del ok
-        print(f"ALL: {len(all_devices)}")
-        print(p.get_default_output_device_info())
-    except Exception as e:
-        print(f"An error has occurred : {str(e)}")
-    finally:
-        p.terminate()
-    return all_devices
-
-
-def get_device(vbcable_device):
+def get_device(device):
     # https://stackoverflow.com/questions/73884593/how-to-change-vlc-python-output-device
     try:
         player = vlc.MediaPlayer()
@@ -394,8 +361,8 @@ def get_device(vbcable_device):
             mod = mods
             while mod:
                 mod = mod.contents
-                # If VB-Cable is found, return it's module and device id
-                if vbcable_device.lower() in str(mod.description).lower():
+                # If device (VB-Cable) is found, return it's module and device id
+                if device.lower() in str(mod.description).lower():
                     device = mod.device
                     return device
                 mod = mod.next
@@ -838,13 +805,12 @@ for filename in os.listdir("static/files/images"):
         print(f"renamed {filename}")
 
 
-app = Flask(__name__)
 if getattr(sys, "frozen", False):
-    app = Flask(__name__, template_folder='../../templates', static_folder='../../static')
+    app = Flask(__name__, template_folder='../../../templates', static_folder='../../../static')
 else:
-    app = Flask(__name__, template_folder='templates', static_folder='static')
+    app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
-app.jinja_env.globals.update(select_audio_device=select_audio_device)
+app.jinja_env.globals.update(get_audio_devices=get_audio_devices)
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
 app.config["SECRET_KEY"] = "secret!"
@@ -1395,9 +1361,10 @@ def home():
 
     return render_template(
         "index.jinja",
-        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(), commands=commands, versions=versions,
-        random_bg=random_bg, usage_example=usage_example, langs=langs,
-        text=load_lang_file(config['settings']['language']), svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],
+        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(),
+        commands=commands, versions=versions, random_bg=random_bg, usage_example=usage_example,
+        langs=langs, text=load_lang_file(config['settings']['language']),
+        svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
         isfile=os.path.isfile
     )
@@ -2732,7 +2699,9 @@ def shutdown_soundboard():
 
 
 def restart_soundboard():
-    global soundboard_thread, sb_on
+    global soundboard_thread,cable_input_device, sb_on
+    cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
+    
     sb_on = False
     time.sleep(0.2)
     soundboard_thread = threading.Thread(target=soundboard, daemon=True)

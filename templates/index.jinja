@@ -717,7 +717,7 @@
                   <div class="setting mic_input_device">
                     <label for="mic_input_device"> {{text['input_device']}} </label>
                     <select id="mic_input_device" name="settings.soundboard.mic_input_device">
-                      {% set audio_devices = select_audio_device() %}
+                      {% set audio_devices = get_audio_devices() %}
                       {% for device in audio_devices %}
                         {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
                         {% if not device.endswith(')') and '(' in device %}
@@ -733,7 +733,7 @@
                   <div class="setting mic_output_device">
                     <label for="mic_output_device"> {{text['output_device']}} </label>
                     <select id="mic_output_device" name="settings.soundboard.vbcable">
-                      {% set audio_devices = select_audio_device('output') %}
+                      {% set audio_devices = get_audio_devices('output') %}
                       {% for device in audio_devices %}
                         {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
                         {% if not device.endswith(')') and '(' in device %}
