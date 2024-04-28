@@ -1,3 +1,11 @@
+import ctypes
+import sys
+
+if not ctypes.windll.shell32.IsUserAnAdmin():
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+    sys.exit()
+
+
 # Standard library imports
 import time
 import threading
@@ -5,7 +13,6 @@ import subprocess
 import shutil
 import copy
 import re
-import sys
 import random
 import json
 import urllib.request
@@ -56,14 +63,13 @@ from obswebsocket import requests as obsrequests
 
 # Numerical and scientific libraries
 import numpy as np
-import ctypes
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 import math
 
 # WebDeck imports
-from updater import compare_versions, check_files
+from app.updater import compare_versions, check_files
 
 os.add_dll_directory(os.getcwd())
 
