@@ -70,6 +70,8 @@ import math
 
 # WebDeck imports
 from app.updater import compare_versions, check_files
+from app.functions.fix_firewall import fix_firewall_permission
+
 
 os.add_dll_directory(os.getcwd())
 
@@ -2795,23 +2797,6 @@ def check_firewall_permission():
     except Exception as e:
         print(f"Error checking firewall : {e}")
         return True
-
-
-def fix_firewall_permission():
-    command = [
-        "powershell",
-        "-NoProfile",
-        "New-NetFirewallRule",
-        "-DisplayName",
-        '"WebDeck"',
-        "-Direction",
-        "Inbound",
-        "-Program",
-        f'"{sys.executable}"',
-        "-Action",
-        "Allow",
-    ]
-    subprocess.run(command)
 
 
 if (

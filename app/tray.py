@@ -14,6 +14,8 @@ import tkinter as tk
 from io import BytesIO
 import webview
 
+from app.functions.fix_firewall import fix_firewall_permission
+
 
 def reload_config():
     port = 5000
@@ -129,21 +131,6 @@ def get_local_ip():
 
 local_ip = get_local_ip()
 
-def fix_firewall_permission():
-    command = [
-        "powershell",
-        "-NoProfile",
-        "New-NetFirewallRule",
-        "-DisplayName",
-        '"WebDeck"',
-        "-Direction",
-        "Inbound",
-        "-Program",
-        f'"{sys.executable}"',
-        "-Action",
-        "Allow",
-    ]
-    subprocess.run(command)
 
 def open_config():
     port, black_theme, language, open_in_integrated_browser = reload_config()
