@@ -113,6 +113,9 @@ WebDeck은 현재 Windows를 지원합니다. 향후 Linux 및 macOS용 버전�
 <a href="https://twitter.com/Felyz__" title="Felyz__">
   <img src="https://i.imgur.com/EDvgnLx.png" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
 </a>
+<a href="https://github.com/LOUDO56" title="LOUDO56">
+  <img src="https://avatars.githubusercontent.com/u/117168736?v=4" alt="SPONSOR-LOUDO56" width="60px" height="60px" style="border-radius: 50%;">
+</a>
 
 <br>
 

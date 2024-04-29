@@ -111,6 +111,9 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
 <a href="https://twitter.com/Felyz__" title="Felyz__">
   <img src="https://i.imgur.com/EDvgnLx.png" alt="SPONSOR-Felyz__" width="60px" height="60px" style="border-radius: 50%;">
 </a>
+<a href="https://github.com/LOUDO56" title="LOUDO56">
+  <img src="https://avatars.githubusercontent.com/u/117168736?v=4" alt="SPONSOR-LOUDO56" width="60px" height="60px" style="border-radius: 50%;">
+</a>
 
 <br>
 
