@@ -1,9 +1,13 @@
 import os
 
 def check_json_update(config):
-    
-    # Set default background if not present
-    if "background" not in config["front"]:
+    if "background" in config["front"]:
+        if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
+            config["front"]["background"] = [config["front"]["background"]]
+        if type(config["front"]["background"]) == "list" and config["front"]["background"] in [[], [""]]:
+            config["front"]["background"] = ["#141414"]
+    else:
+        # Set default background if not present
         config["front"]["background"] = ["#141414"]
         
     # Set default auto-updates setting if not present  
@@ -86,28 +90,53 @@ def check_json_update(config):
         for file_name in os.listdir("static/themes/")
         if file_name.endswith(".css") and not file_name.startswith("default_theme") and not file_name == config["front"]["theme"]
     ]
-    
-    # Add current theme file
-    themes.append(config["front"]["theme"])
-    
-    # Set themes list
-    config["front"]["themes"] = themes
-    
-    # Remove deleted themes
-    config["front"]["themes"] = [
-        theme for theme in config["front"]["themes"] if os.path.isfile(f"static/themes/{theme.replace('//', '')}")
-    ]
-    
-    # Remove duplicate themes
-    theme_set = set()
-    config["front"]["themes"] = [
-        theme for theme in config["front"]["themes"] 
-        if not (theme in theme_set or theme_set.add(theme))
-    ]
-    
-    # Move default theme to end
-    if config["front"]["theme"] in config["front"]["themes"]:
-        config["front"]["themes"].remove(config["front"]["theme"])
-    config["front"]["themes"].append(config["front"]["theme"])
+    if "themes" not in config["front"]:
+        themes.append(config["front"]["theme"])
+        config["front"]["themes"] = themes
+    else:
+        # check if there's new themes installed
+        installed_themes = config["front"]["themes"]
+        new_themes = [theme for theme in themes if not any(theme.endswith(name) for name in installed_themes)]
+        if new_themes:
+            print("new themes:", new_themes)
+            config["front"]["themes"].extend(iter(new_themes))
+
+    # Check for deleted themes
+    try:
+        config["front"]["themes"] = eval(config["front"]["themes"])
+    except TypeError:
+        pass
+    for theme in config["front"]["themes"][:]:
+        theme_file = theme.replace('//', '')
+        if not os.path.isfile(f"static/themes/{theme_file}"):
+            config["front"]["themes"].remove(theme)
+
+    # Check for duplicates
+    temporary_list = [theme.replace("//", "") for theme in config["front"]["themes"]]
+    duplicates = {
+        theme for theme in temporary_list if temporary_list.count(theme) > 1
+    }
+
+    # Remove duplicates
+    for theme in duplicates:
+        while temporary_list.count(theme) > 1:
+            temporary_list.remove(theme)
+            if f"//{theme}" in config["front"]["themes"]:
+                config["front"]["themes"].remove(f"//{theme}")
+            if theme in config["front"]["themes"]:
+                config["front"]["themes"].remove(theme)
+
+            if theme == config["front"]["theme"]:
+                config["front"]["themes"].append(theme)
+            else:
+                config["front"]["themes"].insert(0, f"//{theme}")
+                
+
+    # move the default theme to the bottom
+    if os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
+        if config["front"]["theme"] in config["front"]["themes"]:
+            config["front"]["themes"].remove(config["front"]["theme"])
+            
+        config["front"]["themes"].append(config["front"]["theme"])
 
     return config
