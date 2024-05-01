@@ -3,7 +3,6 @@ import time
 import threading
 import subprocess
 import shutil
-import copy
 import re
 import random
 import json
@@ -13,7 +12,6 @@ import os
 import sys
 import importlib
 import ipaddress
-from pathlib import Path
 import inspect
 import ast
 
@@ -34,7 +32,7 @@ import pyaudio
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_minify import Minify
-from engineio.async_drivers import gevent
+from engineio.async_drivers import gevent # DO NOT REMOVE
 import pyperclip
 import win32api
 import win32con
@@ -45,7 +43,6 @@ import easygui
 import psutil
 import GPUtil
 import pynvml
-from pydub import AudioSegment
 
 try:
     import vlc
@@ -68,6 +65,8 @@ from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
 from app.functions.on_start import check_json_update
+
+import app.buttons.soundboard as soundboard
 
 
 os.add_dll_directory(os.getcwd())
@@ -197,19 +196,6 @@ if not os.path.isfile("nircmd.exe"):
     download_nircmd()
     
 
-def replace_last_element(string, old_element, new_element):
-    # Find the last occurrence of the old element
-    last_index = string.rfind(old_element)
-
-    if last_index != -1:  # If the old element is found
-        return string[:last_index] + string[last_index:].replace(
-            old_element, new_element, 1
-        )
-    else:
-        # If the old element is not found, return the original string
-        return string
-    
-
 config = check_json_update(config)
 with open("config.json", "w", encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
@@ -245,230 +231,7 @@ def create_folders(config):
     return config
 
 
-def get_device(device):
-    # https://stackoverflow.com/questions/73884593/how-to-change-vlc-python-output-device
-    try:
-        player = vlc.MediaPlayer()
-        mods = player.audio_output_device_enum()
-        if mods:
-            mod = mods
-            while mod:
-                mod = mod.contents
-                # If device (VB-Cable) is found, return it's module and device id
-                if device.lower() in str(mod.description).lower():
-                    device = mod.device
-                    return device
-                mod = mod.next
-    except Exception as e:
-        print(e)
-        return "ERROR_NO_VLC"
 
-def get_ffmpeg():
-    if os.path.isfile("ffmpeg.exe"):
-        return os.path.abspath("ffmpeg.exe")
-
-    # Search for ffmpeg installation on winget
-    try:
-        base_path = Path("C:/Users")
-
-        # Iterate through user directories
-        for user_dir in base_path.iterdir():
-            if user_dir.is_dir():
-                # Iterate through subdirectories of the user directory
-                for package_dir in user_dir.joinpath("AppData/Local/Microsoft/WinGet/Packages").iterdir():
-                    if package_dir.name.startswith("Gyan.FFmpeg"):
-                        # Iterate through subdirectories of the package
-                        for sub_dir in package_dir.iterdir():
-                            if sub_dir.is_dir() and sub_dir.name.startswith("ffmpeg-"):
-                                # Find the ffmpeg.exe file
-                                ffmpeg_path = sub_dir.joinpath("bin/ffmpeg.exe")
-                                # Check if the file exists
-                                if ffmpeg_path.exists():
-                                    print("Path found:", ffmpeg_path)
-                                    return str(ffmpeg_path)
-                        continue
-                continue
-    except Exception as e:
-        print("FFMPEG: WinGet Error:", e)
-    
-    # Search for ffmpeg installation via webdeck servers
-    if os.path.isfile("ffmpeg.exe"):
-        return "ffmpeg.exe"
-
-    try:
-        print("downloading ffmpeg using webdeck servers...")
-        url = "https://bishokus.fr/dl_ffmpeg"
-        urllib.request.urlretrieve(url, "ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
-        
-        with zipfile.ZipFile("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip", "r") as zip_ref:
-            zip_ref.extractall("")
-            
-        os.remove("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
-        return "ffmpeg.exe"
-    except Exception as e:
-        print("FFMPEG:", e)
-    
-        print("FFMPEG: downloading ffmpeg using winget...")
-        subprocess.Popen("winget install ffmpeg", shell=True)
-    
-    print("FFMPEG: not found.")
-    return None
-    
-
-ffmpeg_path = ""
-def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
-    global ffmpeg_path
-    
-    try:
-        audio = AudioSegment.from_mp3(os.path.abspath(input_file))
-    except FileNotFoundError as e:
-        print(e)
-        ffmpeg_path = get_ffmpeg()
-        
-        if ffmpeg_path is not None and ffmpeg_path != "ffmpeg.exe":
-            shutil.copyfile(ffmpeg_path, "ffmpeg.exe")
-            shutil.copyfile(ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe'), "ffprobe.exe")
-            
-            ffmpeg_path = os.path.abspath("ffmpeg.exe")
-            ffprobe_path = ffmpeg_path.replace('ffmpeg.exe', 'ffprobe.exe')
-
-            AudioSegment.converter = ffmpeg_path
-            AudioSegment.ffmpeg = ffmpeg_path
-            AudioSegment.ffprobe = ffprobe_path
-        if AudioSegment.converter is None:
-            return False
-    else:
-        silent_segment = AudioSegment.silent(duration=silence_duration_ms)
-        audio_with_silence = audio + silent_segment
-        audio_with_silence.export(output_file, format="mp3")
-
-    return True
-
-    
-def silence_path(input_file, remove_previous=False):
-    output_file = replace_last_element(input_file, ".mp3", "_.mp3")
-    if os.path.exists(output_file):
-        return input_file
-    result = add_silence_to_end(input_file, output_file, 2)
-    if result == False:
-        return False
-    
-    if remove_previous:
-        os.remove(input_file)
-
-    return output_file
-
-cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
-vlc_installed = cable_input_device != "ERROR_NO_VLC"
-
-player_vbcable = {}
-player_ear_soundboard = {}
-
-def playsound(file_path: str, sound_volume, ear_soundboard=True):
-    global cable_input_device, player
-    if not vlc_installed:
-        print("VLC is not installed!")
-        return jsonify({"success": False, "message": text["vlc_not_installed_error"]})
-    else:
-        if config["settings"]["fix-stop-soundboard"] == "true":
-            file_path = silence_path(file_path)
-            if file_path == False:
-                return jsonify({"success": False, "message": text["ffmpeg_not_installed_error"]})
-        print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
-        print(len(player_vbcable))
-        print(player_vbcable)
-
-        p_id = len(player_vbcable.keys())
-        if p_id <= 3:
-            player_vbcable[p_id] = vlc.MediaPlayer(file_path)
-            player_vbcable[p_id].audio_set_volume(int(sound_volume * 100))
-            player_vbcable[p_id].audio_output_device_set(None, cable_input_device)
-            player_vbcable[p_id].play()
-            player_vbcable[p_id].event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
-            )
-
-            if ear_soundboard:
-                player_ear_soundboard[p_id] = vlc.MediaPlayer(file_path)
-                player_ear_soundboard[p_id].audio_set_volume(int(sound_volume * 100))
-                player_ear_soundboard[p_id].play()
-                player_ear_soundboard[p_id].event_manager().event_attach(
-                    vlc.EventType.MediaPlayerEndReached,
-                    lambda x: remove_player(2, p_id),
-                )
-
-        else:
-            player_vbcable[0].stop()
-            player_vbcable[0].set_time(0)
-            player_vbcable[0].play()
-            player_vbcable[0].event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(1, p_id)
-            )
-
-            if ear_soundboard:
-                player_ear_soundboard[0].stop()
-                player_ear_soundboard[0].set_time(0)
-                player_ear_soundboard[0].play()
-                player_ear_soundboard[0].event_manager().event_attach(
-                    vlc.EventType.MediaPlayerEndReached,
-                    lambda x: remove_player(2, p_id),
-                )
-        return jsonify({"success": True})
-
-
-def remove_player(sb_type, p_id):
-    global player_vbcable, player_ear_soundboard
-    try:
-        if sb_type == 1:
-            del player_vbcable[p_id]
-        elif sb_type == 2:
-            del player_ear_soundboard[p_id]
-        else:
-            del p_id
-    except KeyError:
-        pass
-
-
-def stop_soundboard():
-    if not vlc_installed:
-        print("VLC is not installed!")
-        return jsonify({"success": False, "message": text["vlc_not_installed_error"]})
-    else:
-        global player_vbcable, player_ear_soundboard
-        
-        try:
-            last_key = list(player_vbcable.keys())[-1]
-            last_value = player_vbcable[last_key]
-        except IndexError:
-            return jsonify({"success": True, "message": "There are no sounds actually playing"})
-        
-        while str(last_value.get_state()) == "State.Playing":
-            print(player_vbcable)
-            print(player_ear_soundboard)
-            try:
-                for p_id, player in player_vbcable.items():
-                    try:
-                        player.stop()
-                        player.release()
-                        # del player_vbcable[p_id]
-                    except Exception as e:
-                        pass
-
-                for p_id, player in player_ear_soundboard.items():
-                    try:
-                        player.stop()
-                        player.release()
-                        # del player_ear_soundboard[p_id]
-                    except Exception as e:
-                        pass
-                break
-            except RuntimeError as e:
-                print("RT error:", e)
-                ...
-            
-        player_vbcable.clear()
-        player_ear_soundboard.clear()
-        return jsonify({"success": True})
 
 
 def should_i_close():
@@ -1345,9 +1108,9 @@ def saveconfig():
         json.dump(config, json_file, indent=4)
 
     if soundboard_stop:
-        shutdown_soundboard()
+        soundboard.mic.stop()
     elif soundboard_restart or soundboard_start:
-        restart_soundboard()
+        soundboard.mic.restart()
 
     if obs_reload:
         obs_host, obs_port, obs_password, obs = reload_obs()
@@ -1554,7 +1317,7 @@ def send_data(message=None):
         return jsonify(usage)
 
     elif message.startswith("/stop_sound"):
-        return stop_soundboard()
+        return soundboard.stopsound()
     elif message.startswith("/playsound "):
         message = message.replace("C:\\fakepath\\", "").replace("/playsound ", "")
         percentage = message[message.rfind(" ") + 1 :].replace(" ", "")
@@ -1577,7 +1340,7 @@ def send_data(message=None):
             sound_file = f"static/files/uploaded/{sound_file}"
 
         ear_soundboard = config["settings"]["ear-soundboard"].lower() == "true"
-        return playsound(sound_file, sound_volume, ear_soundboard)
+        return soundboard.playsound(sound_file, sound_volume, ear_soundboard)
 
     elif message.startswith("/playlocalsound "):
         message = message.replace("C:\\fakepath\\", "").replace("/playlocalsound ", "")
@@ -1594,7 +1357,7 @@ def send_data(message=None):
             player.audio_set_volume(int(sound_volume * 100))
             player.play()
             player.event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: remove_player(3, player)
+                vlc.EventType.MediaPlayerEndReached, lambda x: soundboard.remove_player(3, player)
             )
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -2489,128 +2252,11 @@ def auto_closing_loop():
         time.sleep(5)
 
 
-# mic to vbcable
-sb_on = True
-def soundboard():
-    global sb_on
-    sb_on = True
-
-    audio = pyaudio.PyAudio()
-    num_devices = audio.get_device_count()
-
-    mic_input_device = config["settings"]["soundboard"]["mic_input_device"]
-    microphone_name = mic_input_device[mic_input_device.find("(") + 1 :]
-    mic_output_device = config["settings"]["soundboard"]["vbcable"]
-    output_name = mic_output_device[mic_output_device.find("(") + 1 :]
-    mic_index = None
-    output_device = None
-
-    for i in range(audio.get_device_count()):
-        device_info = audio.get_device_info_by_index(i)
-        if (
-            device_info["maxInputChannels"] > 0
-            and microphone_name.lower() in device_info["name"].lower()
-        ):
-            mic_index = i
-            break
-
-    for i in range(audio.get_device_count()):
-        device_info = audio.get_device_info_by_index(i)
-        if (
-            device_info["maxOutputChannels"] > 0
-            and output_name.lower() in device_info["name"].lower()
-        ):
-            output_device = i
-            break
-
-    if mic_index is None:
-        print("Cannot find microphone.")
-    else:
-        print(f"Microphone '{microphone_name}' found at index {mic_index}")
-
-    if output_device is None:
-        print("Cannot find speakers.")
-    else:
-        print(f"Speaker '{output_name}' found at index {output_device}")
-
-    stream_in = None
-    stream_out = None
-
-    input_device_info = audio.get_device_info_by_index(mic_index)
-    input_channels = input_device_info["maxInputChannels"]
-
-    output_device_info = audio.get_device_info_by_index(output_device)
-    output_channels = input_device_info["maxInputChannels"]
-
-    print(f"i: {input_device_info}")
-    print(f"o: {output_device_info}")
-
-    stream_in = audio.open(
-        format=pyaudio.paInt16,
-        channels=input_channels,
-        rate=44100,
-        input=True,
-        input_device_index=mic_index,
-    )
-
-    stream_out = audio.open(
-        format=pyaudio.paInt16,
-        channels=input_channels,
-        rate=44100,
-        output=True,
-        output_device_index=output_device,
-    )
-
-    print("soundboard: ON")
-
-    try:
-        while sb_on == True:
-            data = stream_in.read(1024)
-            stream_out.write(data)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        print("Stopping soundboard ...")
-
-        try:
-            if stream_in is not None:
-                stream_in.stop_stream()
-                stream_in.close()
-
-            if stream_out is not None:
-                stream_out.stop_stream()
-                stream_out.close()
-        except OSError:
-            restart_soundboard()
-
-        audio.terminate()
-
-
-def shutdown_soundboard():
-    global sb_on
-    sb_on = False
-
-
-def restart_soundboard():
-    global soundboard_thread,cable_input_device, sb_on
-    cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
-    
-    sb_on = False
-    time.sleep(0.2)
-    soundboard_thread = threading.Thread(target=soundboard, daemon=True)
-    soundboard_thread.start()
-    print("Soundboard thread revived")
-
-
 auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
 auto_closing_loop_thread.start()
 
 if config["settings"]["auto-updates"].lower().strip() == "true":
     check_for_updates()
-
-if config["settings"]["soundboard"]["enabled"] == "true":
-    soundboard_thread = threading.Thread(target=soundboard, daemon=True)
-    soundboard_thread.start()
 
 
 def check_firewall_permission():

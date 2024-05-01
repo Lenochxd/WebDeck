@@ -1,4 +1,6 @@
 import os
+import urllib.request
+import zipfile
 
 def check_json_update(config):
     if "background" in config["front"]:
@@ -140,3 +142,15 @@ def check_json_update(config):
         config["front"]["themes"].append(config["front"]["theme"])
 
     return config
+
+
+def download_nircmd():
+    url = "https://www.nirsoft.net/utils/nircmd.zip"
+    urllib.request.urlretrieve(url, "nircmd.zip")
+
+    with zipfile.ZipFile("nircmd.zip", "r") as zip_ref:
+        zip_ref.extractall("")
+
+    os.remove("nircmd.zip")
+    os.remove("NirCmd.chm")
+    os.remove("nircmdc.exe")
