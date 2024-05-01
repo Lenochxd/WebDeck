@@ -67,6 +67,7 @@ from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
+from app.functions.on_start import check_json_update
 
 
 os.add_dll_directory(os.getcwd())
@@ -107,114 +108,6 @@ check_files("static/files/version.json", "data.json")
 text = load_lang_file(config["settings"]["language"])
 
 
-def check_json_update(config):
-    if "background" in config["front"]:
-        if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
-            config["front"]["background"] = [config["front"]["background"]]
-        if type(config["front"]["background"]) == "list" and config["front"]["background"] in [[], [""]]:
-            config["front"]["background"] = ["#141414"]
-    else:
-        config["front"]["background"] = ["#141414"]
-
-    if "auto-updates" not in config["settings"]:
-        config["settings"]["auto-updates"] = "true"
-    if "windows-startup" not in config["settings"]:
-        config["settings"]["windows-startup"] = "false"
-    if "flask-debug" not in config["settings"]:
-        config["settings"]["flask-debug"] = "true"
-    if "open-settings-in-browser" in config["settings"]:
-        del config["settings"]["open-settings-in-browser"]
-    if "open-settings-in-integrated-browser" not in config["settings"]:
-        config["settings"]["open-settings-in-integrated-browser"] = "false"
-    if "portrait-rotate" not in config["front"]:
-        config["front"]["portrait-rotate"] = "90"
-    if "edit-buttons-color" not in config["front"]:
-        config["front"]["edit-buttons-color"] = "false"
-    if "buttons-color" not in config["front"]:
-        config["front"]["buttons-color"] = ""
-    if "soundboard" not in config["settings"]:
-        config["settings"]["soundboard"] = {
-            "mic_input_device": "",
-            "vbcable": "cable input",
-        }
-    if "mic_input_device" not in config["settings"]["soundboard"]:
-        config["settings"]["soundboard"]["mic_input_device"] = ""
-    if "vbcable" not in config["settings"]["soundboard"]:
-        config["settings"]["soundboard"]["vbcable"] = "cable input"
-    if "enabled" not in config["settings"]["soundboard"]:
-        if config["settings"]["soundboard"]["mic_input_device"] != "":
-            config["settings"]["soundboard"]["enabled"] = "false"
-        else:
-            config["settings"]["soundboard"]["enabled"] = "true"
-
-    if "obs" not in config["settings"]:
-        config["settings"]["obs"] = {"host": "localhost", "port": 4455, "password": ""}
-    if "automatic-firewall-bypass" not in config["settings"]:
-        config["settings"]["automatic-firewall-bypass"] = "false"
-    if "fix-stop-soundboard" not in config["settings"]:
-        config["settings"]["fix-stop-soundboard"] = "false"
-    if "optimized-usage-display" not in config["settings"]:
-        config["settings"]["optimized-usage-display"] = "false"
-
-    if "theme" not in config["front"] or not os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
-        config["front"]["theme"] = "default_theme.css"
-
-    themes = [
-        f"//{file_name}"
-        for file_name in os.listdir("static/themes/")
-        if file_name.endswith(".css") and not file_name.startswith("default_theme") and not file_name == config["front"]["theme"]
-    ]
-    if "themes" not in config["front"]:
-        themes.append(config["front"]["theme"])
-        config["front"]["themes"] = themes
-    else:
-        # check if there's new themes installed
-        installed_themes = config["front"]["themes"]
-        new_themes = [theme for theme in themes if not any(theme.endswith(name) for name in installed_themes)]
-        if new_themes:
-            print("new themes:", new_themes)
-            config["front"]["themes"].extend(iter(new_themes))
-
-    # Check for deleted themes
-    try:
-        config["front"]["themes"] = eval(config["front"]["themes"])
-    except TypeError:
-        pass
-    for theme in config["front"]["themes"][:]:
-        theme_file = theme.replace('//', '')
-        if not os.path.isfile(f"static/themes/{theme_file}"):
-            config["front"]["themes"].remove(theme)
-
-    # Check for duplicates
-    temporary_list = [theme.replace("//", "") for theme in config["front"]["themes"]]
-    duplicates = {
-        theme for theme in temporary_list if temporary_list.count(theme) > 1
-    }
-
-    # Remove duplicates
-    for theme in duplicates:
-        while temporary_list.count(theme) > 1:
-            temporary_list.remove(theme)
-            if f"//{theme}" in config["front"]["themes"]:
-                config["front"]["themes"].remove(f"//{theme}")
-            if theme in config["front"]["themes"]:
-                config["front"]["themes"].remove(theme)
-
-            if theme == config["front"]["theme"]:
-                config["front"]["themes"].append(theme)
-            else:
-                config["front"]["themes"].insert(0, f"//{theme}")
-                
-
-    # move the default theme to the bottom
-    if os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
-        if config["front"]["theme"] in config["front"]["themes"]:
-            config["front"]["themes"].remove(config["front"]["theme"])
-            
-        config["front"]["themes"].append(config["front"]["theme"])
-
-
-    return config
 
 def parse_css_file(css_file_path):
     css_data = {}
