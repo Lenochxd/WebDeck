@@ -231,22 +231,6 @@ def create_folders(config):
     return config
 
 
-
-
-
-def should_i_close():
-    global sb_on
-    if getattr(sys, "frozen", False):
-        is_handler_opened = any(
-            process.info["name"].lower().strip().replace(".exe", "") == "webdeck"
-            for process in psutil.process_iter(["pid", "name"])
-        )
-        if not is_handler_opened:
-            sb_on = False
-            obs.disconnect()
-            sys.exit()
-
-
 def show_error(message):
     print(message)
     ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Error", 0)
@@ -2244,16 +2228,6 @@ def check_for_updates_loop():
 
         time.sleep(3600)
 
-
-def auto_closing_loop():
-    print("main_server started")
-    while True:
-        should_i_close()
-        time.sleep(5)
-
-
-auto_closing_loop_thread = threading.Thread(target=auto_closing_loop, daemon=True)
-auto_closing_loop_thread.start()
 
 if config["settings"]["auto-updates"].lower().strip() == "true":
     check_for_updates()
