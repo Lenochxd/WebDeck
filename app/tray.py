@@ -15,6 +15,7 @@ from io import BytesIO
 import webview
 
 from app.functions.fix_firewall import fix_firewall_permission
+from app.functions.get_local_ip import get_local_ip
 
 
 def reload_config():
@@ -119,18 +120,8 @@ def exit_program():
 
     exit()
 
-def get_local_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # Any address and port, here we use Google DNS
-        s.connect(("8.8.8.8", 80))
-        local_ip = s.getsockname()[0]
-    finally:
-        s.close()
-    return local_ip
 
 local_ip = get_local_ip()
-
 
 def open_config():
     port, black_theme, language, open_in_integrated_browser = reload_config()
