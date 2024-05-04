@@ -64,7 +64,7 @@ from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
-from app.functions.on_start import check_json_update
+from app.functions.on_start import check_json_update, download_nircmd
 
 import app.buttons.soundboard as soundboard
 
@@ -180,17 +180,6 @@ def sort_colorsjson():
             json.dump(sorted_colors, f, indent=4)
 sort_colorsjson()
 
-
-def download_nircmd():
-    url = "https://www.nirsoft.net/utils/nircmd.zip"
-    urllib.request.urlretrieve(url, "nircmd.zip")
-
-    with zipfile.ZipFile("nircmd.zip", "r") as zip_ref:
-        zip_ref.extractall("")
-
-    os.remove("nircmd.zip")
-    os.remove("NirCmd.chm")
-    os.remove("nircmdc.exe")
     
 if not os.path.isfile("nircmd.exe"):
     download_nircmd()

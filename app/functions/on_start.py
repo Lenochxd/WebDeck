@@ -1,4 +1,5 @@
 import os
+import sys
 import urllib.request
 import zipfile
 
@@ -145,12 +146,17 @@ def check_json_update(config):
 
 
 def download_nircmd():
-    url = "https://www.nirsoft.net/utils/nircmd.zip"
-    urllib.request.urlretrieve(url, "nircmd.zip")
+    zippath = "nircmd.zip"
+    
+    if not getattr(sys, 'frozen', False):
+        url = "https://www.nirsoft.net/utils/nircmd.zip"
+        urllib.request.urlretrieve(url, "nircmd.zip")
+    else:
+        zippath = "lib/nircmd.zip"
 
-    with zipfile.ZipFile("nircmd.zip", "r") as zip_ref:
+    with zipfile.ZipFile(zippath, "r") as zip_ref:
         zip_ref.extractall("")
 
-    os.remove("nircmd.zip")
+    os.remove(zippath)
     os.remove("NirCmd.chm")
     os.remove("nircmdc.exe")
