@@ -61,7 +61,7 @@ from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
-from app.functions.on_start import check_json_update, download_nircmd,
+from app.functions.on_start import check_json_update, download_nircmd, sort_colorsjson
 from app.functions.get_local_ip import get_local_ip
 
 import app.buttons.soundboard as soundboard
