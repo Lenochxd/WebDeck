@@ -61,7 +61,7 @@ from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
-from app.functions.on_start import check_json_update, download_nircmd, sort_colorsjson
+from app.functions.on_start import check_json_update, download_nircmd,
 from app.functions.get_local_ip import get_local_ip
 
 import app.buttons.soundboard as soundboard
@@ -624,12 +624,6 @@ def set_speakers_by_name(speakers_name):
             break
 
 
-def has_at_least_5_minutes_difference(timestamp1, timestamp2):
-    difference = abs(timestamp1 - timestamp2)
-    difference_in_minutes = difference / 60
-    return difference_in_minutes >= 15
-
-
 def extract_asked_device(input_string):
     pattern = r"\['(.*?)'\]"
     matches = re.findall(pattern, input_string)
@@ -661,13 +655,11 @@ with open("config.json", encoding="utf-8") as f:
 with open("config.json", "w", encoding="utf-8") as json_file:
     json.dump(config, json_file, indent=4)
 
-excluded_disks = {}
 
 def get_usage(
     get_all=True if config["settings"]["optimized-usage-display"] == "false" else False,
     asked_devices=get_asked_devices()
 ):
-    global excluded_disks
     computer_info = {}
     
     # CPU
@@ -698,39 +690,21 @@ def get_usage(
                 disk_name = disk.device.replace("\\", "").replace(":", "")
                 if get_all or any(item[1] == disk_name for item in asked_devices):
                     
-                    # Check if the disk is excluded due to a previous error
-                    if disk_name not in excluded_disks.keys():
-                        computer_info["disks"][disk_name] = {}
-                        disk_usage = psutil.disk_usage(disk.device)
+                    computer_info["disks"][disk_name] = {}
+                    disk_usage = psutil.disk_usage(disk.device)
+                    
+                    if get_all or any(item[2] == "total_gb" for item in asked_devices if len(item) == 3):
+                        computer_info["disks"][disk_name]["total_gb"] = round(disk_usage.total / 1024**3, 2)
+                    if get_all or any(item[2] == "used_gb" for item in asked_devices if len(item) == 3):
+                        computer_info["disks"][disk_name]["used_gb"] = round(disk_usage.used / 1024**3, 2)
+                    if get_all or any(item[2] == "free_gb" for item in asked_devices if len(item) == 3):
+                        computer_info["disks"][disk_name]["free_gb"] = round(disk_usage.free / 1024**3, 2)
+                    if get_all or any(item[2] == "usage_percent" for item in asked_devices if len(item) == 3):
+                        computer_info["disks"][disk_name]["usage_percent"] = disk_usage.percent
                         
-                        if get_all or any(item[2] == "total_gb" for item in asked_devices if len(item) == 3):
-                            computer_info["disks"][disk_name]["total_gb"] = round(disk_usage.total / 1024**3, 2)
-                        if get_all or any(item[2] == "used_gb" for item in asked_devices if len(item) == 3):
-                            computer_info["disks"][disk_name]["used_gb"] = round(disk_usage.used / 1024**3, 2)
-                        if get_all or any(item[2] == "free_gb" for item in asked_devices if len(item) == 3):
-                            computer_info["disks"][disk_name]["free_gb"] = round(disk_usage.free / 1024**3, 2)
-                        if get_all or any(item[2] == "usage_percent" for item in asked_devices if len(item) == 3):
-                            computer_info["disks"][disk_name]["usage_percent"] = disk_usage.percent
-                        
-                    elif has_at_least_5_minutes_difference(
-                        excluded_disks[disk_name.upper()], time.time()
-                    ):
-                        del excluded_disks[disk_name.upper()]
-
             except Exception as e:
                 print("Usage Disks Error:", e)
-                error_message = str(e)
-
-                if (
-                    "[WinError 5]" in error_message
-                    or "[WinError 21]" in error_message
-                    or "[WinError 1005]" in error_message
-                ):
-                    # Extract the disk letter following the error message
-                    disk_letter = error_message[-2]
-                    excluded_disks[disk_letter.upper()] = time.time()
-                    print(f"Disk '{disk_letter}' excluded from further processing for 15 minutes.")
-
+                
     # Network
     if get_all or any(item[0] == 'network' for item in asked_devices):
         network_io_counters = psutil.net_io_counters()
