@@ -6,8 +6,6 @@ import shutil
 import re
 import random
 import json
-import urllib.request
-import zipfile
 import os
 import sys
 import importlib
@@ -17,7 +15,6 @@ import ast
 
 # Third-party library imports
 import requests
-import socket
 import spotipy
 import spotipy.util as util
 from deepdiff import DeepDiff
@@ -64,7 +61,8 @@ from app.updater import compare_versions, check_files
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
-from app.functions.on_start import check_json_update, download_nircmd
+from app.functions.on_start import check_json_update, download_nircmd, sort_colorsjson
+from app.functions.get_local_ip import get_local_ip
 
 import app.buttons.soundboard as soundboard
 
@@ -647,7 +645,7 @@ def get_asked_devices():
                 device = extract_asked_device(button["message"])
                 if device is not None:
                     devices.append(device)
-                        
+                    
     return devices
 
 
@@ -790,17 +788,6 @@ print(usage_example)
 @app.route("/usage", methods=["POST"])
 def usage():
     return jsonify(get_usage())
-
-
-def get_local_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # Any address and port, here we use Google DNS
-        s.connect(("8.8.8.8", 80))
-        local_ip = s.getsockname()[0]
-    finally:
-        s.close()
-    return local_ip
 
 
 local_ip = get_local_ip()
