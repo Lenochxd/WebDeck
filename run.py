@@ -1,9 +1,14 @@
 import ctypes
 import sys
+import json
 
-if not ctypes.windll.shell32.IsUserAnAdmin():
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-    sys.exit()
+with open('config.json', encoding= "utf-8") as f:
+    settings = json.load(f)['settings']
+    
+if 'app-admin' in settings and settings['app-admin'] == 'true':
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        sys.exit()
 
 import threading
 import win32com.client
