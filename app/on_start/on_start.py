@@ -6,6 +6,7 @@ import urllib.request
 import zipfile
 from math import sqrt
 
+
 def check_json_update(config):
     if "background" in config["front"]:
         if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:

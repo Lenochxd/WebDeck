@@ -57,53 +57,17 @@ import comtypes
 import math
 
 # WebDeck imports
-from app.updater import compare_versions, check_files
+from app.updater import compare_versions
+from app.on_start import on_start, check_json_update
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
-from app.functions.on_start import check_json_update, download_nircmd, sort_colorsjson
 from app.functions.get_local_ip import get_local_ip
 
 import app.buttons.soundboard as soundboard
 
 
-os.add_dll_directory(os.getcwd())
-
-
-new_user = False
-if not os.path.exists("config.json"):
-    shutil.copy("config_default.json", "config.json")
-    new_user = True
-    file_path = (
-        os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs\WebDeck.lnk"
-    )
-    if not os.path.exists(file_path) and getattr(sys, "frozen", False):
-        dir = os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs"
-        name = "WebDeck.lnk"
-        path = os.path.join(dir, name)
-        target = os.getcwd() + r"\\WebDeck.exe"
-        working_dir = os.getcwd()
-        icon = os.getcwd() + r"\\WebDeck.exe"
-
-        shell = Dispatch("WScript.Shell")
-        shortcut = shell.CreateShortCut(path)
-        shortcut.Targetpath = target
-        shortcut.WorkingDirectory = working_dir
-        shortcut.IconLocation = icon
-        shortcut.save()
-if not os.path.exists("static/files/uploaded"):
-    try:
-        os.makedirs("static/files/uploaded")
-    except FileExistsError:
-        pass
-
-with open("config.json", encoding="utf-8") as f:
-    config = json.load(f)
-
-check_files("static/files/version.json", "data.json")
-
-text = load_lang_file(config["settings"]["language"])
-
+config, text = on_start()
 
 
 def parse_css_file(css_file_path):
@@ -143,20 +107,6 @@ def parse_themes():
             parsed_themes[file_name] = parse_css_file(f"static/themes/{file_name}")
             
     return parsed_themes
-
-
-
-
-sort_colorsjson()
-
-    
-if not os.path.isfile("nircmd.exe"):
-    download_nircmd()
-    
-
-config = check_json_update(config)
-with open("config.json", "w", encoding="utf-8") as json_file:
-    json.dump(config, json_file, indent=4)
 
 
 def save_config(config):
