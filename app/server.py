@@ -59,6 +59,7 @@ import math
 # WebDeck imports
 from app.updater import compare_versions
 from app.on_start import on_start, check_json_update
+from app.themes.parse import parse_themes
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
@@ -68,45 +69,6 @@ import app.buttons.soundboard as soundboard
 
 
 config, text = on_start()
-
-
-def parse_css_file(css_file_path):
-    css_data = {}
-    with open(css_file_path, 'r') as file:
-        for line in file:
-            line = line.strip()
-            if line.replace(" ", "").startswith("/*-------"):
-                break
-            if '=' in line:
-                key, value = line.split('=')
-                key = key.strip()
-                value = value.strip()
-                css_data[key.lower()] = value
-        for info in [
-            "theme-name",
-            "theme-description",
-            "theme-logo",
-            "theme-author-github"
-        ]:
-            if info not in css_data.keys():
-                css_data[info] = text["not_specified"]
-        
-        if css_data["theme-logo"] == text["not_specified"]:
-            css_data["theme-logo"] = ""
-        if css_data["theme-name"] == text["not_specified"]:
-            css_data["theme-name"] = os.path.basename(css_file_path)
-        if css_data["theme-description"] == text["not_specified"]:
-            css_data["theme-description"] = css_file_path
-        
-    return css_data
-
-def parse_themes():
-    parsed_themes = {}
-    for file_name in os.listdir("static/themes/"):
-        if file_name.endswith(".css"):
-            parsed_themes[file_name] = parse_css_file(f"static/themes/{file_name}")
-            
-    return parsed_themes
 
 
 def save_config(config):
@@ -868,7 +830,7 @@ def home():
 
     return render_template(
         "index.jinja",
-        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(),
+        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(text),
         commands=commands, versions=versions, random_bg=random_bg, usage_example=usage_example,
         langs=langs, text=load_lang_file(config['settings']['language']),
         svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],
