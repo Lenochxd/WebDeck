@@ -146,38 +146,9 @@ def parse_themes():
             
     return parsed_themes
 
-def color_distance(color1, color2):
-    """
-    Calculate the distance between two colors using the Euclidean formula
-    """
-    r1, g1, b1 = [int(color1[i : i + 2], 16) for i in range(1, 7, 2)]
-    r2, g2, b2 = [int(color2[i : i + 2], 16) for i in range(1, 7, 2)]
-    return math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
 
-def sort_colorsjson():
-    with open("colors.json", "r", encoding="utf-8") as f:
-        try:
-            data = json.load(f)
-        except Exception:
-            shutil.copyfile("static/files/colorsbcp.json", "colors.json")
-            with open("colors.json", "r", encoding="utf-8") as f:
-                data = json.load(f)
 
-    # Sort colors using the distance between each pair of colors
-    sorted_colors = [data[0]]  # The first color is always the same
-    data.pop(0)
 
-    while data:
-        current_color = sorted_colors[-1]["hex_code"]
-        nearest_color = min(
-            data, key=lambda c: color_distance(current_color, c["hex_code"])
-        )
-        sorted_colors.append(nearest_color)
-        data.remove(nearest_color)
-
-    if not sorted_colors == data:
-        with open("colors.json", "w", encoding="utf-8") as f:
-            json.dump(sorted_colors, f, indent=4)
 sort_colorsjson()
 
     
@@ -547,7 +518,9 @@ def find_color(hex_code, colors):
         closest_color = None
         min_distance = float("inf")
         for color in colors:
-            distance = get_color_distance(hex_code, color["hex_code"])
+            rgb1 = webcolors.hex_to_rgb(hex_code)
+            rgb2 = webcolors.hex_to_rgb(color["hex_code"])
+            distance = sum((a - b) ** 2 for a, b in zip(rgb1, rgb2))
             if distance < min_distance:
                 min_distance = distance
                 closest_color = color
@@ -555,12 +528,6 @@ def find_color(hex_code, colors):
         return closest_color["name"]
     except ValueError:
         return "Can not find color"
-
-
-def get_color_distance(hex_code1, hex_code2):
-    rgb1 = webcolors.hex_to_rgb(hex_code1)
-    rgb2 = webcolors.hex_to_rgb(hex_code2)
-    return sum((a - b) ** 2 for a, b in zip(rgb1, rgb2))
 
 
 def translate(word, target_language):

@@ -1,7 +1,10 @@
 import os
 import sys
+import shutil
+import json
 import urllib.request
 import zipfile
+from math import sqrt
 
 def check_json_update(config):
     if "background" in config["front"]:
@@ -160,3 +163,37 @@ def download_nircmd():
     os.remove(zippath)
     os.remove("NirCmd.chm")
     os.remove("nircmdc.exe")
+    
+
+def color_distance(color1, color2):
+    """
+    Calculate the distance between two colors using the Euclidean formula
+    """
+    r1, g1, b1 = [int(color1[i : i + 2], 16) for i in range(1, 7, 2)]
+    r2, g2, b2 = [int(color2[i : i + 2], 16) for i in range(1, 7, 2)]
+    return sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
+
+def sort_colorsjson():
+    with open("colors.json", "r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+        except Exception:
+            shutil.copyfile("static/files/colorsbcp.json", "colors.json")
+            with open("colors.json", "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+    # Sort colors using the distance between each pair of colors
+    sorted_colors = [data[0]]  # The first color is always the same
+    data.pop(0)
+
+    while data:
+        current_color = sorted_colors[-1]["hex_code"]
+        nearest_color = min(
+            data, key=lambda c: color_distance(current_color, c["hex_code"])
+        )
+        sorted_colors.append(nearest_color)
+        data.remove(nearest_color)
+
+    if not sorted_colors == data:
+        with open("colors.json", "w", encoding="utf-8") as f:
+            json.dump(sorted_colors, f, indent=4)
