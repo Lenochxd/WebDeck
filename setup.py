@@ -51,7 +51,7 @@ def is_excluded(file_path, exclude_list):
     return False
 
 ignored_files = [
-    '!buttons', 'addons', '.git', '.github', '.vscode', '__pycache__', 'build', 'requirements.txt',
+    '!buttons', 'addons', 'plugins', '.git', '.github', '.vscode', '__pycache__', 'build', 'requirements.txt',
     'webdeck', '%.html%WebDeck', 'testmic', 'build.bat',
     'WD_main.exe', 'WebDeck.exe', 'WD_updater.exe'
 ]
