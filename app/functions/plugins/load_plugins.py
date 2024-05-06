@@ -7,7 +7,7 @@ def load_plugins(commands):
     global all_func
     dict_func = {}
     all_func = {}
-    folder_path = "./addons"
+    folder_path = "./plugins"
 
     for root, dirs, files in os.walk(folder_path):
         for file in files:
@@ -19,7 +19,7 @@ def load_plugins(commands):
                     if module_name in modules.keys():
                         modules[module_name] = importlib.reload(modules[module_name])
                     else:
-                        modules[module_name] = __import__(f"addons.{module_name}", fromlist=[""])
+                        modules[module_name] = __import__(f"plugins.{module_name}", fromlist=[""])
                     
 
                     dict_doc, dict_func, addon_name = (
