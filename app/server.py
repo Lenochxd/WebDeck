@@ -59,7 +59,7 @@ import math
 # WebDeck imports
 from app.updater import compare_versions
 from app.on_start import on_start, check_json_update
-from app.themes.parse import parse_themes
+from app.functions.themes.parse_theme import parse_themes
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
