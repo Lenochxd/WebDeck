@@ -6,6 +6,7 @@ from win32com.client import Dispatch
 
 from app.updater import check_files
 from app.functions.load_lang_file import load_lang_file
+from app.functions.plugins.load_plugins import load_plugins
 
 from app.on_start.on_start import *
 
@@ -56,6 +57,11 @@ def on_start():
     # Load text
     text = load_lang_file(config["settings"]["language"])
     
+    # Load commands
+    with open("commands.json", encoding="utf-8") as f:
+        commands = json.load(f)
+        commands = load_plugins(commands)
+    
     # Colors json
     sort_colorsjson()
     
@@ -68,4 +74,4 @@ def on_start():
     with open("config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     
-    return config, text
+    return config, text, commands
