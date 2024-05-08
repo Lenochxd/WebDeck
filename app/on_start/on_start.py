@@ -4,6 +4,7 @@ import shutil
 import json
 import urllib.request
 import zipfile
+import pynvml
 from math import sqrt
 
 
@@ -198,3 +199,20 @@ def sort_colorsjson():
     if not sorted_colors == data:
         with open("colors.json", "w", encoding="utf-8") as f:
             json.dump(sorted_colors, f, indent=4)
+            
+def get_gpu_method():
+    with open("config.json", encoding="utf-8") as f:
+        config = json.load(f)
+        
+    if not "gpu_method" in config["settings"]:
+        config["settings"]["gpu_method"] = "nvidia (pynvml)"
+    if config["settings"]["gpu_method"] == "nvidia (pynvml)":
+        try:
+            pynvml.nvmlInit()
+        except pynvml.NVMLError:
+            config["settings"]["gpu_method"] = "AMD"
+                
+    with open("config.json", "w", encoding="utf-8") as json_file:
+        json.dump(config, json_file, indent=4)
+        
+    return config

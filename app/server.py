@@ -556,19 +556,6 @@ def get_asked_devices():
     return devices
 
 
-with open("config.json", encoding="utf-8") as f:
-    config = json.load(f)
-    if not "gpu_method" in config["settings"]:
-        config["settings"]["gpu_method"] = "nvidia (pynvml)"
-    if config["settings"]["gpu_method"] == "nvidia (pynvml)":
-        try:
-            pynvml.nvmlInit()
-        except pynvml.NVMLError:
-            config["settings"]["gpu_method"] = "AMD"
-with open("config.json", "w", encoding="utf-8") as json_file:
-    json.dump(config, json_file, indent=4)
-
-
 def get_usage(
     get_all=True if config["settings"]["optimized-usage-display"] == "false" else False,
     asked_devices=get_asked_devices()

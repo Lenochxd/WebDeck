@@ -50,9 +50,8 @@ def on_start():
     # Update new files
     check_files("static/files/version.json", "data.json")
 
-    # Load config
-    with open("config.json", encoding="utf-8") as f:
-        config = json.load(f)
+    # Load config & get gpu method
+    config = get_gpu_method()
     
     # Load text
     text = load_lang_file(config["settings"]["language"])
