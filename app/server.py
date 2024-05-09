@@ -57,8 +57,8 @@ import comtypes
 import math
 
 # WebDeck imports
-from app.updater import compare_versions
 from app.on_start import on_start, check_json_update
+from app.functions.show_error import show_error
 from app.functions.themes.parse_themes import parse_themes
 from app.functions.plugins.load_plugins import load_plugins
 from app.functions.fix_firewall import fix_firewall_permission
@@ -99,11 +99,6 @@ def create_folders(config):
         print("NEW FOLDER :", folder["name"])
     folders_to_create = []
     return config
-
-
-def show_error(message):
-    print(message)
-    ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Error", 0)
 
 
 def print_dict_differences(dict1, dict2):
@@ -1948,58 +1943,6 @@ def send_data_socketio(message):
 @app.route("/send-data", methods=["POST"])
 def send_data_route():
     return send_data(message=request.get_json()["message"])
-
-
-def check_for_updates():
-    if os.path.exists("update"):
-        shutil.rmtree("update", ignore_errors=True)
-
-    try:
-        with open("static/files/version.json", encoding="utf-8") as f:
-            current_version = json.load(f)["versions"][0]["version"]
-
-        url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
-        response = requests.get(url)
-        releases = response.json()
-        latest_release = next((release for release in releases if not release["draft"]), None)
-        latest_version = latest_release["tag_name"].replace('v', '')
-
-        if compare_versions(latest_version, current_version) > 0:
-            print(f"New version available: {latest_version}")
-
-            os.makedirs("update")
-            shutil.copyfile("python3.dll", "update/python3.dll")
-            shutil.copyfile("python311.dll", "update/python311.dll")
-            shutil.copyfile("WD_updater.exe", "update/WD_updater.exe")
-            shutil.copytree("lib", "update/lib")
-
-            subprocess.Popen(["update/WD_updater.exe"])
-
-            sys.exit()
-
-    except Exception as e:
-        show_error(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
-
-
-def check_for_updates_loop():
-    while True:
-
-        with open("config.json", encoding="utf-8") as f:
-            config = json.load(f)
-        if "auto-updates" in config["settings"].keys():
-            if config["settings"]["auto-updates"].lower().strip() == "true":
-                check_for_updates()
-        else:
-            config["settings"]["auto-updates"] = "true"
-            check_for_updates()
-        with open("config.json", "w", encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
-
-        time.sleep(3600)
-
-
-if config["settings"]["auto-updates"].lower().strip() == "true":
-    check_for_updates()
 
 
 def check_firewall_permission():

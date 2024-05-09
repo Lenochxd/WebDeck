@@ -4,7 +4,7 @@ import json
 import shutil
 from win32com.client import Dispatch
 
-from app.updater import check_files
+from app.updater import check_files, check_for_updates
 from app.functions.load_lang_file import load_lang_file
 from app.functions.plugins.load_plugins import load_plugins
 from app.functions.get_local_ip import get_local_ip
@@ -56,6 +56,10 @@ def on_start():
     
     # Load text
     text = load_lang_file(config["settings"]["language"])
+    
+    # Checks for updates
+    if config["settings"]["auto-updates"].lower().strip() == "true":
+        check_for_updates(text)
     
     # Load commands
     with open("commands.json", encoding="utf-8") as f:
