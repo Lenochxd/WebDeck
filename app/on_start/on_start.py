@@ -8,6 +8,9 @@ import pynvml
 from math import sqrt
 
 
+with open("config.json", encoding="utf-8") as f:
+    config = json.load(f)
+
 def check_json_update(config):
     if "background" in config["front"]:
         if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
@@ -201,8 +204,6 @@ def sort_colorsjson():
             json.dump(sorted_colors, f, indent=4)
             
 def get_gpu_method():
-    with open("config.json", encoding="utf-8") as f:
-        config = json.load(f)
         
     if not "gpu_method" in config["settings"]:
         config["settings"]["gpu_method"] = "nvidia (pynvml)"

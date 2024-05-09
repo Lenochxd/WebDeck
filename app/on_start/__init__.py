@@ -7,6 +7,7 @@ from win32com.client import Dispatch
 from app.updater import check_files
 from app.functions.load_lang_file import load_lang_file
 from app.functions.plugins.load_plugins import load_plugins
+from app.functions.get_local_ip import get_local_ip
 
 from app.on_start.on_start import *
 
@@ -49,7 +50,7 @@ def on_start():
 
     # Update new files
     check_files("static/files/version.json", "data.json")
-
+    
     # Load config & get gpu method
     config = get_gpu_method()
     
@@ -61,6 +62,14 @@ def on_start():
         commands = json.load(f)
         commands = load_plugins(commands)
     
+    # Get local ip
+    local_ip = get_local_ip()
+    if config["url"]["ip"] == "local_ip":
+        config["url"]["ip"] = local_ip
+                
+        with open("config.json", "w", encoding="utf-8") as json_file:
+            json.dump(config, json_file, indent=4)
+            
     # Colors json
     sort_colorsjson()
     
@@ -73,4 +82,4 @@ def on_start():
     with open("config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     
-    return config, text, commands
+    return config, text, commands, local_ip

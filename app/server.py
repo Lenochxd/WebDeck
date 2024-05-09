@@ -64,12 +64,11 @@ from app.functions.plugins.load_plugins import load_plugins
 from app.functions.fix_firewall import fix_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
-from app.functions.get_local_ip import get_local_ip
 
 import app.buttons.soundboard as soundboard
 
 
-config, text, commands = on_start()
+config, text, commands, local_ip = on_start()
 
 
 def save_config(config):
@@ -663,11 +662,6 @@ print(usage_example)
 def usage():
     return jsonify(get_usage())
 
-
-local_ip = get_local_ip()
-
-if config["url"]["ip"] == "local_ip":
-    config["url"]["ip"] = local_ip
 
 
 # Middleware to check request IP address
@@ -2031,6 +2025,8 @@ if (
     and check_firewall_permission() == False
 ):
     fix_firewall_permission()
+
+print('local_ip: ', local_ip)
 
 app.run(
     host=local_ip,
