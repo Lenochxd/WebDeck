@@ -14,7 +14,7 @@ import tkinter as tk
 from io import BytesIO
 import webview
 
-from app.functions.fix_firewall import fix_firewall_permission
+from app.functions.firewall import fix_firewall_permission
 from app.functions.get_local_ip import get_local_ip
 
 

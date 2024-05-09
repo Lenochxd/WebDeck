@@ -35,7 +35,8 @@ import win32api
 import win32con
 import win32gui
 from win32com.client import Dispatch
-from win10toast import ToastNotifier
+if sys.platform == 'win32':
+    from win10toast import ToastNotifier
 import easygui
 import psutil
 import GPUtil
@@ -61,7 +62,7 @@ from app.on_start import on_start, check_json_update
 from app.functions.show_error import show_error
 from app.functions.themes.parse_themes import parse_themes
 from app.functions.plugins.load_plugins import load_plugins
-from app.functions.fix_firewall import fix_firewall_permission
+from app.functions.firewall import fix_firewall_permission, check_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
 
@@ -69,6 +70,9 @@ import app.buttons.soundboard as soundboard
 
 
 config, text, commands, local_ip = on_start()
+threads = []
+if sys.platform == 'win32':
+    toaster = ToastNotifier()
 
 
 def save_config(config):
@@ -311,8 +315,6 @@ if getattr(sys, "frozen", False):
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app)
 
-toaster = ToastNotifier()
-
 
 # Set up the OBS WebSocket client
 def reload_obs():
@@ -324,8 +326,8 @@ def reload_obs():
 
     return obs_host, obs_port, obs_password, obs
 
-
 obs_host, obs_port, obs_password, obs = reload_obs()
+
 
 # Set up the Spotify API client
 try:
@@ -344,7 +346,6 @@ except:
     pass
 
 
-python_threads = []
 def execute_python_file(file_path):
     with open(file_path, "r") as file:
         file_content = file.read()
@@ -1121,13 +1122,13 @@ def send_data(message=None):
                 print(message)
                 print(python_file)
                 
-                python_threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
-                python_threads[-1].start()
+                threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
+                threads[-1].start()
         elif "type:file_path" in message:
             python_file = message.replace("/exec ", "").replace("type:file_path", "").strip()
             
-            python_threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
-            python_threads[-1].start()
+            threads.append(threading.Thread(target=execute_python_file, args=(python_file,), daemon=True))
+            threads[-1].start()
         else:
             exec(message.replace("/exec", "").replace("type:single_line", "").strip())
 
@@ -1705,9 +1706,10 @@ def send_data(message=None):
                     .replace("'", "")
                 )
 
-        toaster.show_toast(
-            title, message, icon_path=icon, duration=duration, threaded=True
-        )
+        if sys.platform == 'win32':
+            toaster.show_toast(
+                title, message, icon_path=icon, duration=duration, threaded=True
+            )
 
     elif message.startswith("/superAltF4"):
         hwnd = get_focused_window()
@@ -1933,24 +1935,6 @@ def send_data_socketio(message):
 @app.route("/send-data", methods=["POST"])
 def send_data_route():
     return send_data(message=request.get_json()["message"])
-
-
-def check_firewall_permission():
-    try:
-        firewall_manager = Dispatch("HNetCfg.FwMgr")
-        policy = firewall_manager.LocalPolicy.CurrentProfile
-        authorized_applications = policy.AuthorizedApplications
-
-        for app in authorized_applications:
-            if app.ProcessImageFileName.lower() == sys.executable.lower():
-                print(f"The application ({sys.executable}) has permission to pass through the firewall.")
-                return True
-
-        print(f"The application ({sys.executable}) does not have permission to pass through the firewall.")
-        return False
-    except Exception as e:
-        print(f"Error checking firewall : {e}")
-        return True
 
 
 if (
