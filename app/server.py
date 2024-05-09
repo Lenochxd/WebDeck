@@ -301,20 +301,10 @@ def update_gridsize(config, new_height, new_width):
 #                 pass
 
 
-for filename in os.listdir("static/files/images"):
-    if " " in filename and not filename.startswith("!!"):
-        new_filename = filename.replace(" ", "_")
-        os.rename(
-            f"static/files/images/{filename}", f"static/files/images/{new_filename}"
-        )
-        print(f"renamed {filename}")
-
-
 if getattr(sys, "frozen", False):
     app = Flask(__name__, template_folder='../../../templates', static_folder='../../../static')
 else:
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
-
 app.jinja_env.globals.update(get_audio_devices=get_audio_devices)
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
