@@ -38,4 +38,4 @@ def load_plugins(commands):
                     print(f"Error importing module {module_name}: {e}")
                     continue
                 
-    return commands
+    return commands, all_func

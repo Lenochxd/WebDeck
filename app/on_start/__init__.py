@@ -4,6 +4,7 @@ import json
 import shutil
 from win32com.client import Dispatch
 
+from app.functions.global_variables import set_global_variable
 from app.updater import check_files, check_for_updates
 from app.functions.load_lang_file import load_lang_file
 from app.functions.plugins.load_plugins import load_plugins
@@ -64,7 +65,8 @@ def on_start():
     # Load commands
     with open("commands.json", encoding="utf-8") as f:
         commands = json.load(f)
-        commands = load_plugins(commands)
+        commands, all_func = load_plugins(commands)
+        set_global_variable("all_func", all_func)
     
     # Get local ip
     local_ip = get_local_ip()
