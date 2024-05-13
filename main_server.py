@@ -1287,7 +1287,7 @@ def check_local_network():
                 return
             
         return (
-            "Unauthorized access: you are not on the same network as the server." + ip_remote,
+            "Unauthorized access: you are not on the same network as the server.",
             403,
         )
 
