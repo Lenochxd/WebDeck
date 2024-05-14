@@ -1281,6 +1281,11 @@ def check_local_network():
     # print(f'new connection established: {remote_ip}')
     
     if ip_remote != ip_local:
+        # check if in allowed network list in config
+        for network in config["allowed_networks"]:
+            if ipaddress.IPv4Address(remote_ip) in ipaddress.IPv4Network(network):
+                return
+            
         return (
             "Unauthorized access: you are not on the same network as the server.",
             403,
