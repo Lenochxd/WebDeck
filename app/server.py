@@ -62,10 +62,10 @@ from app.on_start import on_start, check_json_update
 from app.functions.global_variables import set_global_variable, get_global_variable
 from app.functions.themes.parse_themes import parse_themes
 from app.functions.plugins.load_plugins import load_plugins
-from app.functions.gridsize import update_gridsize
+from app.functions.settings.gridsize import update_gridsize
 from app.functions.firewall import fix_firewall_permission, check_firewall_permission
 from app.functions.load_lang_file import load_lang_file
-from app.functions.audio_devices import get_audio_devices
+from app.functions.settings.audio_devices import get_audio_devices
 from app.functions.merge_dicts import merge_dicts
 from app.buttons.usage import get_usage
 
