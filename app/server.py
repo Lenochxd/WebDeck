@@ -62,6 +62,7 @@ from app.on_start import on_start, check_json_update
 from app.functions.global_variables import set_global_variable, get_global_variable
 from app.functions.themes.parse_themes import parse_themes
 from app.functions.plugins.load_plugins import load_plugins
+from app.functions.gridsize import update_gridsize
 from app.functions.firewall import fix_firewall_permission, check_firewall_permission
 from app.functions.load_lang_file import load_lang_file
 from app.functions.audio_devices import get_audio_devices
@@ -73,9 +74,9 @@ import app.buttons.soundboard as soundboard
 
 
 config, text, commands, local_ip = on_start()
+folders_to_create = []
 set_global_variable("text", text)
 set_global_variable("config", config)
-
 
 def save_config(config):
     with open("config.json", "w", encoding="utf-8") as json_file:
@@ -114,165 +115,7 @@ def print_dict_differences(dict1, dict2):
         print(f"Key : {key}")
         print(f"Difference : {value}")
         print("----------------------")
-
-
-
-
-
-# resize grid ||| start
-
-def create_matrix(config):
-    matrix = []
-    for folder_count, (folder_name, folder_content) in enumerate(
-        config["front"]["buttons"].items()
-    ):
-        row_count = 0
-        matrix.append([])
-        for count, button in enumerate(folder_content, start=1):
-            if row_count >= len(matrix[folder_count]):
-                matrix[folder_count].append([])
-            matrix[folder_count][row_count].append(button)
-            if count % int(config["front"]["width"]) == 0:
-                row_count += 1
-    matrix_height = len(matrix)
-    matrix_width = len(matrix[0])
-    return matrix
-
-
-def unmatrix(matrix):
-    for folder_count, folder in enumerate(matrix):
-        folderName = list(config["front"]["buttons"])[folder_count]
-        config["front"]["buttons"][folderName] = []
-        for row in folder:
-            for button in row:
-                config["front"]["buttons"][folderName].append(button)
-
-    return config
-
-
-def update_gridsize(config, new_height, new_width):
-    new_height, new_width = int(new_height), int(new_width)
-    matrix = create_matrix(config)
-    old_height, old_width = int(config["front"]["height"]), int(
-        config["front"]["width"]
-    )
-
-    # if height has changed
-    if old_height != new_height:
-
-        # if the height has increased
-        if new_height > old_height:
-            difference = new_height - old_height
-            for count, _ in enumerate(range(difference), start=1):
-                for folder_name, folder_content in config["front"]["buttons"].items():
-                    for _ in range(old_width):
-                        # if count % 2 == 0:
-                        #     folder_content.insert(0, {"VOID": "VOID"})
-                        # else:
-                        folder_content.append({"VOID": "VOID"})
-            matrix = create_matrix(config)
-
-        # if the height has decreased
-        if old_height > new_height:
-            difference = old_height - new_height
-            print("height decreased")
-            for count, _ in enumerate(range(difference), start=1):
-                for folder_count, folder in enumerate(matrix):
-                    for row_count, row in enumerate(reversed(folder)):
-                        if all(element == {"VOID": "VOID"} for element in row):
-                            folder.pop(-row_count - 1)
-                            break
-                    else:
-                        for col_count in range(len(folder[0])):
-                            for row_count, row in enumerate(reversed(folder), start=1):
-                                if folder[-row_count][col_count] == {"VOID": "VOID"}:
-                                    num = row_count
-                                    while num > 1:
-                                        folder[-num][col_count] = folder[-num + 1][
-                                            col_count
-                                        ]
-                                        num -= 1
-                                    folder[-num][col_count] = {"DEL": "DEL"}
-                                    break
-                            else:
-                                x = False
-                                for colb_count in range(len(folder[0])):
-                                    for rowb_count in range(len(folder)):
-                                        if folder[rowb_count][colb_count] == {
-                                            "VOID": "VOID"
-                                        }:
-                                            folder[rowb_count][colb_count] = folder[-1][
-                                                col_count
-                                            ]
-                                            x = True
-                                            break
-                                    if x == True:
-                                        break
-                                if x == False:
-                                    print("NOT ENOUGH SPACE")
-                        folder.pop(-1)
-
-    # if width has changed
-    if old_width != new_width:
-
-        # if the width has increased
-        if new_width > old_width:
-
-            difference = new_width - old_width
-            new_matrix = matrix
-            for count, _ in enumerate(range(difference), start=1):
-                for folder_count, folder in enumerate(matrix):
-                    for row_count, row in enumerate(folder):
-                        # if count % 2 == 0:
-                        #     new_matrix[folder_count][row_count].insert(0, {"VOID": "VOID"})
-                        # else:
-                        new_matrix[folder_count][row_count].append({"VOID": "VOID"})
-            matrix = new_matrix
-
-        if new_width < old_width:
-            difference = old_width - new_width
-            print("width decreased")
-            for count, _ in enumerate(range(difference), start=1):
-                for folder in matrix:
-                    for col_count in range(len(folder[0])):
-                        if all(
-                            folder[row_count][-col_count - 1] == {"VOID": "VOID"}
-                            for row_count in range(len(folder))
-                        ):
-                            for row_count in range(len(folder)):
-                                folder[row_count].pop(-col_count - 1)
-                            break
-                    else:
-                        element_to_del = 0
-                        for row in folder:
-                            element_to_del += 1
-                            for element_count, element in enumerate(row):
-                                if element == {"VOID": "VOID"}:
-                                    row.pop(element_count)
-                                    element_to_del -= 1
-                                    if element_to_del == 0:
-                                        break
-                        if element_to_del > 0:
-                            for row in folder:
-                                for element_count, element in enumerate(row):
-                                    if element == {"VOID": "VOID"}:
-                                        row.pop(element_count)
-                                        element_to_del -= 1
-                                        if element_to_del == 0:
-                                            break
-                                if element_to_del == 0:
-                                    break
-                        if element_to_del > 0:
-                            print("NOT ENOUGH SPACE")
-
-    config = unmatrix(matrix)
-    print(old_height, new_height)
-    print(old_width, new_width)
-    return config
-
-
-# resize grid ||| end
-
+        
 
 
 # for folder_name, folder_content in config["front"]["buttons"].items():
@@ -441,9 +284,7 @@ def home():
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
         isfile=os.path.isfile
     )
-
-
-folders_to_create = []
+    
 
 @app.route("/save_config", methods=["POST"])
 def saveconfig():
