@@ -82,54 +82,8 @@ def command(message=None):
 
     elif message.startswith("/stop_sound"):
         return soundboard.stopsound()
-    elif message.startswith("/playsound "):
-        message = message.replace("C:\\fakepath\\", "").replace("/playsound ", "")
-        percentage = message[message.rfind(" ") + 1 :].replace(" ", "")
-        try:
-            sound_volume = float(percentage) / 100
-            sound_file = message.replace("/playsound ", "").replace(percentage, "")
-        except:
-            sound_volume = float(50) / 100  # mid volume (default)
-            sound_file = message.replace("/playsound ", "")
-
-        if all(
-            substring not in sound_file
-            for substring in [
-                ":",
-                "static/files/uploaded/",
-                "static\\files\\uploaded\\",
-            ]
-        ):
-            # if it is stored directly in static/files/uploaded and not in C:\example
-            sound_file = f"static/files/uploaded/{sound_file}"
-
-        ear_soundboard = config["settings"]["ear-soundboard"].lower() == "true"
-        return soundboard.playsound(sound_file, sound_volume, ear_soundboard)
-
-    elif message.startswith("/playlocalsound "):
-        message = message.replace("C:\\fakepath\\", "").replace("/playlocalsound ", "")
-        percentage = message[message.rfind(" ") + 1 :].replace(" ", "")
-        try:
-            sound_volume = float(percentage) / 100
-            sound_file = message.replace("/playlocalsound ", "").replace(percentage, "")
-        except:
-            sound_volume = float(50) / 100  # mid volume (default)
-            sound_file = message.replace("/playlocalsound ", "")
-
-        try:
-            player = vlc.MediaPlayer(sound_file)
-            player.audio_set_volume(int(sound_volume * 100))
-            player.play()
-            player.event_manager().event_attach(
-                vlc.EventType.MediaPlayerEndReached, lambda x: soundboard.remove_player(3, player)
-            )
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(f"{exc_type} | {e} | {fname} | python line: {exc_tb.tb_lineno}")
-            print("ERROR:      ", e)
-            print("ERROR LINE: ", exc_tb.tb_lineno)
-            show_error(f"{text['mp3_loading_error']} {sound_file}")
+    elif message.startswith("/playsound ") or message.startswith("/playlocalsound "):
+        return soundboard.playsound(*soundboard.get_params(message))
 
     elif message.startswith("/exec"):
         if "type:uploaded_file" in message:
