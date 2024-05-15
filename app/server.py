@@ -62,10 +62,11 @@ from app.on_start import on_start, check_json_update
 from app.functions.global_variables import set_global_variable, get_global_variable
 from app.functions.themes.parse_themes import parse_themes
 from app.functions.plugins.load_plugins import load_plugins
+from app.functions.settings.audio_devices import get_audio_devices
 from app.functions.settings.gridsize import update_gridsize
+from app.functions.settings.create_folders import create_folders
 from app.functions.firewall import fix_firewall_permission, check_firewall_permission
 from app.functions.load_lang_file import load_lang_file
-from app.functions.settings.audio_devices import get_audio_devices
 from app.functions.merge_dicts import merge_dicts
 from app.buttons.usage import get_usage
 
@@ -82,28 +83,6 @@ def save_config(config):
     with open("config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     set_global_variable("config", config)
-    return config
-
-
-def create_folders(config):
-    global folders_to_create
-    for folder in folders_to_create:
-
-        config["front"]["buttons"][folder["name"]] = [
-            {
-                "image": "back10.svg",
-                "image_size": "110%",
-                "message": f"/folder {folder['parent_folder']}",
-                "name": f"back to {folder['parent_folder']}",
-            }
-        ]
-
-        void_count = int(config["front"]["width"]) * int(config["front"]["height"])
-        for _ in range(void_count - 1):
-            config["front"]["buttons"][folder["name"]].append({"VOID": "VOID"})
-
-        print("NEW FOLDER :", folder["name"])
-    folders_to_create = []
     return config
 
 
@@ -353,7 +332,8 @@ def saveconfig():
                 os.remove(file_path)
 
     config = merge_dicts(config, new_config)
-    config = create_folders(config)
+    config = create_folders(config, folders_to_create)
+    folders_to_create = []
     config = save_config(config)
 
     try:
@@ -387,7 +367,8 @@ def complete_save_config():
     new_height = config["front"]["height"]
     new_width = config["front"]["width"]
 
-    config = create_folders(config)
+    config = create_folders(config, folders_to_create)
+    folders_to_create = []
     config = save_config(config)
 
     config["front"]["height"] = old_height
@@ -450,7 +431,8 @@ def save_buttons_only():
         sorted_buttons[folder] = new_config.get(folder)
 
     config["front"]["buttons"] = sorted_buttons
-    config = create_folders(config)
+    config = create_folders(config, folders_to_create)
+    folders_to_create = []
     config = save_config(config)
     return jsonify({"success": True})
 
@@ -462,7 +444,8 @@ def get_config():
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
 
-    config = create_folders(config)
+    config = create_folders(config, folders_to_create)
+    folders_to_create = []
     set_global_variable("config", config)
 
     with open("config.json", "w", encoding="utf-8") as json_file:
