@@ -9,38 +9,29 @@ import inspect
 from flask import jsonify
 
 import win32gui
-if sys.platform == 'win32':
-    from win10toast import ToastNotifier
 import pyperclip
 import pyautogui
 import keyboard
-import mss
-from obswebsocket import obsws, events
-from obswebsocket import requests as obsrequests
-from PIL import Image # color picker
 
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 
 
 from app.functions.global_variables import get_global_variable
-from app.functions.translate import translate
 from app.functions.kill_nircmd import kill_nircmd
 
 from app.functions.firewall import fix_firewall_permission
 from app.buttons.usage import extract_asked_device, get_usage
-from app.buttons.color_picker import getarg, get_color_name
 from app.buttons.audio import *
 import app.buttons.exec as exec
 import app.buttons.window as window
 import app.buttons.soundboard as soundboard
 import app.buttons.spotify as spotify
 import app.buttons.obs as obs
+import app.buttons.color_picker as color_picker
 
 
 threads = []
-if sys.platform == 'win32':
-    toaster = ToastNotifier()
 
 
 def command(message=None):
@@ -298,166 +289,6 @@ def command(message=None):
     elif message.startswith("/speechrecognition"):
         pyautogui.hotkey("win", "h")
 
-    # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copytype:raw|list showtype:raw|list remove_hex_sharp:false
-    elif message.startswith("/colorpicker"):
-
-        x, y = pyautogui.position()
-
-        # Gets the screenshot of each monitor and compares the cursor position to determine the screen
-        for i, monitor in enumerate(mss.mss().monitors):
-            if (
-                monitor["left"] <= x < monitor["left"] + monitor["width"]
-                and monitor["top"] <= y < monitor["top"] + monitor["height"]
-            ):
-                monitor_index = i
-                break
-
-        # Take screenshot of specific screen
-        with mss.mss() as sct:
-            monitor = sct.monitors[monitor_index]
-            img = sct.grab(monitor)
-            screenshot = np.array(
-                Image.frombytes("RGB", img.size, img.bgra, "raw", "BGRX")
-            )
-
-        # Gets the color of the pixel under the mouse cursor
-        color = screenshot[y - monitor["top"], x - monitor["left"]]
-
-        # Convert color to HEX format
-        hex_color = "#{:02x}{:02x}{:02x}".format(*color)
-
-        # Convert color to RGB format
-        rgb_color = "rgb({},{},{})".format(*color)
-
-        # Convert color to HSL format
-        r, g, b = [x / 255.0 for x in color]
-        cmax = max(r, g, b)
-        cmin = min(r, g, b)
-        delta = cmax - cmin
-
-        if delta == 0:
-            hue = 0
-        elif cmax == r:
-            hue = ((g - b) / delta) % 6
-        elif cmax == g:
-            hue = (b - r) / delta + 2
-        else:
-            hue = (r - g) / delta + 4
-
-        hue = round(hue * 60)
-        if hue < 0:
-            hue += 360
-
-        lightness = (cmax + cmin) / 2
-        saturation = 0 if delta == 0 else delta / (1 - abs(2 * lightness - 1))
-
-        hsl_color = "hsl({}, {:.2f}%, {:.2f}%)".format(
-            hue, saturation * 100, lightness * 100
-        )
-
-        target_language = getarg(message, "lang")
-        selectedtypes = getarg(message, "type")
-        typestocopy = getarg(message, "copy")
-        copytype = getarg(message, "copytype")
-        showtype = getarg(message, "showtype")
-        try:
-            remove_hex_sharp = getarg(message, "remove_hex_sharp").capitalize()
-        except AttributeError:
-            remove_hex_sharp = None
-        print("------------------------------------------")
-        print(target_language)
-        print(selectedtypes)
-        print(typestocopy)
-        print(copytype)
-        print(showtype)
-        print(remove_hex_sharp)
-        print("------------------------------------------")
-
-        with open("colors.json", "r", encoding="utf-8") as f:
-            colorsjson = json.load(f)
-            
-        if target_language is None or target_language == "en":
-            named_original = get_color_name(hex_color, colorsjson)
-            named_color = named_original
-        else:
-            named_original = get_color_name(hex_color, colorsjson)
-            named_color = translate(named_original, target_language)
-
-        types_found = {
-            "NAME": named_color,
-            "TEXT": named_color,
-            "NAME-ORIGINAL": named_original,
-            "TEXT-ORIGINAL": named_original,
-            "HEX": hex_color,
-            "RGB": rgb_color,
-            "HSL": hsl_color,
-        }
-
-        types_found_final = {}
-        if selectedtypes:
-            for type in selectedtypes.split(";"):
-                for type_found, value in types_found.items():
-                    if type.upper() in type_found:
-                        if "HEX" in type.upper() and remove_hex_sharp == "True":
-                            types_found_final[type.upper()] = value.replace("#", "")
-                        else:
-                            types_found_final[type.upper()] = value
-            print(types_found_final)
-        else:
-            for type_found, value in types_found.items():
-                if not any(elem in type_found for elem in ["TEXT", "ORIGINAL"]):
-                    types_found_final[type_found] = value
-            print(types_found_final)
-
-        # copy:text;hex;rgb;hsl copytype:raw|list
-        typestocopy_final = {}
-        if typestocopy:
-            for type in typestocopy.split(";"):
-                for type_found, value in types_found.items():
-                    if type.upper() in type_found:
-                        if "HEX" in type.upper() and remove_hex_sharp == "True":
-                            typestocopy_final[type.upper()] = value.replace("#", "")
-                        else:
-                            typestocopy_final[type.upper()] = value
-            if copytype.lower() == "list":
-                if len(typestocopy.split(";")) == 1:
-                    pyperclip.copy(str(typestocopy_final)[:-2][2:].replace("'", ""))
-                else:
-                    pyperclip.copy(
-                        str(typestocopy_final)
-                        .replace("', ", ",\n")[:-2][2:]
-                        .replace("'", "")
-                    )
-            else:
-                if len(typestocopy.split(";")) == 1:
-                    pyperclip.copy(list(typestocopy_final.values())[0])
-                else:
-                    pyperclip.copy(", ".join(typestocopy_final.values()))
-
-        title = "WebDeck Color Picker"
-        icon = "static\\files\\icon.ico"
-        duration = 5
-        message = ""
-        if showtype and showtype.lower() != "list":
-            if typestocopy and len(typestocopy.split(";")) == 1:
-                message = list(types_found_final.values())[0]
-            else:
-                message = ", ".join(types_found_final.values())
-        else:
-            if typestocopy and len(typestocopy.split(";")) == 1:
-                message = str(types_found_final)[:-2][2:].replace("'", "")
-            else:
-                message = (
-                    str(types_found_final)
-                    .replace("', ", ",\n")[:-2][2:]
-                    .replace("'", "")
-                )
-
-        if sys.platform == 'win32':
-            toaster.show_toast(
-                title, message, icon_path=icon, duration=duration, threaded=True
-            )
-
     elif message.startswith("/superAltF4"):
         hwnd = window.get_focused()
         if hwnd:
@@ -513,8 +344,12 @@ def command(message=None):
         if message.startswith("/spotify"):
             spotify.handle_command(message, text)
             
-        if message.startswith("/obs"):
+        elif message.startswith("/obs"):
             obs.handle_command(message, text)
+        
+        # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copy_type:raw|list displaytype:raw|list remove_hex_sharp:false
+        elif message.startswith("/colorpicker"):
+            color_picker.handle_command(message)
             
         
         for commands in get_global_variable('all_func').values():
