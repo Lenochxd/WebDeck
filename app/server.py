@@ -1,61 +1,20 @@
 # Standard library imports
-import time
-import threading
-import subprocess
-import shutil
 import re
 import random
 import json
 import os
 import sys
-import importlib
 import ipaddress
-import inspect
 import ast
 
 # Third-party library imports
-import requests
-import spotipy
-import spotipy.util as util
 from deepdiff import DeepDiff
-import mss
 from PIL import Image
-try: from deep_translator import GoogleTranslator
-except SyntaxError: pass
-import pyautogui as keyboard
-import keyboard as keyboard2
-import webcolors
-import pyaudio
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
-import pyperclip
-import win32api
-import win32con
-import win32gui
 from win32com.client import Dispatch
-if sys.platform == 'win32':
-    from win10toast import ToastNotifier
-import easygui
-import psutil
-import GPUtil
-import pynvml
-
-try:
-    import vlc
-except:
-    pass
-from obswebsocket import obsws, events
-from obswebsocket import requests as obsrequests
-
-# Numerical and scientific libraries
-import numpy as np
-import ctypes
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
-import comtypes
-import math
 
 # WebDeck imports
 from app.on_start import on_start, check_json_update

@@ -15,10 +15,8 @@ import pyperclip
 import pyautogui as keyboard
 import keyboard as keyboard2
 import mss
-import vlc
 from obswebsocket import obsws, events
 from obswebsocket import requests as obsrequests
-import spotipy
 from PIL import Image # color picker
 
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
@@ -26,7 +24,6 @@ import comtypes
 
 
 from app.functions.global_variables import get_global_variable
-from app.functions.show_error import show_error
 from app.functions.translate import translate
 from app.functions.kill_nircmd import kill_nircmd
 
