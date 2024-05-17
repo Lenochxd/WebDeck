@@ -28,12 +28,12 @@ import comtypes
 from app.functions.global_variables import get_global_variable
 from app.functions.show_error import show_error
 from app.functions.translate import translate
+from app.functions.kill_nircmd import kill_nircmd
 
 from app.functions.firewall import fix_firewall_permission
 from app.buttons.usage import extract_asked_device, get_usage
 from app.buttons.color_picker import getarg, get_color_name
 from app.buttons.audio import *
-import app.buttons.kill_nircmd as kill_nircmd
 import app.buttons.exec as exec
 import app.buttons.window as window
 import app.buttons.soundboard as soundboard
