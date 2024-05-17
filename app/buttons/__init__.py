@@ -41,7 +41,6 @@ import app.buttons.spotify as spotify
 
 
 threads = []
-spotify_token = spotify.initialize()
 if sys.platform == 'win32':
     toaster = ToastNotifier()
 
@@ -82,6 +81,7 @@ def command(message=None):
 
     elif message.startswith("/stop_sound"):
         return soundboard.stopsound()
+    
     elif message.startswith("/playsound ") or message.startswith("/playlocalsound "):
         return soundboard.playsound(*soundboard.get_params(message))
 
@@ -297,236 +297,6 @@ def command(message=None):
         keyboard.press("prevtrack")
     elif message.startswith("/mediacontrol next"):
         keyboard.press("nexttrack")
-
-    elif message.startswith("/spotify likealbum"):
-        sp = spotipy.Spotify(auth=spotify_token)
-        # Get information about the user's currently playing track
-        track_info = sp.current_playback()
-
-        # If a track is currently playing, like it
-        if track_info is not None:
-            album_id = track_info["item"]["album"]["id"]
-
-            is_liked = sp.current_user_saved_albums_contains(albums=[album_id])[0]
-            # Add or remove like based on current state
-            if is_liked:
-                sp.current_user_saved_albums_delete(albums=[album_id])
-                print(
-                    f"Removed album {track_info['item']['album']['name']} by {track_info['item']['album']['artists'][0]['name']}"
-                )
-            else:
-                sp.current_user_saved_albums_add(albums=[album_id])
-                print(
-                    f"Liked album {track_info['item']['album']['name']} by {track_info['item']['album']['artists'][0]['name']}"
-                )
-        else:
-            print("No album currently playing.")
-
-    elif message.startswith("/spotify playsong"):
-        song_name = message.replace("/spotify playsong", "").strip()
-
-        sp = spotipy.Spotify(auth=spotify_token)
-        results = sp.search(song_name, 1, 0, "track")
-        track_uri = results["tracks"]["items"][0]["uri"]
-        sp.start_playback(uris=[track_uri])
-
-    elif message.startswith("/spotify playplaylist"):
-        playlist_name = message.replace("/spotify playplaylist", "").strip()
-
-        sp = spotipy.Spotify(auth=spotify_token)
-        playlists = sp.current_user_playlists() # Retrieve current user's playlists
-
-        for playlist in playlists["items"]:
-            if playlist_name.lower().strip() in playlist["name"].lower().strip():
-                playlist_uri = playlist["uri"]
-                sp.start_playback(context_uri=playlist_uri)
-                break
-        else:
-            print(f"Playlist '{playlist_name}' not found.")
-
-    elif message.startswith("/spotify likesong"):
-        sp = spotipy.Spotify(auth=spotify_token)
-        # Get information about the user's currently playing track
-        track_info = sp.current_playback()
-
-        # If a track is currently playing, like it
-        if track_info is not None:
-            track_id = track_info["item"]["id"]
-            print(track_info)
-
-            is_liked = sp.current_user_saved_tracks_contains(tracks=[track_id])[0]
-            # Add or remove like based on current state
-            if is_liked:
-                sp.current_user_saved_tracks_delete(tracks=[track_id])
-                print(
-                    f"Removed track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}"
-                )
-            else:
-                sp.current_user_saved_tracks_add(tracks=[track_id])
-                print(
-                    f"Liked track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}"
-                )
-        else:
-            print("No track currently playing.")
-
-    elif message.startswith(
-        (
-            "/spotify add_to_playlist",
-            "/spotify remove_from_playlist",
-            "/spotify add_or_remove",
-        )
-    ):
-        playlist_name = (
-            message.replace("/spotify add_to_playlist", "")
-            .replace("/spotify remove_from_playlist", "")
-            .replace("/spotify add_or_remove", "")
-            .strip()
-        )
-        sp = spotipy.Spotify(auth=spotify_token)
-        playlists = sp.current_user_playlists()
-        playlist_id = None
-
-        for playlist in playlists["items"]:
-            if playlist["name"] == playlist_name:
-                playlist_id = playlist["id"]
-                break
-
-        if playlist_id is None:
-            show_error(f"Playlist named '{playlist_name}' not found.")
-        else:
-            playback = sp.current_playback()
-            track_id = playback["item"]["id"]
-            track_uri = playback["item"]["uri"]
-            if "add_or_remove" in message:
-                playlist_items = sp.playlist_items(
-                    playlist_id, fields="items(track(uri))"
-                )
-                track_uris = [item["track"]["uri"] for item in playlist_items["items"]]
-
-                if track_uri in track_uris:
-                    sp.playlist_remove_all_occurrences_of_items(
-                        playlist_id, [track_uri]
-                    )
-                    print("The track has been removed from the playlist.")
-                else:
-                    sp.playlist_add_items(playlist_id, [track_id])
-                    print("The track has been added to the playlist.")
-            elif "add_to_playlist" in message:
-                sp.playlist_add_items(playlist_id, [track_id])
-            elif "remove_from_playlist" in message:
-                sp.playlist_remove_all_occurrences_of_items(playlist_id, [track_uri])
-
-    elif message.startswith(
-        (
-            "/spotify follow_artist",
-            "/spotify unfollow_artist",
-            "/spotify follow_or_unfollow_artist",
-        )
-    ):
-        # TODO: Follow the specified artist
-        artist = (
-            message.replace("/spotify follow_artist", "")
-            .replace("/spotify unfollow_artist", "")
-            .replace("/spotify follow_or_unfollow_artist", "")
-            .strip()
-        )
-        sp = spotipy.Spotify(auth=spotify_token)
-        playback = sp.current_playback()
-        artist_id = playback["item"]["artists"][0]["id"]
-        artist_name = playback["item"]["artists"][0]["name"]
-        if "follow_or_unfollow_artist" in message:
-            results = sp.search(q=artist_name, type="artist")
-            items = results["artists"]["items"]
-            if len(items) > 0:
-                artist_id = items[0]["id"]
-            else:
-                print(f"Unable to find artist '{artist_id}' on Spotify.")
-
-            # Check if the user is subscribed to the corresponding artist
-            response = sp.current_user_following_artists(ids=[artist_id])
-            is_following = response[0]
-
-            if is_following:
-                print(f"The user is subscribed to the artist '{artist_id}'.")
-                sp.user_unfollow_artists([artist_id])
-                print("The artist has been removed from the subscription list.")
-            else:
-                print(f"The user is not subscribed to the artist '{artist_id}'.")
-                sp.user_follow_artists([artist_id])
-                print("The artist has been added to the subscription list.")
-
-        elif "unfollow_artist" in message:
-            sp.user_unfollow_artists([artist_id])
-            print("The artist has been removed from the subscription list.")
-        elif "follow_artist" in message:
-            sp.user_follow_artists([artist_id])
-            print("The artist has been added to the subscription list.")
-
-    elif message.startswith(
-        ("/spotify volume +", "/spotify volume -", "/spotify volume set")
-    ):
-        sp = spotipy.Spotify(auth=spotify_token)
-        # Get the current playback information
-        playback_info = sp.current_playback()
-
-        # Check if there is an active device
-        if playback_info and playback_info["is_playing"] and playback_info["device"]:
-            device_id = playback_info["device"]["id"]
-        else:
-            print("No active devices on Spotify found.")
-
-        # Get the current volume
-        current_volume = playback_info["device"]["volume_percent"]
-        print(f"Current volume: {current_volume}")
-
-        if "-" in message:
-            try:
-                target_volume = current_volume - int(
-                    message.replace("/spotify volume -", "")
-                )
-            except:
-                target_volume = current_volume - 10
-        elif "+" in message:
-            try:
-                target_volume = current_volume + int(
-                    message.replace("/spotify volume +", "")
-                )
-            except:
-                target_volume = current_volume + 10
-        elif "set" in message:
-            try:
-                target_volume = int(message.replace("/spotify volume set", ""))
-            except Exception as e:
-                print(f"{text['spotify_apply_volume_error']}: {e}")
-                return jsonify(
-                    {
-                        "success": False,
-                        "message": f"{text['spotify_apply_volume_error']}: {e}",
-                    }
-                )
-        if isinstance(target_volume, int):
-            if target_volume > 100:
-                target_volume = 100
-            if target_volume < 0:
-                target_volume = 0
-            target_volume = int(target_volume)
-            try:
-                sp.volume(target_volume, device_id=device_id)
-            except Exception as e:
-                print(f"{text['spotify_volume_prenium_error']}: {e}")
-                return jsonify(
-                    {
-                        "success": False,
-                        "message": f"{text['spotify_volume_prenium_error']}: {e}",
-                    }
-                )
-
-            # Get the updated volume
-            playback_info = sp.current_playback()
-            current_volume = playback_info["device"]["volume_percent"]
-            print(f"Updated volume: {current_volume}")
-        else:
-            print("Volume must be an integer")
 
     elif message.startswith("/speechrecognition"):
         keyboard.hotkey("win", "h")
@@ -870,6 +640,8 @@ def command(message=None):
         obs.disconnect()
         
     else:
+        spotify.handle_command(message, text)
+        
         for commands in get_global_variable('all_func').values():
             for command, func in commands.items():
                 if message.replace('/', '').startswith(command):
