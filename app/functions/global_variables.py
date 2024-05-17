@@ -2,7 +2,10 @@ import json
 
 
 with open("data.json", encoding="utf-8") as f:
-    data = json.load(f)
+    try:
+        data = json.load(f)
+    except json.decoder.JSONDecodeError:
+        data = {}
     
     if 'temp' not in data.keys():
         data['temp'] = {'vars': {}}
