@@ -12,8 +12,8 @@ import win32gui
 if sys.platform == 'win32':
     from win10toast import ToastNotifier
 import pyperclip
-import pyautogui as keyboard
-import keyboard as keyboard2
+import pyautogui
+import keyboard
 import mss
 from obswebsocket import obsws, events
 from obswebsocket import requests as obsrequests
@@ -182,11 +182,11 @@ def command(message=None):
             kill_nircmd()
 
         elif message.endswith(("off", "false")):
-            keyboard.press("CTRL")
+            pyautogui.press("CTRL")
 
     elif message.startswith("/key"):
         key = message.replace("/key", "", 1).strip()
-        keyboard.press(key)
+        pyautogui.press(key)
 
     elif message.startswith("/restartexplorer"):
         subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
@@ -226,11 +226,11 @@ def command(message=None):
         subprocess.Popen('cmd /c "echo off | clip"', shell=True)
 
     elif message.startswith("/write "):
-        keyboard2.write(message.replace("/write ", ""))
+        keyboard.write(message.replace("/write ", ""))
 
     elif message.startswith("/writeandsend "):
-        keyboard2.write(message.replace("/writeandsend ", ""))
-        keyboard2.press("ENTER")
+        keyboard.write(message.replace("/writeandsend ", ""))
+        keyboard.press("ENTER")
 
     elif message.startswith("/volume +"):
         delta = message.replace("/volume +", "")
@@ -287,21 +287,21 @@ def command(message=None):
         comtypes.CoUninitialize()
 
     elif message.startswith("/soundcontrol mute"):
-        keyboard.press("volumemute")
+        pyautogui.press("volumemute")
     elif message.startswith("/mediacontrol playpause"):
-        keyboard.press("playpause")
+        pyautogui.press("playpause")
     elif message.startswith("/mediacontrol previous"):
-        keyboard.press("prevtrack")
+        pyautogui.press("prevtrack")
     elif message.startswith("/mediacontrol next"):
-        keyboard.press("nexttrack")
+        pyautogui.press("nexttrack")
 
     elif message.startswith("/speechrecognition"):
-        keyboard.hotkey("win", "h")
+        pyautogui.hotkey("win", "h")
 
     # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copytype:raw|list showtype:raw|list remove_hex_sharp:false
     elif message.startswith("/colorpicker"):
 
-        x, y = keyboard.position()
+        x, y = pyautogui.position()
 
         # Gets the screenshot of each monitor and compares the cursor position to determine the screen
         for i, monitor in enumerate(mss.mss().monitors):
@@ -472,7 +472,7 @@ def command(message=None):
         hwnd = window.get_by_name(window_name)
         if hwnd:
             win32gui.SetForegroundWindow(hwnd)
-            keyboard2.press("ENTER")
+            keyboard.press("ENTER")
             print(f"Window '{window_name}' brought to the foreground")
         else:
             print(f"Window '{window_name}' not found")
@@ -486,7 +486,7 @@ def command(message=None):
 
     elif message.startswith("/copy"):
         if message.strip() == "/copy":
-            keyboard.hotkey("ctrl", "c")
+            pyautogui.hotkey("ctrl", "c")
         else:
             msg = message.replace("/copy ", "", 1)
             if msg.startswith("/copy"):
@@ -495,19 +495,19 @@ def command(message=None):
 
     elif message.startswith("/paste"):
         if message.strip() == "/paste":
-            keyboard.hotkey("ctrl", "v")
+            pyautogui.hotkey("ctrl", "v")
         else:
             msg = message.replace("/paste ", "", 1)
             if msg.startswith("/paste"):
                 msg = message.replace("/paste", "", 1)
             pyperclip.copy(msg)
-            keyboard.hotkey("ctrl", "v")
+            pyautogui.hotkey("ctrl", "v")
 
     elif message.startswith("/cut"):
-        keyboard.hotkey("ctrl", "x")
+        pyautogui.hotkey("ctrl", "x")
 
     elif message.startswith("/clipboard"):
-        keyboard.hotkey("win", "v")
+        pyautogui.hotkey("win", "v")
 
     else:
         if message.startswith("/spotify"):
