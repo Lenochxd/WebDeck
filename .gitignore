@@ -1,11 +1,23 @@
-webdeck
+# configuration files
 config.json
 data.json
-__pycache__/
-*.pyc
-.cache-*
-*.dll
+.vscode/settings.json
+static/files/uploaded
+static/themes
+
+# virtual environment directory
+webdeck
+
+# compiled files
 build/
 dist/
+*.dll
 *.exe
-.vscode/settings.json
+
+# Python bytecode
+__pycache__/
+.cache-*
+*.pyc
+
+# backup files
+*copy.*
