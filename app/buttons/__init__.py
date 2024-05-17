@@ -35,6 +35,7 @@ import app.buttons.exec as exec
 import app.buttons.window as window
 import app.buttons.soundboard as soundboard
 import app.buttons.spotify as spotify
+import app.buttons.obs as obs
 
 
 threads = []
@@ -43,9 +44,8 @@ if sys.platform == 'win32':
 
 
 def command(message=None):
-    global all_func, obs, obs_host, obs_port, obs_password, obs
+    global all_func
     
-    config = get_global_variable("config")
     text = get_global_variable("text")
 
     command_arguments = message
@@ -509,135 +509,13 @@ def command(message=None):
     elif message.startswith("/clipboard"):
         keyboard.hotkey("win", "v")
 
-    # OBS  -  https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md
-    #         https://github.com/Elektordi/obs-websocket-py
-
-    if message.startswith("/obs_"):
-        try:
-            obs = obsws(obs_host, obs_port, obs_password)
-            obs.connect()
-        except Exception as e:
-            if "10061" in str(e):
-                e = text["obs_error_10061"]
-            elif "password may be inco" in str(e):
-                e = text["obs_error_incorrect_password"]
-            return jsonify(
-                {
-                    "success": False,
-                    "message": f"{text['obs_failed_connection_error'].replace('.','')}: {e}",
-                }
-            )
-
-        if message.startswith("/obs_scene"):
-            scene_name = message.replace("/obs_scene", "").lower().strip()
-
-            scenes = obs.call(obsrequests.GetSceneList())
-            for scene in scenes.getScenes():
-                if scene["sceneName"].lower().strip() == scene_name:
-                    print(f"Switching to {scene['sceneName']}")
-                    obs.call(
-                        obsrequests.SetCurrentProgramScene(sceneName=scene["sceneName"])
-                    )
-
-        elif message.startswith("/obs_toggle_rec"):
-            result = obs.call(obsrequests.ToggleRecord())
-            print("Recording toggled successfully.")
-            if "failed" in str(result):
-                return jsonify({"success": False, "message": f"{text['failed']} :/"})
-
-        elif message.startswith("/obs_start_rec"):
-            recording_status = obs.call(obsrequests.GetRecordStatus())
-            if recording_status.getOutputActive():
-                print("OBS is already recording.")
-                return jsonify(
-                    {"success": False, "message": text["obs_already_recording"]}
-                )
-            else:
-                obs.call(obsrequests.StartRecord())
-                print("Recording started successfully.")
-
-        elif message.startswith("/obs_stop_rec"):
-            recording_status = obs.call(obsrequests.GetRecordStatus())
-            if recording_status.getOutputActive():
-                obs.call(obsrequests.StopRecord())
-                print("Recording stopped successfully.")
-            else:
-                print("OBS is not recording.")
-                return jsonify({"success": False, "message": text["obs_not_recording"]})
-
-        elif message.startswith("/obs_toggle_rec_pause"):
-            result = obs.call(obsrequests.ToggleRecordPause())
-            print("Play/pause toggled successfully.")
-            if "failed" in str(result):
-                return jsonify({"success": False, "message": f"{text['failed']} :/"})
-
-        elif message.startswith("/obs_pause_rec"):
-            recording_status = obs.call(obsrequests.GetRecordStatus())
-            if recording_status.getOutputActive():
-                result = obs.call(obsrequests.PauseRecord())
-                if "failed" in str(result):
-                    return jsonify({"success": False, "message": text["obs_no_recording_can_be_paused"]})
-            else:
-                return jsonify({"success": False, "message": text["obs_no_recording_can_be_paused"]})
-
-        elif message.startswith("/obs_resume_rec"):
-            result = obs.call(obsrequests.ResumeRecord())
-            if "failed" in str(result):
-                return jsonify({"success": False, "message": text["obs_no_recording_is_paused"]})
-
-        elif message.startswith("/obs_toggle_stream"):
-            result = obs.call(obsrequests.ToggleStream())
-            print("Streaming toggled successfully.")
-            if "failed" in str(result):
-                return jsonify({"success": False, "message": f"{text['failed']} :/"})
-
-        elif message.startswith("/obs_start_stream"):
-            recording_status = obs.call(obsrequests.GetStreamStatus())
-            if recording_status.getOutputActive():
-                print("OBS is already streaming.")
-                return jsonify({"success": False, "message": text["obs_already_streaming"]})
-            else:
-                obs.call(obsrequests.StartStream())
-                print("Stream started successfully.")
-
-        elif message.startswith("/obs_stop_stream"):
-            recording_status = obs.call(obsrequests.GetStreamStatus())
-            if recording_status.getOutputActive():
-                obs.call(obsrequests.StopStream())
-                print("Stream stopped successfully.")
-            else:
-                print("OBS is not streaming.")
-                return jsonify({"success": False, "message": text["obs_not_streaming"]})
-
-        elif message.startswith("/obs_toggle_virtualcam"):
-            result = obs.call(obsrequests.ToggleVirtualCam())
-            print("Virtual cam toggled successfully.")
-            if "failed" in str(result):
-                return jsonify({"success": False, "message": f"{text['failed']} :/"})
-
-        elif message.startswith("/obs_start_virtualcam"):
-            recording_status = obs.call(obsrequests.GetVirtualCamStatus())
-            print("obs recording_status: ", recording_status)
-            if recording_status.getOutputActive():
-                print("Virtual cam is already started.")
-                return jsonify({"success": False, "message": text["obs_already_vcam"]})
-            else:
-                obs.call(obsrequests.StartVirtualCam())
-                print("Virtual cam started successfully.")
-
-        elif message.startswith("/obs_stop_virtualcam"):
-            recording_status = obs.call(obsrequests.GetVirtualCamStatus())
-            if recording_status.getOutputActive():
-                obs.call(obsrequests.StopVirtualCam())
-                print("Virtual cam stopped successfully.")
-            else:
-                print("Virtual cam is already stopped.")
-                return jsonify({"success": False, "message": text["obs_no_vcam"]})
-
-        obs.disconnect()
-        
     else:
-        spotify.handle_command(message, text)
+        if message.startswith("/spotify"):
+            spotify.handle_command(message, text)
+            
+        if message.startswith("/obs"):
+            obs.handle_command(message, text)
+            
         
         for commands in get_global_variable('all_func').values():
             for command, func in commands.items():

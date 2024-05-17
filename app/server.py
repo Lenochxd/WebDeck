@@ -19,6 +19,12 @@ from win32com.client import Dispatch
 # WebDeck imports
 from app.on_start import on_start, check_json_update
 from app.functions.global_variables import set_global_variable, get_global_variable
+
+config, text, commands, local_ip = on_start()
+folders_to_create = []
+set_global_variable("text", text)
+set_global_variable("config", config)
+
 from app.functions.themes.parse_themes import parse_themes
 from app.functions.plugins.load_plugins import load_plugins
 from app.functions.settings.audio_devices import get_audio_devices
@@ -28,15 +34,11 @@ from app.functions.firewall import fix_firewall_permission, check_firewall_permi
 from app.functions.load_lang_file import load_lang_file
 from app.functions.merge_dicts import merge_dicts
 from app.buttons.usage import get_usage
+from app.buttons.obs import reload_obs
 
 from app.buttons import command
 import app.buttons.soundboard as soundboard
 
-
-config, text, commands, local_ip = on_start()
-folders_to_create = []
-set_global_variable("text", text)
-set_global_variable("config", config)
 
 def save_config(config):
     with open("config.json", "w", encoding="utf-8") as json_file:
@@ -85,19 +87,6 @@ if getattr(sys, "frozen", False):
 app.config["SECRET_KEY"] = "secret!"
 
 socketio = SocketIO(app)
-
-
-# Set up the OBS WebSocket client
-def reload_obs():
-    obs_host = config["settings"]["obs"]["host"]
-    obs_port = int(config["settings"]["obs"]["port"])
-    obs_password = config["settings"]["obs"]["password"]
-
-    obs = obsws(obs_host, obs_port, obs_password)
-
-    return obs_host, obs_port, obs_password, obs
-
-obs_host, obs_port, obs_password, obs = reload_obs()
 
 
 @app.route("/usage", methods=["POST"])
