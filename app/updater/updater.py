@@ -25,6 +25,9 @@ def check_files(versions_json_path, data_json_path):
             data_json = json.load(f)
     else:
         data_json = {"checked-versions": []}
+    
+    if not "checked-versions" in data_json.keys():
+        data_json["checked-versions"] = []
         
     for version in reversed(versions["versions"]):
         if not version["version"] in data_json["checked-versions"]:
