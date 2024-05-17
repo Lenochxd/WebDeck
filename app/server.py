@@ -15,6 +15,7 @@ from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
 from win32com.client import Dispatch
+import easygui
 
 # WebDeck imports
 from app.on_start import on_start, check_json_update
