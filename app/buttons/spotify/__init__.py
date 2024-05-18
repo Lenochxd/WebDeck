@@ -29,13 +29,14 @@ def initialize():
 
 spotify_token = initialize()
 
+
 def handle_command(message, text):
     sp = spotipy.Spotify(auth=spotify_token)
 
-    if message.startswith("/spotify savesong") or message.startswith("/spotify likesong"):
+    if message.startswith(("/spotify savesong", "/spotify likesong")):
         song.save(sp)
 
-    elif message.startswith("/spotify savealbum") or message.startswith("/spotify likealbum"):
+    elif message.startswith(("/spotify savealbum", "/spotify likealbum")):
         album.save(sp)
 
     elif message.startswith("/spotify playsong"):

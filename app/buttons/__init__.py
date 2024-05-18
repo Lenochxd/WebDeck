@@ -67,7 +67,7 @@ def command(message=None):
     elif message.startswith("/stop_sound"):
         return soundboard.stopsound()
     
-    elif message.startswith("/playsound ") or message.startswith("/playlocalsound "):
+    elif message.startswith(("/playsound ", "/playlocalsound ")):
         return soundboard.playsound(*soundboard.get_params(message))
 
 

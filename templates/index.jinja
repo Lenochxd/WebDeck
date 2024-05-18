@@ -586,7 +586,7 @@
             <div id="choose-backgrounds-container">
 
               {% for bg in config["front"]["background"] %}
-                {% if bg.replace('//','').startswith('rgb(') or bg.replace('//','').startswith('#') %}
+                {% if bg.replace('//','').startswith(('rgb(', '#')) %}
                   <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{black_theme}}"
                     background="{{bg}}"
                     background_color_text="{{text['background_color']}}"
