@@ -47,3 +47,23 @@ def decrease_volume(delta):
         return get_current_volume()
     target_volume = get_current_volume() - (int(delta) / 100.0)
     return set_volume(target_volume)
+
+
+def handle_command(message):
+    if message.startswith("/volume +"):
+        delta = message.replace("/volume +", "")
+        if delta.replace(" ","") == "":
+            increase_volume("1")
+        else:
+            increase_volume(delta)
+            
+    elif message.startswith("/volume -"):
+        delta = message.replace("/volume -", "")
+        if delta.replace(" ","") == "":
+            decrease_volume("1")
+        else:
+            decrease_volume(delta)
+            
+    elif message.startswith("/volume set"):
+        target_volume = int(message.replace("/volume set ", "")) / 100.0
+        set_volume(target_volume)

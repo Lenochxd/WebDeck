@@ -1,5 +1,4 @@
 import json
-import os
 import sys
 import subprocess
 import time
@@ -20,7 +19,7 @@ from app.functions.kill_nircmd import kill_nircmd
 
 from app.functions.firewall import fix_firewall_permission
 from app.buttons.usage import extract_asked_device, get_usage
-from app.buttons.audio import *
+import app.buttons.audio as audio
 import app.buttons.window as window
 import app.buttons.exec as exec
 import app.buttons.soundboard as soundboard
@@ -150,21 +149,6 @@ def command(message=None):
         keyboard.write(message.replace("/writeandsend ", ""))
         keyboard.press("ENTER")
 
-    elif message.startswith("/volume +"):
-        delta = message.replace("/volume +", "")
-        if delta.strip() == "":
-            increase_volume("1")
-        else:
-            increase_volume(delta)
-    elif message.startswith("/volume -"):
-        delta = message.replace("/volume -", "")
-        if delta.strip() == "":
-            decrease_volume(delta)
-        else:
-            decrease_volume("1")
-    elif message.startswith("/volume set"):
-        target_volume = int(message.replace("/volume set ", "")) / 100.0
-        set_volume(target_volume)
 
     elif message.startswith(("/appvolume +", "/appvolume -", "/appvolume set")):
         comtypes.CoInitialize()
@@ -236,10 +220,10 @@ def command(message=None):
             print(f"Window '{window_name}' not found")
 
     elif message.startswith("/setmicrophone"):
-        set_microphone_by_name(message.replace("/setmicrophone", "").strip())
+        audio.set_microphone_by_name(message.replace("/setmicrophone", "").strip())
         # PAS FINI
     elif message.startswith("/setoutputdevice"):
-        set_speakers_by_name(message.replace("/setoutputdevice", "").strip())
+        audio.set_speakers_by_name(message.replace("/setoutputdevice", "").strip())
         # PAS FINI
 
     elif message.startswith("/copy"):
@@ -268,7 +252,10 @@ def command(message=None):
         pyautogui.hotkey("win", "v")
 
     else:
-        if message.startswith("/spotify"):
+        if message.startswith("/volume"):
+            audio.change_volume(message)
+            
+        elif message.startswith("/spotify"):
             spotify.handle_command(message, text)
             
         elif message.startswith("/obs"):
