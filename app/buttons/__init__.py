@@ -2,9 +2,7 @@ import json
 import os
 import sys
 import subprocess
-import threading
 import time
-import numpy as np
 import inspect
 from flask import jsonify
 
@@ -23,15 +21,13 @@ from app.functions.kill_nircmd import kill_nircmd
 from app.functions.firewall import fix_firewall_permission
 from app.buttons.usage import extract_asked_device, get_usage
 from app.buttons.audio import *
-import app.buttons.exec as exec
 import app.buttons.window as window
+import app.buttons.exec as exec
 import app.buttons.soundboard as soundboard
 import app.buttons.spotify as spotify
 import app.buttons.obs as obs
 import app.buttons.color_picker as color_picker
 
-
-threads = []
 
 
 def command(message=None):
@@ -73,34 +69,6 @@ def command(message=None):
     elif message.startswith("/playsound ") or message.startswith("/playlocalsound "):
         return soundboard.playsound(*soundboard.get_params(message))
 
-    elif message.startswith("/exec"):
-        if "type:uploaded_file" in message:
-            message = message.replace("C:\\fakepath\\", "").replace("/exec ", "").replace("type:uploaded_file", "").strip()
-            if all(
-                substring not in message
-                for substring in [
-                    ":",
-                    "static/files/uploaded/",
-                    "static\\files\\uploaded\\",
-                ]
-            ):
-                # if it is stored directly in static/files/uploaded and not in C:\example
-                python_file = f"static/files/uploaded/{message}"
-                print(message)
-                print(python_file)
-                
-                threads.append(threading.Thread(target=exec.execute_python_file, args=(python_file,), daemon=True))
-                threads[-1].start()
-        elif "type:file_path" in message:
-            python_file = message.replace("/exec ", "").replace("type:file_path", "").strip()
-            
-            threads.append(threading.Thread(target=exec.execute_python_file, args=(python_file,), daemon=True))
-            threads[-1].start()
-        else:
-            exec(message.replace("/exec", "").replace("type:single_line", "").strip())
-
-    elif message.startswith("/batch"):
-        subprocess.Popen(message.replace("/batch", "", 1).strip(), shell=True)
 
     elif message.startswith(("/openfolder")):
         path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
@@ -350,6 +318,12 @@ def command(message=None):
         # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copy_type:raw|list displaytype:raw|list remove_hex_sharp:false
         elif message.startswith("/colorpicker"):
             color_picker.handle_command(message)
+            
+        elif message.startswith("/exec"):
+            exec.python(message)
+
+        elif message.startswith("/batch"):
+            exec.batch(message)
             
         
         for commands in get_global_variable('all_func').values():
