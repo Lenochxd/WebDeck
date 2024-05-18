@@ -27,6 +27,7 @@ import app.buttons.soundboard as soundboard
 import app.buttons.spotify as spotify
 import app.buttons.obs as obs
 import app.buttons.color_picker as color_picker
+import app.buttons.system as system
 
 
 
@@ -69,48 +70,6 @@ def command(message=None):
     elif message.startswith("/playsound ") or message.startswith("/playlocalsound "):
         return soundboard.playsound(*soundboard.get_params(message))
 
-
-    elif message.startswith(("/openfolder")):
-        path = message.replace("/openfolder", "", 1).replace("/opendir", "", 1).strip()
-        pathtemp = path.replace('\\\\','\\').replace('\\', '/')
-        
-        if not ":" in pathtemp:
-            path = os.path.join(os.getcwd(), path)
-            if not os.path.isdir(path):
-                path = os.path.join(os.path.dirname(sys.executable), path)
-                if not os.path.isdir(path):
-                    path = pathtemp
-        else:
-            path = pathtemp
-            
-        path = path.replace('\\\\','\\').replace('\\', '/')
-        
-        # if not path.endswith('/'):
-        #     path += '/'
-            
-        if not os.path.isdir(path):
-            if path.startswith('/'):
-                path = path[1:]
-            path = f"C:/.Code/WebDeck/{path}" # FIXME
-        
-        path = path.replace('/', '\\')
-        print(path)
-        subprocess.Popen(f'explorer "{path}"')
-        # os.startfile(path)
-        
-    elif message.startswith(("/openfile", "/start")):
-        path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
-
-        if ":" in path:
-            initial_path = os.getcwd()
-            try:
-                file_directory = os.path.dirname(path)
-                os.chdir(file_directory)
-                os.startfile(path)
-            finally:
-                os.chdir(initial_path)
-        else:
-            os.startfile(path)
 
     elif message.startswith("/PCshutdown"):
         subprocess.Popen("shutdown /s /f /t 0", shell=True)
@@ -318,13 +277,17 @@ def command(message=None):
         # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copy_type:raw|list displaytype:raw|list remove_hex_sharp:false
         elif message.startswith("/colorpicker"):
             color_picker.handle_command(message)
+        
+        elif message.startswith(("/openfolder", "/opendir",
+                                "/openfile", "/start")):
+            system.handle_command(message)
             
         elif message.startswith("/exec"):
             exec.python(message)
 
         elif message.startswith("/batch"):
             exec.batch(message)
-            
+
         
         for commands in get_global_variable('all_func').values():
             for command, func in commands.items():
