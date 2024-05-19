@@ -37,7 +37,7 @@ from app.functions.merge_dicts import merge_dicts
 from app.buttons.usage import get_usage
 from app.buttons.obs import reload_obs
 
-from app.buttons import command
+from app.buttons import handle_command as command
 import app.buttons.soundboard as soundboard
 
 

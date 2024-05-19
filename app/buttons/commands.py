@@ -30,7 +30,7 @@ import app.buttons.system as system
 
 
 
-def command(message=None):
+def handle_command(message=None):
     global all_func
     
     text = get_global_variable("text")
