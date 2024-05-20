@@ -4,11 +4,11 @@ import json
 import shutil
 from win32com.client import Dispatch
 
-from app.functions.global_variables import set_global_variable
 from app.updater import check_files, check_for_updates
-from app.functions.load_lang_file import load_lang_file
-from app.functions.plugins.load_plugins import load_plugins
-from app.functions.get_local_ip import get_local_ip
+from app.utils.global_variables import set_global_variable
+from app.utils.load_lang_file import load_lang_file
+from app.utils.plugins.load_plugins import load_plugins
+from app.utils.get_local_ip import get_local_ip
 
 from app.on_start.on_start import *
 

@@ -1,6 +1,6 @@
 from obswebsocket import obsws
 
-from app.functions.global_variables import set_global_variable, get_global_variable
+from app.utils.global_variables import set_global_variable, get_global_variable
 
 
 def reload_obs():

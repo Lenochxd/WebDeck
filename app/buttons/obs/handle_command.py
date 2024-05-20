@@ -2,7 +2,7 @@ from obswebsocket import obsws
 
 from flask import jsonify
 
-from app.functions.global_variables import get_global_variables
+from app.utils.global_variables import get_global_variables
 
 import app.buttons.obs.scenes as scene
 import app.buttons.obs.recording as recording

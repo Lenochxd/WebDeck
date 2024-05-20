@@ -1,4 +1,4 @@
-from app.functions.show_error import show_error
+from app.utils.show_error import show_error
 
 
 def play(sp, playlist_name):

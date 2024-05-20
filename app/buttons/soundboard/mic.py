@@ -3,7 +3,7 @@ import time
 import threading
 
 from app.buttons.soundboard.devices import get_device
-from app.functions.load_config import load_config
+from app.utils.load_config import load_config
 
 
 sb_on = True

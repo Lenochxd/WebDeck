@@ -4,7 +4,7 @@ import psutil
 import GPUtil
 import pynvml
 
-from app.functions.merge_dicts import merge_dicts
+from app.utils.merge_dicts import merge_dicts
 from app.buttons.usage.asked_devices import get_asked_devices
 
 

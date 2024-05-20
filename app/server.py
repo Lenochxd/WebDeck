@@ -19,21 +19,21 @@ import easygui
 
 # WebDeck imports
 from app.on_start import on_start, check_json_update
-from app.functions.global_variables import set_global_variable, get_global_variable
+from app.utils.global_variables import set_global_variable, get_global_variable
 
 config, text, commands, local_ip = on_start()
 folders_to_create = []
 set_global_variable("text", text)
 set_global_variable("config", config)
 
-from app.functions.themes.parse_themes import parse_themes
-from app.functions.plugins.load_plugins import load_plugins
-from app.functions.settings.audio_devices import get_audio_devices
-from app.functions.settings.gridsize import update_gridsize
-from app.functions.settings.create_folders import create_folders
-from app.functions.firewall import fix_firewall_permission, check_firewall_permission
-from app.functions.load_lang_file import load_lang_file
-from app.functions.merge_dicts import merge_dicts
+from app.utils.themes.parse_themes import parse_themes
+from app.utils.plugins.load_plugins import load_plugins
+from app.utils.settings.audio_devices import get_audio_devices
+from app.utils.settings.gridsize import update_gridsize
+from app.utils.settings.create_folders import create_folders
+from app.utils.firewall import fix_firewall_permission, check_firewall_permission
+from app.utils.load_lang_file import load_lang_file
+from app.utils.merge_dicts import merge_dicts
 from app.buttons.usage import get_usage
 from app.buttons.obs import reload_obs
 

@@ -6,7 +6,7 @@ import time
 import subprocess
 import requests
 
-from app.functions.show_error import show_error
+from app.utils.show_error import show_error
 from app.updater.updater import check_files, compare_versions
 
 

@@ -2,8 +2,8 @@ try: import vlc
 except: pass
 from flask import jsonify
 
-from app.functions.load_config import load_config
-from app.functions.load_lang_file import load_lang_file
+from app.utils.load_config import load_config
+from app.utils.load_lang_file import load_lang_file
 
 from app.buttons.soundboard.devices import get_device
 from app.buttons.soundboard.ffmpeg import silence_path

@@ -14,10 +14,10 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 
 
-from app.functions.global_variables import get_global_variable
-from app.functions.kill_nircmd import kill_nircmd
+from app.utils.global_variables import get_global_variable
+from app.utils.kill_nircmd import kill_nircmd
 
-from app.functions.firewall import fix_firewall_permission
+from app.utils.firewall import fix_firewall_permission
 from app.buttons.usage import extract_asked_device, get_usage
 import app.buttons.audio as audio
 import app.buttons.window as window

@@ -12,7 +12,7 @@ if 'app-admin' in settings and settings['app-admin'] == 'true':
 
 import threading
 import win32com.client
-from app.functions.is_opened import is_opened
+from app.utils.is_opened import is_opened
 
 
 threads = []

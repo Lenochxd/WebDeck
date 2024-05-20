@@ -14,8 +14,8 @@ import tkinter as tk
 from io import BytesIO
 import webview
 
-from app.functions.firewall import fix_firewall_permission
-from app.functions.get_local_ip import get_local_ip
+from app.utils.firewall import fix_firewall_permission
+from app.utils.get_local_ip import get_local_ip
 
 
 def reload_config():
