@@ -1,8 +1,8 @@
-from obswebsocket import obsws, events
+from obswebsocket import obsws
 
 from flask import jsonify
 
-from app.functions.global_variables import set_global_variable, get_global_variable, get_global_variables
+from app.functions.global_variables import get_global_variables
 
 import app.buttons.obs.scenes as scene
 import app.buttons.obs.recording as recording
@@ -13,23 +13,6 @@ import app.buttons.obs.virtualcam as virtualcam
 #    https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md
 #    https://github.com/Elektordi/obs-websocket-py
 
-
-def reload_obs():
-    # Set up the OBS WebSocket client
-    config = get_global_variable("config")
-    obs_host = config["settings"]["obs"]["host"]
-    obs_port = int(config["settings"]["obs"]["port"])
-    obs_password = config["settings"]["obs"]["password"]
-
-    obs = obsws(obs_host, obs_port, obs_password)
-    
-    set_global_variable("obs_host", obs_host)
-    set_global_variable("obs_port", obs_port)
-    set_global_variable("obs_password", obs_password)
-
-    return obs_host, obs_port, obs_password, obs
-
-obs_host, obs_port, obs_password, obs = reload_obs()
 
 
 def handle_command(message, text):
