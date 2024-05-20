@@ -1,5 +1,4 @@
 from obswebsocket import obsws, events
-from obswebsocket import requests as obsrequests
 
 from flask import jsonify
 
