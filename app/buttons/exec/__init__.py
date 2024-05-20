@@ -1,1 +1,1 @@
-from .handle_command import python, batch
+from .command_handler import python, batch

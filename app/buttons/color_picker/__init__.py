@@ -1,1 +1,1 @@
-from .handle_command import handle_command
+from .command_handler import handle_command
