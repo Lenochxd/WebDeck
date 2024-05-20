@@ -7,7 +7,8 @@ from app.buttons.color_picker.get_arg import getarg
 from app.buttons.color_picker.get_color_name import get_color_name
 from app.buttons.color_picker.get_mouse_pixel_color import get_mouse_pixel_color
 from app.buttons.color_picker.notification import toast
-    
+
+
     
 def handle_command(message):
     # TODO: rewrite
