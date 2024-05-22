@@ -18,27 +18,27 @@ from win32com.client import Dispatch
 import easygui
 
 # WebDeck imports
-from app.on_start import on_start, check_json_update
-from app.utils.global_variables import set_global_variable, get_global_variable
+from .on_start import on_start, check_json_update
+from .utils.global_variables import set_global_variable, get_global_variable
 
 config, text, commands, local_ip = on_start()
 folders_to_create = []
 set_global_variable("text", text)
 set_global_variable("config", config)
 
-from app.utils.themes.parse_themes import parse_themes
-from app.utils.plugins.load_plugins import load_plugins
-from app.utils.settings.audio_devices import get_audio_devices
-from app.utils.settings.gridsize import update_gridsize
-from app.utils.settings.create_folders import create_folders
-from app.utils.firewall import fix_firewall_permission, check_firewall_permission
-from app.utils.load_lang_file import load_lang_file
-from app.utils.merge_dicts import merge_dicts
-from app.buttons.usage import get_usage
-from app.buttons.obs import reload_obs
+from .utils.themes.parse_themes import parse_themes
+from .utils.plugins.load_plugins import load_plugins
+from .utils.settings.audio_devices import get_audio_devices
+from .utils.settings.gridsize import update_gridsize
+from .utils.settings.create_folders import create_folders
+from .utils.firewall import fix_firewall_permission, check_firewall_permission
+from .utils.load_lang_file import load_lang_file
+from .utils.merge_dicts import merge_dicts
+from .buttons.usage import get_usage
+from .buttons.obs import reload_obs
 
-from app.buttons import handle_command as command
-import app.buttons.soundboard as soundboard
+from .buttons import soundboard
+from .buttons import handle_command as command
 
 
 def save_config(config):
