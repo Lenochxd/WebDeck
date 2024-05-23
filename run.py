@@ -2,8 +2,11 @@ import ctypes
 import sys
 import json
 
-with open('config.json', encoding= "utf-8") as f:
-    settings = json.load(f)['settings']
+try:
+    with open('config.json', encoding= "utf-8") as f:
+        settings = json.load(f)['settings']
+except FileNotFoundError:
+    settings = {'app-admin': True}
     
 if 'app-admin' in settings and settings['app-admin'] == 'true':
     if not ctypes.windll.shell32.IsUserAnAdmin():
