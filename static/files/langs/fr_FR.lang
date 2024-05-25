@@ -166,10 +166,10 @@ remove_background=Supprimer ce fond
 
 
 // Links
-link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-ma-soundboard-
-link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#comment-connecter-mon-compte-spotify-
-link_obs=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#comment-configurer-obs-studio-
-link_themes=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md#je-suis-un-d%C3%A9veloppeur-comment-puis-je-personnaliser-le-css-de-la-page-
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-fr.md#comment-configurer-ma-soundboard-
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-fr.md#comment-connecter-mon-compte-spotify-
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-fr.md#comment-configurer-obs-studio-
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-fr.md#je-suis-un-d%C3%A9veloppeur-comment-puis-je-personnaliser-le-css-de-la-page-
 
 soundboard_tutorial=Comment configurer la soundboard
 spotify_tutorial=Comment configurer Spotify

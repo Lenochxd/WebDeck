@@ -166,10 +166,10 @@ remove_background=Remove this background
 
 
 // Links
-link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard
-link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account
-link_obs=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-obs-studio
-link_themes=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
 
 soundboard_tutorial=Soundboard setup tutorial
 spotify_tutorial=Spotify setup tutorial

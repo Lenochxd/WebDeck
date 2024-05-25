@@ -1,5 +1,5 @@
-[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md)
-[![Version Korean](https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4%EB%A1%9C-%EC%9D%BD%EA%B8%B0-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-ko.md)
+[![Version française](https://img.shields.io/badge/Lire%20en-Fran%C3%A7ais-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-fr.md)
+[![Version Korean](https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4%EB%A1%9C-%EC%9D%BD%EA%B8%B0-blue?style=for-the-badge&logo=appveyor)](https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-ko.md)
 
 # Welcome to the WebDeck FAQ!
 You can use `ctrl+f` to search for what you want.
