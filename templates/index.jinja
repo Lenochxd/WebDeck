@@ -7,7 +7,7 @@
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="static/files/loading-squares.css">
+    <link rel="stylesheet" href="static/assets/css/loading-squares.css">
     {% for file in config['front']['themes'][::-1] %}
       {% if not file.startswith('//') %}
         <link rel="stylesheet" href="static/themes/{{ file }}">
