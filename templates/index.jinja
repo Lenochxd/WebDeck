@@ -344,11 +344,11 @@
                   {% if config["front"]["buttons"][folder_id][button_id]["image"].startswith('http') %}
                     {% set imagepath = config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% elif ':' in config["front"]["buttons"][folder_id][button_id]["image"] %}
-                    {% set imagepath = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
+                    {% set imagepath = "static/assets/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
                   {% elif config["front"]["buttons"][folder_id][button_id]["image"].startswith('**uploaded/') %}
                     {% set imagepath = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                   {% else %}
-                    {% set imagepath = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
+                    {% set imagepath = "static/assets/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% endif %}
                   
                   <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; max-height: 89.6px;">
@@ -430,13 +430,13 @@
 
     <div id="EditorButtons" style="display: none;">
       <button class="button" id="SaveExitEditorButton">
-        <img src="static/files/images/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
+        <img src="static/assets/images/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
         [E] {{text['save_and_exit']}}
       </button>
       <button class="button" id="exitEditorButton"> [Q] {{text['quit_without_saving']}} </button>
       
       <button class="button" id="swapEditorButton">
-        <img src="static/files/images/swap.png" width="20" height="20" id="EditorButtonLogo">
+        <img src="static/assets/images/swap.png" width="20" height="20" id="EditorButtonLogo">
         [S] {{text['swap_buttons']}}
       </button>
     </div>
@@ -472,7 +472,7 @@
             <div id="themes-tutorial-container">
               <a href="{{text['link_themes']}}" target="_blank" title="{{text['themes_tutorial']}}">
                   <!-- source: https://phosphoricons.com/ -->
-                  {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                  {{ open("static/assets/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
               </a>
 
               <button type="button" onclick="send_data('/openfolder /static/themes')" class="button" id="open-themes-folder">
@@ -709,7 +709,7 @@
                     <label for="soundboard" style="margin-top: 3px;"> {{text['soundboard']}} </label>
                     <a href="{{text['link_soundboard']}}" target="_blank"  title="{{text['soundboard_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
-                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                        {{ open("static/assets/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
                     </a>
                   </div>
 
@@ -768,7 +768,7 @@
                     <label for="spotify" style="margin-top: 3px;"> {{text['spotify_api']}} </label>
                     <a href="{{text['link_spotify']}}" target="_blank" title="{{text['spotify_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
-                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                        {{ open("static/assets/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
                     </a>
                   </div>
 
@@ -794,7 +794,7 @@
                     <label for="obs" style="margin-top: 3px;"> {{text['obs_studio']}} </label>
                     <a href="{{text['link_obs']}}" target="_blank" title="{{text['obs_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
-                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                        {{ open("static/assets/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
                     </a>
                   </div>
 
