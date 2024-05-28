@@ -58,7 +58,7 @@ window = None
     
 def load_lang_file(lang):
     lang_dictionary = {}
-    lang_path = f"static/files/langs/{lang}.lang"
+    lang_path = f"webdeck/translations/{lang}.lang"
     if not os.path.isfile(f"static/files/langs/{lang}.lang"):
         for root, dirs, files in os.walk('static/files/langs'):
             for file in files:

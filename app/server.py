@@ -199,7 +199,7 @@ def home():
     ]
     langs = [
         file_name.replace(".lang", "")
-        for file_name in os.listdir("static/files/langs/")
+        for file_name in os.listdir("webdeck/translations/")
         if file_name.endswith(".lang")
     ]
 
