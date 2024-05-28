@@ -186,13 +186,17 @@ def color_distance(color1, color2):
     return sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
 
 def sort_colorsjson():
-    with open("colors.json", "r", encoding="utf-8") as f:
-        try:
+
+    try:
+        with open("webdeck/colors.json", "r", encoding="utf-8") as f:
             data = json.load(f)
-        except Exception:
-            shutil.copyfile("static/files/colorsbcp.json", "colors.json")
-            with open("colors.json", "r", encoding="utf-8") as f:
-                data = json.load(f)
+    except Exception:
+        url = "https://gist.githubusercontent.com/Lenochxd/12a1927943a2ce151560e1b9585d4bfa/raw/41d5a0dc9336827cefb217c1728f0e9415b1c7b9/colors_db.json"
+        with urllib.request.urlopen(url) as response:
+            data = json.load(response)
+        with open("webdeck/colors.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4)
+
 
     # Sort colors using the distance between each pair of colors
     sorted_colors = [data[0]]  # The first color is always the same
@@ -207,7 +211,7 @@ def sort_colorsjson():
         data.remove(nearest_color)
 
     if not sorted_colors == data:
-        with open("colors.json", "w", encoding="utf-8") as f:
+        with open("webdeck/colors.json", "w", encoding="utf-8") as f:
             json.dump(sorted_colors, f, indent=4)
             
 def get_gpu_method():

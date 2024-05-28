@@ -33,7 +33,7 @@ def handle_command(message):
     print(remove_hex_sharp)
     print("------------------------------------------")
 
-    with open("colors.json", "r", encoding="utf-8") as f:
+    with open("webdeck/colors.json", "r", encoding="utf-8") as f:
         colorsjson = json.load(f)
 
     color_name_original = get_color_name(color['hex'], colorsjson)
