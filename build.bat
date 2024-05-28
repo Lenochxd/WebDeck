@@ -2,10 +2,10 @@
 echo Starting...
 
 rem Create a virtual environment
-python -m venv webdeck
+python -m venv venv
 
 rem Activate the virtual environment
-call webdeck\Scripts\activate.bat
+call venv\Scripts\activate.bat
 
 rem Install dependencies
 pip install -r requirements.txt

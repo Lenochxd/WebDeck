@@ -6,7 +6,7 @@ static/files/uploaded
 static/themes
 
 # virtual environment directory
-webdeck
+venv
 
 # compiled files
 build/
