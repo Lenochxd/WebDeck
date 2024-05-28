@@ -281,7 +281,7 @@ def on_start():
         check_for_updates(text)
     
     # Load commands
-    with open("commands.json", encoding="utf-8") as f:
+    with open("webdeck/commands.json", encoding="utf-8") as f:
         commands = json.load(f)
         commands, all_func = load_plugins(commands)
         set_global_variable("all_func", all_func)
