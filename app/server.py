@@ -475,6 +475,7 @@ def create_folder():
 @app.route("/.config/user_uploads/<string:filename>", methods=["GET"])
 def get_config_file(filename):
     try:
+        filename = filename.replace('../', '_')  # Sanitize the filename
         file_path = os.path.join(app.root_path.replace('app',''), ".config/user_uploads", filename)
 
         if os.path.isfile(file_path):
