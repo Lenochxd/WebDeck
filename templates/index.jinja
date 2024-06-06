@@ -90,7 +90,7 @@
     {% if random_bg.endswith(".mp4") %}
       <div class="background-video">
         <video autoplay muted loop class="background-video">
-          <source src="{{ 'static/files/uploaded/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+          <source src="{{ '.config/user_uploads/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
           Your browser does not support the video tag...
         </video>
       </div>
@@ -125,7 +125,7 @@
             width: 100%;
             height: 100%;
 
-            background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
+            background-image: url("{{ ".config/user_uploads/" + random_bg.replace('**uploaded/', '') }}")!important;
             background-size: cover;
             background-position: center;
             background-color: transparent;
@@ -133,13 +133,13 @@
             z-index: -1;
           }
           div.fakeform-container {
-            background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
+            background-image: url("{{ ".config/user_uploads/" + random_bg.replace('**uploaded/', '') }}")!important;
             background-color: transparent;
           }
           @media (orientation: portrait) {
             html::before {
               {% set extension = random_bg.replace('**uploaded/', '').split('.')[-1] %}
-              {% set bg_image = "static/files/uploaded/" + random_bg.replace('**uploaded/', '').replace('.'+extension, '-90.'+extension) %}
+              {% set bg_image = ".config/user_uploads/" + random_bg.replace('**uploaded/', '').replace('.'+extension, '-90.'+extension) %}
               background-image: url("{{ bg_image }}")!important;
             }
           }
@@ -346,7 +346,7 @@
                   {% elif ':' in config["front"]["buttons"][folder_id][button_id]["image"] %}
                     {% set imagepath = "static/assets/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
                   {% elif config["front"]["buttons"][folder_id][button_id]["image"].startswith('**uploaded/') %}
-                    {% set imagepath = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                    {% set imagepath = ".config/user_uploads/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                   {% else %}
                     {% set imagepath = "static/assets/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% endif %}
@@ -613,7 +613,7 @@
 
                     <div class="video-container choose-bg-pseudo-element">
                       <video autoplay muted loop class="blurred-video">
-                        <source src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+                        <source src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
                         Your browser does not support the video tag...
                       </video>
                     </div>
@@ -621,11 +621,11 @@
 
                     <div class="video-container">
                       <video autoplay muted loop>
-                        <source src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+                        <source src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
                         Your browser does not support the video tag...
                       </video>
                     </div>
-                    {# <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}"> #}
+                    {# <img src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}"> #}
                     <div class="choose-bg-buttons">
                       {% if bg.startswith('//') %}
                         <div class="choose-bg-activate-button"></div>
@@ -642,8 +642,8 @@
                   </div>
                 {% else %}
                   <div class="choose-bg-element choose-bg-element-image" background="{{bg}}">
-                    <div class="choose-bg-pseudo-element" style='background-image: url("{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '').replace("'", '&#39;') }}")'></div>
-                    <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}">
+                    <div class="choose-bg-pseudo-element" style='background-image: url("{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '').replace("'", '&#39;') }}")'></div>
+                    <img src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}">
                     <div class="choose-bg-buttons">
                       {% if bg.startswith('//') %}
                         <div class="choose-bg-activate-button"></div>

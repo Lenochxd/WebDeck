@@ -7,6 +7,7 @@ import zipfile
 import pynvml
 from math import sqrt
 from win32com.client import Dispatch
+from werkzeug.utils import secure_filename
 
 from app.updater import check_files, check_for_updates
 from app.utils.global_variables import set_global_variable
@@ -260,12 +261,23 @@ def on_start():
                 shortcut.IconLocation = icon
                 shortcut.save()
                 
-    # Create uploaded dir if needed
-    if not os.path.exists("static/files/uploaded"):
+    # Create user_uploads dir if needed
+    if not os.path.exists(".config/user_uploads"):
         try:
-            os.makedirs("static/files/uploaded")
+            os.makedirs(".config/user_uploads")
         except FileExistsError:
             pass
+        
+    # Remove uploaded if needed
+    if os.path.exists("static/files/uploaded"):
+        # Move content of "static/files/uploaded" to ".config/user_uploads"
+        if os.path.exists("static/files/uploaded"):
+            for file in os.listdir("static/files/uploaded"):
+                src = os.path.join("static/files/uploaded", file)
+                dst = os.path.join(".config/user_uploads", file)
+                shutil.move(src, dst)
+            shutil.rmtree("static/files/uploaded")
+            
 
     # Update new files
     check_files("static/files/version.json", "data.json")

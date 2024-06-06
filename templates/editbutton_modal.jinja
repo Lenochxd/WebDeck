@@ -56,7 +56,7 @@
                     {% elif ':' in button_settings["image"] %}
                       {% set imagelink = "static/assets/images/" + button_settings["image"].split('\\')[-1] %}
                     {% elif button_settings["image"].startswith('**uploaded/') %}
-                      {% set imagelink = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                      {% set imagelink = ".config/user_uploads/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
                       {% set imagelink = "static/assets/images/" + button_settings["image"] %}
                     {% endif %}
@@ -283,7 +283,7 @@
                         var element = document.getElementById('button-image_{{edit_modal_ID}}');
 
                         var imgElement, image_{{edit_modal_ID}}, imageSizeSlider_{{edit_modal_ID}}, imageSizeValue_{{edit_modal_ID}};
-                        var filePath = 'static/files/uploaded/' + input_{{edit_modal_ID}}.files[0].name;
+                        var filePath = '.config/user_uploads/' + input_{{edit_modal_ID}}.files[0].name;
 
                         if (element.tagName.toLowerCase() === 'svg') {
                             imgElement = document.createElement('img');

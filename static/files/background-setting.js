@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Faire quelque chose avec le nom du fichier
           // button.image = "**uploaded/" + fileName;
 
-          var imageFile = 'static/files/uploaded/' + input.files[0].name;
+          var imageFile = '.config/user_uploads/' + input.files[0].name;
 
           var divElement = document.createElement("div");
           divElement.classList.add("choose-bg-element");

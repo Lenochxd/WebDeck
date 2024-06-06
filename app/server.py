@@ -10,7 +10,7 @@ import ast
 # Third-party library imports
 from deepdiff import DeepDiff
 from PIL import Image
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file, make_response
 from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
@@ -174,12 +174,12 @@ def home():
     while random_bg.startswith("//") == True:
         random_bg = random.choice(config["front"]["background"])
         if random_bg.startswith("**uploaded/"):
-            random_bg_path = random_bg.replace("**uploaded/", "static/files/uploaded/")
+            random_bg_path = random_bg.replace("**uploaded/", ".config/user_uploads/")
             if os.path.exists(random_bg_path):
                 file_name, extension = os.path.splitext(
                     os.path.basename(random_bg_path)
                 )
-                random_bg_90_path = f"static/files/uploaded/{file_name}-90{extension}"
+                random_bg_90_path = f".config/user_uploads/{file_name}-90{extension}"
                 if not os.path.exists(random_bg_90_path):
                     try:
                         img = Image.open(random_bg_path)
@@ -437,7 +437,7 @@ def upload_file():
 
     uploaded_file = request.files["file"]
 
-    save_path = os.path.join("static/files/uploaded", uploaded_file.filename)
+    save_path = os.path.join(".config/user_uploads", uploaded_file.filename)
     uploaded_file.save(save_path)
 
     if request.form.get("info") and request.form.get("info") == "background_image":
@@ -445,7 +445,7 @@ def upload_file():
             img = Image.open(save_path)
             img_rotated = img.rotate(-90, expand=True)
             file_name, extension = os.path.splitext(os.path.basename(save_path))
-            img_rotated.save(f"static/files/uploaded/{file_name}-90{extension}")
+            img_rotated.save(f".config/user_uploads/{file_name}-90{extension}")
         except Exception as e:
             print(e)
 
@@ -469,6 +469,20 @@ def create_folder():
         return jsonify({"success": True})
     else:
         return jsonify({"success": False})
+
+
+# https://stackoverflow.com/a/70555525/17100464
+@app.route("/.config/user_uploads/<string:filename>", methods=["GET"])
+def get_config_file(filename):
+    try:
+        file_path = os.path.join(app.root_path.replace('app',''), ".config/user_uploads", filename)
+
+        if os.path.isfile(file_path):
+            return send_file(file_path, as_attachment=True)
+        else:
+            return make_response(f"File '{filename}' not found.", 404)
+    except Exception as e:
+        return make_response(f"Error: {str(e)}", 500)
 
 
 @socketio.on("connect")

@@ -18,12 +18,12 @@ def python(message):
             substring not in message
             for substring in [
                 ":",
-                "static/files/uploaded/",
-                "static\\files\\uploaded\\",
+                ".config/user_uploads/",
+                ".config\\user_uploads\\",
             ]
         ):
-            # if it is stored directly in static/files/uploaded and not in C:\example
-            python_file = f"static/files/uploaded/{message}"
+            # if it is stored directly in .config/user_uploads and not in C:\example
+            python_file = f".config/user_uploads/{message}"
             print(message)
             print(python_file)
             
@@ -50,12 +50,12 @@ def batch(message):
             substring not in message
             for substring in [
                 ":",
-                "static/files/uploaded/",
-                "static\\files\\uploaded\\",
+                ".config/user_uploads/",
+                ".config\\user_uploads\\",
             ]
         ):
-            # if it is stored directly in static/files/uploaded and not in C:\example
-            batch_file = f"static/files/uploaded/{message}"
+            # if it is stored directly in .config/user_uploads and not in C:\example
+            batch_file = f".config/user_uploads/{message}"
             print(message)
             print(batch_file)
             

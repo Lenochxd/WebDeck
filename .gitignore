@@ -3,6 +3,7 @@ config.json
 data.json
 .vscode/settings.json
 static/files/uploaded
+.config/user_uploads
 static/themes
 
 # virtual environment directory

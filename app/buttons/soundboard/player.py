@@ -31,12 +31,12 @@ def get_params(msg):
         substring not in sound_file
         for substring in [
             ":",
-            "static/files/uploaded/",
-            "static\\files\\uploaded\\",
+            ".config/user_uploads/",
+            ".config\\user_uploads\\",
         ]
     ):
-        # if it is stored directly in static/files/uploaded and not in C:\example
-        sound_file = f"static/files/uploaded/{sound_file}"
+        # if it is stored directly in .config/user_uploads and not in C:\example
+        sound_file = f".config/user_uploads/{sound_file}"
 
     if msg.startswith("/playlocalsound"):
         localonly = True

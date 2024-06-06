@@ -216,7 +216,7 @@
                     {% elif ':' in command_value["style"]["image"] %}
                       {% set imagelink = "static/assets/images/" + command_value["style"]["image"].split('\\')[-1] %}
                     {% elif command_value["style"]["image"].startswith('**uploaded/') %}
-                      {% set imagelink = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                      {% set imagelink = ".config/user_uploads/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
                       {% set imagelink = "static/assets/images/" + command_value["style"]["image"] %}
                     {% endif %}
@@ -497,7 +497,7 @@
                         var element = document.getElementById('button-image_{{arg_modal_ID}}');
 
                         var imgElement, image_{{arg_modal_ID}}, imageSizeSlider_{{arg_modal_ID}}, imageSizeValue_{{arg_modal_ID}};
-                        var filePath = 'static/files/uploaded/' + input_{{arg_modal_ID}}.files[0].name;
+                        var filePath = '.config/user_uploads/' + input_{{arg_modal_ID}}.files[0].name;
 
                         if (element.tagName.toLowerCase() === 'svg') {
                             imgElement = document.createElement('img');
