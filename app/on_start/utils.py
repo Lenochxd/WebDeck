@@ -283,7 +283,7 @@ def on_start():
             
 
     # Update new files
-    check_files("static/files/version.json", "data.json")
+    check_files("static/files/version.json", "temp.json")
     
     # Load config & get gpu method
     config = get_gpu_method()

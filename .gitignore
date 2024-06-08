@@ -1,6 +1,6 @@
 # configuration files
 config.json
-data.json
+temp.json
 .vscode/settings.json
 static/files/uploaded
 .config/user_uploads

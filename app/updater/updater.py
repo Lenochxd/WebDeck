@@ -15,23 +15,23 @@ def error(message):
     print(message)
     ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Updater Error", 0)
 
-def check_files(versions_json_path, data_json_path):
+def check_files(versions_json_path, temp_json_path):
     with open(versions_json_path, encoding="utf-8") as f:
         versions = json.load(f)
         current_version = versions["versions"][0]["version"]
         
-    if os.path.isfile(data_json_path):
-        with open(data_json_path, encoding="utf-8") as f:
-            data_json = json.load(f)
+    if os.path.isfile(temp_json_path):
+        with open(temp_json_path, encoding="utf-8") as f:
+            temp_json = json.load(f)
     else:
-        data_json = {"checked-versions": []}
+        temp_json = {"checked-versions": []}
     
-    if not "checked-versions" in data_json.keys():
-        data_json["checked-versions"] = []
+    if not "checked-versions" in temp_json.keys():
+        temp_json["checked-versions"] = []
         
     for version in reversed(versions["versions"]):
-        if not version["version"] in data_json["checked-versions"]:
-            data_json["checked-versions"].append(version["version"])
+        if not version["version"] in temp_json["checked-versions"]:
+            temp_json["checked-versions"].append(version["version"])
             
             if "deleted_files" in version.keys():
                 for file_to_delete in version["deleted_files"]:
@@ -57,8 +57,8 @@ def check_files(versions_json_path, data_json_path):
                         pass
                     print(f'moved {source} -> {destination}')
 
-    with open(data_json_path, "w", encoding="utf-8") as f:
-        json.dump(data_json, f, ensure_ascii=False, indent=4)
+    with open(temp_json_path, "w", encoding="utf-8") as f:
+        json.dump(temp_json, f, ensure_ascii=False, indent=4)
         
 
 def move_folder_content(source, destination):
@@ -218,7 +218,7 @@ if __name__ == "__main__":
     if not current_dir.endswith("update"):
         sys.exit()
     version_path = os.path.join(wd_dir, "static/files/version.json")
-    data_path = os.path.join(wd_dir, "data.json")
+    temp_json_path = os.path.join(wd_dir, "temp.json")
 
     if not ctypes.windll.shell32.IsUserAnAdmin():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
@@ -227,5 +227,5 @@ if __name__ == "__main__":
     with open(version_path, encoding="utf-8") as f:
         current_version = json.load(f)["versions"][0]["version"]
 
-    check_files(version_path, data_path)
+    check_files(version_path, temp_json_path)
     check_updates(current_version)
