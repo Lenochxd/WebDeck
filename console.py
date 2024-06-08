@@ -9,7 +9,7 @@ import socket
 import json
 import time
 
-with open('config.json', encoding="utf-8") as f:
+with open('.config/config.json', encoding="utf-8") as f:
     config = json.load(f)
 
 def send_data(message):

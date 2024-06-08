@@ -1,11 +1,18 @@
 import ctypes
 import sys
 import json
+import os.path
 
 try:
-    with open('config.json', encoding= "utf-8") as f:
-        settings = json.load(f)['settings']
-except FileNotFoundError:
+    if os.path.exists('.config/config.json'):
+        with open('.config/config.json', encoding='utf-8') as f:
+            settings = json.load(f).get('settings', {'app-admin': True})
+    elif os.path.exists('config.json'):
+        with open('config.json', encoding='utf-8') as f:
+            settings = json.load(f).get('settings', {'app-admin': True})
+    else:
+        settings = {'app-admin': True}
+except Exception:
     settings = {'app-admin': True}
     
 if 'app-admin' in settings and settings['app-admin'] == 'true':

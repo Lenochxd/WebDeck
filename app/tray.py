@@ -24,8 +24,12 @@ def reload_config():
     open_in_integrated_browser = "true"
     language = "en_US"
 
-    if os.path.exists("config.json"):
-        with open('config.json', encoding="utf-8") as f:
+    if os.path.exists(".config/config.json"):
+        config_path = ".config/config.json"
+    elif os.path.exists("config.json"):
+        config_path = "config.json"
+        
+        with open(config_path, encoding="utf-8") as f:
             config = json.load(f)
             settings = config.get('settings', {})
             integrated_browser_key = 'open-settings-in-integrated-browser'
@@ -37,7 +41,7 @@ def reload_config():
                 
             open_in_integrated_browser = settings.get(integrated_browser_key, 'false') == 'true'
             print(open_in_integrated_browser)
-            with open('config.json', 'w', encoding="utf-8") as json_file:
+            with open('.config/config.json', 'w', encoding="utf-8") as json_file:
                 json.dump(config, json_file, indent=4)
 
             port = config['url']['port']

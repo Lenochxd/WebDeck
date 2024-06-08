@@ -8,7 +8,7 @@ from app.utils.merge_dicts import merge_dicts
 from app.buttons.usage.asked_devices import get_asked_devices
 
 
-with open("config.json", encoding="utf-8") as f:
+with open(".config/config.json", encoding="utf-8") as f:
     config = json.load(f)
         
 def get_usage(
@@ -84,7 +84,7 @@ def get_usage(
                 computer_info["gpus"]["defaultGPU"] = {}
                 
                 config["settings"]["gpu_method"] = "None"
-                with open("config.json", "w", encoding="utf-8") as json_file:
+                with open(".config/config.json", "w", encoding="utf-8") as json_file:
                     json.dump(config, json_file, indent=4)
                     
         elif config["settings"]["gpu_method"] == "nvidia (GPUtil)":

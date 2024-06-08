@@ -16,7 +16,7 @@ from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
 
 
-with open("config.json", encoding="utf-8") as f:
+with open(".config/config.json", encoding="utf-8") as f:
     config = json.load(f)
 
 def check_json_update(config):
@@ -225,7 +225,7 @@ def get_gpu_method():
         except pynvml.NVMLError:
             config["settings"]["gpu_method"] = "AMD"
                 
-    with open("config.json", "w", encoding="utf-8") as json_file:
+    with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
         
     return config
@@ -233,16 +233,19 @@ def get_gpu_method():
 
 
 def on_start():
-    if not os.path.exists("config.json"):
-        # Create config.json
-        shutil.copy("config_default.json", "config.json")
+    # Create config.json
+    if not os.path.exists(".config/config.json"):
+        if os.path.exists("config.json"):
+            shutil.move("config.json", ".config/config.json")
+        else:
+            shutil.copy("config_default.json", ".config/config.json")
         
         if os.name == 'nt':
             
             # Set DLLs directory
             os.add_dll_directory(os.getcwd())
     
-            # Add windows shortcut
+            # Add windows start menu shortcut
             file_path = (
                 os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs\WebDeck.lnk"
             )
@@ -303,7 +306,7 @@ def on_start():
     if config["url"]["ip"] == "local_ip":
         config["url"]["ip"] = local_ip
                 
-        with open("config.json", "w", encoding="utf-8") as json_file:
+        with open(".config/config.json", "w", encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
             
     # Colors json
@@ -315,7 +318,7 @@ def on_start():
     
     # Config updater
     config = check_json_update(config)
-    with open("config.json", "w", encoding="utf-8") as json_file:
+    with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     
     return config, text, commands, local_ip
