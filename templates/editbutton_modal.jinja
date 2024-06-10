@@ -103,14 +103,16 @@
                           {% set button_name = button_settings["name"][0] %}
                         {% endif %}
                       {% else %}
-                        {% if command_value["style"]["name"] is string %}
-                          {% set button_name = command_value["style"]["name"] %}
-                        {% elif command_value["style"]["name"][language] %}
-                          {% set button_name = command_value["style"]["name"][language] %}
-                        {% elif command_value["style"]["name"]["en"] %}
-                          {% set button_name = command_value["style"]["name"]["en"] %}
-                        {% elif command_value["style"]["name"][0] %}
-                          {% set button_name = command_value["style"]["name"][0] %}
+                        {% if command_value.get("style") and command_value["style"].get("name") %}
+                          {% if command_value["style"]["name"] is string %}
+                            {% set button_name = command_value["style"]["name"] %}
+                          {% elif command_value["style"]["name"][language] %}
+                            {% set button_name = command_value["style"]["name"][language] %}
+                          {% elif command_value["style"]["name"]["en"] %}
+                            {% set button_name = command_value["style"]["name"]["en"] %}
+                          {% elif command_value["style"]["name"][0] %}
+                            {% set button_name = command_value["style"]["name"][0] %}
+                          {% endif %}
                         {% endif %}
                       {% endif %}
                       {{ button_name }}
