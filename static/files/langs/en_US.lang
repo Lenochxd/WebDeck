@@ -53,6 +53,7 @@ folder_created_successfully=Folder created successfully!
 
 
 // -- Button configuration --
+add_a_button=Add a button
 configure_your_button=Configure your button
 
 image=Image
@@ -86,6 +87,9 @@ no_changes_to_undo=There are no changes to undo.
 // Settings tab
 configuration=Configuration
 settings=Settings
+
+see_patchnotes=See patchnotes
+github_issue=Report an issue on GitHub
 
 language=Language
 config-windows_startup=Start on Windows startup
@@ -131,12 +135,14 @@ experimental=Experimental
 
 usage_btn_reload_time=Usage buttons reload time (ms)
 
-open_settings_in_integrated_browser=Open settings in a dedicated browser
+optimized_usage_display=Optimized usage display buttons
 
 gpu_usage_method=GPU usage method (if the gpu usage does not show)
 doesnt_work=doesn't work
 lmao=lmao
 none=None
+
+open_settings_in_integrated_browser=Open settings in a dedicated browser
 
 show_console=Show console
 dev_mode=Dev mode

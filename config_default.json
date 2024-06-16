@@ -5,13 +5,14 @@
         "auto-updates": "true",
         "dev-mode": "false",
         "flask-debug": "true",
-        "ear-soundboard": "true",
+        "optimized-usage-display": "false",
         "gpu_method": "nvidia (pynvml)",
         "show-console": "false",
         "open-settings-in-integrated-browser": "false",
         "data-transfer-method": "http",
         "automatic-firewall-bypass": "false",
         "fix-stop-soundboard": "false",
+        "ear-soundboard": "true",
         "spotify-api": {
             "CLIENT_ID": "",
             "CLIENT_SECRET": "",
@@ -38,9 +39,9 @@
         "names-color": "#b3b3b3",
         "show-names": "true",
         "portrait-rotate": "90",
-        "theme": "theme1.css",
+        "theme": "default_theme.css",
         "themes": [
-            "theme1.css"
+            "default_theme.css"
         ],
         "height": "4",
         "width": "8",
@@ -150,7 +151,6 @@
                     "name": "C disk usage"
                 },
                 {
-                    "background-color": "#ffffff",
                     "image": "settings2.png",
                     "image_size": "75%",
                     "message": "/open-config ",
@@ -417,5 +417,6 @@
     "url": {
         "ip": "0.0.0.0",
         "port": 5000
-    }
+    },
+    "allowed_networks": []
 }

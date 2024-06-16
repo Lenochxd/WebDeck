@@ -5,11 +5,14 @@
     {% else %}
       <title>WebDeck DEV</title>
     {% endif %}
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    {% for file in config['front']['themes'][::-1] %}
-      <link rel="stylesheet" href="static/themes/{{ file }}">
-    {% endfor %}
     <link rel="stylesheet" href="static/files/loading-squares.css">
+    {% for file in config['front']['themes'][::-1] %}
+      {% if not file.startswith('//') %}
+        <link rel="stylesheet" href="static/themes/{{ file }}">
+      {% endif %}
+    {% endfor %}
     <link rel="icon" href="static\files\icon.ico"/>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta charset="UTF-8">
@@ -32,8 +35,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-    <script src="/static/files/buttons-color-setting.js"></script>
-    <script src="/static/files/names-color-setting.js"></script>
+    <script src="/static/files/color-setting.js"></script>
     <script src="/static/files/themes-setting.js"></script>
     <script src="/static/files/background-setting.js"></script>
     <script src="/static/files/filepath.js"></script>
@@ -87,7 +89,7 @@
 
     {% if random_bg.endswith(".mp4") %}
       <div class="background-video">
-        <video autoplay muted loop class="blurred-video">
+        <video autoplay muted loop class="background-video">
           <source src="{{ 'static/files/uploaded/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
           Your browser does not support the video tag...
         </video>
@@ -108,7 +110,7 @@
       {% if random_bg and not random_bg.strip() == "" %}
         {% if random_bg.endswith('.mp4') %}
           body, div.fakeform-container {
-            background-color: #00000000!important;
+            background-color: #00000000;
             background-image: none;
           }
         {% elif '**uploaded/' in random_bg.lower() %}
@@ -143,8 +145,12 @@
           }
         {% else %}
           body, div.fakeform-container {
-            background-color: {{random_bg}}!important;
+            background-color: {{random_bg}};
             background-image: none;
+          }
+
+          :root {
+            --bg-color: {{random_bg}};
           }
         {% endif %}
       {% endif %}
@@ -187,7 +193,7 @@
             .button-{{ button_config['background-color'].replace('#','') }}, .button-{{ button_config['background-color'].replace('#','') }}:focus {
               background-color: #{{ button_config['background-color'].replace('#','') }};
               box-shadow: #{{ button_config['background-color'].replace('#','') }} 0 1px 3px 0;
-              color: rgba(0, 0, 0, 0.85);
+              color: rgba(0, 0, 0, 0.85) !important;
             }
             .button-{{ button_config['background-color'].replace('#','') }}:hover {
               transform: translateY(-1px);
@@ -196,6 +202,7 @@
             } 
             .button-{{ button_config['background-color'].replace('#','') }}:active {
               background-color: #{{ button_config['background-color'].replace('#','') }};
+              background: #{{ button_config['background-color'].replace('#','') }};
               border-color: rgba(0, 0, 0, 0.15);
               box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
               color: rgba(0, 0, 0, 0.65);
@@ -361,7 +368,7 @@
                     {% endif %}
                     
                     <!--|||||||||||||||||||||||-->
-                    {% if button_config["message"] and button_config['message'].startswith('/usage') %}
+                    {% if button_config['message'] and button_config['message'].startswith('/usage') %}
                       {% set name = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[1].strip() %}
                       {% set path = button_config['message'].replace('<|§|>','').replace("'",'"',2).split('"')[2] %}
                       {% if button_config['message'].split()[1] %}
@@ -398,10 +405,9 @@
               {% set button_settings = config["front"]["buttons"][folder_id][button_id] %}
 
               {% for category, commands_name in commands.items() if command_value == None %}
-                {% for command_name_, command in commands_name.items() if command_value == None %}
+                {% for command_name, command in commands_name.items() if command_value == None %}
                   {% if command['command'] %}
                     {% if button_command.lower().split()[0].strip() == command['command'].lower().strip() %}
-                      {% set command_name = command_name_ %}
                       {% set command_value = command %}
                       {% include 'editbutton_modal.jinja' %}
                     {% endif %}
@@ -447,9 +453,14 @@
             </svg>
           </div>
         </div>
-        <a class="{{black_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="See patchnotes" alt="See patchnotes">
-          v{{versions['versions'][0]['version']}}
-        </a>
+        <div style="display: flex; flex-direction: column;">
+          <a class="{{black_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="{{text['see_patchnotes']}}" alt="{{text['see_patchnotes']}}">
+            v{{versions['versions'][0]['version']}}
+          </a>
+          <a class="{{black_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/issues/new/choose" target="_blank" alt="{{text['github_issue']}}" style="margin-top: -4px;">
+            {{text['github_issue']}}
+          </a>
+        </div>
 
         <div class="modal-main">
           <div class="config-container choose-themes {{black_theme}}" id="choose-themes" style="display: none;">
@@ -598,7 +609,7 @@
                     </div>
                   </div>
                 {% elif bg.endswith(".mp4") %}
-                  <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg}}">
+                  <div class="choose-bg-element choose-bg-element-image" background="{{bg}}">
 
                     <div class="video-container choose-bg-pseudo-element">
                       <video autoplay muted loop class="blurred-video">
@@ -630,8 +641,8 @@
                     </div>
                   </div>
                 {% else %}
-                  <div class="choose-bg-element choose-bg-element-image {{black_theme}}" background="{{bg}}">
-                    <div class="choose-bg-pseudo-element" style="background-image: url('{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}')"></div>
+                  <div class="choose-bg-element choose-bg-element-image" background="{{bg}}">
+                    <div class="choose-bg-pseudo-element" style='background-image: url("{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '').replace("'", '&#39;') }}")'></div>
                     <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}">
                     <div class="choose-bg-buttons">
                       {% if bg.startswith('//') %}
@@ -850,7 +861,8 @@
                   <button type="button" id="setting-background" class="{{black_theme}}">
                     {{text['open_background_image_menu']}}
                   </button>
-                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{config['front']['background']}}">
+                  {% set backgrounds = str(config['front']['background']).replace('",', "',").replace(', "', ", '").replace('["', "['").replace('"]', "']") %}
+                  <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{backgrounds}}">
                 </div>
 
                 <div class="setting {{black_theme}}">
@@ -948,14 +960,6 @@
                   >  
                 </div>
                 
-                <div class="setting open-settings-in-integrated-browser">
-                  <p> {{text['open_settings_in_integrated_browser']}} </p>
-                  <label for="open-settings-in-integrated-browser" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-
                 <div class="setting gpu_method">
                   <label for="gpu_method"> {{text['gpu_usage_method']}} </label>
                   <select id="gpu_method" name="settings.gpu_method">
@@ -965,6 +969,22 @@
                     <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel ({{text['lmao']}})</option>
                     <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}> {{text['none']}} </option>
                   </select>
+                </div>
+
+                <div class="setting optimized-usage-display">
+                  <p> {{text['optimized_usage_display']}} </p>
+                  <label for="optimized-usage-display" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="optimized-usage-display" name="settings.optimized-usage-display" {% if config['settings']['optimized-usage-display'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <div class="setting open-settings-in-integrated-browser">
+                  <p> {{text['open_settings_in_integrated_browser']}} </p>
+                  <label for="open-settings-in-integrated-browser" class="switch">
+                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
                 </div>
                 
                 {# <div class="setting data-transfer-method">
@@ -1025,7 +1045,7 @@
       <div class="addbutton-modal-content {{black_theme}}" id="addbutton-modal-content">
 
         <div class="addbutton-modal-header bold">
-          <h1 class="addbutton-modal">Add a button</h1>
+          <h1 class="addbutton-modal"> {{ text['add_a_button'] }} </h1>
           <div class="addbutton-modal-close">
             <svg class="addbutton-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -2292,14 +2312,6 @@
         // =========== EDITORMODE ======== END
 
 
-        // ?modal=show ?config=show
-        const urlParams = new URLSearchParams(window.location.search);
-        const modalParam = urlParams.get('config');
-        if (modalParam === 'show') {
-          let modal = document.querySelector('.modal-container');
-          modal.style.opacity = '1';
-          modal.style.display = 'block';
-        }
 
         {% if config['settings']['data-transfer-method'] == 'socket' %}
           // SOCKET CONNECTION
@@ -2452,6 +2464,16 @@
         
 
         let lastModals = [];
+
+        // ?modal=show ?config=show
+        const urlParams = new URLSearchParams(window.location.search);
+        const modalParam = urlParams.get('config');
+        if (modalParam === 'show' || modalParam === 'true') {
+          let modal = document.querySelector('.modal-container');
+          modal.style.opacity = '1';
+          modal.style.display = 'block';
+          lastModals.push("config-modal");
+        }
         
         function hide_last_modal() {
           switch (lastModals[lastModals.length - 1]) {

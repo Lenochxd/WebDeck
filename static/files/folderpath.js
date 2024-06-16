@@ -1,4 +1,4 @@
-function handleFolderpathButtonClick(filetypes) {
+function handleFolderpathButtonClick() {
     fetch("/upload_folderpath", {
         method: 'POST',
         headers: {
@@ -25,9 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const folderpathButtons = document.querySelectorAll('button.folderpath');
 
     folderpathButtons.forEach(button => {
-        let filetypes = button.getAttribute('filetypes');
         button.addEventListener('click', () => {
-            handleFolderpathButtonClick(filetypes);
+            handleFolderpathButtonClick();
         });
     });
 

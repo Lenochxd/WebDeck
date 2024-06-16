@@ -443,12 +443,10 @@
                 var commandString_{{arg_modal_ID}} = getCommand(command_{{arg_modal_ID}}, "{{arg_modal_ID}}").replaceAll('<|§|>', '').replaceAll('[object HTMLInputElement]', '');
 
                 let message = "/usage '"+commandString_{{arg_modal_ID}};
-                if (message.startsWith('/usage')) {
-                  let path = message.replaceAll("']['", '.').replaceAll("['", '.').replaceAll("']", '')
-                  path = path.substring(path.lastIndexOf("'") + 1).replaceAll(' ','');
-                  usageTitlePreview_{{arg_modal_ID}}.classList.add(`${path}`);
-                  usageValuePreview_{{arg_modal_ID}}.classList.add(`${path}`);
-                }
+                let path = message.replaceAll("']['", '.').replaceAll("['", '.').replaceAll("']", '')
+                path = path.substring(path.lastIndexOf("'") + 1).replaceAll(' ','');
+                usageTitlePreview_{{arg_modal_ID}}.classList.add(`${path}`);
+                usageValuePreview_{{arg_modal_ID}}.classList.add(`${path}`);
               }
 
               var usageInput_{{arg_modal_ID}} = document.getElementById('usage-title-input_{{arg_modal_ID}}');

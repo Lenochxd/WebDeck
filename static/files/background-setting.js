@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var chooseBackground = document.getElementById("choose-background-handler");
   var backgroundsArrayString = chooseBackground.value;
-  backgroundsArrayString = backgroundsArrayString.replace(/'/g, '"');
+  backgroundsArrayString = backgroundsArrayString.replace("['", '["').replace("']", '"]').replace("','", '","');
   var backgrounds_array = JSON.parse(backgroundsArrayString);
 
   document.getElementById("create-color-bg").addEventListener("click", function() {
@@ -216,20 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
             sourceElement.type = "video/mp4";
             videoElement.appendChild(sourceElement);
             videoContainer.appendChild(videoElement);
-        
+            
             // Set mediaElement to contain both video containers
-            mediaElement = document.createElement("div");
-            mediaElement.appendChild(videoContainerBlurred);
-            mediaElement.appendChild(videoContainer);
+            divElement.appendChild(videoContainerBlurred);
+            divElement.appendChild(videoContainer);
+            console.log(mediaElement);
           } else {
             var imgElement = document.createElement("img");
             imgElement.setAttribute("src", imageFile);
             mediaElement = imgElement;
           }
 
-          divElement.appendChild(mediaElement);
-
-          
 
           var chooseBgButtonsDiv = document.querySelector(".choose-bg-buttons");
           var clonedChooseBgButtons = chooseBgButtonsDiv.cloneNode(true);
@@ -333,7 +330,6 @@ function deleteButtonEvent(event) {
     var divElement = event.target.closest(".choose-bg-element");
     var backgroundAttribute = divElement.getAttribute("background");
     var filteredBackgrounds = backgrounds_array.filter(item => !item.startsWith("//"))
-    console.log(filteredBackgrounds.length);
     if ((divElement != null && filteredBackgrounds.length != 1) || backgroundAttribute.startsWith("//")) {
       divElement.remove();
       backgrounds_array = removeBackgroundFromArray();
@@ -390,14 +386,29 @@ function removeBackgroundFromArray() {
   return backgrounds_array;
 }
 
-function calculateBrightness(hexColor) {
-  // hex to RGB
-  var r = parseInt(hexColor.substr(1, 2), 16);
-  var g = parseInt(hexColor.substr(3, 2), 16);
-  var b = parseInt(hexColor.substr(5, 2), 16);
-  
-  // Calculer la luminosité
-  return (r * 299 + g * 587 + b * 114) / 1000;
+function calculateBrightness(color) {
+  // Check if color is in hex format
+  if (color.startsWith("#")) {
+    // Hex to RGB
+    var r = parseInt(color.substr(1, 2), 16);
+    var g = parseInt(color.substr(3, 2), 16);
+    var b = parseInt(color.substr(5, 2), 16);
+  } else if (color.startsWith("rgb(")) {
+    // RGB to values
+    var rgbValues = color.substring(4, color.length - 1).split(",");
+    var r = parseInt(rgbValues[0].trim());
+    var g = parseInt(rgbValues[1].trim());
+    var b = parseInt(rgbValues[2].trim());
+  } else {
+    // Invalid color format
+    console.error("Invalid color format");
+    return NaN;
+  }
+
+  // Calculate brightness
+  var brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+  return brightness;
 }
 
 console.log("background-setting.js loaded");

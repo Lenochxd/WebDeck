@@ -53,6 +53,7 @@ folder_created_successfully=Dossier créé avec succès !
 
 
 // -- Button configuration --
+add_a_button=Ajouter un bouton
 configure_your_button=Configurez votre bouton
 
 image=Image
@@ -86,6 +87,9 @@ no_changes_to_undo=Aucune modification ne peut être annulée.
 // Settings tab
 configuration=Configuration
 settings=Paramètres
+
+see_patchnotes=Voir les ajouts
+github_issue=Signaler un problème sur GitHub
 
 language=Langue
 config-windows_startup=Démarrer avec Windows
@@ -131,12 +135,14 @@ experimental=Expérimental
 
 usage_btn_reload_time=Temps de rechargement des boutons d'utilisation (ms)
 
-open_settings_in_integrated_browser=Ouvrir les paramètres dans un navigateur dédié
+optimized_usage_display=Boutons d'affichage de l'utilisation optimisés
 
 gpu_usage_method=Méthode GPU (si l'utilisation du GPU ne s'affiche pas)
 doesnt_work=ne fonctionne pas
 lmao=?? ptdr
 none=Aucun
+
+open_settings_in_integrated_browser=Ouvrir les paramètres dans un navigateur dédié
 
 show_console=Afficher la console
 dev_mode=Mode développeur

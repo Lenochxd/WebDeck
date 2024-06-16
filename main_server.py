@@ -12,28 +12,27 @@ import urllib.request
 import zipfile
 import os
 import importlib
+import ipaddress
 from pathlib import Path
 import inspect
+import ast
 
 # Third-party library imports
 import requests
 import socket
 import spotipy
 import spotipy.util as util
-from spotipy.oauth2 import SpotifyOAuth
 from deepdiff import DeepDiff
-from uuid import UUID
-import pygetwindow as gw
-from pywinauto import Application
 import mss
 from PIL import Image
-from deep_translator import GoogleTranslator
+try: from deep_translator import GoogleTranslator
+except SyntaxError: pass
 import pyautogui as keyboard
 import keyboard as keyboard2
 import webcolors
 import pyaudio
-from flask import Flask, request, jsonify, render_template, redirect, Blueprint
-from flask_socketio import SocketIO, emit
+from flask import Flask, request, jsonify, render_template
+from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent
 import pyperclip
@@ -42,11 +41,7 @@ import win32con
 import win32gui
 from win32com.client import Dispatch
 from win10toast import ToastNotifier
-import tkinter as tk
 import easygui
-from tkinter import filedialog
-import sounddevice as sd
-import soundfile as sf
 import psutil
 import GPUtil
 import pynvml
@@ -61,8 +56,6 @@ from obswebsocket import requests as obsrequests
 
 # Numerical and scientific libraries
 import numpy as np
-import bisect
-from ctypes import cast, POINTER, wintypes, WinDLL, Structure, c_char
 import ctypes
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
@@ -70,7 +63,7 @@ import comtypes
 import math
 
 # WebDeck imports
-from updater import compare_versions
+from updater import compare_versions, check_files
 
 os.add_dll_directory(os.getcwd())
 
@@ -105,6 +98,7 @@ if not os.path.exists("static/files/uploaded"):
 with open("config.json", encoding="utf-8") as f:
     config = json.load(f)
 
+check_files("static/files/version.json", "data.json")
 
 def load_lang_file(lang):
     lang_dictionary = {}
@@ -180,9 +174,11 @@ def check_json_update(config):
         config["settings"]["automatic-firewall-bypass"] = "false"
     if "fix-stop-soundboard" not in config["settings"]:
         config["settings"]["fix-stop-soundboard"] = "false"
+    if "optimized-usage-display" not in config["settings"]:
+        config["settings"]["optimized-usage-display"] = "false"
 
-    if "theme" not in config["front"]:
-        config["front"]["theme"] = "theme1.css"
+    if "theme" not in config["front"] or not os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
+        config["front"]["theme"] = "default_theme.css"
 
     themes = [
         f"//{file_name}"
@@ -231,11 +227,12 @@ def check_json_update(config):
                 config["front"]["themes"].insert(0, f"//{theme}")
                 
 
-
     # move the default theme to the bottom
-    if config["front"]["theme"] in config["front"]["themes"]:
-        config["front"]["themes"].remove(config["front"]["theme"])
-    config["front"]["themes"].append(config["front"]["theme"])
+    if os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
+        if config["front"]["theme"] in config["front"]["themes"]:
+            config["front"]["themes"].remove(config["front"]["theme"])
+            
+        config["front"]["themes"].append(config["front"]["theme"])
 
 
     return config
@@ -654,8 +651,32 @@ def show_error(message):
     ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Error", 0)
 
 
-# resize grid ||| start
+def print_dict_differences(dict1, dict2):
+    diff = DeepDiff(dict1, dict2, ignore_order=True)
 
+    print("Differences found :")
+    for key, value in diff.items():
+        print(f"Key : {key}")
+        print(f"Difference : {value}")
+        print("----------------------")
+
+
+def merge_dicts(d1, d2):
+    """
+    Merge two dictionaries taking including subdictionaries.
+    Keys in d2 overwrite corresponding keys in d1, unless they are part of a subdictionary.
+    """
+    for key in d2:
+        if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
+            # Recursively, we merge the subdictionaries with the merge_dict method.
+            merge_dicts(d1[key], d2[key])
+        else:
+            # If the key exists in d1 and it is not a subdictionary, we replace it with that of d2.
+            d1[key] = d2[key]
+    return d1
+
+
+# resize grid ||| start
 
 def create_matrix(config):
     matrix = []
@@ -888,7 +909,7 @@ def execute_python_file(file_path):
 def get_current_volume():
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
+    volume = ctypes.cast(interface, ctypes.POINTER(IAudioEndpointVolume))
     return volume.GetMasterVolumeLevelScalar()
 
 
@@ -896,7 +917,7 @@ def set_volume(target_volume):
     current_volume = get_current_volume()
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
+    volume = ctypes.cast(interface, ctypes.POINTER(IAudioEndpointVolume))
     while math.isclose(current_volume, target_volume, rel_tol=0.01) == False:
         if current_volume > target_volume:
             current_volume -= 0.01
@@ -967,12 +988,15 @@ def get_color_distance(hex_code1, hex_code2):
 def translate(word, target_language):
     # Separate words with spaces before each capital letter
     word = "".join([f" {i}" if i.isupper() else i for i in word]).strip()
+    
     if word == "Discord" or target_language.upper() == "EN":
-        result = word
-    else:
-        result = GoogleTranslator(source="en", target=target_language).translate(word)
-
-    return result
+        return word
+        
+    try:
+        return GoogleTranslator(source="en", target=target_language).translate(word)
+    except NameError:
+        return word
+    
 
 
 def bring_window_to_front(window_title):
@@ -1063,6 +1087,25 @@ def has_at_least_5_minutes_difference(timestamp1, timestamp2):
     return difference_in_minutes >= 15
 
 
+def extract_asked_device(input_string):
+    pattern = r"\['(.*?)'\]"
+    matches = re.findall(pattern, input_string)
+    return matches
+    
+def get_asked_devices():
+    devices = []
+    
+    for folder_id, value in config["front"]["buttons"].items():
+        for button in config["front"]["buttons"][folder_id]:
+            if "message" in button.keys() and button["message"].startswith("/usage"):
+                
+                device = extract_asked_device(button["message"])
+                if device is not None:
+                    devices.append(device)
+                        
+    return devices
+
+
 with open("config.json", encoding="utf-8") as f:
     config = json.load(f)
     if not "gpu_method" in config["settings"]:
@@ -1077,116 +1120,131 @@ with open("config.json", "w", encoding="utf-8") as json_file:
 
 excluded_disks = {}
 
-
-def get_usage():
+def get_usage(
+    get_all=True if config["settings"]["optimized-usage-display"] == "false" else False,
+    asked_devices=get_asked_devices()
+):
     global excluded_disks
+    computer_info = {}
+    
     # CPU
-    cpu_percent = psutil.cpu_percent(4)
-    computer_info = {"cpu": {"usage_percent": cpu_percent}}
+    if get_all or any(item[0] == 'cpu' for item in asked_devices):
+        cpu_percent = psutil.cpu_percent()
+        computer_info["cpu"] = {"usage_percent": cpu_percent}
 
     # Memory
-    memory = psutil.virtual_memory()
-    computer_info["memory"] = {
-        "total_gb": round(memory.total / 1024**3, 2),
-        "used_gb": round(memory.total / 1024**3 - memory.available / 1024**3, 2),
-        "available_gb": round(memory.available / 1024**3, 2),
-        "usage_percent": memory[2],
-    }
+    if get_all or any(item[0] == 'memory' for item in asked_devices):
+        memory = psutil.virtual_memory()
+        computer_info["memory"] = {}
+        
+        if get_all or any(item[1] == 'total_gb' for item in asked_devices):
+            computer_info["memory"]["total_gb"] = round(memory.total / 1024**3, 2)
+        if get_all or any(item[1] == 'used_gb' for item in asked_devices):
+            computer_info["memory"]["used_gb"] = round(memory.total / 1024**3 - memory.available / 1024**3, 2)
+        if get_all or any(item[1] == 'available_gb' for item in asked_devices):
+            computer_info["memory"]["available_gb"] = round(memory.available / 1024**3, 2)
+        if get_all or any(item[1] == 'usage_percent' for item in asked_devices):
+            computer_info["memory"]["usage_percent"] = memory[2]
 
     # Hard disk
-    disks = psutil.disk_partitions()
-    computer_info["disks"] = {}
-    for disk in disks:
-        try:
-            disk_name = disk.device.replace("\\", "").replace(":", "")
+    if get_all or any(item[0] == 'disks' for item in asked_devices):
+        computer_info["disks"] = {}
+        disks = psutil.disk_partitions()
+        for disk in disks:
+            try:
+                disk_name = disk.device.replace("\\", "").replace(":", "")
+                if get_all or any(item[1] == disk_name for item in asked_devices):
+                    
+                    # Check if the disk is excluded due to a previous error
+                    if disk_name not in excluded_disks.keys():
+                        computer_info["disks"][disk_name] = {}
+                        disk_usage = psutil.disk_usage(disk.device)
+                        
+                        if get_all or any(item[2] == "total_gb" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["total_gb"] = round(disk_usage.total / 1024**3, 2)
+                        if get_all or any(item[2] == "used_gb" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["used_gb"] = round(disk_usage.used / 1024**3, 2)
+                        if get_all or any(item[2] == "free_gb" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["free_gb"] = round(disk_usage.free / 1024**3, 2)
+                        if get_all or any(item[2] == "usage_percent" for item in asked_devices if len(item) == 3):
+                            computer_info["disks"][disk_name]["usage_percent"] = disk_usage.percent
+                        
+                    elif has_at_least_5_minutes_difference(
+                        excluded_disks[disk_name.upper()], time.time()
+                    ):
+                        del excluded_disks[disk_name.upper()]
 
-            # Check if the disk is excluded due to a previous error
-            if disk_name not in excluded_disks.keys():
+            except Exception as e:
+                print("Usage Disks Error:", e)
+                error_message = str(e)
 
-                disk_usage = psutil.disk_usage(disk.device)
-                computer_info["disks"][disk_name] = {
-                    "total_gb": round(disk_usage.total / 1024**3, 2),
-                    "used_gb": round(disk_usage.used / 1024**3, 2),
-                    "free_gb": round(disk_usage.free / 1024**3, 2),
-                    "usage_percent": disk_usage.percent,
-                }
-            elif has_at_least_5_minutes_difference(
-                excluded_disks[disk_name.upper()], time.time()
-            ):
-                del excluded_disks[disk_name.upper()]
-
-        except Exception as e:
-            error_message = str(e)
-            print("error:", e)
-
-            if (
-                "[WinError 5]" in error_message
-                or "[WinError 21]" in error_message
-                or "[WinError 1005]" in error_message
-            ):
-                # Extract the disk letter following the error message
-                disk_letter = error_message[-2]
-                excluded_disks[disk_letter.upper()] = time.time()
-                print(
-                    f"Disk '{disk_letter}' excluded from further processing for 15 minutes."
-                )
+                if (
+                    "[WinError 5]" in error_message
+                    or "[WinError 21]" in error_message
+                    or "[WinError 1005]" in error_message
+                ):
+                    # Extract the disk letter following the error message
+                    disk_letter = error_message[-2]
+                    excluded_disks[disk_letter.upper()] = time.time()
+                    print(f"Disk '{disk_letter}' excluded from further processing for 15 minutes.")
 
     # Network
-    network_io_counters = psutil.net_io_counters()
-    computer_info["network"] = {
-        "bytes_sent": network_io_counters.bytes_sent,
-        "bytes_recv": network_io_counters.bytes_recv,
-    }
+    if get_all or any(item[0] == 'network' for item in asked_devices):
+        network_io_counters = psutil.net_io_counters()
+        computer_info["network"] = {
+            "bytes_sent": network_io_counters.bytes_sent,
+            "bytes_recv": network_io_counters.bytes_recv,
+        }
 
     # GPU
-    computer_info["gpus"] = {}
-    if config["settings"]["gpu_method"] == "nvidia (pynvml)":
-        try:
-            num_gpus = pynvml.nvmlDeviceGetCount()
-            for count in range(num_gpus):
-                handle = pynvml.nvmlDeviceGetHandleByIndex(count)
-                utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
+    if get_all or any(item[0] == 'gpus' for item in asked_devices):
+        computer_info["gpus"] = {}
+        if config["settings"]["gpu_method"] == "nvidia (pynvml)":
+            try:
+                num_gpus = pynvml.nvmlDeviceGetCount()
+                for count in range(num_gpus):
+                    handle = pynvml.nvmlDeviceGetHandleByIndex(count)
+                    utilization = pynvml.nvmlDeviceGetUtilizationRates(handle)
+                    computer_info["gpus"][f"GPU{count + 1}"] = {
+                        "usage_percent": int(utilization.gpu),
+                    }
+            except pynvml.nvml.NVML_ERROR_NOT_SUPPORTED:
+                computer_info["gpus"]["defaultGPU"] = {}
+                
+                config["settings"]["gpu_method"] = "None"
+                with open("config.json", "w", encoding="utf-8") as json_file:
+                    json.dump(config, json_file, indent=4)
+                    
+        elif config["settings"]["gpu_method"] == "nvidia (GPUtil)":
+
+            gpus = GPUtil.getGPUs()
+            computer_info["gpus"] = {}
+            for count, gpu in enumerate(gpus):
                 computer_info["gpus"][f"GPU{count + 1}"] = {
-                    "usage_percent": int(utilization.gpu),
+                    "name": gpu.name,
+                    "used_mb": gpu.memoryUsed,
+                    "total_mb": gpu.memoryTotal,
+                    "available_mb": gpu.memoryTotal - gpu.memoryUsed,
+                    "usage_percent": int(gpu.load * 100),
                 }
-        except pynvml.nvml.NVML_ERROR_NOT_SUPPORTED:
+                
+        else:
             computer_info["gpus"]["defaultGPU"] = {}
             
-            config["settings"]["gpu_method"] = "None"
-            with open("config.json", "w", encoding="utf-8") as json_file:
-                json.dump(config, json_file, indent=4)
-                
-    elif config["settings"]["gpu_method"] == "nvidia (GPUtil)":
-
-        gpus = GPUtil.getGPUs()
-        computer_info["gpus"] = {}
-        for count, gpu in enumerate(gpus):
-            computer_info["gpus"][f"GPU{count + 1}"] = {
-                "name": gpu.name,
-                "used_mb": gpu.memoryUsed,
-                "total_mb": gpu.memoryTotal,
-                "available_mb": gpu.memoryTotal - gpu.memoryUsed,
-                "usage_percent": int(gpu.load * 100),
-            }
+        if "GPU1" in computer_info["gpus"]:
+            computer_info["gpus"]["defaultGPU"] = computer_info["gpus"]["GPU1"]
             
-    else:
-        computer_info["gpus"]["defaultGPU"] = {}
-        
-    if "GPU1" in computer_info["gpus"]:
-        computer_info["gpus"]["defaultGPU"] = computer_info["gpus"]["GPU1"]
-
+    if get_all == False:
+        computer_info = merge_dicts(usage_example, computer_info)
     return computer_info
 
 
-usage_example = get_usage()
+usage_example = get_usage(True)
 print(usage_example)
-
 
 @app.route("/usage", methods=["POST"])
 def usage():
-    global usage_example
-    usage_example = get_usage()
-    return jsonify(usage_example)
+    return jsonify(get_usage())
 
 
 def get_local_ip():
@@ -1201,6 +1259,7 @@ def get_local_ip():
 
 
 local_ip = get_local_ip()
+
 if config["url"]["ip"] == "local_ip":
     config["url"]["ip"] = local_ip
 
@@ -1208,13 +1267,25 @@ if config["url"]["ip"] == "local_ip":
 # Middleware to check request IP address
 @app.before_request
 def check_local_network():
-    remote_ip = request.remote_addr
+    remote_ip = request.remote_addr    
+
+    netmask = '255.255.255.0'
+
+    ip_local = ipaddress.IPv4Network(local_ip + '/' + netmask, strict=False)
+    ip_remote = ipaddress.IPv4Network(remote_ip + '/' + netmask, strict=False)
+    
+    # print(f"local IP is: {local_ip}")
+    # print(f"remote: {remote_ip}")
+    # print(f"IP1: {ip_local} == IP2: {ip_remote} {ip_local == ip_remote}")
+    
     # print(f'new connection established: {remote_ip}')
-    if (
-        remote_ip != local_ip
-        and not remote_ip.startswith("127.")
-        and not remote_ip.startswith("192.168.")
-    ):
+    
+    if ip_remote != ip_local:
+        # check if in allowed network list in config
+        for network in config["allowed_networks"]:
+            if ipaddress.IPv4Address(remote_ip) in ipaddress.IPv4Network(network):
+                return
+            
         return (
             "Unauthorized access: you are not on the same network as the server.",
             403,
@@ -1349,37 +1420,11 @@ def home():
     )
 
 
-def print_dict_differences(dict1, dict2):
-    diff = DeepDiff(dict1, dict2, ignore_order=True)
-
-    print("Differences found :")
-    for key, value in diff.items():
-        print(f"Key : {key}")
-        print(f"Difference : {value}")
-        print("----------------------")
-
-
-def merge_dicts(d1, d2):
-    """
-    Merge two dictionaries taking including subdictionaries.
-    Keys in d2 overwrite corresponding keys in d1, unless they are part of a subdictionary.
-    """
-    for key in d2:
-        if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
-            # Recursively, we merge the subdictionaries with the merge_dict method.
-            merge_dicts(d1[key], d2[key])
-        else:
-            # If the key exists in d1 and it is not a subdictionary, we replace it with that of d2.
-            d1[key] = d2[key]
-    return d1
-
-
 folders_to_create = []
-
 
 @app.route("/save_config", methods=["POST"])
 def saveconfig():
-    global folders_to_create, obs_host, obs_port, obs_password, obs
+    global config, folders_to_create, obs_host, obs_port, obs_password, obs
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
@@ -1448,11 +1493,8 @@ def saveconfig():
     config = save_config(config)
 
     try:
-        config["front"]["background"] = eval(config["front"]["background"])
-    except TypeError:
-        pass
-    try:
-        config["front"]["themes"] = eval(config["front"]["themes"])
+        config["front"]["background"] = config["front"]["background"].replace("['", '["').replace("']", '"]').replace("', '", "','").replace("','", '","')
+        config["front"]["background"] = ast.literal_eval(config["front"]["background"])
     except TypeError:
         pass
 
@@ -1550,7 +1592,7 @@ def save_buttons_only():
 
 @app.route("/get_config", methods=["GET"])
 def get_config():
-    global folders_to_create
+    global folders_to_create, config
 
     with open("config.json", encoding="utf-8") as f:
         config = json.load(f)
@@ -1640,6 +1682,7 @@ def kill_nircmd():
 def send_data(message=None):
     global all_func, obs, obs_host, obs_port, obs_password, obs
 
+    command_arguments = message
     message = message.replace("<|§|>", " ")
 
     if message == "/bypass-windows-firewall":
@@ -1654,6 +1697,18 @@ def send_data(message=None):
 
     elif message.startswith("/exit"):
         sys.exit("/exit received")
+        
+    elif message.startswith("/usage"): # this is useless btw
+        asked_device = []
+        
+        device = extract_asked_device(message)
+        if device is not None:
+            asked_device.append(device)
+        
+        print(asked_device)
+        usage = get_usage(False, asked_device)
+        print(usage)
+        return jsonify(usage)
 
     elif message.startswith("/stop_sound"):
         return stop_soundboard()
@@ -2495,14 +2550,14 @@ def send_data(message=None):
                     params = inspect.signature(func).parameters
                     param_names = [param for param in params]
                     
-                    print("ARGS: ", param_names)
+                    command_arguments = command_arguments.replace(f"/{command} ", '', 1)
+                    commandArgs = command_arguments.split("<|§|>")
                     
                     if param_names == []:
                         func()
                     else:
-                        func() # TODO
-            
-
+                        func(*commandArgs)
+                        
     return jsonify({"success": True})
 
 

@@ -14,9 +14,6 @@ deep_translator
 mss
 pyperclip
 colormath==3.0.0
-sounddevice
-soundfile
-pywinauto
 pywinrm
 cputil
 gputil

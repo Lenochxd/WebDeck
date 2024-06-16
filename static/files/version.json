@@ -1,6 +1,179 @@
 {
     "versions": [
         {
+            "version": "1.8.5",
+            "release_date": {
+                "day": "24",
+                "month": "04",
+                "year": "2024",
+                "hour": "16",
+                "minute": "25"
+            },
+            "en": {
+                "updates": [
+                    "Added Korean translation (by @KiiMyu on #15)"
+                ],
+                "minor_enhancements": [],
+                "fixes": [],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [
+                    "Traduction coréenne ajoutée (par @KiiMyu sur #15)"
+                ],
+                "minor_enhancements": [],
+                "fixes": [],
+                "nobody_cares": []
+            }
+        },
+        {
+            "version": "1.8.4",
+            "release_date": {
+                "day": "21",
+                "month": "04",
+                "year": "2024",
+                "hour": "16",
+                "minute": "00"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Resolved issue where disabled themes remained enabled",
+                    "Fixed crashes caused by wallpaper filenames containing the `'` character",
+                    "Corrected theme color priority",
+                    "Fixed custom plugin arguments",
+                    "Fixed broken CSS for new background videos"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Résolution du problème où les thèmes désactivés restaient activés",
+                    "Correction des plantages causés par les noms de fichiers d'arrière-plan contenant le caractère `'`",
+                    "Correction de la priorité des couleurs de thème",
+                    "Correction des arguments de plugins custom",
+                    "Correction du CSS cassé pour les d'arrière-plan vidéos ajoutés"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
+            "version": "1.8.3",
+            "release_date": {
+                "day": "09",
+                "month": "04",
+                "year": "2024",
+                "hour": "21",
+                "minute": "56"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Fixed page display issue with unset 'config' parameter in URL"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction d'un problème d'affichage de la page avec le paramètre 'config' non défini dans l'URL"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
+            "version": "1.8.2",
+            "release_date": {
+                "day": "09",
+                "month": "04",
+                "year": "2024",
+                "hour": "19",
+                "minute": "06"
+            },
+            "en": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Optimized computer usage display buttons",
+                    "Added a setting to enable more usage display optimizations"
+                ],
+                "fixes": [
+                    "Fixed config menu not being able to exit using ESC key after opening with the 'Open config' button",
+                    "Fixed 'SyntaxError' on startup"
+                ],
+                "nobody_cares": [
+                    "Added config=true parameter to the url"
+                ]
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Optimisation des boutons d'affichage de l'utilisation de l'ordinateur",
+                    "Ajout d'un paramètre pour activer davantage d'optimisations pour l'affichage de l'utilisation"
+                ],
+                "fixes": [
+                    "Correction du menu de configuration qui ne pouvait pas être fermé en utilisant la touche ÉCHAP après avoir été ouvert avec le bouton 'Ouvrir la configuration'",
+                    "Correction de l'erreur 'SyntaxError' au démarrage"
+                ],
+                "nobody_cares": [
+                    "Ajout du paramètre config=true à l'URL"
+                ]
+            }
+        },
+        {
+            "version": "1.8.1",
+            "release_date": {
+                "day": "07",
+                "month": "04",
+                "year": "2024",
+                "hour": "15",
+                "minute": "17"
+            },
+            "renamed_files": [
+                ["static/themes/theme1.css", "static/themes/default_theme.css"]
+            ],
+            "en": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Added a 'Report an issue on GitHub' button to the settings"
+                ],
+                "fixes": [
+                    "Fixed networks that don't follow the standard 192 or localhost setup (by @sylos on #11)",
+                    "Fixed color input margin",
+                    "Fixed a forgotten translation",
+                    "Removed unnecessary default background color to the settings button"
+                ],
+                "nobody_cares": [
+                    "Improved auto update: added ability to manipulate files on update (delete/move/rename)",
+                    "Renamed 'theme1' to 'default_theme'",
+                    "Cleaned up imports (removed `sounddevice`, `soundfile`, `pywinauto` from requirements.txt)",
+                    "Improved code quality"
+                ]
+            },
+            "fr": {
+                "updates": [],
+                "minor_enhancements": [
+                    "Ajout d'un bouton 'Signaler un problème sur GitHub' dans les paramètres"
+                ],
+                "fixes": [
+                    "Correction des réseaux qui ne suivent pas la configuration standard 192 ou localhost (par @sylos sur #11)",
+                    "Correction de la marge de saisie de couleur",
+                    "Correction d'une traduction oubliée",
+                    "Suppression de la couleur de fond par défaut inutile du bouton des paramètres"
+                ],
+                "nobody_cares": [
+                    "Amélioration des mises à jour automatiquess : ajout de la possibilité de manipuler les fichiers lors de la mise à jour (suppression/déplacement/renommer)",
+                    "Renommage de 'theme1' en 'default_theme'",
+                    "Nettoyage des imports (suppression de `sounddevice`, `soundfile`, `pywinauto` du fichier requirements.txt)",
+                    "Amélioration de la qualité du code"
+                ]
+            }            
+        },
+        {
             "version": "1.8.0",
             "release_date": {
                 "day": "01",
@@ -80,7 +253,7 @@
                 "fixes": [
                     "Fixed: Unable to add or move a button to the same location as a previously deleted button",
                     "Fixed automatic updates, now repaired and improved; no need for manual updates anymore",
-                    "Fixed error regarding unsupported old Nvidia GPUs",
+                    "Fixed error regarding unsupported old Nvidia GPUs (#7)",
                     "Fixed the 'Open' button if the file selection window was canceled",
                     "Fixed an English text"
                 ],
@@ -100,7 +273,7 @@
                 "fixes": [
                     "Correction : impossible d'ajouter ou de déplacer un bouton au même emplacement qu'un bouton précédemment supprimé",
                     "Correction des mises à jour automatiques qui ont étés réparées et améliorées; plus besoin de mettre à jour manuellement",
-                    "Correction de l'erreur de non prise en charge des anciennes cartes graphiques Nvidia",
+                    "Correction de l'erreur de non prise en charge des anciennes cartes graphiques Nvidia (#7)",
                     "Correction du bouton 'Ouvrir' si la fenêtre de sélection de fichier était annulée",
                     "Correction d'un texte en anglais"
                 ],

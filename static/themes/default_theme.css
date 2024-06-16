@@ -194,7 +194,7 @@ button.button {
   animation-duration: 1s;
 }
 
-.activee, .wd_button:active {
+.wd_button:active {
   background-color: #F0F0F1;
   border-color: rgba(0, 0, 0, 0.15);
   box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
@@ -495,7 +495,8 @@ input[type="range"]:disabled::-moz-range-thumb {
   border-radius: 20px;
 }
 
-a#version {
+a#version,
+a#issues {
   text-align: left;
   font-size: 14;
   opacity: 0.25;
@@ -505,10 +506,12 @@ a#version {
   position: relative;
   top: -15px;
 }
-a#version:hover {
+a#version:hover,
+a#issues:hover {
   opacity: 1;
 }
-a#version.black-theme {
+a#version.black-theme,
+a#issues.black-theme {
   color: white;
 }
 
@@ -963,7 +966,9 @@ div.buttons-color-input-container {
   margin-bottom: 10px;
 }
 
-input.background-color-input, input.names-color-input {
+input.background-color-input,
+input.names-color-input,
+input.buttons-color-input {
   position: relative;
   margin-right: 5px;
   height: 30;
@@ -1085,7 +1090,6 @@ svg.editbutton-config-modal.black-theme:hover {
   position: relative;
 }
 
-/* Optional: Style the caret down icon */
 .fa-caret-down {
   float: right;
   padding-right: 8px;

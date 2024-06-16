@@ -19,7 +19,6 @@ import webbrowser
 import json
 import qrcode
 import tkinter as tk
-from tkinter import PhotoImage
 from io import BytesIO
 import webview
 

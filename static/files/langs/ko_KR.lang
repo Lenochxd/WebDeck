@@ -1,0 +1,183 @@
+# ko_KR.lang 은 KiiMyu(KiMyu) 가 작성하였습니다. 오류가 있다면 자유롭게 알려주세요.
+# https://github.com/Lenochxd/WebDeck/pulls
+# 디스코드에서 알려주셔도 좋습니다 : https://discord.gg/tUPsYHAGfm
+
+lang_name=한국어
+lang_short=ko
+credits=KiiMyu(KiMyu)
+
+// -- Tray icon --
+
+qr_code=QR 코드
+open_config=설정 열기
+fix_firewall=방화벽 설정
+exit=나가기
+
+// -- Errors --
+server_disconnected=서버 연결 실패
+failed=실패
+error=에러
+error_occurred=오류 발생
+
+settings_load_error=설정을 로드하는 중에 오류가 발생하였습니다.
+settings_save_error=설정을 저장하는 중에 오류가 발생하였습니다.
+
+auto_update_error=WebDeck을 업데이트 하는 중 오류가 발생하였습니다. https://github.com/Lenochxd/WebDeck/releases/latest 를 방문하여 수동으로 업데이트 하세요.
+
+no_files_found_error=파일을 찾을 수 없습니다.
+
+ffmpeg_not_installed_error=FFMPEG 설치 중...
+vlc_not_installed_error=VLC가 설치되지 않았습니다!
+mp3_loading_error=MP3 파일을 로드하는 중 오류가 발생하였습니다.
+
+obs_failed_connection_error=obs 연결에 실패하였습니다.
+obs_error_10061=웹소켓 서버를 찾을 수 없습니다. (WinError 10061)
+obs_error_incorrect_password=비밀번호가 정확하지 않은 것 같습니다.
+obs_already_recording=OBS가 이미 녹화중입니다.
+obs_already_streaming=OBS가 이미 스트리밍중입니다.
+obs_already_vcam=가상 카메라가 이미 시작되었습니다.
+obs_not_recording=OBS가 녹화중이 아닙니다.
+obs_not_streaming=OBS가 스트리밍중이 아닙니다.
+obs_no_vcam=가상 카메라가 이미 시작되지 않았습니다.
+obs_no_recording_can_be_paused=녹화를 일시중지 할 수 없습니다.
+obs_no_recording_is_paused=중단할 녹화가 없습니다.
+
+spotify_apply_volume_error=오류, 볼륨을 적용할 수 없습니다.
+spotify_volume_prenium_error=오류, Spotify Prenium 이 필요하여 볼륨을 설정할 수 없습니다.
+
+
+// -- Success messages --
+settings_save_success=설정 저장을 완료하였습니다.
+downloaded_successfully=파일 다운로드를 완료하였습니다.
+folder_created_successfully=폴더 생성을 완료하였습니다!
+
+
+// -- Button configuration --
+add_a_button=버튼 추가
+configure_your_button=버튼 구성
+
+image=Image
+image_size=이미지 크기
+background_color=배경 색상
+background_color_hex=배경 색상 (HEX)
+button_title=버튼 제목
+edit_command=명령 (실험기능)
+
+select_your_file=파일을 선택하세요.
+no_file_chosen=선택한 파일이 없습니다.
+
+choose_option=옵션을 선택하세요.
+
+button_delete_confirmation=버튼을 정말 제거하시겠습니까?
+
+
+// -- Editor --
+enter_editor_mode=편집 모드 진입
+exit_editor_mode=편집 모드 종료
+
+open_folder=폴더 열기
+
+quit_without_saving=저장하지 않고 종료
+save_and_exit=저장 후 종료
+swap_buttons=버튼간 스왑
+stop_swap_mode=스왑 모드 종료
+no_changes_to_undo=실행 취소할 변경 사항이 없습니다.
+
+
+// Settings tab
+configuration=구성
+settings=설정
+
+see_patchnotes=패치노트 보기
+github_issue=GitHub에 문제 보고
+
+language=언어
+config-windows_startup=Windows 부팅 시 시작
+auto_updates=자동 업데이트
+
+soundboard=사운드보드
+input_device=입력 장치
+output_device=출력 장치 (vbcable)
+toggle_soundboard=사운드보드 활성화
+ear_soundboard=사운드보드 듣기
+
+spotify_api=Spotify API
+username=유저 이름
+
+obs_studio=OBS Studio
+host=호스트
+port=포트
+password=비밀번호
+
+
+visuals=화면
+
+gridsize=그리드 크기
+height=높이
+width=너비
+
+portrait_rotate=인물 모드 회전 각도
+
+themes=테마
+open_theme_menu=테마 메뉴 열기
+
+backgrounds=배경
+open_background_image_menu=배경 메뉴 열기
+
+dark_theme=어두운 테마
+
+show_btn_names=버튼 이름 표시
+
+edit_btn_color=기본 버튼 색상 변경
+
+
+experimental=실험기능
+
+usage_btn_reload_time=사용량 버튼 갱신 시간 (ms)
+
+optimized_usage_display=최적화된 사용량 표시 버튼
+
+gpu_usage_method=GPU 사용량 표기 방식 ( GPU 사용량이 표기되지 않는 경우 )
+doesnt_work=작동하지 않음
+lmao=lmao
+none=없음
+
+open_settings_in_integrated_browser=전용 브라우저에서 설정 열기
+
+show_console=콘솔 표시
+dev_mode=개발 모드
+authorize_windows_firewall=WebDeck을 통해 Windows 방화벽 인증
+automatic_firewall_bypass=시작 시 자동 방화벽 우회
+fix_stop_soundboard=사운드보드 중지 버튼 문제 수정 ( 불안정할 수 있음 )
+
+themes_menu_title=테마 목록
+random_bg_menu_title=무작위 배경 목록
+
+disabled_themes=사용 가능
+enabled_themes=선택됨
+
+open_themes_folder=테마 폴더 열기
+
+wallpaper_color=배경 색상
+add_background_color=배경 색상 추가
+or=또는
+
+remove_background=이 배경 제거
+
+
+// Links
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-ko.md#%EC%82%AC%EC%9A%B4%EB%93%9C%EB%B3%B4%EB%93%9C%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%84%A4%EC%A0%95%ED%95%98%EB%82%98%EC%9A%94
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-ko.md#spotify-%EA%B3%84%EC%A0%95%EC%9D%84-%EC%97%B0%EA%B2%B0%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-ko.md#obs-studio%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%84%A4%EC%A0%95%ED%95%98%EB%82%98%EC%9A%94
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-ko.md#%EC%A0%80%EB%8A%94-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%8E%98%EC%9D%B4%EC%A7%80%EC%9D%98-css-%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%BB%A4%EC%8A%A4%ED%84%B0%EB%A7%88%EC%9D%B4%EC%A7%95-%ED%95%A0-%EC%88%98-%EC%9E%88%EB%82%98%EC%9A%94
+
+soundboard_tutorial=사운드보드 설정 튜토리얼
+spotify_tutorial=스포티파이 설정 튜토리얼
+obs_tutorial=OBS 설정 튜토리얼
+themes_tutorial=테마 생성 튜토리얼
+
+
+not_specified=지정되지 않음
+
+save=저장
+back=뒤로

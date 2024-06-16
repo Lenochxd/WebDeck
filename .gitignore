@@ -1,0 +1,11 @@
+webdeck
+config.json
+data.json
+__pycache__/
+*.pyc
+.cache-*
+*.dll
+build/
+dist/
+*.exe
+.vscode/settings.json
