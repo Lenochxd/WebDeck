@@ -54,11 +54,11 @@
                     {% if button_settings["image"].startswith('http') %}
                       {% set imagelink = button_settings["image"] %}
                     {% elif ':' in button_settings["image"] %}
-                      {% set imagelink = "static/assets/images/" + button_settings["image"].split('\\')[-1] %}
+                      {% set imagelink = "static/img/" + button_settings["image"].split('\\')[-1] %}
                     {% elif button_settings["image"].startswith('**uploaded/') %}
                       {% set imagelink = ".config/user_uploads/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
-                      {% set imagelink = "static/assets/images/" + button_settings["image"] %}
+                      {% set imagelink = "static/img/" + button_settings["image"] %}
                     {% endif %}
                     
                     <button type="button" id="button-element_{{edit_modal_ID}}" class="{{class}}" role="button"

@@ -214,11 +214,11 @@
                     {% if command_value["style"]["image"].startswith('http') %}
                       {% set imagelink = command_value["style"]["image"] %}
                     {% elif ':' in command_value["style"]["image"] %}
-                      {% set imagelink = "static/assets/images/" + command_value["style"]["image"].split('\\')[-1] %}
+                      {% set imagelink = "static/img/" + command_value["style"]["image"].split('\\')[-1] %}
                     {% elif command_value["style"]["image"].startswith('**uploaded/') %}
                       {% set imagelink = ".config/user_uploads/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                     {% else %}
-                      {% set imagelink = "static/assets/images/" + command_value["style"]["image"] %}
+                      {% set imagelink = "static/img/" + command_value["style"]["image"] %}
                     {% endif %}
                     
                     <button type="button" id="button-element_{{arg_modal_ID}}" class="{{class}}" role="button" style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;">
