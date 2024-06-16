@@ -63,11 +63,11 @@ window = None
 def load_lang_file(lang):
     lang_dictionary = {}
     lang_path = f"webdeck/translations/{lang}.lang"
-    if not os.path.isfile(f"static/files/langs/{lang}.lang"):
-        for root, dirs, files in os.walk('static/files/langs'):
+    if not os.path.isfile(lang_path):
+        for root, dirs, files in os.walk('webdeck/translations'):
             for file in files:
                 if file.endswith('.lang') and file.startswith(lang):
-                    lang_path = f"static/files/langs/{file}"
+                    lang_path = f"webdeck/translations/{file}"
                     
     with open(lang_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
