@@ -22,7 +22,7 @@ base = 'Win32GUI' if sys.platform=='win32' else None
 
 executables = [
     # tray icon
-    Executable('main.py', base=base, target_name='WebDeck', icon='static/assets/icon.ico'),
+    Executable('main.py', base=base, target_name='WebDeck', icon='static/icons/icon.ico'),
     # bishokus.fr/webdeck/start
     #Executable('start_server.py', base=base, target_name='WD_start'),
     # actual code

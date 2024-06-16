@@ -180,7 +180,7 @@ def show_qrcode():
         text_label = tk.Label(window, text=f"http://{local_ip}:{port}/", font=("Helvetica", 13))
         text_label.pack()
         
-        window.iconbitmap("static/assets/icon.ico")
+        window.iconbitmap("static/icons/icon.ico")
         window.lift()
         window.focus_force()
         
@@ -196,7 +196,7 @@ def show_qrcode():
 
 def create_tray_icon():
     global icon
-    image = Image.open("static/assets/icon.ico")
+    image = Image.open("static/icons/icon.ico")
 
     menu = (
         item(text['qr_code'], lambda: show_qrcode(), default=True),
