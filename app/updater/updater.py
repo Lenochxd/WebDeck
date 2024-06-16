@@ -217,7 +217,7 @@ if __name__ == "__main__":
 
     if not current_dir.endswith("update"):
         sys.exit()
-    version_path = os.path.join(wd_dir, "static/files/version.json")
+    version_path = os.path.join(wd_dir, "webdeck/version.json")
     temp_json_path = os.path.join(wd_dir, "temp.json")
 
     if not ctypes.windll.shell32.IsUserAnAdmin():

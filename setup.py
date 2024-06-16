@@ -30,7 +30,7 @@ executables = [
     Executable('updater.py', base=base, target_name='WD_updater')
 ]
 
-with open('static/files/version.json', encoding="utf-8") as f:
+with open('webdeck/version.json', encoding="utf-8") as f:
     version = json.load(f)['versions'][0]['version']
 
 setup(name='WebDeck',

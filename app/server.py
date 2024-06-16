@@ -166,7 +166,7 @@ def home():
     text = load_lang_file(config['settings']['language'])
     set_global_variable("text", text)
         
-    with open("static/files/version.json", encoding="utf-8") as f:
+    with open("webdeck/version.json", encoding="utf-8") as f:
         versions = json.load(f)
     is_exe = bool(getattr(sys, "frozen", False))
 

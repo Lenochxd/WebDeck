@@ -15,7 +15,7 @@ def check_for_updates(text):
         shutil.rmtree("update", ignore_errors=True)
 
     try:
-        with open("static/files/version.json", encoding="utf-8") as f:
+        with open("webdeck/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
 
         url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
