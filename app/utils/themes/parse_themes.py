@@ -22,13 +22,13 @@ def parse_css_file(text, css_file_path):
             if info not in css_data.keys():
                 css_data[info] = text["not_specified"]
         
-        if css_data["theme-icon"] == "Not specified":
+        if css_data["theme-icon"] == text["not_specified"]:
             css_data["theme-icon"] = ""
         if css_data["theme-name"] == text["not_specified"]:
             css_data["theme-name"] = os.path.basename(css_file_path)
         if css_data["theme-description"] == text["not_specified"]:
             css_data["theme-description"] = css_file_path
-        if css_data["page-preview"] == "Not specified":
+        if css_data["page-preview"] == text["not_specified"]:
             css_data["page-preview"] = ['all']
         
     return css_data
