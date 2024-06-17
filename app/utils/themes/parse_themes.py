@@ -35,8 +35,10 @@ def parse_css_file(text, css_file_path):
 
 def parse_themes(text):
     parsed_themes = {}
-    for file_name in os.listdir("static/themes/"):
+    for file_name in os.listdir(".config/themes/"):
         if file_name.endswith(".css"):
-            parsed_themes[file_name] = parse_css_file(text, f"static/themes/{file_name}")
+            parsed_themes[file_name] = parse_css_file(text, f".config/themes/{file_name}")
+    
+    parsed_themes["static/css/style.css"] = parse_css_file(text, "static/css/style.css")
             
     return parsed_themes

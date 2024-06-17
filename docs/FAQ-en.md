@@ -172,7 +172,7 @@ Absolutely! You have the option to select any file, and it will be opened with t
 
 As a developer, you have the option to create a theme by customizing the CSS of the page according to your preferences. Here's how to do it in a few simple steps:
 
-1. Go to settings > 'Open the themes menu' > 'Open themes folder' to access the `static/themes/` directory of the application.
+1. Go to settings > 'Open the themes menu' > 'Open themes folder' to access the `.config/themes/` directory of the application.
 2. Create a new CSS file manually or duplicate an existing one to begin your customization.
 3. Edit the theme information as needed in the CSS file you created, ensuring it starts with the following structure:
 

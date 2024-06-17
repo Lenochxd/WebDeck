@@ -99,18 +99,14 @@ def check_json_update(config):
     if "optimized-usage-display" not in config["settings"]:
         config["settings"]["optimized-usage-display"] = "false"
 
-    # Set default theme if not present or invalid
-    if "theme" not in config["front"] or not os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
-        config["front"]["theme"] = "default_theme.css"
 
     # Get available theme files
     themes = [
         f"//{file_name}"
-        for file_name in os.listdir("static/themes/")
-        if file_name.endswith(".css") and not file_name.startswith("default_theme") and not file_name == config["front"]["theme"]
+        for file_name in os.listdir(".config/themes/")
+        if file_name.endswith(".css")
     ]
     if "themes" not in config["front"]:
-        themes.append(config["front"]["theme"])
         config["front"]["themes"] = themes
     else:
         # check if there's new themes installed
@@ -127,7 +123,7 @@ def check_json_update(config):
         pass
     for theme in config["front"]["themes"][:]:
         theme_file = theme.replace('//', '')
-        if not os.path.isfile(f"static/themes/{theme_file}"):
+        if not os.path.isfile(f".config/themes/{theme_file}"):
             config["front"]["themes"].remove(theme)
 
     # Check for duplicates
@@ -145,18 +141,7 @@ def check_json_update(config):
             if theme in config["front"]["themes"]:
                 config["front"]["themes"].remove(theme)
 
-            if theme == config["front"]["theme"]:
-                config["front"]["themes"].append(theme)
-            else:
-                config["front"]["themes"].insert(0, f"//{theme}")
-                
-
-    # move the default theme to the bottom
-    if os.path.isfile(f'static/themes/{config["front"]["theme"]}'):
-        if config["front"]["theme"] in config["front"]["themes"]:
-            config["front"]["themes"].remove(config["front"]["theme"])
-            
-        config["front"]["themes"].append(config["front"]["theme"])
+            config["front"]["themes"].insert(0, f"//{theme}")
 
     return config
 
@@ -280,8 +265,11 @@ def on_start():
                 dst = os.path.join(".config/user_uploads", file)
                 shutil.move(src, dst)
             shutil.rmtree("static/files/uploaded")
-            
-
+    
+    # Create themes dir if needed
+    if not os.path.exists(".config/themes"):
+        os.makedirs(".config/themes")
+        
     # Update new files
     check_files("webdeck/version.json", "temp.json")
     
@@ -305,7 +293,7 @@ def on_start():
     local_ip = get_local_ip()
     if config["url"]["ip"] == "local_ip":
         config["url"]["ip"] = local_ip
-                
+        
         with open(".config/config.json", "w", encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
             

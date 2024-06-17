@@ -4,7 +4,7 @@ temp.json
 .vscode/settings.json
 static/files/uploaded
 .config/user_uploads
-static/themes
+.config/themes
 
 # virtual environment directory
 venv

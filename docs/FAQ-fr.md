@@ -167,7 +167,7 @@ Absolument ! Vous avez la possibilité de sélectionner n'importe quel fichier, 
 
 En tant que développeur, vous avez la possibilité de créer un thème en personnalisant le CSS de la page selon vos préférences. Voici comment le faire en quelques étapes simples :
 
-1. Accédez aux paramètres > 'Ouvrir le menu des thèmes' > 'Ouvrir le dossier des thèmes' pour accéder au répertoire `static/themes/` de l'application.
+1. Accédez aux paramètres > 'Ouvrir le menu des thèmes' > 'Ouvrir le dossier des thèmes' pour accéder au répertoire `.config/themes/` de l'application.
 2. Créez un nouveau fichier CSS manuellement ou dupliquez-en un existant pour commencer votre personnalisation.
 3. Modifiez les informations du thème selon vos besoins dans le fichier CSS que vous avez créé, en vous assurant qu'il commence par la structure suivante :
 

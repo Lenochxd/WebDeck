@@ -135,7 +135,7 @@ def utility_functions():
 def get_svgs():
     svgs = []
 
-    with open(f"static/themes/{config['front']['theme']}", "r") as f:
+    with open("static/css/style.css", "r") as f:
         content = f.read()
 
         # url(...)
@@ -194,7 +194,7 @@ def home():
 
     themes = [
         file_name
-        for file_name in os.listdir("static/themes/")
+        for file_name in os.listdir(".config/themes/")
         if file_name.endswith(".css")
     ]
     langs = [
@@ -205,7 +205,7 @@ def home():
 
     return render_template(
         "index.jinja",
-        config=config, default_theme=config['front']['theme'], themes=themes, parsed_themes=parse_themes(text),
+        config=config, themes=themes, parsed_themes=parse_themes(text),
         commands=commands, versions=versions, random_bg=random_bg, usage_example=get_usage(True),
         langs=langs, text=text,
         svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],

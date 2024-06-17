@@ -40,10 +40,7 @@
         "names-color": "#b3b3b3",
         "show-names": "true",
         "portrait-rotate": "90",
-        "theme": "default_theme.css",
-        "themes": [
-            "default_theme.css"
-        ],
+        "themes": [],
         "height": "4",
         "width": "8",
         "black-theme": "true",
