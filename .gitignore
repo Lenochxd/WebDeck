@@ -2,7 +2,6 @@
 config.json
 temp.json
 .vscode/settings.json
-static/files/uploaded
 .config/user_uploads
 .config/themes
 
@@ -22,3 +21,4 @@ __pycache__/
 
 # backup files
 *copy.*
+!copy.png
