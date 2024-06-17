@@ -7,7 +7,7 @@ import subprocess
 import requests
 
 from app.utils.show_error import show_error
-from app.updater.updater import check_files, compare_versions
+from .updater import compare_versions
 
 
 def check_for_updates(text):
