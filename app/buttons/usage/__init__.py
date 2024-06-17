@@ -1,2 +1,2 @@
-from app.buttons.usage.get_usage import get_usage
-from app.buttons.usage.asked_devices import extract_asked_device
+from .get_usage import get_usage
+from .asked_devices import extract_asked_device

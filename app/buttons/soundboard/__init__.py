@@ -1,2 +1,2 @@
-from app.buttons.soundboard.player import *
+from .player import *
 import app.buttons.soundboard.mic
