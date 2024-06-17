@@ -725,13 +725,13 @@ input[type="password"].spotify-setting {
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  background-image: url(/static/assets/images/eye.svg);
+  background-image: url(/static/img//eye.svg);
   background-size: cover;
   cursor: pointer;
 }
 
 .show-password.active {
-  background-image: url(/static/assets/images/eye-slash.svg);
+  background-image: url(/static/img//eye-slash.svg);
 }
 
 /* style pour les checkboxes */
@@ -914,7 +914,7 @@ form.selected {
 }
 
 .checkbox-checked::before {
-  content: url(/static/assets/images/checked.svg);
+  content: url(/static/img//checked.svg);
   display: inline-block;
   color: rgb(0, 0, 0);
   font-weight: bold;
@@ -1114,7 +1114,7 @@ svg.editbutton-config-modal.black-theme:hover {
 
 .dropdown-btn:not(.no-dropdown):not(.active)::before,
 .dropdown-btn.active:not(.no-dropdown)::before {
-  content: url(/static/assets/images/chevron_down.svg);
+  content: url(/static/img//chevron_down.svg);
   margin-left: -6px;
   margin-right: 6px;
   display: inline-block;
@@ -1125,12 +1125,12 @@ svg.editbutton-config-modal.black-theme:hover {
 }
 
 .no-dropdown::before {
-  content: url(/static/assets/images/plus-circle2.svg);
+  content: url(/static/img//plus-circle2.svg);
   margin-left: -6px;
   margin-right: 6px;
 }
 .no-dropdown.black-theme::before {
-  content: url(/static/assets/images/plus-circle.svg)!important;
+  content: url(/static/img//plus-circle.svg)!important;
 }
 
 
@@ -1281,8 +1281,8 @@ div#enabled-themes {
   position: absolute;
   width: 35px;
   height: 35px;
-  -webkit-mask-image: url(/static/assets/images/caret-up.svg);
-  mask-image: url(/static/assets/images/caret-up.svg);
+  -webkit-mask-image: url(/static/img//caret-up.svg);
+  mask-image: url(/static/img//caret-up.svg);
   background-color: white;
   mask-repeat: no-repeat;
   mask-size: cover;
@@ -1318,8 +1318,8 @@ div#enabled-themes {
   position: absolute;
   width: 17px;
   height: 17px;
-  -webkit-mask-image: url(/static/assets/images/caret-up.svg);
-  mask-image: url(/static/assets/images/caret-up.svg);
+  -webkit-mask-image: url(/static/img//caret-up.svg);
+  mask-image: url(/static/img//caret-up.svg);
   background-color: white;
   mask-repeat: no-repeat;
   mask-size: cover;
@@ -1408,10 +1408,10 @@ div.choose-bg-element-image > div.video-container video {
   width: 25;
 }
 .choose-bg-activate-button {
-  content: url(/static/assets/images/square.svg);
+  content: url(/static/img//square.svg);
 }
 .choose-bg-activate-button-checked {
-  content: url(/static/assets/images/square-checked.svg)!important;
+  content: url(/static/img//square-checked.svg)!important;
 }
 svg.choose-bg-delete-button:hover, .choose-bg-activate-button:hover {
   cursor: pointer;
