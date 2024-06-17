@@ -1,9 +1,11 @@
 # configuration files
 config.json
 temp.json
+temp/*
 .vscode/settings.json
 .config/user_uploads
 .config/themes
+.config/plugins
 
 # virtual environment directory
 venv

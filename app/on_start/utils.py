@@ -270,6 +270,10 @@ def on_start():
     if not os.path.exists(".config/themes"):
         os.makedirs(".config/themes")
         
+    # Create plugins dir if needed
+    if not os.path.exists(".config/plugins"):
+        os.makedirs(".config/plugins")
+        
     # Update new files
     check_files("webdeck/version.json", "temp.json")
     
