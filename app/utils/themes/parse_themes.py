@@ -23,7 +23,7 @@ def parse_css_file(text, css_file_path):
                 css_data[info] = text["not_specified"]
         
         if css_data["theme-icon"] == text["not_specified"]:
-            css_data["theme-icon"] = ""
+            css_data["theme-icon"] = css_data.get("theme-logo", "")
         if css_data["theme-name"] == text["not_specified"]:
             css_data["theme-name"] = os.path.basename(css_file_path)
         if css_data["theme-description"] == text["not_specified"]:
