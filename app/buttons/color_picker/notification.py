@@ -7,7 +7,7 @@ if platform == 'win32':
 def toast(display_type, typestocopy, color_names_final):
     if platform != 'win32':
         return
-    icon = "static\\files\\icon.ico"
+    icon = "static\\icons\\icon.ico"
     duration = 5
     message = ""
     if display_type and display_type.lower() != "list":
