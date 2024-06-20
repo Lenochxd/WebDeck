@@ -1,6 +1,6 @@
 flask
 flask_socketio
-Flask-Minify
+Flask-Minify==0.43
 gevent
 win10toast
 keyboard==0.13.5
