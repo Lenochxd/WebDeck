@@ -1,23 +1,17 @@
-import win32com
-import time
+import psutil
 import sys
 
 
 def is_opened():
     if not getattr(sys, 'frozen', False):
         return False
-    else:
-        wmi = win32com.client.GetObject("winmgmts:")
-        processes = wmi.InstancesOf("Win32_Process")
-        
-        wd_count = sum(1 for process in processes if 'webdeck' in process.Properties_('Name').Value.lower().strip() or 'wd_' in process.Properties_('Name').Value.lower().strip())
-        if wd_count > 1:
-            time.sleep(1)
-            processes = wmi.InstancesOf("Win32_Process")
-            
-            wd_count = sum(1 for process in processes if 'webdeck' in process.Properties_('Name').Value.lower().strip())
-            if wd_count > 1:
-                wd_count = sum(1 for process in processes if 'wd_' in process.Properties_('Name').Value.lower().strip())
-                return wd_count == 0
     
-    return True
+    processes = [p.name().lower() for p in psutil.process_iter(["name"])]
+
+    if "webdeck.exe" in processes:
+        processes.remove("webdeck.exe")
+    return any("wd_" in p for p in processes) or any("webdeck" in p for p in processes)
+
+# tests
+if __name__ == '__main__':
+    print(is_opened())
