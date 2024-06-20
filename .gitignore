@@ -24,3 +24,7 @@ __pycache__/
 # backup files
 *copy.*
 !copy.png
+
+# misc
+.DS_Store
+tests/*
