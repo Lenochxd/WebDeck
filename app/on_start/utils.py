@@ -3,11 +3,9 @@ import sys
 import shutil
 import json
 import urllib.request
-import zipfile
 import pynvml
 from math import sqrt
 from win32com.client import Dispatch
-from werkzeug.utils import secure_filename
 
 from app.updater import check_files, check_for_updates
 from app.utils.global_variables import set_global_variable
@@ -16,8 +14,6 @@ from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
 
 
-with open(".config/config.json", encoding="utf-8") as f:
-    config = json.load(f)
 
 def check_json_update(config):
     if "background" in config["front"]:
@@ -146,23 +142,6 @@ def check_json_update(config):
     return config
 
 
-def download_nircmd():
-    zippath = "nircmd.zip"
-    
-    if not getattr(sys, 'frozen', False):
-        url = "https://www.nirsoft.net/utils/nircmd.zip"
-        urllib.request.urlretrieve(url, "nircmd.zip")
-    else:
-        zippath = "lib/nircmd.zip"
-
-    with zipfile.ZipFile(zippath, "r") as zip_ref:
-        zip_ref.extractall("")
-
-    os.remove(zippath)
-    os.remove("NirCmd.chm")
-    os.remove("nircmdc.exe")
-    
-
 def color_distance(color1, color2):
     """
     Calculate the distance between two colors using the Euclidean formula
@@ -201,7 +180,9 @@ def sort_colorsjson():
             json.dump(sorted_colors, f, indent=4)
             
 def get_gpu_method():
-        
+    with open(".config/config.json", "r", encoding="utf-8") as f:
+        config = json.load(f)
+    
     if not "gpu_method" in config["settings"]:
         config["settings"]["gpu_method"] = "nvidia (pynvml)"
     if config["settings"]["gpu_method"] == "nvidia (pynvml)":
@@ -219,6 +200,9 @@ def get_gpu_method():
 
 def on_start():
     # Create config.json
+    if not os.path.exists(".config"):
+        os.makedirs(".config")
+        
     if not os.path.exists(".config/config.json"):
         if os.path.exists("config.json"):
             shutil.move("config.json", ".config/config.json")
@@ -303,10 +287,6 @@ def on_start():
             
     # Colors json
     sort_colorsjson()
-    
-    # Nircmd
-    if not os.path.isfile("nircmd.exe"):
-        download_nircmd()
     
     # Config updater
     config = check_json_update(config)
