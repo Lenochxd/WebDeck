@@ -95,7 +95,7 @@ def handle_command(message=None):
             subprocess.Popen("%windir%\system32\scrnsave.scr /s", shell=True)
 
         elif message.endswith(("hard", "full", "black")):
-            subprocess.Popen("nircmd.exe monitor off", shell=True)
+            subprocess.Popen('"lib/nircmd.exe" monitor off', shell=True)
             kill_nircmd()
 
         elif message.endswith(("off", "false")):
