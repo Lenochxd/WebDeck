@@ -10,7 +10,7 @@ def load_plugins(commands):
     all_func = {}
     plugins_path = ".config/plugins"
     
-    temp_dir = "temp"
+    temp_dir = "temp/plugins"
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir)
@@ -31,7 +31,7 @@ def load_plugins(commands):
                     if module_name in modules.keys():
                         modules[module_name] = importlib.reload(modules[module_name])
                     else:
-                        modules[module_name] = __import__(f"temp.{module_name}", fromlist=[""])
+                        modules[module_name] = __import__(f"temp.plugins.{module_name}", fromlist=[""])
                     
 
                     dict_doc, dict_func, plugin_name = (
