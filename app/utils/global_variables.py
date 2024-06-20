@@ -1,7 +1,7 @@
 import json    
 
 
-with open("temp.json", encoding="utf-8") as f:
+with open("temp.json", "a+", encoding="utf-8") as f:
     try:
         data = json.load(f)
     except json.decoder.JSONDecodeError:
