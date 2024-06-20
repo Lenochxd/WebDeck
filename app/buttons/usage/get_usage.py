@@ -5,7 +5,7 @@ import GPUtil
 import pynvml
 
 from app.utils.merge_dicts import merge_dicts
-from app.buttons.usage.asked_devices import get_asked_devices
+from .asked_devices import get_asked_devices
 
 
 with open(".config/config.json", encoding="utf-8") as f:

@@ -1,5 +1,5 @@
-from app.buttons.system.openfile import openfile
-from app.buttons.system.opendir import opendir
+from .openfile import openfile
+from .opendir import opendir
 
 
 def handle_command(message):

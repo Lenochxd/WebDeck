@@ -2,8 +2,8 @@ import threading
 from subprocess import Popen
 from sys import platform
 
-import app.buttons.exec.python as python_code
-import app.buttons.exec.batch as batch_code
+from . import python as python_code
+from . import batch as batch_code
 
 
 threads = []

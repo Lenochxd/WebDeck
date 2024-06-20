@@ -18,15 +18,15 @@ from app.utils.global_variables import get_global_variable
 from app.utils.kill_nircmd import kill_nircmd
 
 from app.utils.firewall import fix_firewall_permission
-from app.buttons.usage import extract_asked_device, get_usage
-import app.buttons.audio as audio
-import app.buttons.window as window
-import app.buttons.exec as exec
-import app.buttons.soundboard as soundboard
-import app.buttons.spotify as spotify
-import app.buttons.obs as obs
-import app.buttons.color_picker as color_picker
-import app.buttons.system as system
+from .usage import extract_asked_device, get_usage
+from . import audio
+from . import window
+from . import exec
+from . import soundboard
+from . import spotify
+from . import obs
+from . import color_picker
+from . import system
 
 
 

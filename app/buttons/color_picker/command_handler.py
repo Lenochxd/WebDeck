@@ -3,13 +3,13 @@ import pyperclip
 
 
 from app.utils.translate import translate
-from app.buttons.color_picker.get_arg import getarg
-from app.buttons.color_picker.get_color_name import get_color_name
-from app.buttons.color_picker.get_mouse_pixel_color import get_mouse_pixel_color
-from app.buttons.color_picker.notification import toast
+from .get_arg import getarg
+from .get_color_name import get_color_name
+from .get_mouse_pixel_color import get_mouse_pixel_color
+from .notification import toast
 
 
-    
+
 def handle_command(message):
     # TODO: rewrite
     color = get_mouse_pixel_color()

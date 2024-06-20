@@ -2,7 +2,7 @@ import pyaudio
 import time
 import threading
 
-from app.buttons.soundboard.devices import get_device
+from .devices import get_device
 from app.utils.load_config import load_config
 
 

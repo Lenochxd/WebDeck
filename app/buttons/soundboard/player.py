@@ -5,8 +5,8 @@ from flask import jsonify
 from app.utils.load_config import load_config
 from app.utils.load_lang_file import load_lang_file
 
-from app.buttons.soundboard.devices import get_device
-from app.buttons.soundboard.ffmpeg import silence_path
+from .devices import get_device
+from .ffmpeg import silence_path
 
 
 config = load_config()
