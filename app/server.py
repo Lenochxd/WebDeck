@@ -472,11 +472,14 @@ def create_folder():
 
 
 # https://stackoverflow.com/a/70555525/17100464
-@app.route("/.config/user_uploads/<string:filename>", methods=["GET"])
-def get_config_file(filename):
+@app.route("/.config/<string:directory>/<string:filename>", methods=["GET"])
+def get_config_file(directory, filename):
+    if not directory in ['user_uploads', 'themes']:
+        return "Unauthorized", 401
+    
     try:
         filename = os.path.basename(filename)  # Sanitize the filename
-        file_path = os.path.join(app.root_path.replace('app',''), ".config/user_uploads", filename)
+        file_path = os.path.join(app.root_path.replace('app',''), f".config/{directory}", filename)
 
         if os.path.isfile(file_path):
             return send_file(file_path, as_attachment=True)
