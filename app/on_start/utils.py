@@ -94,8 +94,13 @@ def check_config_update(config):
     # Set default optimized usage display setting if not present
     if "optimized-usage-display" not in config["settings"]:
         config["settings"]["optimized-usage-display"] = "false"
+        
+        
+    config = check_config_themes(config)
+    
+    return config
 
-
+def check_config_themes(config):
     # Get available theme files
     themes = [
         f"//{file_name}"
@@ -138,7 +143,7 @@ def check_config_update(config):
                 config["front"]["themes"].remove(theme)
 
             config["front"]["themes"].insert(0, f"//{theme}")
-
+            
     return config
 
 
