@@ -18,7 +18,7 @@ from win32com.client import Dispatch
 import easygui
 
 # WebDeck imports
-from .on_start import on_start, check_json_update
+from .on_start import on_start, check_config_update
 from .utils.global_variables import set_global_variable, get_global_variable
 
 config, text, commands, local_ip = on_start()
@@ -153,7 +153,7 @@ def home():
     with open(".config/config.json", encoding="utf-8") as f:
         config = json.load(f)
 
-    new_config = check_json_update(config)
+    new_config = check_config_update(config)
     with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(new_config, json_file, indent=4)
     config = new_config
@@ -246,8 +246,8 @@ def saveconfig():
         else:
             soundboard_stop = True
 
-    config = check_json_update(config)
-    new_config = check_json_update(new_config)
+    config = check_config_update(config)
+    new_config = check_config_update(new_config)
 
     if (
         config["settings"]["windows-startup"].lower().strip() == "false"

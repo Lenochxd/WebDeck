@@ -1,1 +1,1 @@
-from .utils import on_start, check_json_update
+from .utils import on_start, check_config_update

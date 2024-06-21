@@ -15,7 +15,7 @@ from app.utils.get_local_ip import get_local_ip
 
 
 
-def check_json_update(config):
+def check_config_update(config):
     if "background" in config["front"]:
         if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
             config["front"]["background"] = [config["front"]["background"]]
@@ -289,7 +289,7 @@ def on_start():
     sort_colorsjson()
     
     # Config updater
-    config = check_json_update(config)
+    config = check_config_update(config)
     with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     
