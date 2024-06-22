@@ -29,24 +29,24 @@ def reload_config():
     elif os.path.exists("config.json"):
         config_path = "config.json"
         
-        with open(config_path, encoding="utf-8") as f:
-            config = json.load(f)
-            settings = config.get('settings', {})
-            integrated_browser_key = 'open-settings-in-integrated-browser'
-            browser_key = 'open-settings-in-browser'
+    with open(config_path, encoding="utf-8") as f:
+        config = json.load(f)
+        settings = config.get('settings', {})
+        integrated_browser_key = 'open-settings-in-integrated-browser'
+        browser_key = 'open-settings-in-browser'
+        
+        if browser_key in config['settings']:
+            settings[integrated_browser_key] = 'false' if open_in_integrated_browser else 'true'
+            settings.pop(browser_key, None)
             
-            if browser_key in config['settings']:
-                settings[integrated_browser_key] = 'false' if open_in_integrated_browser else 'true'
-                settings.pop(browser_key, None)
-                
-            open_in_integrated_browser = settings.get(integrated_browser_key, 'false') == 'true'
-            print(open_in_integrated_browser)
-            with open('.config/config.json', 'w', encoding="utf-8") as json_file:
-                json.dump(config, json_file, indent=4)
+        open_in_integrated_browser = settings.get(integrated_browser_key, 'false') == 'true'
+        print(open_in_integrated_browser)
+        with open('.config/config.json', 'w', encoding="utf-8") as json_file:
+            json.dump(config, json_file, indent=4)
 
-            port = config['url']['port']
-            black_theme = config['front']['black-theme']
-            language = config['settings']['language']
+        port = config['url']['port']
+        black_theme = config['front']['black-theme']
+        language = config['settings']['language']
 
     return port, black_theme, language, open_in_integrated_browser
 
