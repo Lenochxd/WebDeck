@@ -24,80 +24,80 @@ def check_config_update(config):
     else:
         # Set default background if not present
         config["front"]["background"] = ["#141414"]
-        
+
     # Set default auto-updates setting if not present  
     if "auto-updates" not in config["settings"]:
-        config["settings"]["auto-updates"] = "true"
-        
+        config["settings"]["auto-updates"] = True
+
     # Set default windows startup setting if not present
     if "windows-startup" not in config["settings"]:
-        config["settings"]["windows-startup"] = "false"
-        
+        config["settings"]["windows-startup"] = False
+
     # Set default flask debug setting if not present
     if "flask-debug" not in config["settings"]:
-        config["settings"]["flask-debug"] = "true"
-        
+        config["settings"]["flask-debug"] = True
+
     # Remove open settings in browser setting if present
     if "open-settings-in-browser" in config["settings"]:
         del config["settings"]["open-settings-in-browser"]
-        
+
     # Set default open settings in integrated browser setting if not present
     if "open-settings-in-integrated-browser" not in config["settings"]:
-        config["settings"]["open-settings-in-integrated-browser"] = "false"
-        
+        config["settings"]["open-settings-in-integrated-browser"] = False
+
     # Set default portrait rotate setting if not present
     if "portrait-rotate" not in config["front"]:
         config["front"]["portrait-rotate"] = "90"
-        
+
     # Set default edit buttons color setting if not present
     if "edit-buttons-color" not in config["front"]:
-        config["front"]["edit-buttons-color"] = "false"
-        
+        config["front"]["edit-buttons-color"] = False
+
     # Set default buttons color setting if not present
     if "buttons-color" not in config["front"]:
         config["front"]["buttons-color"] = ""
-        
+
     # Set default soundboard settings if not present
     if "soundboard" not in config["settings"]:
         config["settings"]["soundboard"] = {
             "mic_input_device": "",
             "vbcable": "cable input",
         }
-        
+
     # Set default mic input device if not present
     if "mic_input_device" not in config["settings"]["soundboard"]:
         config["settings"]["soundboard"]["mic_input_device"] = ""
-        
+
     # Set default vbcable if not present
     if "vbcable" not in config["settings"]["soundboard"]:
         config["settings"]["soundboard"]["vbcable"] = "cable input"
-        
+
     # Set default soundboard enabled based on mic input device
     if "enabled" not in config["settings"]["soundboard"]:
-        if config["settings"]["soundboard"]["mic_input_device"] != "":
-            config["settings"]["soundboard"]["enabled"] = "false"
-        else:
-            config["settings"]["soundboard"]["enabled"] = "true"
-            
+        config["settings"]["soundboard"]["enabled"] = (
+            config["settings"]["soundboard"]["mic_input_device"] == ""
+        )
+        
     # Set default OBS settings if not present
     if "obs" not in config["settings"]:
         config["settings"]["obs"] = {"host": "localhost", "port": 4455, "password": ""}
-        
+
     # Set default automatic firewall bypass setting if not present
     if "automatic-firewall-bypass" not in config["settings"]:
-        config["settings"]["automatic-firewall-bypass"] = "false"
-        
+        config["settings"]["automatic-firewall-bypass"] = False
+
     # Set default fix stop soundboard setting if not present
     if "fix-stop-soundboard" not in config["settings"]:
-        config["settings"]["fix-stop-soundboard"] = "false"
-        
+        config["settings"]["fix-stop-soundboard"] = False
+
     # Set default optimized usage display setting if not present
     if "optimized-usage-display" not in config["settings"]:
-        config["settings"]["optimized-usage-display"] = "false"
-        
-        
+        config["settings"]["optimized-usage-display"] = False
+
+
     config = check_config_themes(config)
-    
+    config = check_config_booleans(config)
+
     return config
 
 def check_config_themes(config):
@@ -146,6 +146,25 @@ def check_config_themes(config):
             
     return config
 
+def check_config_booleans(config):
+    for category, settings in config.items():
+        for key, value in settings.items():
+            
+            if isinstance(value, str):
+                if value.lower() == "true":
+                    config[category][key] = True
+                elif value.lower() == "false":
+                    config[category][key] = False
+                    
+            elif isinstance(value, dict):
+                for setting_name, setting in value.items():
+                    if isinstance(setting, str):
+                        if setting.lower() == "true":
+                            config[category][key][setting_name] = True
+                        elif setting.lower() == "false":
+                            config[category][key][setting_name] = False
+    return config
+
 
 def color_distance(color1, color2):
     """
@@ -156,7 +175,6 @@ def color_distance(color1, color2):
     return sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
 
 def sort_colorsjson():
-
     try:
         with open("webdeck/colors.json", "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -273,7 +291,7 @@ def on_start():
     text = load_lang_file(config["settings"]["language"])
     
     # Checks for updates
-    if config["settings"]["auto-updates"].lower().strip() == "true":
+    if config["settings"]["auto-updates"] == True:
         check_for_updates(text)
     
     # Load commands

@@ -85,7 +85,7 @@
                       
                     </button>
                   {% endif %}
-                  {# {% if config["front"]["show-names"].lower() == "true" %} #}
+                  {# {% if config["front"]["show-names"] %} #}
                     {% set buttontext_style = ''%}
                     {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
                       {% set buttontext_style = 'style="color:' + config["front"]["names-color"] + ';"'%}
@@ -171,7 +171,7 @@
             </div>
           </div>
 
-          {% if config['settings']['dev-mode'].lower() == 'true' %}
+          {% if config['settings']['dev-mode'] %}
             <div class="editorStyle-bar {{black_theme}}"></div>
 
             <div class="arg_container" edit_modal_ID="{{edit_modal_ID}}">
@@ -340,7 +340,7 @@
 
             updateButtonBackgroundColor('{{edit_modal_ID}}', buttonElement_{{edit_modal_ID}}, buttonBackgroundColorInput_{{edit_modal_ID}}, buttonBackgroundColorHex_{{edit_modal_ID}}, button_{{edit_modal_ID}});
 
-            {% if config['settings']['dev-mode'].lower() == 'true' %}
+            {% if config['settings']['dev-mode'] %}
                 document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function () {
                     button_{{edit_modal_ID}}['message'] = this.value;
                 });

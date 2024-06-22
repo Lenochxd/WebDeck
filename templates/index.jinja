@@ -48,7 +48,7 @@
     {% set language = text['lang_short'] %}
 
     {% set black_theme = '' %}
-    {% if config['front']['black-theme'] == 'true' %}
+    {% if config['front']['black-theme'] %}
       {% set black_theme = ' black-theme' %}
     {% endif %}
 
@@ -98,7 +98,7 @@
     {% endif %}
 
 
-    {% if config["settings"]["show-console"].lower() == "true" %}
+    {% if config["settings"]["show-console"] %}
       <form class="form">
         <label style="color: white;">Console:</label><br>
         <input type="text" class="message {{black_theme}}"><br>
@@ -165,7 +165,7 @@
         }
       }
 
-      {% if config['front']['buttons-color'] != "" and config['front']['edit-buttons-color'] != "false" %}
+      {% if config['front']['buttons-color'] != "" and config['front']['edit-buttons-color'] == True %}
         .wd_button, .wd_button:focus {
           background-color: {{config['front']['buttons-color']}};
           box-shadow: {{config['front']['buttons-color']}} 0 1px 3px 0;
@@ -386,7 +386,7 @@
                     <!--|||||||||||||||||||||||-->
                   </button>
                 {% endif %}
-                {% if config["front"]["show-names"].lower() == "true" %}
+                {% if config["front"]["show-names"] %}
                   {% set buttontext_style = ''%}
                   {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
                     {% set buttontext_style = 'style="color:'+config["front"]["names-color"]+';"'%}
@@ -686,7 +686,7 @@
                     <p> {{text['config-windows_startup']}} </p>
                     <label for="windows-startup" class="switch">
                       {% if 'windows-startup' in config['settings'].keys() %}
-                        <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'].lower() == 'true'%}checked{% endif %}>
+                        <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'] %}checked{% endif %}>
                       {% else %}
                         <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" checked>
                       {% endif %}
@@ -698,7 +698,7 @@
                     <p> {{text['auto_updates']}} </p>
                     <label for="auto-updates" class="switch">
                       {% if 'auto-updates' in config['settings'].keys() %}
-                        <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" {% if config['settings']['auto-updates'].lower() == 'true'%}checked{% endif %}>
+                        <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" {% if config['settings']['auto-updates'] %}checked{% endif %}>
                       {% else %}
                         <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" checked>
                       {% endif %}
@@ -752,7 +752,7 @@
                   <div class="setting ear-soundboard">
                     <p> {{text['ear_soundboard']}} </p>
                     <label for="ear-soundboard" class="switch">
-                      <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                      <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'] %}checked{% endif %}>
                       <span class="slider round"></span>
                     </label>
                   </div>
@@ -760,7 +760,7 @@
                   <div class="setting toggle-soundboard">
                     <p> {{text['toggle_soundboard']}} </p>
                     <label for="toggle-soundboard" class="switch">
-                      <input class="{{black_theme}}" type="checkbox" id="toggle-soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'].lower() == 'true'%}checked{% endif %}>
+                      <input class="{{black_theme}}" type="checkbox" id="toggle-soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'] %}checked{% endif %}>
                       <span class="slider round"></span>
                     </label>
                   </div>
@@ -871,7 +871,7 @@
                 <div class="setting {{black_theme}}">
                   <p> {{text['dark_theme']}} </p>
                   <label for="black-theme" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="black-theme" name="front.black-theme" {% if config['front']['black-theme'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="black-theme" name="front.black-theme" {% if config['front']['black-theme'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -906,7 +906,7 @@
                 <div class="setting show-names">
                   <p> {{text['show_btn_names']}} </p>
                   <label for="show-names"  class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="show-names" name="front.show-names" {% if config['front']['show-names'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="show-names" name="front.show-names" {% if config['front']['show-names'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                   <div class="names-color-input-container">
@@ -927,7 +927,7 @@
                 <div class="setting edit-buttons-color">
                   <p> {{text['edit_btn_color']}} </p>
                   <label for="edit-buttons-color"  class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="edit-buttons-color" name="front.edit-buttons-color" {% if config['front']['edit-buttons-color'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="edit-buttons-color" name="front.edit-buttons-color" {% if config['front']['edit-buttons-color'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                   <div class="buttons-color-input-container">
@@ -977,7 +977,7 @@
                 <div class="setting optimized-usage-display">
                   <p> {{text['optimized_usage_display']}} </p>
                   <label for="optimized-usage-display" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="optimized-usage-display" name="settings.optimized-usage-display" {% if config['settings']['optimized-usage-display'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="optimized-usage-display" name="settings.optimized-usage-display" {% if config['settings']['optimized-usage-display'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -985,7 +985,7 @@
                 <div class="setting open-settings-in-integrated-browser">
                   <p> {{text['open_settings_in_integrated_browser']}} </p>
                   <label for="open-settings-in-integrated-browser" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -1001,7 +1001,7 @@
                 <div class="setting show-console">
                   <p> {{text['show_console']}} </p>
                   <label for="show-console" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="show-console" name="settings.show-console" {% if config['settings']['show-console'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="show-console" name="settings.show-console" {% if config['settings']['show-console'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -1012,7 +1012,7 @@
                   </button>
                   <p> {{text['automatic_firewall_bypass']}} </p>
                   <label for="automatic-firewall-bypass" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="automatic-firewall-bypass" name="settings.automatic-firewall-bypass" {% if config['settings']['automatic-firewall-bypass'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="automatic-firewall-bypass" name="settings.automatic-firewall-bypass" {% if config['settings']['automatic-firewall-bypass'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -1020,7 +1020,7 @@
                 <div class="setting fix-stop-soundboard">
                   <p> {{text['fix_stop_soundboard']}} </p>
                   <label for="fix-stop-soundboard" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="fix-stop-soundboard" name="settings.fix-stop-soundboard" {% if config['settings']['fix-stop-soundboard'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="fix-stop-soundboard" name="settings.fix-stop-soundboard" {% if config['settings']['fix-stop-soundboard'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -1028,7 +1028,7 @@
                 <div class="setting dev-mode">
                   <p> {{text['dev_mode']}} </p>
                   <label for="dev-mode" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="dev-mode" name="settings.dev-mode" {% if config['settings']['dev-mode'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{black_theme}}" type="checkbox" id="dev-mode" name="settings.dev-mode" {% if config['settings']['dev-mode'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -2350,7 +2350,7 @@
                   var name = input.name;
                   var value;
                   if (input.type === 'checkbox') {
-                    value = input.checked ? 'true' : 'false';
+                    value = input.checked ? true : false;
                   } else {
                     value = input.value;
                     if (input.id === 'language') {

@@ -12,7 +12,7 @@ with open(".config/config.json", encoding="utf-8") as f:
     config = json.load(f)
         
 def get_usage(
-    get_all=True if config["settings"]["optimized-usage-display"] == "false" else False,
+    get_all=not config["settings"]["optimized-usage-display"],
     asked_devices=get_asked_devices()
 ):
     computer_info = {}

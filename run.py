@@ -6,16 +6,16 @@ import os.path
 try:
     if os.path.exists('.config/config.json'):
         with open('.config/config.json', encoding='utf-8') as f:
-            settings = json.load(f).get('settings', {'app-admin': 'true'})
+            settings = json.load(f).get('settings', {'app-admin': True})
     elif os.path.exists('config.json'):
         with open('config.json', encoding='utf-8') as f:
-            settings = json.load(f).get('settings', {'app-admin': 'true'})
+            settings = json.load(f).get('settings', {'app-admin': True})
     else:
-        settings = {'app-admin': 'true'}
+        settings = {'app-admin': True}
 except Exception:
-    settings = {'app-admin': 'true'}
+    settings = {'app-admin': True}
 
-if settings['app-admin'] == 'true':
+if settings['app-admin'] == True:
     if not ctypes.windll.shell32.IsUserAnAdmin():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit()

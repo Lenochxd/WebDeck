@@ -43,16 +43,11 @@ def check_for_updates(text):
 
 def check_for_updates_loop(text):
     while True:
-
+        
         with open(".config/config.json", encoding="utf-8") as f:
             config = json.load(f)
-        if "auto-updates" in config["settings"].keys():
-            if config["settings"]["auto-updates"].lower().strip() == "true":
-                check_for_updates(text)
-        else:
-            config["settings"]["auto-updates"] = "true"
+            
+        if config["settings"].get("auto-updates", True):
             check_for_updates(text)
-        with open(".config/config.json", "w", encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
 
         time.sleep(3600)

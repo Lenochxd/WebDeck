@@ -20,8 +20,8 @@ from app.utils.get_local_ip import get_local_ip
 
 def reload_config():
     port = 5000
-    black_theme = "true"
-    open_in_integrated_browser = "true"
+    black_theme = True
+    open_in_integrated_browser = True
     language = "en_US"
 
     if os.path.exists(".config/config.json"):
@@ -35,12 +35,13 @@ def reload_config():
         integrated_browser_key = 'open-settings-in-integrated-browser'
         browser_key = 'open-settings-in-browser'
         
+        # update config to remove 'open-settings-in-browser'
         if browser_key in config['settings']:
-            settings[integrated_browser_key] = 'false' if open_in_integrated_browser else 'true'
+            settings[integrated_browser_key] = not config['settings'].get(browser_key, False)
             settings.pop(browser_key, None)
             
-        open_in_integrated_browser = settings.get(integrated_browser_key, 'false') == 'true'
-        print(open_in_integrated_browser)
+        open_in_integrated_browser = settings.get(integrated_browser_key, False)
+        print('open_in_integrated_browser:', open_in_integrated_browser)
         with open('.config/config.json', 'w', encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
 
@@ -157,7 +158,7 @@ qr.make(fit=True)
 
 # Creation of the QR code image in bytes
 img_stream = BytesIO()
-# if black_theme.lower() == "true":
+# if black_theme == True:
 #     qr.make_image(fill_color="white", back_color="black").save(img_stream, format='PNG')
 # else:
 qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')

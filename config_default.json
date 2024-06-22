@@ -1,26 +1,26 @@
 {
     "settings": {
         "language": "en_US",
-        "windows-startup": "false",
-        "auto-updates": "true",
-        "dev-mode": "false",
-        "flask-debug": "true",
-        "app-admin": "true",
-        "optimized-usage-display": "false",
+        "windows-startup": false,
+        "auto-updates": true,
+        "dev-mode": false,
+        "flask-debug": true,
+        "app-admin": true,
+        "optimized-usage-display": false,
         "gpu_method": "nvidia (pynvml)",
-        "show-console": "false",
-        "open-settings-in-integrated-browser": "false",
+        "show-console": false,
+        "open-settings-in-integrated-browser": false,
         "data-transfer-method": "http",
-        "automatic-firewall-bypass": "false",
-        "fix-stop-soundboard": "false",
-        "ear-soundboard": "true",
+        "automatic-firewall-bypass": false,
+        "fix-stop-soundboard": false,
+        "ear-soundboard": true,
         "spotify-api": {
             "CLIENT_ID": "",
             "CLIENT_SECRET": "",
             "USERNAME": ""
         },
         "soundboard": {
-            "enabled": "false",
+            "enabled": false,
             "mic_input_device": "",
             "vbcable": "cable input"
         },
@@ -35,15 +35,15 @@
             "#141414"
         ],
         "computer-usage-reload-time": "3000",
-        "edit-buttons-color": "false",
+        "edit-buttons-color": false,
         "buttons-color": "",
         "names-color": "#b3b3b3",
-        "show-names": "true",
+        "show-names": true,
         "portrait-rotate": "90",
         "themes": [],
         "height": "4",
         "width": "8",
-        "black-theme": "true",
+        "black-theme": true,
         "buttons": {
             "index": [
                 {

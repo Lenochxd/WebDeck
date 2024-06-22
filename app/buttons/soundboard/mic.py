@@ -121,6 +121,6 @@ def restart():
 
 # mic thread
 config = load_config()
-if config["settings"]["soundboard"]["enabled"] == "true":
+if config["settings"]["soundboard"]["enabled"]:
     soundboard_thread = threading.Thread(target=soundboard, daemon=True)
     soundboard_thread.start()
