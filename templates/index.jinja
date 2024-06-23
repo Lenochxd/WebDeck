@@ -2772,18 +2772,20 @@
         const expandBtn = document.querySelector('.expand-btn');
         const dezoomBtn = document.querySelector('.dezoom-btn');
         const zoomBtn = document.querySelector('.zoom-btn');
-        fullscreenBtn.addEventListener('click', () => {
-          if (document.fullscreenEnabled && swapMode === 0 ) {
-            if (document.fullscreenElement) {
-              document.exitFullscreen();
+        if (fullscreenBtn) {
+          fullscreenBtn.addEventListener('click', () => {
+            if (document.fullscreenEnabled && swapMode === 0 ) {
+              if (document.fullscreenElement) {
+                document.exitFullscreen();
+              } else {
+                goFullscreen()
+              }
+              auto_resize();
             } else {
-              goFullscreen()
+              showError('Fullscreen is not supported on your device.');
             }
-            auto_resize();
-          } else {
-            showError('Fullscreen is not supported on your device.');
-          }
-        });
+          });
+        }
 
 
         try {
