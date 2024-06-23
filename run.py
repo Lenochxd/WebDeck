@@ -38,12 +38,10 @@ if not is_opened():
     wmi = win32com.client.GetObject("winmgmts:")
     processes = wmi.InstancesOf("Win32_Process")
 
-    threads.append(threading.Thread(target=start, args=('app.tray',), daemon=True))
-    threads[-1].start()
-    
     threads.append(threading.Thread(target=start, args=('app.server',), daemon=True))
     threads[-1].start()
     
+    start('app.tray')
     
     for thread in threads:
         thread.join()
