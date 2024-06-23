@@ -20,7 +20,7 @@ from app.utils.get_local_ip import get_local_ip
 
 def reload_config():
     port = 5000
-    black_theme = True
+    dark_theme = True
     open_in_integrated_browser = True
     language = "en_US"
 
@@ -46,12 +46,12 @@ def reload_config():
             json.dump(config, json_file, indent=4)
 
         port = config['url']['port']
-        black_theme = config['front']['black-theme']
+        dark_theme = config['front'].get('dark-theme', config['front'].get('black-theme', True))
         language = config['settings']['language']
 
-    return port, black_theme, language, open_in_integrated_browser
+    return port, dark_theme, language, open_in_integrated_browser
 
-port, black_theme, language, open_in_integrated_browser = reload_config()
+port, dark_theme, language, open_in_integrated_browser = reload_config()
 
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
@@ -129,7 +129,7 @@ def exit_program():
 local_ip = get_local_ip()
 
 def open_config():
-    port, black_theme, language, open_in_integrated_browser = reload_config()
+    port, dark_theme, language, open_in_integrated_browser = reload_config()
     if open_in_integrated_browser == True:
         webview.create_window('WebDeck Config', url=f'http://{local_ip}:{port}?config=show', background_color='#141414')
         webview.start()
@@ -158,7 +158,7 @@ qr.make(fit=True)
 
 # Creation of the QR code image in bytes
 img_stream = BytesIO()
-# if black_theme == True:
+# if dark_theme == True:
 #     qr.make_image(fill_color="white", back_color="black").save(img_stream, format='PNG')
 # else:
 qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')

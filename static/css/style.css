@@ -129,7 +129,7 @@ button.button {
   -webkit-user-select: none;
   touch-action: manipulation;
 }
-/* button.button.black-theme {
+/* button.button.dark-theme {
   background-color: rgba(51, 51, 51, 0.05);
   color: #333333;
 } */
@@ -445,10 +445,10 @@ input[type="range"]:disabled::-moz-range-thumb {
   transition: opacity 0.5s ease-in-out;
 }
 
-.modal-container.black-theme,
-.addbutton-modal-container.black-theme,
-.addbutton-modal-container-args.black-theme,
-.editbutton-modal-container.black-theme {
+.modal-container.dark-theme,
+.addbutton-modal-container.dark-theme,
+.addbutton-modal-container-args.dark-theme,
+.editbutton-modal-container.dark-theme {
   color: #fbfbfd!important;
 }
 
@@ -476,10 +476,10 @@ input[type="range"]:disabled::-moz-range-thumb {
   overflow-y: scroll;
 }
 
-.modal-content.black-theme,
-.addbutton-modal-content.black-theme, 
-.addbutton-modal-content-args.black-theme,
-.editbutton-modal-content.black-theme {
+.modal-content.dark-theme,
+.addbutton-modal-content.dark-theme, 
+.addbutton-modal-content-args.dark-theme,
+.editbutton-modal-content.dark-theme {
   background-color: #232323!important;
 }
   
@@ -510,8 +510,8 @@ a#version:hover,
 a#issues:hover {
   opacity: 1;
 }
-a#version.black-theme,
-a#issues.black-theme {
+a#version.dark-theme,
+a#issues.dark-theme {
   color: white;
 }
 
@@ -555,7 +555,7 @@ div.fakeform-container {
   background-size: 700%;
   background-position: 25% 93%;
 }
-div.fakeform-container.black-theme {
+div.fakeform-container.dark-theme {
   border: 1px solid #515151!important;
 }
 
@@ -619,7 +619,7 @@ form#config-form {
   background-color: #d5d5d5;
   margin: 10px 0;
 }
-.setting-category.black-theme::before {
+.setting-category.dark-theme::before {
   background-color: #d5d5d52b!important;
 }
 
@@ -665,7 +665,7 @@ form#config-form {
   box-shadow: 0 0 10px #ccc;
   margin-top: 20px;
 }
-.config-container.black-theme, .addbutton-container.black-theme {
+.config-container.dark-theme, .addbutton-container.dark-theme {
   border: 1px solid #232323!important;
   box-shadow: 0 0 10px #000000!important;
 }
@@ -691,21 +691,21 @@ textarea {
   resize: vertical;
   opacity: 1;
 }
-input[type="text"].black-theme,
-input[type="url"].black-theme,
-input[type="password"].black-theme,
-input[type="number"].black-theme,
-textarea.black-theme {
+input[type="text"].dark-theme,
+input[type="url"].dark-theme,
+input[type="password"].dark-theme,
+input[type="number"].dark-theme,
+textarea.dark-theme {
   border: 1px solid #494949!important;
   background-color: #333333!important;
   color: white!important;
 }
 
-input[type="text"].black-theme::placeholder,
-input[type="url"].black-theme::placeholder,
-input[type="password"].black-theme::placeholder,
-input[type="number"].black-theme::placeholder,
-textarea.black-theme::placeholder {
+input[type="text"].dark-theme::placeholder,
+input[type="url"].dark-theme::placeholder,
+input[type="password"].dark-theme::placeholder,
+input[type="number"].dark-theme::placeholder,
+textarea.dark-theme::placeholder {
   color: rgb(136, 136, 136)!important;
   opacity: 1;
 }
@@ -952,7 +952,7 @@ div.editorStyle-bar {
   background-color: #d5d5d5;
   margin: 10px 0;
 }
-div.editorStyle-bar.black-theme {
+div.editorStyle-bar.dark-theme {
   background-color: #515151!important;
 }
 
@@ -1022,10 +1022,10 @@ svg.addbutton-args-config-modal,
 svg.editbutton-config-modal {
   fill: black;
 }
-svg.config-modal.black-theme,
-svg.addbutton-config-modal.black-theme,
-svg.addbutton-args-config-modal.black-theme,
-svg.editbutton-config-modal.black-theme {
+svg.config-modal.dark-theme,
+svg.addbutton-config-modal.dark-theme,
+svg.addbutton-args-config-modal.dark-theme,
+svg.editbutton-config-modal.dark-theme {
   fill:#fbfbfd!important;
 }
 
@@ -1036,10 +1036,10 @@ svg.editbutton-config-modal:hover {
   fill: #2a2a2a!important;
 }
 
-svg.config-modal.black-theme:hover,
-svg.addbutton-config-modal.black-theme:hover,
-svg.addbutton-args-config-modal.black-theme:hover,
-svg.editbutton-config-modal.black-theme:hover {
+svg.config-modal.dark-theme:hover,
+svg.addbutton-config-modal.dark-theme:hover,
+svg.addbutton-args-config-modal.dark-theme:hover,
+svg.editbutton-config-modal.dark-theme:hover {
   fill: #e6e6e8!important;
 }
 
@@ -1056,7 +1056,7 @@ svg.editbutton-config-modal.black-theme:hover {
   cursor: pointer;
   outline: none;
 }
-.all-commands.black-theme a, .all-choices.black-theme a, .dropdown-btn.black-theme {
+.all-commands.dark-theme a, .all-choices.dark-theme a, .dropdown-btn.dark-theme {
   color: #d1d1d1!important;
 }
 
@@ -1064,12 +1064,12 @@ svg.editbutton-config-modal.black-theme:hover {
 .all-commands a:hover, .all-choices a:hover, .dropdown-btn:hover {
   color: #7b7b7d;
 }
-.all-commands.black-theme a:hover, .all-choices.black-theme a:hover, .dropdown-btn.black-theme:hover {
+.all-commands.dark-theme a:hover, .all-choices.dark-theme a:hover, .dropdown-btn.dark-theme:hover {
   color: #fbfbfd!important;
 }
 
 /* Add an active class to the active dropdown button */
-.active.black-theme {
+.active.dark-theme {
   background-color: #1d1d1d;
   border-radius: 10px;
 }
@@ -1079,7 +1079,7 @@ svg.editbutton-config-modal.black-theme:hover {
   display: none;
   padding-left: 8px;
 }
-.dropdown-container.black-theme {
+.dropdown-container.dark-theme {
   background-color: #232323!important;
 }
 
@@ -1129,7 +1129,7 @@ svg.editbutton-config-modal.black-theme:hover {
   margin-left: -6px;
   margin-right: 6px;
 }
-.no-dropdown.black-theme::before {
+.no-dropdown.dark-theme::before {
   content: url(/static/img//plus-circle.svg)!important;
 }
 
@@ -1364,7 +1364,7 @@ div.choose-bg-element {
   justify-content: space-between;
   align-items: center;
 }
-div.choose-bg-element.black-theme {
+div.choose-bg-element.dark-theme {
   border: 1px solid #ccc!important;
   box-shadow: 0 0 10px #ccc!important;
 }

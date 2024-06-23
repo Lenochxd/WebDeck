@@ -17,15 +17,20 @@ from app.utils.get_local_ip import get_local_ip
 
 def check_config_update(config):
     if "background" in config["front"]:
-        if type(config["front"]["background"]) == "str" and len(config["front"]["background"]) > 3:
+        if (
+            type(config["front"]["background"]) == "str"
+            and len(config["front"]["background"]) > 3
+        ):
             config["front"]["background"] = [config["front"]["background"]]
-        if type(config["front"]["background"]) == "list" and config["front"]["background"] in [[], [""]]:
+        if type(config["front"]["background"]) == "list" and config["front"][
+            "background"
+        ] in [[], [""]]:
             config["front"]["background"] = ["#141414"]
     else:
         # Set default background if not present
         config["front"]["background"] = ["#141414"]
 
-    # Set default auto-updates setting if not present  
+    # Set default auto-updates setting if not present
     if "auto-updates" not in config["settings"]:
         config["settings"]["auto-updates"] = True
 
@@ -40,6 +45,11 @@ def check_config_update(config):
     # Remove open settings in browser setting if present
     if "open-settings-in-browser" in config["settings"]:
         del config["settings"]["open-settings-in-browser"]
+    
+    # Rename 'black-theme' to 'dark-theme'
+    if "black-theme" in config["front"]:
+        config["front"]["dark-theme"] = config["front"].get("black-theme", True)
+        del config["front"]["black-theme"]
 
     # Set default open settings in integrated browser setting if not present
     if "open-settings-in-integrated-browser" not in config["settings"]:
@@ -77,7 +87,7 @@ def check_config_update(config):
         config["settings"]["soundboard"]["enabled"] = (
             config["settings"]["soundboard"]["mic_input_device"] == ""
         )
-        
+
     # Set default OBS settings if not present
     if "obs" not in config["settings"]:
         config["settings"]["obs"] = {"host": "localhost", "port": 4455, "password": ""}
@@ -99,6 +109,7 @@ def check_config_update(config):
     config = check_config_booleans(config)
 
     return config
+
 
 def check_config_themes(config):
     # Get available theme files

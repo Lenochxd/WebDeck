@@ -43,7 +43,7 @@
         "themes": [],
         "height": "4",
         "width": "8",
-        "black-theme": true,
+        "dark-theme": true,
         "buttons": {
             "index": [
                 {

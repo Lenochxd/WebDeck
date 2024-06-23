@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
       divElement.classList.add("choose-bg-element-color");
       divElement.style.backgroundColor = colorHex;
       var createColorBgElement = document.getElementById("create-color-bg");
-      if (createColorBgElement.classList.contains("black-theme")) {
-        divElement.classList.add("black-theme");
+      if (createColorBgElement.classList.contains("dark-theme")) {
+        divElement.classList.add("dark-theme");
       }
       
       var brightness = calculateBrightness(colorHex);
@@ -166,8 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
           divElement.classList.add("choose-bg-element");
           divElement.classList.add("choose-bg-element-image");
           var createColorBgElement = document.getElementById("create-color-bg");
-          if (createColorBgElement.classList.contains("black-theme")) {
-            divElement.classList.add("black-theme");
+          if (createColorBgElement.classList.contains("dark-theme")) {
+            divElement.classList.add("dark-theme");
           }
           
           // Créer un pseudo-élément ::before pour contenir l'image de fond

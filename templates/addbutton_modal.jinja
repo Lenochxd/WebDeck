@@ -1,21 +1,21 @@
-<div class="addbutton-modal-container-args {{black_theme}}" id="modal-container-{{ arg_modal_ID }}" arg_modal_ID="{{ arg_modal_ID }}">
-  <div class="addbutton-modal-content-args {{black_theme}}">
+<div class="addbutton-modal-container-args {{dark_theme}}" id="modal-container-{{ arg_modal_ID }}" arg_modal_ID="{{ arg_modal_ID }}">
+  <div class="addbutton-modal-content-args {{dark_theme}}">
 
     <div class="addbutton-modal-header-args bold modal-container-{{ arg_modal_ID }}">
       <h1 class="addbutton-modal-args"> {{text['configure_your_button']}}: {{command_name}}</h1>
       <div class="addbutton-modal-close-args">
-        <svg class="addbutton-args-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+        <svg class="addbutton-args-config-modal {{dark_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
         </svg>
       </div>
     </div>
 
     <div class="addbutton-modal-main-args">
-      <div class="config-container {{black_theme}}">
+      <div class="config-container {{dark_theme}}">
       
         <form class="args-form" arg_modal_ID="{{ arg_modal_ID }}" novalidate>
           
-          <div class="args-container {{black_theme}}" arg_modal_ID="{{ arg_modal_ID }}">
+          <div class="args-container {{dark_theme}}" arg_modal_ID="{{ arg_modal_ID }}">
         
             {% for arg in command_value["args"] %}
               
@@ -36,7 +36,7 @@
                 {% if "webdeck_foldername" in arg['TYPE'] %}
                   <div class="webdeck_foldername_div">
                     <form id="webdeck_foldername_form" novalidate>
-                      <input class="{{black_theme}}" type="text" id="folderName" name="folderName" placeholder="New folder name" >
+                      <input class="{{dark_theme}}" type="text" id="folderName" name="folderName" placeholder="New folder name" >
                       <button id="submitButton" type="submit">Create folder</button>
                     </form>
                       
@@ -146,7 +146,7 @@
                     {% endif %}
                     
                     <div class="choice">
-                      <input {{checked}} class="choice {{black_theme}}" type="radio" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
+                      <input {{checked}} class="choice {{dark_theme}}" type="radio" name="choice" value="{{ loop.index0 }}" onchange="showArg_{{arg_modal_ID}}('{{ loop.index0 }}')">
                       <label for="{{ choice_name }}">{{ choice_name }}</label>
                     </div>
                     
@@ -186,10 +186,10 @@
           {# configuration du style: #}
           
           {% if command_value["args"]|length > 0 %}
-            <div class="editorStyle-bar {{black_theme}}"></div>
+            <div class="editorStyle-bar {{dark_theme}}"></div>
           {% endif %}
           <div class="editorStyle">
-            <div class="fakeform-container {{black_theme}}">
+            <div class="fakeform-container {{dark_theme}}">
               <div class="fakeform">
                 {% if command_value["style"] %}
                   {% set fill = '' %}
@@ -276,7 +276,7 @@
             {# edit le style #}
             <div class="inputs_container">
               <label for="image-input_{{arg_modal_ID}}"> {{text['image']}}: </label>
-              <input type="file" id="image-input_{{arg_modal_ID}}" class="{{black_theme}}">
+              <input type="file" id="image-input_{{arg_modal_ID}}" class="{{dark_theme}}">
               
               <div class="slider-container">
                 {% set default_size = '75' %}
@@ -284,30 +284,30 @@
                   {% set default_size = command_value["style"]['image_size'].strip().replace('%','') %}
                 {% endif %}
                 <label for="image-size-slider_{{arg_modal_ID}}"> {{text['image_size']}}: </label>
-                <input type="range" id="image-size-slider_{{arg_modal_ID}}" class="{{black_theme}}" name="image-size" min="0" max="100" value="{{default_size}}" step="1">
-                <input type="number" id="image-size-value_{{arg_modal_ID}}" class="image-size-value {{black_theme}}" min="0" step="1" value="{{default_size}}">
+                <input type="range" id="image-size-slider_{{arg_modal_ID}}" class="{{dark_theme}}" name="image-size" min="0" max="100" value="{{default_size}}" step="1">
+                <input type="number" id="image-size-value_{{arg_modal_ID}}" class="image-size-value {{dark_theme}}" min="0" step="1" value="{{default_size}}">
                 %
               </div>
               
               <label for="background-color-input_{{arg_modal_ID}}"> {{text['background_color']}}: </label>
               <div class="background-color-input-container">
-                <input type="color" class="background-color-input {{black_theme}}" id="background-color-input_{{arg_modal_ID}}">
-                <input type="text" id="background-color-hex_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="{{text['background_color_hex']}}">
+                <input type="color" class="background-color-input {{dark_theme}}" id="background-color-input_{{arg_modal_ID}}">
+                <input type="text" id="background-color-hex_{{arg_modal_ID}}" class="{{dark_theme}}" placeholder="{{text['background_color_hex']}}">
               </div>
               
               <label for="button-text-input_{{arg_modal_ID}}"> {{text['button_title']}}: </label>
-              <input type="text" id="button-text-input_{{arg_modal_ID}}" class="{{black_theme}}" placeholder="{{ button_name }}">
+              <input type="text" id="button-text-input_{{arg_modal_ID}}" class="{{dark_theme}}" placeholder="{{ button_name }}">
             </div>
           </div>
 
-          <div class="editorStyle-bar {{black_theme}}" style="display: none;"></div>
+          <div class="editorStyle-bar {{dark_theme}}" style="display: none;"></div>
           
           <div class="arg_container" arg_modal_ID="{{arg_modal_ID}}" style="display: none;">
             <label for="command_{{arg_modal_ID}}">Command (experimental):</label>
-            <input class="{{black_theme}}" type="text" name="" id="command_{{arg_modal_ID}}" value="{{ command_value['command'] }}" readonly>
+            <input class="{{dark_theme}}" type="text" name="" id="command_{{arg_modal_ID}}" value="{{ command_value['command'] }}" readonly>
           </div>
           
-          <input type="submit" value="{{text['save']}}" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{black_theme}}" style="margin-top: 30;">
+          <input type="submit" value="{{text['save']}}" id="{{arg_modal_ID}}_submit" class="createbutton_submit {{dark_theme}}" style="margin-top: 30;">
           <script type="text/javascript">
               function getCommand(command, arg_modal_ID) {
                 var form = document.querySelector('form[arg_modal_ID="' + arg_modal_ID + '"] .args-container'); // Get the form element with the specified arg_modal_ID
