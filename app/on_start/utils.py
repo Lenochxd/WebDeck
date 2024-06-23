@@ -241,7 +241,7 @@ def on_start():
         if os.path.exists("config.json"):
             shutil.move("config.json", ".config/config.json")
         else:
-            shutil.copy("config_default.json", ".config/config.json")
+            shutil.copy("webdeck/config_default.json", ".config/config.json")
         
         if os.name == 'nt':
             
