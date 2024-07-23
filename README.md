@@ -74,7 +74,7 @@ Writing and supporting code is fun but it takes time. If you want to thank the a
     </td>
     <td align="center">
       <a href="https://twitter.com/LenochJ">
-        <img src="https://cdn.discordapp.com/avatars/390265556357611521/205d253b7e742b8f70174fdac8ca701d.png" alt="CONTRIBUTOR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://cdn.discordapp.com/avatars/390265556357611521/70e3c4f24ac710209fbfbd206370b538.png?size=256" alt="CONTRIBUTOR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Lenoch
       </a>
