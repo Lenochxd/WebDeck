@@ -20,7 +20,7 @@ gputil
 pynvml
 spotipy
 simple-websocket
-deepdiff==6.3.0
+deepdiff
 pystray
 tk
 easygui
