@@ -861,6 +861,11 @@ for filename in os.listdir("static/files/images"):
 
 
 app = Flask(__name__)
+if getattr(sys, "frozen", False):
+    app = Flask(__name__, template_folder='../../templates', static_folder='../../static')
+else:
+    app = Flask(__name__, template_folder='templates', static_folder='static')
+
 app.jinja_env.globals.update(select_audio_device=select_audio_device)
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
