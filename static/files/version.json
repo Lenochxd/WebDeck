@@ -1,6 +1,42 @@
 {
     "versions": [
         {
+            "version": "1.8.6",
+            "release_date": {
+                "day": "22",
+                "month": "08",
+                "year": "2024",
+                "hour": "16",
+                "minute": "45"
+            },
+            "en": {
+                "updates": [
+                    "Added `allowed_networks` configuration option (by @NickBonet on #17)"
+                ],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Fixed issue with empty string in button names (#20)",
+                    "Fixed JS error when removing fullscreen button (#20)",
+                    "Fixed exception handling for NVIDIA GPU errors (#22)",
+                    "Other minor fixes"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [
+                    "Ajout de l'option de configuration `allowed_networks` (par @NickBonet sur #17)"
+                ],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction d'un crash si un nom de bouton est vide (#20)",
+                    "Correction d'une erreur lors de la suppression du bouton plein écran (#20)",
+                    "Correction de la gestion des exceptions pour les erreurs GPU NVIDIA (#22)",
+                    "Autres corrections mineures"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.8.5",
             "release_date": {
                 "day": "24",
