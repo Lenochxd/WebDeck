@@ -175,7 +175,7 @@ En tant que développeur, vous avez la possibilité de créer un thème en perso
 /*
 theme-name = MonTheme
 theme-description = Ma description de thème :)
-theme-logo = https://i.imgur.com/qhaL1EU.png
+theme-icon = https://i.imgur.com/qhaL1EU.png
 theme-author-github = VotreGithubIci
 */
 

@@ -180,7 +180,7 @@ As a developer, you have the option to create a theme by customizing the CSS of 
 /*
 theme-name = MyTheme
 theme-description = My custom theme description :)
-theme-logo = https://i.imgur.com/qhaL1EU.png
+theme-icon = https://i.imgur.com/qhaL1EU.png
 theme-author-github = YourGithubHere
 */
 

@@ -177,7 +177,7 @@ WebDeck은 사운드보드에서 사운드를 재생하려면 `python-vlc` 라�
 /*
 theme-name = MyTheme
 theme-description = My custom theme description :)
-theme-logo = https://i.imgur.com/qhaL1EU.png
+theme-icon = https://i.imgur.com/qhaL1EU.png
 theme-author-github = YourGithubHere
 */
 
