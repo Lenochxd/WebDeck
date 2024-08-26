@@ -4,7 +4,6 @@ Flask-Minify
 gevent
 win10toast
 keyboard==0.13.5
-pyautogui==0.9.53
 pywin32
 pycaw
 pillow

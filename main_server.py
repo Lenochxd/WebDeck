@@ -27,8 +27,7 @@ import mss
 from PIL import Image
 try: from deep_translator import GoogleTranslator
 except SyntaxError: pass
-import pyautogui as keyboard
-import keyboard as keyboard2
+import keyboard
 import webcolors
 import pyaudio
 from flask import Flask, request, jsonify, render_template
@@ -1866,11 +1865,11 @@ def send_data(message=None):
             kill_nircmd()
 
         elif message.endswith(("off", "false")):
-            keyboard.press("CTRL")
+            keyboard.send("CTRL")
 
     elif message.startswith("/key"):
         key = message.replace("/key", "", 1).strip()
-        keyboard.press(key)
+        keyboard.send(key)
 
     elif message.startswith("/restartexplorer"):
         subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
@@ -1910,11 +1909,11 @@ def send_data(message=None):
         subprocess.Popen('cmd /c "echo off | clip"', shell=True)
 
     elif message.startswith("/write "):
-        keyboard2.write(message.replace("/write ", ""))
+        keyboard.write(message.replace("/write ", ""))
 
     elif message.startswith("/writeandsend "):
-        keyboard2.write(message.replace("/writeandsend ", ""))
-        keyboard2.press("ENTER")
+        keyboard.write(message.replace("/writeandsend ", ""))
+        keyboard.send("ENTER")
 
     elif message.startswith("/volume +"):
         delta = message.replace("/volume +", "")
@@ -1971,13 +1970,13 @@ def send_data(message=None):
         comtypes.CoUninitialize()
 
     elif message.startswith("/soundcontrol mute"):
-        keyboard.press("volumemute")
+        keyboard.send("volume mute")
     elif message.startswith("/mediacontrol playpause"):
-        keyboard.press("playpause")
+        keyboard.send("play/pause")
     elif message.startswith("/mediacontrol previous"):
-        keyboard.press("prevtrack")
+        keyboard.send("previous track")
     elif message.startswith("/mediacontrol next"):
-        keyboard.press("nexttrack")
+        keyboard.send("next track")
 
     elif message.startswith("/spotify likealbum"):
         sp = spotipy.Spotify(auth=spotify_token)
@@ -2384,7 +2383,7 @@ def send_data(message=None):
         hwnd = get_window_by_name(window_name)
         if hwnd:
             win32gui.SetForegroundWindow(hwnd)
-            keyboard2.press("ENTER")
+            keyboard.send("ENTER")
             print(f"Window '{window_name}' brought to the foreground")
         else:
             print(f"Window '{window_name}' not found")
