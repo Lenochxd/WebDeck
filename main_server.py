@@ -1826,7 +1826,7 @@ def send_data(message=None):
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
 
-        if "://" not in path and ":" in path:
+        if ":" in path:
             initial_path = os.getcwd()
             try:
                 file_directory = os.path.dirname(path)
@@ -2549,10 +2549,9 @@ def send_data(message=None):
         elif message.startswith("/obs_key"):
             hotkey=message.split(' ')[-1]
             result = obs.call(obsrequests.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
-            if "failed" in str(result):
-                print("ERROR:      ", result)
-                return jsonify({"success": False, "message": f"{text['failed']} :/"})
             print("Hotkey triggered successfully.")
+            if "failed" in str(result):
+                return jsonify({"success": False, "message": f"{text['failed']} :/"})
 
         obs.disconnect()
         
