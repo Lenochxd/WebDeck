@@ -95,14 +95,8 @@ WebDeck은 현재 Windows를 지원합니다. 향후 Linux 및 macOS용 버전�
 
 ### Pull requests
 
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="표준 192 또는 로컬 호스트 설정을 따르지 않는 네트워크를 수정하였습니다.">
-  <img src="https://avatars.githubusercontent.com/u/716338?v=4" alt="CONTRIBUTOR-sylos" width="60px" height="60px" style="border-radius: 50%;">
-</a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="사용자 정의 플러그인 인수를 수정하였습니다.">
-  <img src="https://avatars.githubusercontent.com/u/65694808?v=4" alt="CONTRIBUTOR-j-ddd" width="60px" height="60px" style="border-radius: 50%;">
-</a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore를 정의하였습니다.">
-  <img src="https://avatars.githubusercontent.com/u/29630035?v=4" alt="CONTRIBUTOR-busybox11" width="60px" height="60px" style="border-radius: 50%;">
+<a href="https://github.com/Lenochxd/WebDeck/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lenochxd/WebDeck" />
 </a>
 
 ### 🙏 기부자

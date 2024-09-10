@@ -98,14 +98,8 @@ Writing and supporting code is fun but it takes time. If you want to thank the a
 
 ### Pull requests
 
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="Fixed networks that don't follow the standard 192 or localhost setup">
-  <img src="https://avatars.githubusercontent.com/u/716338?v=4" alt="CONTRIBUTOR-sylos" width="60px" height="60px" style="border-radius: 50%;">
-</a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="Fixed custom plugin arguments">
-  <img src="https://avatars.githubusercontent.com/u/65694808?v=4" alt="CONTRIBUTOR-j-ddd" width="60px" height="60px" style="border-radius: 50%;">
-</a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore">
-  <img src="https://avatars.githubusercontent.com/u/29630035?v=4" alt="CONTRIBUTOR-busybox11" width="60px" height="60px" style="border-radius: 50%;">
+<a href="https://github.com/Lenochxd/WebDeck/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lenochxd/WebDeck" />
 </a>
 
 ### 🙏 Donors

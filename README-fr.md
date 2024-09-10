@@ -93,14 +93,8 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
 
 ### Pull requests
 
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=sylos" title="Correction des réseaux qui ne suivent pas la configuration standard 192 ou localhost">
-  <img src="https://avatars.githubusercontent.com/u/716338?v=4" alt="CONTRIBUTOR-sylos" width="60px" height="60px" style="border-radius: 50%;">
-</a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=j-ddd" title="Correction des arguments de plugins custom">
-  <img src="https://avatars.githubusercontent.com/u/65694808?v=4" alt="CONTRIBUTOR-j-ddd" width="60px" height="60px" style="border-radius: 50%;">
-</a>
-<a href="https://github.com/Lenochxd/WebDeck/commits?author=busybox11" title="gitignore">
-  <img src="https://avatars.githubusercontent.com/u/29630035?v=4" alt="CONTRIBUTOR-busybox11" width="60px" height="60px" style="border-radius: 50%;">
+<a href="https://github.com/Lenochxd/WebDeck/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lenochxd/WebDeck" />
 </a>
 
 ### 🙏 Dons
