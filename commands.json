@@ -1597,6 +1597,36 @@
     }
   },
   "OBS Studio": {
+    "hotkey": {
+      "command": "/obs_key",
+      "args": [
+        {
+          "TYPE": "input text",
+          "en": "Key name",
+          "fr": "Nom de la clé",
+          "ko": "키 이름"
+        }
+      ],
+      "name": {
+        "en": "Hotkey",
+        "fr": "raccourci clavier",
+        "ko": "단축키"
+      },
+      "description": {
+        "en": "Trigger a hotkey in OBS",
+        "fr": "Déclencher un raccourci clavier dans OBS",
+        "ko": "OBS에서 핫키 트리거"
+      },
+      "style": {
+        "image": "obs_logo2.svg",
+        "image_size": "70%",
+        "name": {
+          "en": "OBS Hotkey",
+          "fr": "Raccourci clavier OBS",
+          "ko": "OBS 단축키"
+        }
+      }
+    },
     "changeScene": {
       "command": "/obs_scene",
       "args": [
