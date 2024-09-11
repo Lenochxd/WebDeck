@@ -2549,9 +2549,10 @@ def send_data(message=None):
         elif message.startswith("/obs_key"):
             hotkey=message.split(' ')[-1]
             result = obs.call(obsrequests.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
-            print("Hotkey triggered successfully.")
             if "failed" in str(result):
+                print("ERROR:      ", result)
                 return jsonify({"success": False, "message": f"{text['failed']} :/"})
+            print("Hotkey triggered successfully.")
 
         obs.disconnect()
         
