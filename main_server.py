@@ -1826,7 +1826,7 @@ def send_data(message=None):
     elif message.startswith(("/openfile", "/start")):
         path = message.replace("/openfile", "", 1).replace("/start", "", 1).strip()
 
-        if ":" in path:
+        if "://" not in path and ":" in path:
             initial_path = os.getcwd()
             try:
                 file_directory = os.path.dirname(path)
