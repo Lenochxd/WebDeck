@@ -7,11 +7,11 @@
                 "month": "09",
                 "year": "2024",
                 "hour": "00",
-                "minute": "05"
+                "minute": "35"
             },
             "en": {
                 "updates": [
-                    "Added German translation (by @Dtrieb on #33)",
+                    "Added German translation (settings only) (by @Dtrieb on #33)",
                     "Added OBS hotkey function (by @sugoidogo on #29)"
                 ],
                 "minor_enhancements": [],
@@ -22,7 +22,7 @@
             },
             "fr": {
                 "updates": [
-                    "Ajout de la traduction allemande (par @Dtrieb sur #33)",
+                    "Ajout de la traduction allemande (seulement paramètres) (par @Dtrieb sur #33)",
                     "Ajout de la fonction de raccourci clavier pour OBS (par @sugoidogo sur #29)"
                 ],
                 "minor_enhancements": [],
