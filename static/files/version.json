@@ -1,6 +1,38 @@
 {
     "versions": [
         {
+            "version": "1.8.7",
+            "release_date": {
+                "day": "26",
+                "month": "09",
+                "year": "2024",
+                "hour": "00",
+                "minute": "05"
+            },
+            "en": {
+                "updates": [
+                    "Added German translation (by @Dtrieb on #33)",
+                    "Added OBS hotkey function (by @sugoidogo on #29)"
+                ],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Fixed issue with opening websites (by @SayakaIsBaka on #32)"
+                ],
+                "nobody_cares": []
+            },
+            "fr": {
+                "updates": [
+                    "Ajout de la traduction allemande (par @Dtrieb sur #33)",
+                    "Ajout de la fonction de raccourci clavier pour OBS (par @sugoidogo sur #29)"
+                ],
+                "minor_enhancements": [],
+                "fixes": [
+                    "Correction du problème d'ouverture des sites web (par @SayakaIsBaka sur #32)"
+                ],
+                "nobody_cares": []
+            }
+        },
+        {
             "version": "1.8.6",
             "release_date": {
                 "day": "22",
@@ -207,7 +239,7 @@
                     "Nettoyage des imports (suppression de `sounddevice`, `soundfile`, `pywinauto` du fichier requirements.txt)",
                     "Amélioration de la qualité du code"
                 ]
-            }            
+            }
         },
         {
             "version": "1.8.0",
