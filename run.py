@@ -6,12 +6,16 @@ import os.path
 try:
     if os.path.exists('.config/config.json'):
         with open('.config/config.json', encoding='utf-8') as f:
-            settings = json.load(f).get('settings', {'app-admin': True})
+            config = json.load(f)
+            settings = config.get('settings', {})
     elif os.path.exists('config.json'):
         with open('config.json', encoding='utf-8') as f:
-            settings = json.load(f).get('settings', {'app-admin': True})
+            config = json.load(f)
+            settings = config.get('settings', {})
     else:
-        settings = {'app-admin': True}
+        settings = {}
+    
+    settings.setdefault('app-admin', True)
 except Exception:
     settings = {'app-admin': True}
 
