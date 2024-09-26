@@ -7,7 +7,8 @@ build_options = {
                         "_sounddevice_data",
                         "pygame",
                         "soundfile", "_soundfile", "_soundfile_data",
-                        "vlc", "python-vlc"
+                        "vlc", "python-vlc",
+                        "jaraco"
                     ]
                 }
 
