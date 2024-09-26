@@ -38,7 +38,7 @@ def check_for_updates(text):
             sys.exit()
 
     except Exception as e:
-        show_error(f"{text['auto_update_error']} \n\n{text['error']}: {e}")
+        show_error(f"{text['auto_update_error']} \n\n{text['error']}: {e}", title="WebDeck Updater Error")
 
 
 def check_for_updates_loop(text):

@@ -9,11 +9,7 @@ import win32com
 import subprocess
 import ctypes
 import zipfile
-
-
-def error(message):
-    print(message)
-    ctypes.windll.user32.MessageBoxW(None, message, "WebDeck Updater Error", 0)
+from app.utils.show_error import show_error
 
 def check_files(versions_json_path, temp_json_path):
     with open(versions_json_path, encoding="utf-8") as f:
@@ -182,7 +178,7 @@ def check_updates(current_version):
 def download_and_extract(download_url):
     response = requests.get(download_url, stream=True)
     if response.status_code != 200:
-        error("Failed to download update ZIP file.")
+        show_error("Failed to download update ZIP file.", title="WebDeck Updater Error")
     else:
         with open("WD-update.zip", "wb") as file:
             for chunk in response.iter_content(chunk_size=8192):
