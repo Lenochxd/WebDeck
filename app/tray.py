@@ -16,7 +16,7 @@ import webview
 
 from app.utils.firewall import fix_firewall_permission
 from app.utils.get_local_ip import get_local_ip
-
+from app.utils.load_lang_file import load_lang_file
 
 def reload_config():
     port = 5000
@@ -54,36 +54,14 @@ def reload_config():
     return port, dark_theme, language, open_in_integrated_browser
 
 port, dark_theme, language, open_in_integrated_browser = reload_config()
+text = load_lang_file(language)
 
 wmi = win32com.client.GetObject("winmgmts:")
 processes = wmi.InstancesOf("Win32_Process")
 
-
-
 icon = None
 window = None
-    
-def load_lang_file(lang):
-    lang_dictionary = {}
-    lang_path = f"webdeck/translations/{lang}.lang"
-    if not os.path.isfile(lang_path):
-        for root, dirs, files in os.walk('webdeck/translations'):
-            for file in files:
-                if file.endswith('.lang') and file.startswith(lang):
-                    lang_path = f"webdeck/translations/{file}"
-                    
-    with open(lang_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        for line in lines:
-            if line.replace(' ', '').replace('\n','') != '' and not line.startswith('//') and not line.startswith('#'):
-                try:
-                    key, value = line.strip().split('=')
-                    lang_dictionary[key] = value.strip()
-                except:
-                    print(line)
-    return lang_dictionary
 
-text = load_lang_file(language)
 
 def exit_program():
     global icon, window
