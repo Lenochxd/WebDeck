@@ -208,7 +208,7 @@ def download_and_extract(download_url):
 if __name__ == "__main__":
     print("Starting updater...")
 
-    current_dir = f"{os.path.abspath(os.path.dirname(__file__))}/update"
+    current_dir = f"{os.path.dirname(os.path.abspath(__file__))}/update"
     wd_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 
     if not current_dir.endswith("update"):
