@@ -171,8 +171,9 @@ def check_updates(current_version):
 
         # Launch WebDeck.exe from the wd_dir (root) directory
         print("Restarting WebDeck.exe")
-        exe_path = os.path.join(wd_dir, "WebDeck.exe")
-        os.system(f'start "{exe_path}"')
+        os.chdir(wd_dir)
+        os.startfile("WebDeck.exe")
+        
 
 
 def download_and_extract(download_url):
