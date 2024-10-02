@@ -34,6 +34,7 @@ def check_for_updates(text):
             shutil.copytree("lib", "update/lib")
 
             subprocess.Popen(["update/WD_updater.exe"])
+            os.chdir("update")
 
             sys.exit()
 

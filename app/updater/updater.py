@@ -156,18 +156,18 @@ def check_updates(current_version):
 
         # Remove the WebDeck directory
         print("Removing WebDeck directory")
-        update_dir_path = os.path.join(wd_dir, "WebDeck")
+        update_dir_path = os.path.join(update_dir, "WebDeck")
         shutil.rmtree(update_dir_path, ignore_errors=True)
 
         # Remove the WD-update directory
-        print(f"Removing WD-update directory")
-        update_dir_path = os.path.join(wd_dir, "wd-update")
+        print("Removing WD-update directory")
+        update_dir_path = os.path.join(update_dir, "wd-update")
         shutil.rmtree(update_dir_path, ignore_errors=True)
 
         # Delete the WD-update.zip file
-        zip_file_path = os.path.join(wd_dir, "wd-update.zip")
+        print("Removing wd-update.zip")
+        zip_file_path = os.path.join(update_dir, "wd-update.zip")
         os.remove(zip_file_path)
-        print("wd-update.zip deleted")
 
         # Launch WebDeck.exe from the wd_dir (root) directory
         print("Restarting WebDeck.exe")
@@ -187,7 +187,7 @@ def download_and_extract(download_url):
         with zipfile.ZipFile("WD-update.zip", "r") as zip_ref:
             zip_ref.extractall("WD-update")
 
-        source = os.path.join(wd_dir, "WD-update/WebDeck")
+        source = os.path.join(update_dir, "WD-update/WebDeck")
         destination = wd_dir
 
         move_folder_content(source, destination)
