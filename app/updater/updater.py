@@ -205,14 +205,21 @@ def download_and_extract(download_url):
 #     move_folder_content(source, destination)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
     print("Starting updater...")
 
-    current_dir = f"{os.path.dirname(os.path.abspath(__file__))}/update"
-    wd_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
-
-    if not current_dir.endswith("update"):
+    wd_dir = os.getcwd()
+    if os.path.exists(os.path.join(os.path.dirname(wd_dir), "WebDeck.exe")):
+        wd_dir = os.path.dirname(wd_dir)
+    update_dir = os.path.join(wd_dir, 'update')
+    
+    if not os.path.exists(os.path.join(wd_dir, 'WebDeck.exe')):
+        show_error("WebDeck.exe not found in the parent directory. The updater is not properly installed.", title="WebDeck Updater Error")
+        sys.exit(1)
+    
+    if not os.getcwd().endswith("update"):
         sys.exit()
+    
     version_path = os.path.join(wd_dir, "webdeck/version.json")
     temp_json_path = os.path.join(wd_dir, "temp.json")
 
