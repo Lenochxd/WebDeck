@@ -30,11 +30,11 @@ def check_for_updates(text):
             os.makedirs("update")
             shutil.copyfile("python3.dll", "update/python3.dll")
             shutil.copyfile("python311.dll", "update/python311.dll")
-            shutil.copyfile("WD_updater.exe", "update/WD_updater.exe")
+            shutil.copyfile("update.exe", "update/update.exe")
             shutil.copytree("lib", "update/lib")
 
-            subprocess.Popen(["update/WD_updater.exe"])
             os.chdir("update")
+            subprocess.Popen(["update/update.exe"])
 
             sys.exit()
 

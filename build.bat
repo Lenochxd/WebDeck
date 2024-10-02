@@ -24,6 +24,6 @@ rem Sign the main executable
 "C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool" sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe
 
 rem Sign the updater executable
-"C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool" sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe
+"C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool" sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 update.exe
 
 echo Build done!

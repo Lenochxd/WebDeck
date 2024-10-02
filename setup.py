@@ -24,7 +24,7 @@ base = 'Win32GUI' if sys.platform=='win32' else None
 
 executables = [
     Executable('run.py', base=base, target_name='WebDeck', icon='static/icons/icon.ico'),
-    Executable('app/updater/updater.py', base=base, target_name='WD_updater')
+    Executable('app/updater/updater.py', base='console', target_name='update')
 ]
 
 with open('webdeck/version.json', encoding="utf-8") as f:
@@ -62,7 +62,7 @@ def is_excluded(file_path, exclude_list):
 
 ignored_files = [
     '.git', '.github', '.vscode', '__pycache__', '%.html%WebDeck',
-    'WebDeck.exe', 'WD_updater.exe', 'build', 'build.bat',
+    'WebDeck.exe', 'update.exe', 'build', 'build.bat',
     'requirements.txt', 'temp', 'tests/*', 'README*', '*.py'
 ]
 
