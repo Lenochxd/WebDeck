@@ -8,7 +8,6 @@ import ipaddress
 import ast
 
 # Third-party library imports
-from deepdiff import DeepDiff
 from PIL import Image
 from flask import Flask, request, jsonify, render_template, send_file, make_response
 from flask_socketio import SocketIO
@@ -46,17 +45,6 @@ def save_config(config):
         json.dump(config, json_file, indent=4)
     set_global_variable("config", config)
     return config
-
-
-def print_dict_differences(dict1, dict2):
-    diff = DeepDiff(dict1, dict2, ignore_order=True)
-
-    print("Differences found :")
-    for key, value in diff.items():
-        print(f"Key : {key}")
-        print(f"Difference : {value}")
-        print("----------------------")
-        
 
 
 # for folder_name, folder_content in config["front"]["buttons"].items():

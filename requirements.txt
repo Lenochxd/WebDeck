@@ -19,7 +19,6 @@ gputil
 pynvml
 spotipy
 simple-websocket
-deepdiff
 pystray
 tk
 easygui
