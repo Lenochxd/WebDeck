@@ -1,5 +1,5 @@
 import json
-import os.path
+import os
 
 def load_config():
     global config
