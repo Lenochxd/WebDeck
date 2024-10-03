@@ -47,25 +47,6 @@ def save_config(config):
     return config
 
 
-# for folder_name, folder_content in config["front"]["buttons"].items():
-#     for button in folder_content:
-#         if 'action' not in button.keys():
-#             button['action'] = {
-#                 "touch_start": "click",
-#                 "touch_keep": "None",
-#                 "touch_end": "none",
-#             }
-
-
-#         if 'image' in button.keys() and not button['image'].strip() == '' and ':' in button['image'] and not button['image'].startswith('http'):
-#             button['image'] = button['image'].replace('/', '\\')
-#             splitted = button['image'].split('\\')
-#             try:
-#                 copyfile(button['image'],f'static/files/images/{splitted[-1]}')
-#             except Exception:
-#                 pass
-
-
 if getattr(sys, "frozen", False):
     app = Flask(__name__, template_folder='../../../templates', static_folder='../../../static')
 else:
