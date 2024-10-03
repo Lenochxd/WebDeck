@@ -27,6 +27,7 @@ set_global_variable("config", config)
 
 from .utils.themes.parse_themes import parse_themes
 from .utils.plugins.load_plugins import load_plugins
+from .utils.settings.save_config import save_config
 from .utils.settings.audio_devices import get_audio_devices
 from .utils.settings.gridsize import update_gridsize
 from .utils.settings.create_folders import create_folders
@@ -39,12 +40,6 @@ from .buttons.obs import reload_obs
 from .buttons import soundboard
 from .buttons import handle_command as command
 
-
-def save_config(config):
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-    set_global_variable("config", config)
-    return config
 
 
 if getattr(sys, "frozen", False):
