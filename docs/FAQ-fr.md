@@ -207,6 +207,5 @@ Si vous préférez compiler le fichier `WebDeck.exe` vous-même par mesure de s�
 5. Effectuez la compilation :\
 `python setup.py build`
 6. (Optionnel) Si vous souhaitez signer les exécutables avecsigntool, suivez les instructions fournies dans le lien pour l'installer: https://stackoverflow.com/a/52963704/17100464.
-7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WebDeck.exe`
-8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_main.exe`
-9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com td SHA256 WD_updater.exe`
+7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe`
+8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 update.exe`

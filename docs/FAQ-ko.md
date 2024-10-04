@@ -210,5 +210,4 @@ theme-author-github = YourGithubHere
 `python setup.py build`
 6. (선택사항) sigtool을 사용하여 실행 파일에 서명하려면 [이 링크](https://stackoverflow.com/a/52963704/17100464)에 제공된 지침을 따르세요.
 7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe`
-8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_main.exe`
-9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe`
+8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 update.exe`

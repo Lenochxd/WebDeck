@@ -213,5 +213,4 @@ If you prefer to compile the executable files yourself for security reasons, her
 `python setup.py build`
 6. (Optional) If you want to sign the executables with signtool, follow the instructions provided in [this link](https://stackoverflow.com/a/52963704/17100464).
 7. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WebDeck.exe`
-8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_main.exe`
-9. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 WD_updater.exe`
+8. `signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 update.exe`
