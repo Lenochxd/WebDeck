@@ -16,6 +16,8 @@ from app.utils.get_local_ip import get_local_ip
 
 
 def check_config_update(config):
+    config = check_config_hyphen_case(config)
+    
     if "background" in config["front"]:
         if (
             type(config["front"]["background"]) == "str"
@@ -30,42 +32,42 @@ def check_config_update(config):
         # Set default background if not present
         config["front"]["background"] = ["#141414"]
 
-    # Set default auto-updates setting if not present
-    if "auto-updates" not in config["settings"]:
-        config["settings"]["auto-updates"] = True
+    # Set default auto_updates setting if not present
+    if "auto_updates" not in config["settings"]:
+        config["settings"]["auto_updates"] = True
 
     # Set default windows startup setting if not present
-    if "windows-startup" not in config["settings"]:
-        config["settings"]["windows-startup"] = False
+    if "windows_startup" not in config["settings"]:
+        config["settings"]["windows_startup"] = False
 
     # Set default flask debug setting if not present
-    if "flask-debug" not in config["settings"]:
-        config["settings"]["flask-debug"] = True
+    if "flask_debug" not in config["settings"]:
+        config["settings"]["flask_debug"] = True
 
     # Remove open settings in browser setting if present
-    if "open-settings-in-browser" in config["settings"]:
-        del config["settings"]["open-settings-in-browser"]
+    if "open_settings_in_browser" in config["settings"]:
+        del config["settings"]["open_settings_in_browser"]
     
-    # Rename 'black-theme' to 'dark-theme'
-    if "black-theme" in config["front"]:
-        config["front"]["dark-theme"] = config["front"].get("black-theme", True)
-        del config["front"]["black-theme"]
+    # Rename 'black_theme' to 'dark_theme'
+    if "black_theme" in config["front"]:
+        config["front"]["dark_theme"] = config["front"].get("black_theme", True)
+        del config["front"]["black_theme"]
 
     # Set default open settings in integrated browser setting if not present
-    if "open-settings-in-integrated-browser" not in config["settings"]:
-        config["settings"]["open-settings-in-integrated-browser"] = False
+    if "open_settings_in_integrated_browser" not in config["settings"]:
+        config["settings"]["open_settings_in_integrated_browser"] = False
 
     # Set default portrait rotate setting if not present
-    if "portrait-rotate" not in config["front"]:
-        config["front"]["portrait-rotate"] = "90"
+    if "portrait_rotate" not in config["front"]:
+        config["front"]["portrait_rotate"] = "90"
 
     # Set default edit buttons color setting if not present
-    if "edit-buttons-color" not in config["front"]:
-        config["front"]["edit-buttons-color"] = False
+    if "edit_buttons_color" not in config["front"]:
+        config["front"]["edit_buttons_color"] = False
 
     # Set default buttons color setting if not present
-    if "buttons-color" not in config["front"]:
-        config["front"]["buttons-color"] = ""
+    if "buttons_color" not in config["front"]:
+        config["front"]["buttons_color"] = ""
 
     # Set default soundboard settings if not present
     if "soundboard" not in config["settings"]:
@@ -93,16 +95,16 @@ def check_config_update(config):
         config["settings"]["obs"] = {"host": "localhost", "port": 4455, "password": ""}
 
     # Set default automatic firewall bypass setting if not present
-    if "automatic-firewall-bypass" not in config["settings"]:
-        config["settings"]["automatic-firewall-bypass"] = False
+    if "automatic_firewall_bypass" not in config["settings"]:
+        config["settings"]["automatic_firewall_bypass"] = False
 
     # Set default fix stop soundboard setting if not present
-    if "fix-stop-soundboard" not in config["settings"]:
-        config["settings"]["fix-stop-soundboard"] = False
+    if "fix_stop_soundboard" not in config["settings"]:
+        config["settings"]["fix_stop_soundboard"] = False
 
     # Set default optimized usage display setting if not present
-    if "optimized-usage-display" not in config["settings"]:
-        config["settings"]["optimized-usage-display"] = False
+    if "optimized_usage_display" not in config["settings"]:
+        config["settings"]["optimized_usage_display"] = False
 
 
     config = check_config_themes(config)
@@ -175,6 +177,32 @@ def check_config_booleans(config):
                         elif setting.lower() == "false":
                             config[category][key][setting_name] = False
     return config
+
+def check_config_hyphen_case(config):
+    def convert_to_snake_case(text):
+        return text.replace('-', '_')
+
+    new_config = {}
+    for category, settings in config.items():
+        new_category = convert_to_snake_case(category)
+        new_config[new_category] = {}
+        for key, value in settings.items():
+            new_key = convert_to_snake_case(key)
+            if isinstance(value, dict):
+                new_value = {convert_to_snake_case(k): v for k, v in value.items()}
+            else:
+                new_value = value
+            new_config[new_category][new_key] = new_value
+
+    # Update background-color to background_color in buttons
+    if 'front' in new_config and 'buttons' in new_config['front']:
+        for page_name, page_content in new_config['front']['buttons'].items():
+            if isinstance(page_content, list):
+                for button in page_content:
+                    if isinstance(button, dict) and 'background-color' in button:
+                        button['background_color'] = button.pop('background-color')
+
+    return new_config
 
 
 def color_distance(color1, color2):
@@ -302,7 +330,7 @@ def on_start():
     text = load_lang_file(config["settings"]["language"])
     
     # Checks for updates
-    if config["settings"]["auto-updates"] == True:
+    if config["settings"].get("auto_updates", True) == True:
         check_for_updates(text)
     
     # Load commands

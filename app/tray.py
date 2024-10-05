@@ -34,7 +34,7 @@ def reload_config():
         with open(config_path, encoding="utf-8") as f:
             config = json.load(f)
             settings = config.get('settings', {})
-            integrated_browser_key = 'open-settings-in-integrated-browser'
+            integrated_browser_key = 'open_settings_in_integrated_browser'
             browser_key = 'open-settings-in-browser'
             
             # update config to remove 'open-settings-in-browser'

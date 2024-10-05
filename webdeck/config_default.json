@@ -1,23 +1,23 @@
 {
     "settings": {
         "language": "en_US",
-        "windows-startup": false,
-        "auto-updates": true,
-        "dev-mode": false,
-        "flask-debug": true,
-        "app-admin": true,
-        "optimized-usage-display": false,
+        "windows_startup": false,
+        "auto_updates": true,
+        "dev_mode": false,
+        "flask_debug": true,
+        "app_admin": false,
+        "optimized_usage_display": false,
         "gpu_method": "nvidia (pynvml)",
-        "show-console": false,
-        "open-settings-in-integrated-browser": false,
-        "data-transfer-method": "http",
-        "automatic-firewall-bypass": false,
-        "fix-stop-soundboard": false,
-        "ear-soundboard": true,
-        "spotify-api": {
-            "CLIENT_ID": "",
-            "CLIENT_SECRET": "",
-            "USERNAME": ""
+        "show_console": false,
+        "open_settings_in_integrated_browser": false,
+        "data_transfer_method": "http",
+        "automatic_firewall_bypass": false,
+        "fix_stop_soundboard": false,
+        "ear_soundboard": true,
+        "spotify_api": {
+            "client_id": "",
+            "client_secret": "",
+            "username": ""
         },
         "soundboard": {
             "enabled": false,
@@ -34,16 +34,16 @@
         "background": [
             "#141414"
         ],
-        "computer-usage-reload-time": "3000",
-        "edit-buttons-color": false,
-        "buttons-color": "",
-        "names-color": "#b3b3b3",
-        "show-names": true,
-        "portrait-rotate": "90",
+        "computer_usage_reload_time": "3000",
+        "edit_buttons_color": false,
+        "buttons_color": "",
+        "names_color": "#b3b3b3",
+        "show_names": true,
+        "portrait_rotate": "90",
         "themes": [],
         "height": "4",
         "width": "8",
-        "dark-theme": true,
+        "dark_theme": true,
         "buttons": {
             "index": [
                 {
@@ -80,7 +80,7 @@
                     "name": "Disable screen saver"
                 },
                 {
-                    "background-color": "#2e2e2e",
+                    "background_color": "#2e2e2e",
                     "color": "#fff",
                     "image": "eyedropper.svg",
                     "image_size": "50%",
@@ -176,7 +176,7 @@
                     "VOID": "VOID"
                 },
                 {
-                    "background-color": "#2e2e2e",
+                    "background_color": "#2e2e2e",
                     "color": "#fff",
                     "image": "",
                     "image_size": "100%",
@@ -184,7 +184,7 @@
                     "name": "CPU usage"
                 },
                 {
-                    "background-color": "#2e2e2e",
+                    "background_color": "#2e2e2e",
                     "color": "#fff",
                     "image": "",
                     "image_size": "100%",
@@ -313,21 +313,21 @@
                     "VOID": "VOID"
                 },
                 {
-                    "background-color": "#1ed664",
+                    "background_color": "#1ed664",
                     "image": "skip-start-fill.svg",
                     "image_size": "100%",
                     "message": "/mediacontrol previous",
                     "name": "Previous"
                 },
                 {
-                    "background-color": "#1ed664",
+                    "background_color": "#1ed664",
                     "image": "playpause2.png",
                     "image_size": "98%",
                     "message": "/mediacontrol playpause",
                     "name": "Play/Pause"
                 },
                 {
-                    "background-color": "#1ed664",
+                    "background_color": "#1ed664",
                     "image": "skip-end-fill.svg",
                     "image_size": "100%",
                     "message": "/mediacontrol next",
@@ -403,7 +403,7 @@
                     "VOID": "VOID"
                 },
                 {
-                    "background-color": "#1ed664",
+                    "background_color": "#1ed664",
                     "image": "volume-mute.svg",
                     "image_size": "65%",
                     "message": "/soundcontrol mute",

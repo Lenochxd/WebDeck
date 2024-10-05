@@ -173,7 +173,7 @@ def home():
         config=config, themes=themes, parsed_themes=parse_themes(text),
         commands=commands, versions=versions, random_bg=random_bg, usage_example=get_usage(True),
         langs=langs, text=text,
-        svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait-rotate'],
+        svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait_rotate'],
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
         isfile=os.path.isfile
     )
@@ -213,8 +213,8 @@ def saveconfig():
     new_config = check_config_update(new_config)
 
     if (
-        config["settings"]["windows-startup"] == False
-        and new_config["settings"]["windows-startup"] == True
+        config["settings"]["windows_startup"] == False
+        and new_config["settings"]["windows_startup"] == True
     ):
         if getattr(sys, "frozen", False):
             dir = (
@@ -232,8 +232,8 @@ def saveconfig():
             shortcut.IconLocation = icon
             shortcut.save()
     elif (
-        config["settings"]["windows-startup"] == True
-        and new_config["settings"]["windows-startup"] == False
+        config["settings"]["windows_startup"] == True
+        and new_config["settings"]["windows_startup"] == False
     ):
         if getattr(sys, "frozen", False):
             file_path = (
@@ -473,7 +473,7 @@ def send_data_route():
 
 
 if (
-    config["settings"]["automatic-firewall-bypass"] == True
+    config["settings"]["automatic_firewall_bypass"] == True
     and check_firewall_permission() == False
 ):
     fix_firewall_permission()
@@ -483,6 +483,6 @@ print('local_ip: ', local_ip)
 app.run(
     host=local_ip,
     port=config["url"]["port"],
-    debug=config["settings"]["flask-debug"] == True,
-    use_reloader=config["settings"]["flask-debug"] == False,
+    debug=config["settings"]["flask_debug"] == True,
+    use_reloader=config["settings"]["flask_debug"] == False,
 )

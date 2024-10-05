@@ -42,9 +42,9 @@
                   {% if button_settings["image"] == "" or not button_settings["image"] %}
                     <button type="button" id="button-element_{{edit_modal_ID}}" class="{{class}}" role="button"
                       style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;
-                      {% if button_settings['background-color'] %}
-                        background-color: {{button_settings['background-color']}};
-                        box-shadow: {{button_settings['background-color']}} 0 1px 3px 0;
+                      {% if button_settings['background_color'] %}
+                        background-color: {{button_settings['background_color']}};
+                        box-shadow: {{button_settings['background_color']}} 0 1px 3px 0;
                       {% endif %}
                       ">
                       <img id="button-image_{{edit_modal_ID}}" draggable="false" alt="" style="
@@ -63,9 +63,9 @@
                     
                     <button type="button" id="button-element_{{edit_modal_ID}}" class="{{class}}" role="button"
                     style="overflow: hidden; overflow-y: hidden; max-height: 89.6px;
-                    {% if button_settings['background-color'] %}
-                      background-color: {{button_settings['background-color']}};
-                      box-shadow: {{button_settings['background-color']}} 0 1px 3px 0;
+                    {% if button_settings['background_color'] %}
+                      background-color: {{button_settings['background_color']}};
+                      box-shadow: {{button_settings['background_color']}} 0 1px 3px 0;
                     {% endif %}
                     ">
                       {% if isfile(imagelink) %}
@@ -85,10 +85,10 @@
                       
                     </button>
                   {% endif %}
-                  {# {% if config["front"]["show-names"] %} #}
+                  {# {% if config["front"]["show_names"] %} #}
                     {% set buttontext_style = ''%}
-                    {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
-                      {% set buttontext_style = 'style="color:' + config["front"]["names-color"] + ';"'%}
+                    {% if config["front"]["names_color"] and not config["front"]["names_color"].strip() == "" %}
+                      {% set buttontext_style = 'style="color:' + config["front"]["names_color"] + ';"'%}
                     {% endif %}
                     <p class="buttontext" id="button-text-preview_{{edit_modal_ID}}" {{buttontext_style}}>
                       {% set button_name = "" %}
@@ -151,11 +151,11 @@
               <label for="background-color-input_{{edit_modal_ID}}"> {{text['background_color']}}: </label>
               <div class="background-color-input-container">
                 {% set default_bgcolor = '' %}
-                {% if button_settings['background-color'] and not button_settings['background-color'].strip() == '' %}
-                  {% if button_settings['background-color'].strip().startswith('#') %}
-                    {% set default_bgcolor = 'value="' + button_settings['background-color'].strip() + '"' %}
+                {% if button_settings['background_color'] and not button_settings['background_color'].strip() == '' %}
+                  {% if button_settings['background_color'].strip().startswith('#') %}
+                    {% set default_bgcolor = 'value="' + button_settings['background_color'].strip() + '"' %}
                   {% else %}
-                    {% set default_bgcolor = 'value="#' + button_settings['background-color'].strip() + '"' %}
+                    {% set default_bgcolor = 'value="#' + button_settings['background_color'].strip() + '"' %}
                   {% endif %}
                 {% endif %}
                   <input type="color" class="background-color-input {{dark_theme}}" id="background-color-input_{{edit_modal_ID}}" {{default_bgcolor}}>
@@ -171,7 +171,7 @@
             </div>
           </div>
 
-          {% if config['settings']['dev-mode'] %}
+          {% if config['settings']['dev_mode'] %}
             <div class="editorStyle-bar {{dark_theme}}"></div>
 
             <div class="arg_container" edit_modal_ID="{{edit_modal_ID}}">
@@ -240,7 +240,7 @@
 
                     buttonBackgroundColorInput.value = hexValue;
                     buttonBackgroundColorHex.value = hexValue;
-                    button['background-color'] = hexValue;
+                    button['background_color'] = hexValue;
 
                     buttonElement.style.backgroundColor = hexValue;
                     buttonElement.style.boxShadow = "0 0 5px " + hexValue;
@@ -252,7 +252,7 @@
 
                     buttonBackgroundColorInput.value = normalizedHexValue;
                     buttonBackgroundColorHex.value = normalizedHexValue;
-                    button['background-color'] = normalizedHexValue;
+                    button['background_color'] = normalizedHexValue;
 
                     buttonElement.style.backgroundColor = normalizedHexValue;
                     buttonElement.style.boxShadow = "0 0 5px " + normalizedHexValue;
@@ -340,7 +340,7 @@
 
             updateButtonBackgroundColor('{{edit_modal_ID}}', buttonElement_{{edit_modal_ID}}, buttonBackgroundColorInput_{{edit_modal_ID}}, buttonBackgroundColorHex_{{edit_modal_ID}}, button_{{edit_modal_ID}});
 
-            {% if config['settings']['dev-mode'] %}
+            {% if config['settings']['dev_mode'] %}
                 document.getElementById('command_{{edit_modal_ID}}').addEventListener('input', function () {
                     button_{{edit_modal_ID}}['message'] = this.value;
                 });

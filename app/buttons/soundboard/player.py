@@ -43,7 +43,7 @@ def get_params(msg):
         ear_soundboard = True
     else:
         localonly = False
-        ear_soundboard = config["settings"]["ear-soundboard"]
+        ear_soundboard = config["settings"]["ear_soundboard"]
         
     
     return sound_file, sound_volume, ear_soundboard, localonly
@@ -57,7 +57,7 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
         print("VLC is not installed!")
         return jsonify({"success": False, "message": text["vlc_not_installed_error"]})
     else:
-        if config["settings"]["fix-stop-soundboard"]:
+        if config["settings"]["fix_stop_soundboard"]:
             file_path = silence_path(file_path)
             if file_path == False:
                 return jsonify({"success": False, "message": text["ffmpeg_not_installed_error"]})

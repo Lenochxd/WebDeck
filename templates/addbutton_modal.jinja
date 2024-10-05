@@ -237,10 +237,10 @@
                       
                     </button>
                   {% endif %}
-                  {# {% if config["front"]["show-names"] == True %} #}
+                  {# {% if config["front"]["show_names"] == True %} #}
                     {% set buttontext_style = ''%}
-                    {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
-                      {% set buttontext_style = 'style="color:' + config["front"]["names-color"] + ';"'%}
+                    {% if config["front"]["names_color"] and not config["front"]["names_color"].strip() == "" %}
+                      {% set buttontext_style = 'style="color:' + config["front"]["names_color"] + ';"'%}
                     {% endif %}
                     <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" {{buttontext_style}}>
                       {% set button_name = "" %}
@@ -413,7 +413,7 @@
 
                       buttonBackgroundColorInput.value = hexValue;
                       buttonBackgroundColorHex.value = hexValue;
-                      button['background-color'] = hexValue;
+                      button['background_color'] = hexValue;
 
                       buttonElement.style.backgroundColor = hexValue;
                       buttonElement.style.boxShadow = "0 0 5px " + hexValue;
@@ -425,7 +425,7 @@
 
                       buttonBackgroundColorInput.value = normalizedHexValue;
                       buttonBackgroundColorHex.value = normalizedHexValue;
-                      button['background-color'] = normalizedHexValue;
+                      button['background_color'] = normalizedHexValue;
 
                       buttonElement.style.backgroundColor = normalizedHexValue;
                       buttonElement.style.boxShadow = "0 0 5px " + normalizedHexValue;
@@ -554,7 +554,7 @@
 
               updateButtonBackgroundColor('{{arg_modal_ID}}', buttonElement_{{arg_modal_ID}}, buttonBackgroundColorInput_{{arg_modal_ID}}, buttonBackgroundColorHex_{{arg_modal_ID}}, button_{{arg_modal_ID}});
 
-              {% if config['settings']['dev-mode'] %}
+              {% if config['settings']['dev_mode'] %}
                   document.getElementById('command_{{arg_modal_ID}}').addEventListener('input', function () {
                       button_{{arg_modal_ID}}['message'] = this.value;
                   });
