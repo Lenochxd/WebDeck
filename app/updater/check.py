@@ -11,6 +11,9 @@ from .updater import compare_versions
 
 
 def check_for_updates(text):
+    if not getattr(sys, "frozen", False):
+        return
+    
     if os.path.exists("update"):
         shutil.rmtree("update", ignore_errors=True)
 
