@@ -2,7 +2,7 @@ import os
 
 
 def openfile(path):
-    if ":" in path:
+    if "://" not in path and ":" in path:
         initial_path = os.getcwd()
         try:
             file_directory = os.path.dirname(path)
