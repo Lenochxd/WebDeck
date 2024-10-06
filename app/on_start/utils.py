@@ -193,14 +193,17 @@ def check_config_hyphen_case(config):
     new_config = {}
     for category, settings in config.items():
         new_category = convert_to_snake_case(category)
-        new_config[new_category] = {}
-        for key, value in settings.items():
-            new_key = convert_to_snake_case(key)
-            if isinstance(value, dict):
-                new_value = {convert_to_snake_case(k): v for k, v in value.items()}
-            else:
-                new_value = value
-            new_config[new_category][new_key] = new_value
+        if not isinstance(settings, dict):
+            new_config[new_category] = settings
+        else:
+            new_config[new_category] = {}
+            for key, value in settings.items():
+                new_key = convert_to_snake_case(key)
+                if isinstance(value, dict):
+                    new_value = {convert_to_snake_case(k): v for k, v in value.items()}
+                else:
+                    new_value = value
+                new_config[new_category][new_key] = new_value
 
     # Update background-color to background_color in buttons
     if 'front' in new_config and 'buttons' in new_config['front']:
