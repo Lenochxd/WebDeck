@@ -78,7 +78,7 @@ def check_local_network():
     
     if ip_remote != ip_local:
         # check if in allowed network list in config
-        for network in config["allowed_networks"]:
+        for network in config["settings"].get("allowed_networks", []):
             if ipaddress.IPv4Address(remote_ip) in ipaddress.IPv4Network(network):
                 return
             

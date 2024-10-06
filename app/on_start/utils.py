@@ -114,6 +114,16 @@ def check_config_update(config):
     if "spotify_api" in config["settings"]:
         config["settings"]["spotify_api"] = {k.lower(): v for k, v in config["settings"]["spotify_api"].items()}
     
+    # Move allowed_networks to settings.allowed_networks
+    if "allowed_networks" in config:
+        if "allowed_networks" not in config["settings"]:
+            config["settings"]["allowed_networks"] = config["allowed_networks"].copy()
+        del config["allowed_networks"]
+    
+    # Set default allowed_networks setting if not present
+    if "allowed_networks" not in config["settings"]:
+        config["settings"]["allowed_networks"] = []
+    
 
     config = check_config_themes(config)
     config = check_config_booleans(config)
