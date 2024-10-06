@@ -5,7 +5,7 @@
         "auto_updates": true,
         "dev_mode": false,
         "flask_debug": true,
-        "app_admin": false,
+        "app_admin": true,
         "optimized_usage_display": false,
         "gpu_method": "nvidia (pynvml)",
         "show_console": false,
