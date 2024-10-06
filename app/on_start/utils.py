@@ -106,6 +106,10 @@ def check_config_update(config):
     if "optimized_usage_display" not in config["settings"]:
         config["settings"]["optimized_usage_display"] = False
 
+    # Make every key in settings.spotify_api lowercase
+    if "spotify_api" in config["settings"]:
+        config["settings"]["spotify_api"] = {k.lower(): v for k, v in config["settings"]["spotify_api"].items()}
+    
 
     config = check_config_themes(config)
     config = check_config_booleans(config)

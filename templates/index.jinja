@@ -780,16 +780,16 @@
 
                   <ul>
                     <li>
-                      <label for="spotify-USERNAME"> {{text['username']}} </label>
-                      <input class="spotify-setting {{dark_theme}}" type="text" class="spotify-setting" id="spotify-USERNAME" name="settings.spotify_api.USERNAME" {% if not config['settings']['spotify_api']['USERNAME'].strip() == ''%} value="{{config['settings']['spotify_api']['USERNAME']}}" {% endif %}>
+                      <label for="spotify-client_id"> {{text['username']}} </label>
+                      <input class="spotify-setting {{dark_theme}}" type="text" class="spotify-setting" id="spotify-username" name="settings.spotify_api.username" {% if not config['settings']['spotify_api']['username'].strip() == ''%} value="{{config['settings']['spotify_api']['username']}}" {% endif %}>
                       
-                      <label for="spotify-CLIENT_ID">Client ID</label>
-                      <input class="spotify-setting {{dark_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify_api.CLIENT_ID" {% if not config['settings']['spotify_api']['CLIENT_ID'].strip() == ''%} value="{{config['settings']['spotify_api']['CLIENT_ID']}}" {% endif %}>
+                      <label for="spotify-client_id">Client ID</label>
+                      <input class="spotify-setting {{dark_theme}}" type="text" id="spotify-client_id" name="settings.spotify_api.client_id" {% if not config['settings']['spotify_api']['client_id'].strip() == ''%} value="{{config['settings']['spotify_api']['client_id']}}" {% endif %}>
                       
-                      <label for="spotify-CLIENT_SECRET">Client Secret</label>
+                      <label for="spotify-client_secret">Client Secret</label>
                       <div class="password-container">
-                        <input class="spotify-setting {{dark_theme}}" type="password" id="spotify-CLIENT_SECRET" name="settings.spotify_api.CLIENT_SECRET" {% if not config['settings']['spotify_api']['CLIENT_SECRET'].strip() == ''%} value="{{config['settings']['spotify_api']['CLIENT_SECRET']}}" {% endif %}>
-                        <span id="show-password-spotify" class="show-password" onclick="togglePasswordVisibility('spotify-CLIENT_SECRET', 'show-password-spotify')"></span>
+                        <input class="spotify-setting {{dark_theme}}" type="password" id="spotify-client_secret" name="settings.spotify_api.client_secret" {% if not config['settings']['spotify_api']['client_secret'].strip() == ''%} value="{{config['settings']['spotify_api']['client_secret']}}" {% endif %}>
+                        <span id="show-password-spotify" class="show-password" onclick="togglePasswordVisibility('spotify-client_secret', 'show-password-spotify')"></span>
                       </div>
                     </li>
                   </ul>
