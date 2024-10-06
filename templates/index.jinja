@@ -7,13 +7,14 @@
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="static/files/loading-squares.css">
+    <link rel="stylesheet" href="static/css/loading-squares.css">
+    <link rel="stylesheet" href="static/css/style.css">
     {% for file in config['front']['themes'][::-1] %}
       {% if not file.startswith('//') %}
-        <link rel="stylesheet" href="static/themes/{{ file }}">
+        <link rel="stylesheet" href=".config/themes/{{ file }}">
       {% endif %}
     {% endfor %}
-    <link rel="icon" href="static\files\icon.ico"/>
+    <link rel="icon" href="static\icons\icon.ico"/>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta charset="UTF-8">
 
@@ -35,20 +36,20 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-    <script src="/static/files/color-setting.js"></script>
-    <script src="/static/files/themes-setting.js"></script>
-    <script src="/static/files/background-setting.js"></script>
-    <script src="/static/files/filepath.js"></script>
-    <script src="/static/files/folderpath.js"></script>
-    <script src="/static/files/loadingscreen.js"></script>
-    <script src="/static/files/upload_file.js"></script>
-    {# <script src="/static/files/buttonclick.js"></script> #}
+    <script src="/static/js/color-setting.js"></script>
+    <script src="/static/js/themes-setting.js"></script>
+    <script src="/static/js/background-setting.js"></script>
+    <script src="/static/js/filepath.js"></script>
+    <script src="/static/js/folderpath.js"></script>
+    <script src="/static/js/loadingscreen.js"></script>
+    <script src="/static/js/upload_file.js"></script>
+    {# <script src="/static/js/buttonclick.js"></script> #}
 
     {% set language = text['lang_short'] %}
 
-    {% set black_theme = '' %}
-    {% if config['front']['black-theme'] == 'true' %}
-      {% set black_theme = ' black-theme' %}
+    {% set dark_theme = '' %}
+    {% if config['front']['dark_theme'] %}
+      {% set dark_theme = ' dark-theme' %}
     {% endif %}
 
     {# {% set total_boxes = int(config["front"]["width"]) * int(config["front"]["height"]) %}
@@ -90,17 +91,17 @@
     {% if random_bg.endswith(".mp4") %}
       <div class="background-video">
         <video autoplay muted loop class="background-video">
-          <source src="{{ 'static/files/uploaded/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+          <source src="{{ '.config/user_uploads/' + random_bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
           Your browser does not support the video tag...
         </video>
       </div>
     {% endif %}
 
 
-    {% if config["settings"]["show-console"].lower() == "true" %}
+    {% if config["settings"]["show_console"] %}
       <form class="form">
         <label style="color: white;">Console:</label><br>
-        <input type="text" class="message {{black_theme}}"><br>
+        <input type="text" class="message {{dark_theme}}"><br>
         <button type="submit">Submit</button>
       </form>
     {% endif %}
@@ -125,7 +126,7 @@
             width: 100%;
             height: 100%;
 
-            background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
+            background-image: url("{{ ".config/user_uploads/" + random_bg.replace('**uploaded/', '') }}")!important;
             background-size: cover;
             background-position: center;
             background-color: transparent;
@@ -133,13 +134,13 @@
             z-index: -1;
           }
           div.fakeform-container {
-            background-image: url("{{ "static/files/uploaded/" + random_bg.replace('**uploaded/', '') }}")!important;
+            background-image: url("{{ ".config/user_uploads/" + random_bg.replace('**uploaded/', '') }}")!important;
             background-color: transparent;
           }
           @media (orientation: portrait) {
             html::before {
               {% set extension = random_bg.replace('**uploaded/', '').split('.')[-1] %}
-              {% set bg_image = "static/files/uploaded/" + random_bg.replace('**uploaded/', '').replace('.'+extension, '-90.'+extension) %}
+              {% set bg_image = ".config/user_uploads/" + random_bg.replace('**uploaded/', '').replace('.'+extension, '-90.'+extension) %}
               background-image: url("{{ bg_image }}")!important;
             }
           }
@@ -164,18 +165,18 @@
         }
       }
 
-      {% if config['front']['buttons-color'] != "" and config['front']['edit-buttons-color'] != "false" %}
+      {% if config['front']['buttons_color'] != "" and config['front']['edit_buttons_color'] == True %}
         .wd_button, .wd_button:focus {
-          background-color: {{config['front']['buttons-color']}};
+          background-color: {{config['front']['buttons_color']}};
           box-shadow: {{config['front']['buttons-color']}} 0 1px 3px 0;
         }
         .wd_button:hover {
           transform: translateY(-1px);
-          animation-name: animation-{{ config['front']['buttons-color'].replace('#','') }};
+          animation-name: animation-{{ config['front']['buttons_color'].replace('#','') }};
           animation-duration: 1s;
         } 
         .wd_button:active {
-          background-color: #{{ config['front']['buttons-color'].replace('#','') }};
+          background-color: #{{ config['front']['buttons_color'].replace('#','') }};
           border-color: rgba(0, 0, 0, 0.15);
           box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
           color: rgba(0, 0, 0, 0.65);
@@ -186,23 +187,26 @@
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% for button_config in config["front"]["buttons"][folder_id] %}
           {% if 'background-color' in button_config.keys() %}
-            @keyframes animation-{{ button_config['background-color'].replace('#','') }} {
-              100% {background-color: #{{ button_config['background-color'].replace('#','') }};}
+            
+            {{ mdebug(button_config) }}
+            
+            @keyframes animation-{{ button_config['background_color'].replace('#','') }} {
+              100% {background-color: #{{ button_config['background_color'].replace('#','') }};}
               100% {background-color: none;}
             }
-            .button-{{ button_config['background-color'].replace('#','') }}, .button-{{ button_config['background-color'].replace('#','') }}:focus {
-              background-color: #{{ button_config['background-color'].replace('#','') }};
-              box-shadow: #{{ button_config['background-color'].replace('#','') }} 0 1px 3px 0;
+            .button-{{ button_config['background_color'].replace('#','') }}, .button-{{ button_config['background_color'].replace('#','') }}:focus {
+              background-color: #{{ button_config['background_color'].replace('#','') }};
+              box-shadow: #{{ button_config['background_color'].replace('#','') }} 0 1px 3px 0;
               color: rgba(0, 0, 0, 0.85) !important;
             }
-            .button-{{ button_config['background-color'].replace('#','') }}:hover {
+            .button-{{ button_config['background_color'].replace('#','') }}:hover {
               transform: translateY(-1px);
-              animation-name: animation-{{ button_config['background-color'].replace('#','') }};
+              animation-name: animation-{{ button_config['background_color'].replace('#','') }};
               animation-duration: 1s;
             } 
-            .button-{{ button_config['background-color'].replace('#','') }}:active {
-              background-color: #{{ button_config['background-color'].replace('#','') }};
-              background: #{{ button_config['background-color'].replace('#','') }};
+            .button-{{ button_config['background_color'].replace('#','') }}:active {
+              background-color: #{{ button_config['background_color'].replace('#','') }};
+              background: #{{ button_config['background_color'].replace('#','') }};
               border-color: rgba(0, 0, 0, 0.15);
               box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
               color: rgba(0, 0, 0, 0.65);
@@ -258,12 +262,12 @@
                 </div>
 
                 
-                <input type="hidden" class="message {{black_theme}}" value="{{ button_config['message'].replace('"','&quot;')  }}">
+                <input type="hidden" class="message {{dark_theme}}" value="{{ button_config['message'].replace('"','&quot;')  }}">
                 <div class="checkbox" style="display: none;"></div>
                 
                 {% set class = "wd_button" %}
                 {% if 'background-color' in config["front"]["buttons"][folder_id][button_id].keys() %}
-                  {% set class = class + ' button-'+button_config['background-color'].replace('#','') %}
+                  {% set class = class + ' button-'+button_config['background_color'].replace('#','') %}
                 {% endif %}
 
                 {% if config["front"]["buttons"][folder_id][button_id]["message"] %}
@@ -344,11 +348,11 @@
                   {% if config["front"]["buttons"][folder_id][button_id]["image"].startswith('http') %}
                     {% set imagepath = config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% elif ':' in config["front"]["buttons"][folder_id][button_id]["image"] %}
-                    {% set imagepath = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
+                    {% set imagepath = "static/img/" + config["front"]["buttons"][folder_id][button_id]["image"].split('\\')[-1] %}
                   {% elif config["front"]["buttons"][folder_id][button_id]["image"].startswith('**uploaded/') %}
-                    {% set imagepath = "static/files/uploaded/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
+                    {% set imagepath = ".config/user_uploads/" + config["front"]["buttons"][folder_id][button_id]["image"].replace('**uploaded/','') %}
                   {% else %}
-                    {% set imagepath = "static/files/images/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
+                    {% set imagepath = "static/img/" + config["front"]["buttons"][folder_id][button_id]["image"] %}
                   {% endif %}
                   
                   <button {{ onclick }} id="button_{{edit_modal_ID}}" edit_modal_ID="{{ edit_modal_ID }}" class="{{class}}" role="button" style="overflow: hidden; max-height: 89.6px;">
@@ -385,10 +389,10 @@
                     <!--|||||||||||||||||||||||-->
                   </button>
                 {% endif %}
-                {% if config["front"]["show-names"].lower() == "true" %}
+                {% if config["front"]["show_names"] %}
                   {% set buttontext_style = ''%}
-                  {% if config["front"]["names-color"] and not config["front"]["names-color"].strip() == "" %}
-                    {% set buttontext_style = 'style="color:'+config["front"]["names-color"]+';"'%}
+                  {% if config["front"]["names_color"] and not config["front"]["names_color"].strip() == "" %}
+                    {% set buttontext_style = 'style="color:'+config["front"]["names_color"]+';"'%}
                   {% endif %}
                   <p class="buttontext" {{buttontext_style}}>
                     {{ button_config['name'] }}
@@ -430,59 +434,59 @@
 
     <div id="EditorButtons" style="display: none;">
       <button class="button" id="SaveExitEditorButton">
-        <img src="static/files/images/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
+        <img src="static/img/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
         [E] {{text['save_and_exit']}}
       </button>
       <button class="button" id="exitEditorButton"> [Q] {{text['quit_without_saving']}} </button>
       
       <button class="button" id="swapEditorButton">
-        <img src="static/files/images/swap.png" width="20" height="20" id="EditorButtonLogo">
+        <img src="static/img/swap.png" width="20" height="20" id="EditorButtonLogo">
         [S] {{text['swap_buttons']}}
       </button>
     </div>
 
 
-    <div class="modal-container {{black_theme}}" id="modal-container">
-      <div class="modal-content {{black_theme}}">
+    <div class="modal-container {{dark_theme}}" id="modal-container">
+      <div class="modal-content {{dark_theme}}">
 
         <div class="modal-header bold">
           <h1 class="config-modal"> {{text['configuration']}} </h1>
           <div class="modal-close">
-            <svg class="config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+            <svg class="config-modal {{dark_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
             </svg>
           </div>
         </div>
         <div style="display: flex; flex-direction: column;">
-          <a class="{{black_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="{{text['see_patchnotes']}}" alt="{{text['see_patchnotes']}}">
+          <a class="{{dark_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="{{text['see_patchnotes']}}" alt="{{text['see_patchnotes']}}">
             v{{versions['versions'][0]['version']}}
           </a>
-          <a class="{{black_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/issues/new/choose" target="_blank" alt="{{text['github_issue']}}" style="margin-top: -4px;">
+          <a class="{{dark_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/issues/new/choose" target="_blank" alt="{{text['github_issue']}}" style="margin-top: -4px;">
             {{text['github_issue']}}
           </a>
         </div>
 
         <div class="modal-main">
-          <div class="config-container choose-themes {{black_theme}}" id="choose-themes" style="display: none;">
+          <div class="config-container choose-themes {{dark_theme}}" id="choose-themes" style="display: none;">
             <
-            <button type="button" id="setting-themes-back" class="button {{black_theme}}">
+            <button type="button" id="setting-themes-back" class="button {{dark_theme}}">
               {{text['back']}}
             </button>
 
             <div id="themes-tutorial-container">
               <a href="{{text['link_themes']}}" target="_blank" title="{{text['themes_tutorial']}}">
                   <!-- source: https://phosphoricons.com/ -->
-                  {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                  {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
               </a>
 
-              <button type="button" onclick="send_data('/openfolder /static/themes')" class="button" id="open-themes-folder">
+              <button type="button" onclick="send_data('/openfolder /.config/themes')" class="button" id="open-themes-folder">
                 {{text['open_themes_folder']}}
               </button>
             </div>
 
             <h1 class="config-title"> {{text['themes_menu_title']}} </h1>
             
-            <div class="editorStyle-bar {{black_theme}}"></div>
+            <div class="editorStyle-bar {{dark_theme}}"></div>
 
             <div id="choose-themes-titles">
               <h2 class="disabled-themes-title"> {{text['disabled_themes']}} </h2>
@@ -506,8 +510,8 @@
                         <span class="arrow-down"></span>
                       </div>
                       <div class="theme-icon-container">
-                        {% if not parsed_themes[theme]['theme-logo'] == "" %}
-                          <img class="theme-icon" src="{{parsed_themes[theme]['theme-logo']}}"/>
+                        {% if not parsed_themes[theme]['theme-icon'] == "" %}
+                          <img class="theme-icon" src="{{parsed_themes[theme]['theme-icon']}}"/>
                         {% endif %}
                       </div>
 
@@ -525,14 +529,16 @@
               </div>
 
               <div id="enabled-themes">
+                {{ config["front"]["themes"].append("static/css/style.css") | default("", True) }}
+
                 {% for theme in config["front"]["themes"] %}
                   {% if not theme.startswith("//") %}
                     {% set isdefault = "" %}
-                    {% if theme == default_theme %}
+                    {% if theme == "static/css/style.css" %}
                       {% set isdefault = "defaulttheme" %}
                     {% endif %}
                     <div class="theme-container" filename="{{ theme }}" {{isdefault}}>
-                      {% if theme != default_theme %}
+                      {% if theme != "static/css/style.css" %}
                         <span class="disable-theme-hitbox"></span>
                         <span class="disable-theme invisible"></span>
 
@@ -544,8 +550,8 @@
                         </div>
                       {% endif %}
                       <div class="theme-icon-container">
-                        {% if not parsed_themes[theme]['theme-logo'] == "" %}
-                          <img class="theme-icon" src="{{parsed_themes[theme]['theme-logo']}}"/>
+                        {% if not parsed_themes[theme]['theme-icon'] == "" %}
+                          <img class="theme-icon" src="{{parsed_themes[theme]['theme-icon']}}"/>
                         {% endif %}
                       </div>
                       <div class="theme-texts">
@@ -564,30 +570,30 @@
             </div>
           </div>
 
-          <div class="config-container choose-background {{black_theme}}" id="choose-background" style="display: none;">
+          <div class="config-container choose-background {{dark_theme}}" id="choose-background" style="display: none;">
             <
-            <button type="button" id="setting-background-back" class="button {{black_theme}}">
+            <button type="button" id="setting-background-back" class="button {{dark_theme}}">
               {{text['back']}}
             </button>
             <h1 class="config-title"> {{text['random_bg_menu_title']}} </h1>
             <div class="background-color-input-container">
-              <input type="color" class="background-color-input {{black_theme}}" id="background-color-input">
-              <input type="text" id="background-color-hex" class="background-color-setting {{black_theme}}" placeholder="{{text['wallpaper_color']}} (HEX)">
+              <input type="color" class="background-color-input {{dark_theme}}" id="background-color-input">
+              <input type="text" id="background-color-hex" class="background-color-setting {{dark_theme}}" placeholder="{{text['wallpaper_color']}} (HEX)">
             </div>
 
             <div id="create-bg-choices">
-              <button class="{{black_theme}}" id="create-color-bg"> {{text['add_background_color']}} </button>
+              <button class="{{dark_theme}}" id="create-color-bg"> {{text['add_background_color']}} </button>
               {{text['or']}}
-              <input type="file" id="create-image-bg" class="{{black_theme}}" accept="image/jpeg, image/png, image/gif, video/mp4">
+              <input type="file" id="create-image-bg" class="{{dark_theme}}" accept="image/jpeg, image/png, image/gif, video/mp4">
             </div>
             
-            <div class="editorStyle-bar {{black_theme}}"></div>
+            <div class="editorStyle-bar {{dark_theme}}"></div>
 
             <div id="choose-backgrounds-container">
 
               {% for bg in config["front"]["background"] %}
-                {% if bg.replace('//','').startswith('rgb(') or bg.replace('//','').startswith('#') %}
-                  <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{black_theme}}"
+                {% if bg.replace('//','').startswith(('rgb(', '#')) %}
+                  <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{dark_theme}}"
                     background="{{bg}}"
                     background_color_text="{{text['background_color']}}"
                     style="background-color: {{bg.replace('//','')}};"
@@ -613,7 +619,7 @@
 
                     <div class="video-container choose-bg-pseudo-element">
                       <video autoplay muted loop class="blurred-video">
-                        <source src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+                        <source src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
                         Your browser does not support the video tag...
                       </video>
                     </div>
@@ -621,11 +627,11 @@
 
                     <div class="video-container">
                       <video autoplay muted loop>
-                        <source src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
+                        <source src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}" type="video/mp4">
                         Your browser does not support the video tag...
                       </video>
                     </div>
-                    {# <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}"> #}
+                    {# <img src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}"> #}
                     <div class="choose-bg-buttons">
                       {% if bg.startswith('//') %}
                         <div class="choose-bg-activate-button"></div>
@@ -642,8 +648,8 @@
                   </div>
                 {% else %}
                   <div class="choose-bg-element choose-bg-element-image" background="{{bg}}">
-                    <div class="choose-bg-pseudo-element" style='background-image: url("{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '').replace("'", '&#39;') }}")'></div>
-                    <img src="{{ 'static/files/uploaded/' + bg.replace('//','').replace('**uploaded/', '') }}">
+                    <div class="choose-bg-pseudo-element" style='background-image: url("{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '').replace("'", '&#39;') }}")'></div>
+                    <img src="{{ '.config/user_uploads/' + bg.replace('//','').replace('**uploaded/', '') }}">
                     <div class="choose-bg-buttons">
                       {% if bg.startswith('//') %}
                         <div class="choose-bg-activate-button"></div>
@@ -663,10 +669,10 @@
             </div>
           </div>
 
-          <div class="config-container {{black_theme}}" id="config-container" style="display: block;">
+          <div class="config-container {{dark_theme}}" id="config-container" style="display: block;">
             <button class="button modal-button" id="editorButton"> [Q] {{text['enter_editor_mode']}} </button>
             <form id="config-form" class="config-form">
-              <div class="setting-category settings {{black_theme}}">
+              <div class="setting-category settings {{dark_theme}}">
                 <h1 class="config-title"> {{text['settings']}} </h1>
 
                 <div class="setting language">
@@ -683,9 +689,9 @@
                     <p> {{text['config-windows_startup']}} </p>
                     <label for="windows-startup" class="switch">
                       {% if 'windows-startup' in config['settings'].keys() %}
-                        <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" {% if config['settings']['windows-startup'].lower() == 'true'%}checked{% endif %}>
+                        <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" {% if config['settings']['windows_startup'] %}checked{% endif %}>
                       {% else %}
-                        <input class="{{black_theme}}" type="checkbox" id="windows-startup" name="settings.windows-startup" checked>
+                        <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" checked>
                       {% endif %}
                       <span class="slider round"></span>
                     </label>
@@ -695,21 +701,21 @@
                     <p> {{text['auto_updates']}} </p>
                     <label for="auto-updates" class="switch">
                       {% if 'auto-updates' in config['settings'].keys() %}
-                        <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" {% if config['settings']['auto-updates'].lower() == 'true'%}checked{% endif %}>
+                        <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" {% if config['settings']['auto_updates'] %}checked{% endif %}>
                       {% else %}
-                        <input class="{{black_theme}}" type="checkbox" id="auto-updates" name="settings.auto-updates" checked>
+                        <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" checked>
                       {% endif %}
                       <span class="slider round"></span>
                     </label>
                   </div>
                 {% endif %}
                 
-                <div class="setting soundboard {{black_theme}}">
+                <div class="setting soundboard {{dark_theme}}">
                   <div class="settings-title-info">
                     <label for="soundboard" style="margin-top: 3px;"> {{text['soundboard']}} </label>
                     <a href="{{text['link_soundboard']}}" target="_blank"  title="{{text['soundboard_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
-                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                        {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
                     </a>
                   </div>
 
@@ -717,7 +723,7 @@
                   <div class="setting mic_input_device">
                     <label for="mic_input_device"> {{text['input_device']}} </label>
                     <select id="mic_input_device" name="settings.soundboard.mic_input_device">
-                      {% set audio_devices = select_audio_device() %}
+                      {% set audio_devices = get_audio_devices() %}
                       {% for device in audio_devices %}
                         {% set mic_input_device = config['settings']['soundboard']['mic_input_device'] %}
                         {% if not device.endswith(')') and '(' in device %}
@@ -733,7 +739,7 @@
                   <div class="setting mic_output_device">
                     <label for="mic_output_device"> {{text['output_device']}} </label>
                     <select id="mic_output_device" name="settings.soundboard.vbcable">
-                      {% set audio_devices = select_audio_device('output') %}
+                      {% set audio_devices = get_audio_devices('output') %}
                       {% for device in audio_devices %}
                         {% set mic_output_device = config['settings']['soundboard']['vbcable'] %}
                         {% if not device.endswith(')') and '(' in device %}
@@ -748,16 +754,16 @@
 
                   <div class="setting ear-soundboard">
                     <p> {{text['ear_soundboard']}} </p>
-                    <label for="ear-soundboard" class="switch">
-                      <input class="{{black_theme}}" type="checkbox" id="ear-soundboard" name="settings.ear-soundboard" {% if config['settings']['ear-soundboard'].lower() == 'true'%}checked{% endif %}>
+                    <label for="ear_soundboard" class="switch">
+                      <input class="{{dark_theme}}" type="checkbox" id="ear_soundboard" name="settings.ear_soundboard" {% if config['settings']['ear_soundboard'] %}checked{% endif %}>
                       <span class="slider round"></span>
                     </label>
                   </div>
                   
                   <div class="setting toggle-soundboard">
                     <p> {{text['toggle_soundboard']}} </p>
-                    <label for="toggle-soundboard" class="switch">
-                      <input class="{{black_theme}}" type="checkbox" id="toggle-soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'].lower() == 'true'%}checked{% endif %}>
+                    <label for="toggle_soundboard" class="switch">
+                      <input class="{{dark_theme}}" type="checkbox" id="toggle_soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'] %}checked{% endif %}>
                       <span class="slider round"></span>
                     </label>
                   </div>
@@ -768,22 +774,22 @@
                     <label for="spotify" style="margin-top: 3px;"> {{text['spotify_api']}} </label>
                     <a href="{{text['link_spotify']}}" target="_blank" title="{{text['spotify_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
-                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                        {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
                     </a>
                   </div>
 
                   <ul>
                     <li>
-                      <label for="spotify-USERNAME"> {{text['username']}} </label>
-                      <input class="spotify-setting {{black_theme}}" type="text" class="spotify-setting" id="spotify-USERNAME" name="settings.spotify-api.USERNAME" {% if not config['settings']['spotify-api']['USERNAME'].strip() == ''%} value="{{config['settings']['spotify-api']['USERNAME']}}" {% endif %}>
+                      <label for="spotify-client_id"> {{text['username']}} </label>
+                      <input class="spotify-setting {{dark_theme}}" type="text" class="spotify-setting" id="spotify-username" name="settings.spotify_api.username" {% if not config['settings']['spotify_api']['username'].strip() == ''%} value="{{config['settings']['spotify_api']['username']}}" {% endif %}>
                       
-                      <label for="spotify-CLIENT_ID">Client ID</label>
-                      <input class="spotify-setting {{black_theme}}" type="text" id="spotify-CLIENT_ID" name="settings.spotify-api.CLIENT_ID" {% if not config['settings']['spotify-api']['CLIENT_ID'].strip() == ''%} value="{{config['settings']['spotify-api']['CLIENT_ID']}}" {% endif %}>
+                      <label for="spotify-client_id">Client ID</label>
+                      <input class="spotify-setting {{dark_theme}}" type="text" id="spotify-client_id" name="settings.spotify_api.client_id" {% if not config['settings']['spotify_api']['client_id'].strip() == ''%} value="{{config['settings']['spotify_api']['client_id']}}" {% endif %}>
                       
-                      <label for="spotify-CLIENT_SECRET">Client Secret</label>
+                      <label for="spotify-client_secret">Client Secret</label>
                       <div class="password-container">
-                        <input class="spotify-setting {{black_theme}}" type="password" id="spotify-CLIENT_SECRET" name="settings.spotify-api.CLIENT_SECRET" {% if not config['settings']['spotify-api']['CLIENT_SECRET'].strip() == ''%} value="{{config['settings']['spotify-api']['CLIENT_SECRET']}}" {% endif %}>
-                        <span id="show-password-spotify" class="show-password" onclick="togglePasswordVisibility('spotify-CLIENT_SECRET', 'show-password-spotify')"></span>
+                        <input class="spotify-setting {{dark_theme}}" type="password" id="spotify-client_secret" name="settings.spotify_api.client_secret" {% if not config['settings']['spotify_api']['client_secret'].strip() == ''%} value="{{config['settings']['spotify_api']['client_secret']}}" {% endif %}>
+                        <span id="show-password-spotify" class="show-password" onclick="togglePasswordVisibility('spotify-client_secret', 'show-password-spotify')"></span>
                       </div>
                     </li>
                   </ul>
@@ -794,21 +800,21 @@
                     <label for="obs" style="margin-top: 3px;"> {{text['obs_studio']}} </label>
                     <a href="{{text['link_obs']}}" target="_blank" title="{{text['obs_tutorial']}}">
                         <!-- source: https://phosphoricons.com/ -->
-                        {{ open("static/files/images/info.svg").read().replace('<svg ','<svg class="info-icon' + black_theme + '" ')  }}
+                        {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
                     </a>
                   </div>
 
                   <ul>
                     <li>
                       <label for="obs-HOST"> {{text['host']}} </label>
-                      <input class="obs-setting {{black_theme}}" type="text" class="obs-setting" id="obs-HOST" name="settings.obs.host" {% if not config['settings']['obs']['host'].strip() == ''%} value="{{config['settings']['obs']['host']}}" {% endif %}>
+                      <input class="obs-setting {{dark_theme}}" type="text" class="obs-setting" id="obs-HOST" name="settings.obs.host" {% if not config['settings']['obs']['host'].strip() == ''%} value="{{config['settings']['obs']['host']}}" {% endif %}>
                       
                       <label for="obs-PORT"> {{text['port']}} </label>
-                      <input class="obs-setting {{black_theme}}" type="text" id="obs-PORT" name="settings.obs.port" {% if not config['settings']['obs']['port'] == '' %} value="{{config['settings']['obs']['port']}}" {% endif %}>
+                      <input class="obs-setting {{dark_theme}}" type="text" id="obs-PORT" name="settings.obs.port" {% if not config['settings']['obs']['port'] == '' %} value="{{config['settings']['obs']['port']}}" {% endif %}>
                       
                       <label for="obs-PASSWORD"> {{text['password']}} </label>
                       <div class="password-container">
-                        <input class="obs-setting {{black_theme}}" type="password" id="obs-PASSWORD" name="settings.obs.password" {% if not config['settings']['obs']['password'].strip() == ''%} value="{{config['settings']['obs']['password']}}" {% endif %}>
+                        <input class="obs-setting {{dark_theme}}" type="password" id="obs-PASSWORD" name="settings.obs.password" {% if not config['settings']['obs']['password'].strip() == ''%} value="{{config['settings']['obs']['password']}}" {% endif %}>
                         <span id="show-password-obs" class="show-password" onclick="togglePasswordVisibility('obs-PASSWORD', 'show-password-obs')"></span>
                       </div>
                     </li>
@@ -817,7 +823,7 @@
                 
               </div>
               
-              <div class="setting-category visuals {{black_theme}}">
+              <div class="setting-category visuals {{dark_theme}}">
                 <h1 class="config-title"> {{text['visuals']}} </h1>
 
                 <div class="setting gridsize">
@@ -827,14 +833,14 @@
                       <label for="gridsize-height"> {{text['height']}} </label>
                       <input min="1" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                        class="{{black_theme}}" type="number" id="gridsize-height" name="front.height" {% if not config['front']['height'].strip() == ''%}value="{{config['front']['height']}}"{% endif %}>
+                        class="{{dark_theme}}" type="number" id="gridsize-height" name="front.height" {% if not config['front']['height'].strip() == ''%}value="{{config['front']['height']}}"{% endif %}>
                     </div>
 
                     <div class="gridsize-width">
                       <label for="gridsize-width"> {{text['width']}} </label>
                       <input min="1" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                        class="{{black_theme}}" type="number" id="gridsize-width" name="front.width" {% if not config['front']['width'].strip() == ''%}value="{{config['front']['width']}}"{% endif %}>
+                        class="{{dark_theme}}" type="number" id="gridsize-width" name="front.width" {% if not config['front']['width'].strip() == ''%}value="{{config['front']['width']}}"{% endif %}>
                     </div>
                   </div>
                 </div>
@@ -850,7 +856,7 @@
 
                 <div class="setting themes">
                   <label for="themes"> {{text['themes']}} </label>
-                  <button type="button" id="setting-themes" class="{{black_theme}}">
+                  <button type="button" id="setting-themes" class="{{dark_theme}}">
                     {{text['open_theme_menu']}}
                   </button>
                   <input type="text" name="front.themes" id="choose-themes-handler" class="invisible" value="{{config['front']['themes']}}">
@@ -858,17 +864,17 @@
 
                 <div class="setting background">
                   <label for="background"> {{text['backgrounds']}} </label>
-                  <button type="button" id="setting-background" class="{{black_theme}}">
+                  <button type="button" id="setting-background" class="{{dark_theme}}">
                     {{text['open_background_image_menu']}}
                   </button>
                   {% set backgrounds = str(config['front']['background']).replace('",', "',").replace(', "', ", '").replace('["', "['").replace('"]', "']") %}
                   <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{backgrounds}}">
                 </div>
 
-                <div class="setting {{black_theme}}">
+                <div class="setting {{dark_theme}}">
                   <p> {{text['dark_theme']}} </p>
-                  <label for="black-theme" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="black-theme" name="front.black-theme" {% if config['front']['black-theme'].lower() == 'true'%}checked{% endif %}>
+                  <label for="dark-theme" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="dark-theme" name="front.dark_theme" {% if config['front']['dark_theme'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
@@ -876,12 +882,12 @@
                 <div class="setting portrait-rotate">
                   <label for="portrait-rotate"> {{text['portrait_rotate']}} </label>
                   <div id="portrait-rotate-setting-container">
-                    <input required class="{{black_theme}}" type="number" min="0" pattern="[0-9]*"
+                    <input required class="{{dark_theme}}" type="number" min="0" pattern="[0-9]*"
                       style="width: 75px;"
                       oninput="this.value = this.value.replaceAll(/[^0-9]/g, '');"
-                      id="portrait-rotate" name="front.portrait-rotate"
-                      {% if not config['front']['portrait-rotate'].strip() == '' %}
-                        value="{{ config['front']['portrait-rotate'] }}"
+                      id="portrait-rotate" name="front.portrait_rotate"
+                      {% if not config['front']['portrait_rotate'].strip() == '' %}
+                        value="{{ config['front']['portrait_rotate'] }}"
                       {% else %}
                         value="90"
                       {% endif %}
@@ -903,57 +909,57 @@
                 <div class="setting show-names">
                   <p> {{text['show_btn_names']}} </p>
                   <label for="show-names"  class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="show-names" name="front.show-names" {% if config['front']['show-names'].lower() == 'true'%}checked{% endif %}>
+                    <input class="{{dark_theme}}" type="checkbox" id="show-names" name="front.show_names" {% if config['front']['show_names'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                   <div class="names-color-input-container">
                     {% set default_names_color = '' %}
-                    {% if config['front']['names-color'] and not config['front']['names-color'].strip() == '' %}
-                      {% if config['front']['names-color'].strip().startswith('#') %}
-                        {% set default_names_color = 'value="' + config['front']['names-color'].strip() + '"' %}
+                    {% if config['front']['names_color'] and not config['front']['names_color'].strip() == '' %}
+                      {% if config['front']['names_color'].strip().startswith('#') %}
+                        {% set default_names_color = 'value="' + config['front']['names_color'].strip() + '"' %}
                       {% else %}
-                        {% set default_names_color = 'value="#' + config['front']['names-color'].strip() + '"' %}
+                        {% set default_names_color = 'value="#' + config['front']['names_color'].strip() + '"' %}
                       {% endif %}
                     {% endif %}
-                    <input type="color" class="names-color-input {{black_theme}}" id="names-color-input" {{default_names_color}}>
-                    <input type="text" name="front.names-color" id="names-color-hex" class="names-color-setting {{black_theme}}" placeholder="Button names color (HEX)" {{default_names_color}}>
+                    <input type="color" class="names-color-input {{dark_theme}}" id="names-color-input" {{default_names_color}}>
+                    <input type="text" name="front.names_color" id="names-color-hex" class="names-color-setting {{dark_theme}}" placeholder="Button names color (HEX)" {{default_names_color}}>
                   </div>
 
                 </div>
 
                 <div class="setting edit-buttons-color">
                   <p> {{text['edit_btn_color']}} </p>
-                  <label for="edit-buttons-color"  class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="edit-buttons-color" name="front.edit-buttons-color" {% if config['front']['edit-buttons-color'].lower() == 'true'%}checked{% endif %}>
+                  <label for="edit_buttons_color"  class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="edit_buttons_color" name="front.edit_buttons_color" {% if config['front']['edit_buttons_color'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                   <div class="buttons-color-input-container">
                     {% set default_buttons_color = '' %}
-                    {% if config['front']['buttons-color'] and not config['front']['buttons-color'].strip() == '' %}
-                      {% if config['front']['buttons-color'].strip().startswith('#') %}
-                        {% set default_buttons_color = 'value="' + config['front']['buttons-color'].strip() + '"' %}
+                    {% if config['front']['buttons_color'] and not config['front']['buttons_color'].strip() == '' %}
+                      {% if config['front']['buttons_color'].strip().startswith('#') %}
+                        {% set default_buttons_color = 'value="' + config['front']['buttons_color'].strip() + '"' %}
                       {% else %}
-                        {% set default_buttons_color = 'value="#' + config['front']['buttons-color'].strip() + '"' %}
+                        {% set default_buttons_color = 'value="#' + config['front']['buttons_color'].strip() + '"' %}
                       {% endif %}
                     {% endif %}
-                    <input type="color" class="buttons-color-input {{black_theme}}" id="buttons-color-input" {{default_buttons_color}}>
-                    <input type="text" name="front.buttons-color" id="buttons-color-hex" class="buttons-color-setting {{black_theme}}" placeholder="Button default color (HEX)" {{default_buttons_color}}>
+                    <input type="color" class="buttons-color-input {{dark_theme}}" id="buttons-color-input" {{default_buttons_color}}>
+                    <input type="text" name="front.buttons_color" id="buttons-color-hex" class="buttons-color-setting {{dark_theme}}" placeholder="Button default color (HEX)" {{default_buttons_color}}>
                   </div>
 
                 </div>
               </div>
 
-              <div class="setting-category experimental {{black_theme}}">
+              <div class="setting-category experimental {{dark_theme}}">
                 <h1 class="config-title"> {{text['experimental']}} </h1>
                 
                 
                 <div class="setting usage-reload-time">
                   <label for="usage-reload-time"> {{text['usage_btn_reload_time']}} </label>
-                  <input required class="{{black_theme}}" type="number" min="0" pattern="[0-9]*"
+                  <input required class="{{dark_theme}}" type="number" min="0" pattern="[0-9]*"
                     oninput="this.value = this.value.replaceAll(/[^0-9]/g, '');"
-                    id="usage-reload-time" name="front.computer-usage-reload-time"
-                    {% if not config['front']['computer-usage-reload-time'].strip() == '' %}
-                      value="{{ config['front']['computer-usage-reload-time'] }}"
+                    id="usage-reload-time" name="front.computer_usage_reload_time"
+                    {% if not config['front']['computer_usage_reload_time'].strip() == '' %}
+                      value="{{ config['front']['computer_usage_reload_time'] }}"
                     {% else %}
                       value="3000"
                     {% endif %}
@@ -973,65 +979,65 @@
 
                 <div class="setting optimized-usage-display">
                   <p> {{text['optimized_usage_display']}} </p>
-                  <label for="optimized-usage-display" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="optimized-usage-display" name="settings.optimized-usage-display" {% if config['settings']['optimized-usage-display'].lower() == 'true'%}checked{% endif %}>
+                  <label for="optimized_usage_display" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="optimized_usage_display" name="settings.optimized_usage_display" {% if config['settings']['optimized_usage_display'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
 
                 <div class="setting open-settings-in-integrated-browser">
                   <p> {{text['open_settings_in_integrated_browser']}} </p>
-                  <label for="open-settings-in-integrated-browser" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="open-settings-in-integrated-browser" name="settings.open-settings-in-integrated-browser" {% if config['settings']['open-settings-in-integrated-browser'].lower() == 'true'%}checked{% endif %}>
+                  <label for="open_settings_in_integrated_browser" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="open_settings_in_integrated_browser" name="settings.open_settings_in_integrated_browser" {% if config['settings']['open_settings_in_integrated_browser'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
                 
-                {# <div class="setting data-transfer-method">
-                  <label for="data-transfer-method">Data transfer method</label>
-                  <select id="data-transfer-method" name="settings.data-transfer-method">
-                    <option value="http" {% if config['settings']['data-transfer-method'].lower() == 'http' %}selected{% endif %}>http</option>
-                    <option value="socket" {% if config['settings']['data-transfer-method'].lower() == 'socket' %}selected{% endif %}>socket</option>
+                {# <div class="setting data_transfer_method">
+                  <label for="data_transfer_method">Data transfer method</label>
+                  <select id="data_transfer_method" name="settings.data_transfer_method">
+                    <option value="http" {% if config['settings']['data_transfer_method'].lower() == 'http' %}selected{% endif %}>http</option>
+                    <option value="socket" {% if config['settings']['data_transfer_method'].lower() == 'socket' %}selected{% endif %}>socket</option>
                   </select>
                 </div> #}
 
                 <div class="setting show-console">
                   <p> {{text['show_console']}} </p>
-                  <label for="show-console" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="show-console" name="settings.show-console" {% if config['settings']['show-console'].lower() == 'true'%}checked{% endif %}>
+                  <label for="show_console" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="show_console" name="settings.show_console" {% if config['settings']['show_console'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
                 
                 <div class="setting automatic-firewall-bypass">
-                  <button type="button" onclick="send_data('/bypass-windows-firewall')" class="button" id="authorize-windows-firewall">
+                  <button type="button" onclick="send_data('/bypass-windows_firewall')" class="button" id="authorize_windows_firewall">
                     {{text['authorize_windows_firewall']}}
                   </button>
                   <p> {{text['automatic_firewall_bypass']}} </p>
-                  <label for="automatic-firewall-bypass" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="automatic-firewall-bypass" name="settings.automatic-firewall-bypass" {% if config['settings']['automatic-firewall-bypass'].lower() == 'true'%}checked{% endif %}>
+                  <label for="automatic_firewall_bypass" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="automatic_firewall_bypass" name="settings.automatic_firewall_bypass" {% if config['settings']['automatic_firewall_bypass'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
 
                 <div class="setting fix-stop-soundboard">
                   <p> {{text['fix_stop_soundboard']}} </p>
-                  <label for="fix-stop-soundboard" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="fix-stop-soundboard" name="settings.fix-stop-soundboard" {% if config['settings']['fix-stop-soundboard'].lower() == 'true'%}checked{% endif %}>
+                  <label for="fix_stop_soundboard" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="fix_stop_soundboard" name="settings.fix_stop_soundboard" {% if config['settings']['fix_stop_soundboard'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
                 
                 <div class="setting dev-mode">
                   <p> {{text['dev_mode']}} </p>
-                  <label for="dev-mode" class="switch">
-                    <input class="{{black_theme}}" type="checkbox" id="dev-mode" name="settings.dev-mode" {% if config['settings']['dev-mode'].lower() == 'true'%}checked{% endif %}>
+                  <label for="dev_mode" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="dev_mode" name="settings.dev_mode" {% if config['settings']['dev_mode'] %}checked{% endif %}>
                     <span class="slider round"></span>
                   </label>
                 </div>
               </div>
               
-              <input type="submit" value="{{text['save']}}" class="modal-button save-config {{black_theme}}">
+              <input type="submit" value="{{text['save']}}" class="modal-button save-config {{dark_theme}}">
             </form>
           </div>
           
@@ -1041,23 +1047,23 @@
     </div>
 
 
-    <div class="addbutton-modal-container {{black_theme}}">
-      <div class="addbutton-modal-content {{black_theme}}" id="addbutton-modal-content">
+    <div class="addbutton-modal-container {{dark_theme}}">
+      <div class="addbutton-modal-content {{dark_theme}}" id="addbutton-modal-content">
 
         <div class="addbutton-modal-header bold">
           <h1 class="addbutton-modal"> {{ text['add_a_button'] }} </h1>
           <div class="addbutton-modal-close">
-            <svg class="addbutton-config-modal {{black_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+            <svg class="addbutton-config-modal {{dark_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
             </svg>
           </div>
         </div>
 
         <div class="addbutton-modal-main">
-          <br class="addbutton-container {{black_theme}}">
+          <br class="addbutton-container {{dark_theme}}">
 
             
-            <div class="all-commands {{black_theme}}">
+            <div class="all-commands {{dark_theme}}">
               {% for category, category_value in commands.items() %}
                 {% set category_name = category %}
                 {% if category_value['CATEGORY-SETTINGS'] %}
@@ -1072,7 +1078,7 @@
                   {% endif %}
                 {% endif %}
 
-                <button class="dropdown-btn {{black_theme}}" dropdown-category="{{category_name}}">{{category_name}}</button>
+                <button class="dropdown-btn {{dark_theme}}" dropdown-category="{{category_name}}">{{category_name}}</button>
                 <div class="dropdown-container">
                   {% set arg_modal_ID1 = loop.index0 %}
                   {% for command, command_value in category_value.items() %}
@@ -1111,7 +1117,7 @@
                         {% if not command_value["TYPE"] == "multiple" %}
                           
                           {# <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}" onclick="argsInput('commands[\'{{category}}\'][\'{{command}}\']')" > {{command_name}} </button> #}
-                          <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                          <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{dark_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
                         
                           {% include 'addbutton_modal.jinja' %}
 
@@ -1128,7 +1134,7 @@
                             {% endif %}
                           {% endif %}
                           {% set command_values = command_value["commands"] %}
-                          <button class="dropdown-btn {{black_theme}}" dropdown-category="{{command}}">{{command}}</button>
+                          <button class="dropdown-btn {{dark_theme}}" dropdown-category="{{command}}">{{command}}</button>
                           <div class="dropdown-container">
                             <div class="dropdown-item-container">
                               {% for command_value in command_values %}
@@ -1162,7 +1168,7 @@
                                   </div>
                                 {% endif %}
                                 
-                                <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{black_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                                <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{dark_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
                                 
                                 {% include 'addbutton_modal.jinja' %}
                               {% endfor %}
@@ -1212,7 +1218,7 @@
     </div>
 
 
-    {% if config['settings']['data-transfer-method'] == 'socket' %}
+    {% if config['settings']['data_transfer_method'] == 'socket' %}
       <script src="static/js/socketio.js"></script>
       {# <script src="https://cdn.socket.io/4.3.2/socket.io.esm.min.js"></script> #}
     {% endif %}
@@ -1332,7 +1338,7 @@
 
       {#
       function loop() {
-        {% if config['settings']['data-transfer-method'] == 'socket' %}
+        {% if config['settings']['data_transfer_method'] == 'socket' %}
           socket.emit('message_from_socket', 'loop');
         {% else %}
           fetch('/send-data', {
@@ -1511,7 +1517,7 @@
             } catch (e) {
               console.log(e.message);
             }
-          }, {{ config['front']['computer-usage-reload-time'] }} );
+          }, {{ config['front']['computer_usage_reload_time'] }} );
         }
       });
 
@@ -2313,7 +2319,7 @@
 
 
 
-        {% if config['settings']['data-transfer-method'] == 'socket' %}
+        {% if config['settings']['data_transfer_method'] == 'socket' %}
           // SOCKET CONNECTION
           var socket = io.connect('http://' + document.domain + ':' + location.port);
         
@@ -2347,7 +2353,7 @@
                   var name = input.name;
                   var value;
                   if (input.type === 'checkbox') {
-                    value = input.checked ? 'true' : 'false';
+                    value = input.checked ? true : false;
                   } else {
                     value = input.value;
                     if (input.id === 'language') {
@@ -2412,7 +2418,7 @@
             } else {
               const message = messageElement.value;
               if (!message.startsWith("/usage") && !message.startsWith("/reload") && !message.startsWith("/folder")) {
-                {% if config['settings']['data-transfer-method'] == 'socket' %}
+                {% if config['settings']['data_transfer_method'] == 'socket' %}
                   socket.emit('message_from_socket', message);
                 {% else %}
                   send_data(message);

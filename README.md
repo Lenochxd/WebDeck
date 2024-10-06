@@ -31,7 +31,7 @@ The WebDeck is a Flask application that allows users to control their computer r
 
 ## 📋 Frequently Asked Questions (FAQ)
 
-Before asking questions, please check our [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
+Before asking questions, please check our [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md) to see if your question has already been answered. We've gathered commonly asked questions to provide you with quick answers.
 
 If your question is not addressed in the FAQ, feel free to ask us on our [Discord server](https://discord.gg/tUPsYHAGfm).
 

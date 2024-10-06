@@ -28,7 +28,7 @@ Le WebDeck est une application qui permet à l'utilisateur de contrôler son ord
 
 ## 📋 Foire aux questions (FAQ)
 
-Avant de poser des questions, veuillez consulter notre [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-fr.md) pour voir si votre question a déjà été répondue. Nous avons rassemblé les questions fréquemment posées pour vous fournir des réponses rapides.
+Avant de poser des questions, veuillez consulter notre [FAQ](https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-fr.md) pour voir si votre question a déjà été répondue. Nous avons rassemblé les questions fréquemment posées pour vous fournir des réponses rapides.
 
 Si votre question n'est pas abordée dans la FAQ, n'hésitez pas à nous la poser sur notre [serveur Discord](https://discord.gg/tUPsYHAGfm).
 

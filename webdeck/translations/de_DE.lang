@@ -1,0 +1,183 @@
+# de_DE.lang file written by Dtrieb, feel free to make a PR for any mistakes
+# https://github.com/Lenochxd/WebDeck/pulls
+# or just tell us on discord: https://discord.gg/tUPsYHAGfm
+
+lang_name=deutsch
+lang_short=de
+credits=Dtrieb
+
+// -- Tray icon --
+
+qr_code=QR Code
+open_config=Öffne Einstellungen
+fix_firewall=Fix Firewall
+exit=Beenden
+
+// -- Errors --
+server_disconnected=Server nicht verbunden
+failed=Fehlgeschlagen
+error=Fehler
+error_occurred=Ein Fehler ist aufgetreten.
+
+settings_load_error=Beim Laden der Einstellungen ist ein Fehler aufgetreten.
+settings_save_error=Beim Speichern der Einstellungen ist ein Fehler aufgetreten.
+
+auto_update_error=Fehler beim Aktualisieren von WebDeck, bitte aktualisieren Sie es manuell von https://github.com/Lenochxd/WebDeck/releases/latest
+
+no_files_found_error=Keine Dateien gefunden.
+
+ffmpeg_not_installed_error=Installiere FFMPEG...
+vlc_not_installed_error=VLC ist nicht installiert!
+mp3_loading_error=Fehler beim Laden einer MP3-Datei mit dem Namen.
+
+obs_failed_connection_error=Fehlgeschlagene Verbindung zu obs.
+obs_error_10061=Der Websocket-Server kann nicht gefunden werden. (WinError 10061)
+obs_error_incorrect_password=Passwort ist möglicherweise falsch.
+obs_already_recording=OBS zeichnet bereits auf.
+obs_already_streaming=OBS ist bereits im Streaming-Modus.
+obs_already_vcam=Virtuelle Kamera ist bereits gestartet.
+obs_not_recording=OBS nimmt nicht auf.
+obs_not_streaming=OBS streamt nicht.
+obs_no_vcam=Virtuelle Kamera ist bereits gestoppt.
+obs_no_recording_can_be_paused=Es kann keine Aufnahme angehalten werden.
+obs_no_recording_is_paused=Keine Aufzeichnung ist pausiert.
+
+spotify_apply_volume_error=Fehler, Volumen kann nicht angewendet werden
+spotify_volume_prenium_error=Fehler, Volumen kann nicht angewendet werden, da Spotify Prenium erforderlich ist
+
+
+// -- Success messages --
+settings_save_success=Einstellungen erfolgreich gespeichert.
+downloaded_successfully=Datei erfolgreich heruntergeladen.
+folder_created_successfully=Ordner erfolgreich erstellt!
+
+
+// -- Button configuration --
+add_a_button=Hinzufügen einer Schaltfläche
+configure_your_button=Konfigurieren Sie Ihre Schaltfläche
+
+image=Bild
+image_size=Bildgröße
+background_color=Hintergrundfarbe
+background_color_hex=Hintergrundfarbe (HEX)
+button_title=Schaltflächentitel
+edit_command=Befehl (experimentell)
+
+select_your_file=Wählen Sie Ihre Datei
+no_file_chosen=Keine Datei ausgewählt
+
+choose_option=Wählen Sie eine Option aus
+
+button_delete_confirmation=Möchten Sie diese Schaltfläche wirklich entfernen?
+
+
+// -- Editor --
+enter_editor_mode=Editor-Modus aufrufen
+exit_editor_mode=Editor-Modus beenden
+
+open_folder=Ordner öffnen
+
+quit_without_saving=Beenden ohne zu speichern
+save_and_exit=Speichern und beenden
+swap_buttons=2 Schaltflächen tauschen
+stop_swap_mode=Swap-Modus beenden
+no_changes_to_undo=Es gibt keine Änderungen, die rückgängig gemacht werden können.
+
+
+// Settings tab
+configuration=Konfiguration
+settings=Einstellungen
+
+see_patchnotes=Siehe Patchnotes
+github_issue=Einen Fehler auf GitHub melden
+
+language=Sprache
+config-windows_startup=Mit dem Windows-Start starten
+auto_updates=Automatische Aktualisierungen
+
+soundboard=Soundboard
+input_device=Eingabegerät
+output_device=Ausgabegerät (vbcable)
+toggle_soundboard=Soundboard aktiviert
+ear_soundboard=Ohren-Soundboard
+
+spotify_api=Spotify-API
+username=Benutzername
+
+obs_studio=OBS Studio
+host=Host
+port=Port
+password=Passwort
+
+
+visuals=Visuals
+
+gridsize=Gitter-Größe
+height=Höhe
+width=Breite
+
+portrait_rotate=Drehung um Grad im Porträtmodus
+
+themes=Themen
+open_theme_menu=Öffnet das Themenmenü
+
+backgrounds=Hintergrundbilder
+open_background_image_menu=Öffnen Sie das Menü Hintergründe
+
+dark_theme=Dunkles Thema
+
+show_btn_names=Schaltflächennamen anzeigen
+
+edit_btn_color=Ändern Sie die Standardfarbe der Schaltflächen
+
+
+experimental=Experimentell
+
+usage_btn_reload_time=Nachladezeit der Nutzungsschaltflächen (ms)
+
+optimized_usage_display=Schaltflächen zur optimierten Nutzungsanzeige
+
+gpu_usage_method=GPU-Nutzungsmethode (wenn die GPU-Nutzung nicht angezeigt wird)
+doesnt_work=funktioniert nicht
+lmao=lmao
+none=Keine
+
+open_settings_in_integrated_browser=Einstellungen in einem eigenen Browser öffnen
+
+show_console=Konsole einblenden
+dev_mode=Dev-Modus
+authorize_windows_firewall=WebDeck über die Windows-Firewall autorisieren
+automatic_firewall_bypass=Automatische Umgehung der Firewall beim Starten
+fix_stop_soundboard= Behebt das Problem mit der Schaltfläche zum Anhalten des Soundboards (kann instabil sein)
+
+themes_menu_title=Themenliste
+random_bg_menu_title=Zufällige Hintergründe Liste
+
+disabled_themes=Verfügbar
+enabled_themes=Ausgewählt
+
+open_themes_folder=Open themes folder
+
+wallpaper_color=Hintergrundfarbe
+add_background_color=Hintergrundfarbe hinzufügen
+oder=oder
+
+remove_background=Entfernen Sie diesen Hintergrund
+
+
+// Links
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+
+soundboard_tutorial=Tutorial zur Einrichtung des Soundboards
+spotify_tutorial=Tutorial zur Einrichtung von Spotify
+obs_tutorial=OBS-Einrichtungs-Tutorial
+themes_tutorial=Anleitung zur Erstellung von Themes
+
+
+not_specified=Nicht angegeben
+
+save=Speichern
+back=Zurück

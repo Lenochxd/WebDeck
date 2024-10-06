@@ -1,0 +1,183 @@
+# en_US.lang file written by Lenoch, feel free to make a PR for any mistakes
+# https://github.com/Lenochxd/WebDeck/pulls
+# or just tell us on discord: https://discord.gg/tUPsYHAGfm
+
+lang_name=English
+lang_short=en
+credits=Lenoch
+
+// -- Tray icon --
+
+qr_code=QR Code
+open_config=Open Config
+fix_firewall=Fix firewall
+exit=Quit
+
+// -- Errors --
+server_disconnected=Server Disconnected
+failed=Failed
+error=Error
+error_occurred=An error has occurred
+
+settings_load_error=An error occurred while loading settings.
+settings_save_error=An error occurred while saving settings.
+
+auto_update_error=Error while updating WebDeck, please update it manually from https://github.com/Lenochxd/WebDeck/releases/latest
+
+no_files_found_error=No files were found
+
+ffmpeg_not_installed_error=Installing FFMPEG...
+vlc_not_installed_error=VLC is not installed!
+mp3_loading_error=Error while loading MP3 file named.
+
+obs_failed_connection_error=Failed connection to obs.
+obs_error_10061=The websocket server cannot be found. (WinError 10061)
+obs_error_incorrect_password=Password may be incorrect.
+obs_already_recording=OBS is already recording.
+obs_already_streaming=OBS is already streaming.
+obs_already_vcam=Virtual cam is already started.
+obs_not_recording=OBS is not recording.
+obs_not_streaming=OBS is not streaming.
+obs_no_vcam=Virtual cam is already stopped.
+obs_no_recording_can_be_paused=No recording can be paused.
+obs_no_recording_is_paused=No recording is paused.
+
+spotify_apply_volume_error=Error, unable to apply volume
+spotify_volume_prenium_error=Error, unable to apply volume because Spotify Prenium is required
+
+
+// -- Success messages --
+settings_save_success=Settings saved successfully.
+downloaded_successfully=File downloaded successfully
+folder_created_successfully=Folder created successfully!
+
+
+// -- Button configuration --
+add_a_button=Add a button
+configure_your_button=Configure your button
+
+image=Image
+image_size=Image Size
+background_color=Background Color
+background_color_hex=Background Color (HEX)
+button_title=Button Title
+edit_command=Command (experimental)
+
+select_your_file=Select your file
+no_file_chosen=No file chosen
+
+choose_option=Choose an option
+
+button_delete_confirmation=Do you really want to remove this button?
+
+
+// -- Editor --
+enter_editor_mode=Enter editor mode
+exit_editor_mode=Exit editor mode
+
+open_folder=Open Folder
+
+quit_without_saving=Quit without saving
+save_and_exit=Save and exit
+swap_buttons=Swap 2 Buttons
+stop_swap_mode=Stop Swap Mode
+no_changes_to_undo=There are no changes to undo.
+
+
+// Settings tab
+configuration=Configuration
+settings=Settings
+
+see_patchnotes=See patchnotes
+github_issue=Report an issue on GitHub
+
+language=Language
+config-windows_startup=Start on Windows startup
+auto_updates=Auto updates
+
+soundboard=Soundboard
+input_device=Input device
+output_device=Output device (vbcable)
+toggle_soundboard=Soundboard enabled
+ear_soundboard=Ear Soundboard
+
+spotify_api=Spotify API
+username=Username
+
+obs_studio=OBS Studio
+host=Host
+port=Port
+password=Password
+
+
+visuals=Visuals
+
+gridsize=Grid-size
+height=height
+width=width
+
+portrait_rotate=Portrait mode rotation degrees
+
+themes=Themes
+open_theme_menu=Open the themes menu
+
+backgrounds=Background images
+open_background_image_menu=Open the backgrounds menu
+
+dark_theme=Dark theme
+
+show_btn_names=Show button names
+
+edit_btn_color=Change the default button color
+
+
+experimental=Experimental
+
+usage_btn_reload_time=Usage buttons reload time (ms)
+
+optimized_usage_display=Optimized usage display buttons
+
+gpu_usage_method=GPU usage method (if the gpu usage does not show)
+doesnt_work=doesn't work
+lmao=lmao
+none=None
+
+open_settings_in_integrated_browser=Open settings in a dedicated browser
+
+show_console=Show console
+dev_mode=Dev mode
+authorize_windows_firewall=Authorize WebDeck via Windows Firewall
+automatic_firewall_bypass=Automatic firewall bypass at startup
+fix_stop_soundboard=Fix stop soundboard button issue (may be unstable)
+
+themes_menu_title=Themes list
+random_bg_menu_title=Random backgrounds list
+
+disabled_themes=Available
+enabled_themes=Selected
+
+open_themes_folder=Open themes folder
+
+wallpaper_color=Background Color
+add_background_color=Add a color backgroud
+or=or
+
+remove_background=Remove this background
+
+
+// Links
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+
+soundboard_tutorial=Soundboard setup tutorial
+spotify_tutorial=Spotify setup tutorial
+obs_tutorial=OBS setup tutorial
+themes_tutorial=Themes creation tutorial
+
+
+not_specified=Not specified
+
+save=Save
+back=Back

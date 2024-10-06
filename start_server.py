@@ -4,7 +4,7 @@ import socket
 
 app = Flask(__name__)
 
-with open('config.json', encoding= "utf-8") as f:
+with open('.config/config.json', encoding= "utf-8") as f:
     config = json.load(f)
         
 @app.route('/61432/webdeck/start', methods=['POST'])

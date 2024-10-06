@@ -3,13 +3,13 @@
     <div class="webdeck_foldername_ALL">
         {% for key in config["front"]["buttons"] %}
             <div class="webdeck_foldername">
-                <input class="{{black_theme}}" type="radio" name="file" value="{{ key }}" >
+                <input class="{{dark_theme}}" type="radio" name="file" value="{{ key }}" >
                 <label for="{{ key }}">{{ key }}</label>
             </div>
         {% endfor %}
     </div>
 {% elif "path-soundboard-audio" in arg['TYPE'] %}
-    <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept=".mp3">
+    <input class="{{dark_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept=".mp3">
 {% elif "filetype" in arg['TYPE'] %}
     {% set string_list = arg['TYPE'].split(" ") %}
     {% set filetypes = [] %}
@@ -17,7 +17,7 @@
         {% if i.startswith('filetype') %}
             {% set filetypes = eval(i.replace('filetype', '')) %}
             {% set filetypes_string = ", ".join(filetypes) %}
-            <input class="{{black_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept="{{filetypes_string}}">
+            <input class="{{dark_theme}} audio-input" id="audio-input_{{arg_modal_ID}}" type="file" name="file" accept="{{filetypes_string}}">
         {% endif %}
     {% endfor %}
 {% elif "filepath" in arg['TYPE'] %}
@@ -29,22 +29,22 @@
             {% set filetypes_string = "_".join(filetypes) %}
             <div class="filepath">
                 <button class="filepath" filetypes="{{filetypes_string}}"> {{text['select_your_file']}} </button>
-                <input type="text" class="filepath {{black_theme}}" placeholder="{{text['no_file_chosen']}}">
+                <input type="text" class="filepath {{dark_theme}}" placeholder="{{text['no_file_chosen']}}">
             </div>
         {% endif %}
     {% endfor %}
 {% elif "file" in arg['TYPE'] %}
     <div class="filepath">
         <button class="filepath"> {{text['select_your_file']}} </button>
-        <input type="text" class="filepath {{black_theme}}" placeholder="{{text['no_file_chosen']}}">
+        <input type="text" class="filepath {{dark_theme}}" placeholder="{{text['no_file_chosen']}}">
     </div>
 {% elif "folderpath" in arg['TYPE'] %}
     <div class="folderpath">
         <button class="folderpath"> {{text['select_your_file']}} </button>
-        <input type="text" class="folderpath {{black_theme}}" placeholder="{{text['no_file_chosen']}}">
+        <input type="text" class="folderpath {{dark_theme}}" placeholder="{{text['no_file_chosen']}}">
     </div>
 {% elif "url" in arg['TYPE'] %}
-    <input class="{{black_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com">
+    <input class="{{dark_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com">
 {% elif "number" in arg['TYPE'] %}
     {% set string_list = arg['TYPE'].split(" ") %}
     {% set number_list = [] %}
@@ -54,16 +54,16 @@
             {% set min = number_list[0] %}
             {% set max = number_list[1] %}
             {% if min.startswith('-') or max.startswith('-') %}
-                <input class="{{black_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
+                <input class="{{dark_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
             {% else %}
-                <input class="{{black_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
+                <input class="{{dark_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
             {% endif %}
         {% endif %}
     {% endfor %}
 {% elif "longtext" in arg['TYPE'] or "textarea" in arg['TYPE'] %}
-    <textarea class="{{black_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
+    <textarea class="{{dark_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
 {% elif "usage-title-text" in arg['TYPE'] and "input" in arg['TYPE'] %}
-    <input id="usage-title-input_{{arg_modal_ID}}" class="{{black_theme}}" type="text" name="{{file}}" size="10"
+    <input id="usage-title-input_{{arg_modal_ID}}" class="{{dark_theme}}" type="text" name="{{file}}" size="10"
         {% if arg['value'] %}
             value="{{arg['value']}}"
         {% endif %}
@@ -82,7 +82,7 @@
         });
     </script>
 {% elif "text" in arg['TYPE'] and "input" in arg['TYPE'] %}
-    <input class="{{black_theme}}" type="text" name="{{file}}" size="10"
+    <input class="{{dark_theme}}" type="text" name="{{file}}" size="10"
         {% if arg['value'] %}
             value="{{arg['value']}}"
         {% endif %}
