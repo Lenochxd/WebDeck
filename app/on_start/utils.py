@@ -19,17 +19,21 @@ def check_config_update(config):
     config = check_config_hyphen_case(config)
     
     if "background" in config["front"]:
+        # Convert background to a list
         if (
             type(config["front"]["background"]) == "str"
             and len(config["front"]["background"]) > 3
         ):
             config["front"]["background"] = [config["front"]["background"]]
-        if type(config["front"]["background"]) == "list" and config["front"][
-            "background"
-        ] in [[], [""]]:
+            
+        # If background is an empty list or a list with an empty string, set default color
+        if (
+            type(config["front"]["background"]) == "list"
+            and config["front"]["background"] in [[], [""]]
+        ):
             config["front"]["background"] = ["#141414"]
     else:
-        # Set default background if not present
+        # Set default background if not present in
         config["front"]["background"] = ["#141414"]
 
     # Set default auto_updates setting if not present
