@@ -120,7 +120,7 @@ def open_config():
     else:
         webbrowser.open(f"http://{local_ip}:{port}?config=show")
 
-def close_window(event=None):
+def close_window():
     global window
     if window:
         window.destroy()
