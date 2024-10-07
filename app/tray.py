@@ -56,9 +56,6 @@ def reload_config():
 port, dark_theme, language, open_in_integrated_browser = reload_config()
 text = load_lang_file(language)
 
-wmi = win32com.client.GetObject("winmgmts:")
-processes = wmi.InstancesOf("Win32_Process")
-
 icon = None
 window = None
 
@@ -66,39 +63,40 @@ window = None
 def exit_program():
     global icon, window
 
-    wmi = win32com.client.GetObject("winmgmts:")
-    processes = wmi.InstancesOf("Win32_Process")
-
-    processes_to_kill = [
-        "WD_main.exe",
-        "WD_start.exe",
-        "nircmd.exe",
-        "WebDeck.exe"
-    ]
-
-    for process_name in processes_to_kill:
-        try:
-            subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
-        except Exception as e:
-            print(f"Failed to terminate process {process_name}: {e}")
-
-    for process in processes:
-        if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
-            print(f"Stopping process: {process.Properties_('Name').Value}")
-            try: 
-                result = process.Terminate()
-            except TypeError:
-                pass
-            if result == 0:
-                print("Process terminated successfully.")
-            else:
-                print("Failed to terminate process.")
-
     if not getattr(sys, 'frozen', False):
         try:
             subprocess.Popen("taskkill /f /IM python.exe", shell=True)
         except Exception as e:
             print(f"Failed to terminate process {process_name}: {e}")
+    else:
+        wmi = win32com.client.GetObject("winmgmts:")
+        processes = wmi.InstancesOf("Win32_Process")
+
+        processes_to_kill = [
+            "WD_main.exe",
+            "WD_start.exe",
+            "nircmd.exe",
+            "WebDeck.exe"
+        ]
+
+        for process_name in processes_to_kill:
+            try:
+                subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
+            except Exception as e:
+                print(f"Failed to terminate process {process_name}: {e}")
+
+        for process in processes:
+            if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
+                print(f"Stopping process: {process.Properties_('Name').Value}")
+                try: 
+                    result = process.Terminate()
+                except TypeError:
+                    pass
+                if result == 0:
+                    print("Process terminated successfully.")
+                else:
+                    print("Failed to terminate process.")
+        
 
     close_window()
     icon.stop()  # Stop Tray Icon
