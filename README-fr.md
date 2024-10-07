@@ -9,7 +9,6 @@ Le WebDeck est une application qui permet à l'utilisateur de contrôler son ord
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
   [![GitHub downloads](https://img.shields.io/github/downloads/Lenochxd/WebDeck/total.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
   [![GitHub stars](https://img.shields.io/github/stars/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/stargazers)
-  [![CodeFactor](https://www.codefactor.io/repository/github/Lenochxd/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/Lenochxd/WebDeck)
   [![GitHub issues](https://img.shields.io/github/issues/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/issues)
   [![Discord](https://img.shields.io/discord/391919052563546112?style=flat&logo=Discord&logoColor=fff&label=Discord&color=5e6ae8&link=https%3A%2F%2Fdiscord.gg%2FtUPsYHAGfm)](https://discord.gg/tUPsYHAGfm)
 </div>
@@ -69,7 +68,7 @@ Le WebDeck prend actuellement en charge Windows. Il est prévu de développer de
     </td>
     <td align="center">
       <a href="https://twitter.com/LenochJ">
-        <img src="https://cdn.discordapp.com/avatars/390265556357611521/205d253b7e742b8f70174fdac8ca701d.png" alt="CONTRIBUTEUR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://cdn.discordapp.com/avatars/390265556357611521/70e3c4f24ac710209fbfbd206370b538.png?size=256" alt="CONTRIBUTEUR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Lenoch
       </a>

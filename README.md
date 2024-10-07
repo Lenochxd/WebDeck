@@ -12,7 +12,6 @@ The WebDeck is a Flask application that allows users to control their computer r
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
   [![GitHub downloads](https://img.shields.io/github/downloads/Lenochxd/WebDeck/total.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
   [![GitHub stars](https://img.shields.io/github/stars/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/stargazers)
-  [![CodeFactor](https://www.codefactor.io/repository/github/Lenochxd/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/Lenochxd/WebDeck)
   [![GitHub issues](https://img.shields.io/github/issues/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/issues)
   [![Discord](https://img.shields.io/discord/391919052563546112?style=flat&logo=Discord&logoColor=fff&label=Discord&color=5e6ae8&link=https%3A%2F%2Fdiscord.gg%2FtUPsYHAGfm)](https://discord.gg/tUPsYHAGfm)
 </div>

@@ -9,7 +9,6 @@ WebDeck은 브라우저와 터치스크린이 있는 모든 장치에서 원격�
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
   [![GitHub downloads](https://img.shields.io/github/downloads/Lenochxd/WebDeck/total.svg?style=flat)](https://github.com/Lenochxd/WebDeck/releases)
   [![GitHub stars](https://img.shields.io/github/stars/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/stargazers)
-  [![CodeFactor](https://www.codefactor.io/repository/github/Lenochxd/WebDeck/badge?style=flat)](https://www.codefactor.io/repository/github/Lenochxd/WebDeck)
   [![GitHub issues](https://img.shields.io/github/issues/Lenochxd/WebDeck.svg?style=flat)](https://github.com/Lenochxd/WebDeck/issues)
   [![Discord](https://img.shields.io/discord/391919052563546112?style=flat&logo=Discord&logoColor=fff&label=Discord&color=5e6ae8&link=https%3A%2F%2Fdiscord.gg%2FtUPsYHAGfm)](https://discord.gg/tUPsYHAGfm)
 </div>
@@ -71,7 +70,7 @@ WebDeck은 현재 Windows를 지원합니다. 향후 Linux 및 macOS용 버전�
     </td>
     <td align="center">
       <a href="https://twitter.com/LenochJ">
-        <img src="https://cdn.discordapp.com/avatars/390265556357611521/205d253b7e742b8f70174fdac8ca701d.png" alt="CONTRIBUTOR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
+        <img src="https://cdn.discordapp.com/avatars/390265556357611521/70e3c4f24ac710209fbfbd206370b538.png?size=256" alt="CONTRIBUTOR-Lenoch" width="80px" height="80px" style="border-radius: 50%;">
         <br>
         Lenoch
       </a>
