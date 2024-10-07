@@ -25,7 +25,6 @@ if settings['app_admin'] == True:
         sys.exit()
 
 import threading
-import win32com.client
 from app.utils.is_opened import is_opened
 
 
@@ -33,15 +32,11 @@ threads = []
 imports = []
 
 def start(file):
-    win32com.client.pythoncom.CoInitialize() 
     global imports
     imports[file] = __import__(file, fromlist=[""])
 
 
 if not is_opened():
-    wmi = win32com.client.GetObject("winmgmts:")
-    processes = wmi.InstancesOf("Win32_Process")
-
     threads.append(threading.Thread(target=start, args=('app.server',), daemon=True))
     threads[-1].start()
     
