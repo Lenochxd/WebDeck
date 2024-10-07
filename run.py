@@ -29,7 +29,7 @@ from app.utils.is_opened import is_opened
 
 
 threads = []
-imports = []
+imports = {}
 
 def start(file):
     global imports
