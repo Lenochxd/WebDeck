@@ -40,7 +40,8 @@ if not is_opened():
     threads.append(threading.Thread(target=start, args=('app.server',), daemon=True))
     threads[-1].start()
     
-    start('app.tray')
+    from app.tray import create_tray_icon
+    create_tray_icon()
     
     for thread in threads:
         thread.join()

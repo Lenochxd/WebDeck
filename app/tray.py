@@ -1,18 +1,16 @@
 import sys  
 import pystray
-from pystray import MenuItem as item
-from PIL import Image, ImageTk
 import os
 import win32gui, win32con
 import win32com.client
 import subprocess
-import socket
 import webbrowser
 import json
 import qrcode
-import tkinter as tk
-from io import BytesIO
 import webview
+import tkinter as tk
+from PIL import Image, ImageTk
+from io import BytesIO
 
 from app.utils.firewall import fix_firewall_permission
 from app.utils.get_local_ip import get_local_ip
@@ -172,17 +170,21 @@ def show_qrcode():
         window.protocol("WM_DELETE_WINDOW", close_window)
         window.mainloop()
 
+def generate_menu(language):
+    text = load_lang_file(language)
 
-def create_tray_icon():
+    return (
+        pystray.MenuItem(text['qr_code'], lambda: show_qrcode(), default=True),
+        pystray.MenuItem(text['open_config'], lambda: open_config()),
+        pystray.MenuItem(text['fix_firewall'], lambda: fix_firewall_permission()),
+        pystray.MenuItem(text['exit'], lambda: exit_program()),
+    )
+
+def generate_tray_icon():
     global icon
     image = Image.open("static/icons/icon.ico")
 
-    menu = (
-        item(text['qr_code'], lambda: show_qrcode(), default=True),
-        item(text['open_config'], lambda: open_config()),
-        item(text['fix_firewall'], lambda: fix_firewall_permission()),
-        item(text['exit'], lambda: exit_program()),
-    )
+    menu = generate_menu(language)
 
     # Create the Tray Icon
     if getattr(sys, 'frozen', False):
@@ -191,5 +193,14 @@ def create_tray_icon():
         icon = pystray.Icon("name", image, "WebDeck DEV", menu)
     return icon
 
-create_tray_icon()
-icon.run()
+def change_tray_language(new_lang):
+    global icon
+    if icon is not None:
+        icon.menu = generate_menu(new_lang)
+        icon.update_menu()
+
+def create_tray_icon():
+    global icon
+    if icon is None:  # Only create the icon if it doesn't already exist
+        icon = generate_tray_icon()  # Replace with your actual icon creation logic
+        icon.run()

@@ -25,6 +25,7 @@ folders_to_create = []
 set_global_variable("text", text)
 set_global_variable("config", config)
 
+from app.tray import change_tray_language
 from .utils.themes.parse_themes import parse_themes
 from .utils.plugins.load_plugins import load_plugins
 from .utils.settings.save_config import save_config
@@ -198,7 +199,10 @@ def saveconfig():
     soundboard_restart = (
         not config["settings"]["soundboard"] == new_config["settings"]["soundboard"]
     )
+    
     obs_reload = not config["settings"]["obs"] == new_config["settings"]["obs"]
+    
+    tray_reload = not config["settings"]["language"] == new_config["settings"]["language"]
 
     soundboard_start = False
     soundboard_stop = False
@@ -264,6 +268,9 @@ def saveconfig():
 
     if obs_reload:
         obs_host, obs_port, obs_password, obs = reload_obs()
+
+    if tray_reload:
+        change_tray_language(new_config["settings"]["language"])
 
     return jsonify({"success": True})
 
