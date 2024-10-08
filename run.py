@@ -3,23 +3,20 @@ import sys
 import json
 import os.path
 
+def load_config():
+    for path in ['.config/config.json', 'config.json']:
+        if os.path.exists(path):
+            with open(path, encoding='utf-8') as f:
+                return json.load(f).get('settings', {})
+    return {}
+
 try:
-    if os.path.exists('.config/config.json'):
-        with open('.config/config.json', encoding='utf-8') as f:
-            config = json.load(f)
-            settings = config.get('settings', {})
-    elif os.path.exists('config.json'):
-        with open('config.json', encoding='utf-8') as f:
-            config = json.load(f)
-            settings = config.get('settings', {})
-    else:
-        settings = {}
-    
+    settings = load_config()
     settings.setdefault('app_admin', True)
 except Exception:
     settings = {'app_admin': True}
 
-if settings['app_admin'] == True:
+if settings['app_admin']:
     if not ctypes.windll.shell32.IsUserAnAdmin():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit()
