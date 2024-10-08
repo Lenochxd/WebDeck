@@ -487,9 +487,10 @@ if (
 
 print('local_ip: ', local_ip)
 
-app.run(
-    host=local_ip,
-    port=config["url"]["port"],
-    debug=config["settings"]["flask_debug"] == True,
-    use_reloader=config["settings"]["flask_debug"] == False,
-)
+def run_server():
+    app.run(
+        host=local_ip,
+        port=config["url"]["port"],
+        debug=config["settings"]["flask_debug"] == True,
+        use_reloader=config["settings"]["flask_debug"] == False,
+    )
