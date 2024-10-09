@@ -26,12 +26,12 @@ from app.utils.is_opened import is_opened
 
 
 if not is_opened():
-    from app.server import run_server
     from app.tray import create_tray_icon
-    
-    thread = threading.Thread(target=run_server, daemon=True)
-    thread.start()
-    
+
+    def run_server_thread():
+        from app.server import run_server
+        thread = threading.Thread(target=run_server, daemon=True)
+        thread.start()
+
+    threading.Timer(0, run_server_thread).start()
     create_tray_icon()
-    
-    thread.join()
