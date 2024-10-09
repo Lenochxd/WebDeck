@@ -12,6 +12,10 @@ qr_code=QR Code
 options=Optionen
 open_config=Öffne Einstellungen
 fix_firewall=Fix Firewall
+server_status=Server-Status:
+server_online=🟢 Online
+server_offline=🔴 Offline
+server_loading=Lädt...
 report_issue=Ein Problem melden
 exit=Beenden
 

@@ -170,8 +170,15 @@ def show_qrcode():
         window.protocol("WM_DELETE_WINDOW", close_window)
         window.mainloop()
 
-def generate_menu(language):
+def generate_menu(language, server_status=1):
+    print('NEW STATUS: ', server_status)
     text = load_lang_file(language)
+
+    server_status_text = {
+        0: text['server_loading'],
+        1: text['server_online'],
+        2: text['server_offline']
+    }
 
     return (
         pystray.MenuItem(text['qr_code'], lambda: show_qrcode(), default=True),
@@ -179,6 +186,10 @@ def generate_menu(language):
             pystray.MenuItem(text['open_config'], lambda: open_config()),
             pystray.MenuItem(text['fix_firewall'], lambda: fix_firewall_permission()),
         )),
+        pystray.MenuItem(
+            f"{text['server_status']} {server_status_text.get(server_status, text['server_offline'])}",
+            lambda: None
+        ),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem(text['report_issue'], lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
         pystray.MenuItem(text['exit'], lambda: exit_program()),
@@ -188,7 +199,7 @@ def generate_tray_icon():
     global icon
     image = Image.open("static/icons/icon.ico")
 
-    menu = generate_menu(language)
+    menu = generate_menu(language, server_status=0)
 
     # Create the Tray Icon
     if getattr(sys, 'frozen', False):
@@ -198,10 +209,18 @@ def generate_tray_icon():
     return icon
 
 def change_tray_language(new_lang):
+    global icon, language
+    language = new_lang
+    if icon is not None:
+        icon.menu = generate_menu(language)
+        icon.update_menu()
+
+def change_server_state(new_state):
     global icon
     if icon is not None:
-        icon.menu = generate_menu(new_lang)
+        icon.menu = generate_menu(language, server_status=new_state)
         icon.update_menu()
+
 
 def create_tray_icon():
     global icon

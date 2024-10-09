@@ -25,7 +25,7 @@ folders_to_create = []
 set_global_variable("text", text)
 set_global_variable("config", config)
 
-from app.tray import change_tray_language
+from app.tray import change_tray_language, change_server_state
 from .utils.themes.parse_themes import parse_themes
 from .utils.plugins.load_plugins import load_plugins
 from .utils.settings.save_config import save_config
@@ -42,6 +42,8 @@ from .buttons import soundboard
 from .buttons import handle_command as command
 
 
+
+change_server_state(0)  # Tray icon: server loading
 
 if getattr(sys, "frozen", False):
     app = Flask(__name__, template_folder='../../../templates', static_folder='../../../static')
@@ -488,6 +490,7 @@ if (
 print('local_ip: ', local_ip)
 
 def run_server():
+    change_server_state(1)
     app.run(
         host=local_ip,
         port=config["url"]["port"],
