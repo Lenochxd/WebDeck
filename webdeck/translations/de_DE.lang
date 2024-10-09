@@ -9,8 +9,10 @@ credits=Dtrieb
 // -- Tray icon --
 
 qr_code=QR Code
+options=Optionen
 open_config=Öffne Einstellungen
 fix_firewall=Fix Firewall
+report_issue=Ein Problem melden
 exit=Beenden
 
 // -- Errors --

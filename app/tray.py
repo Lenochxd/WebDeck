@@ -175,8 +175,12 @@ def generate_menu(language):
 
     return (
         pystray.MenuItem(text['qr_code'], lambda: show_qrcode(), default=True),
-        pystray.MenuItem(text['open_config'], lambda: open_config()),
-        pystray.MenuItem(text['fix_firewall'], lambda: fix_firewall_permission()),
+        pystray.MenuItem(text['options'], pystray.Menu(
+            pystray.MenuItem(text['open_config'], lambda: open_config()),
+            pystray.MenuItem(text['fix_firewall'], lambda: fix_firewall_permission()),
+        )),
+        pystray.Menu.SEPARATOR,
+        pystray.MenuItem(text['report_issue'], lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
         pystray.MenuItem(text['exit'], lambda: exit_program()),
     )
 

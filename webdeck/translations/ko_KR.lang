@@ -9,8 +9,10 @@ credits=KiiMyu(KiMyu)
 // -- Tray icon --
 
 qr_code=QR 코드
+options=옵션
 open_config=설정 열기
 fix_firewall=방화벽 설정
+report_issue=GitHub 이슈 보고
 exit=나가기
 
 // -- Errors --

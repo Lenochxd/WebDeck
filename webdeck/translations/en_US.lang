@@ -9,8 +9,10 @@ credits=Lenoch
 // -- Tray icon --
 
 qr_code=QR Code
+options=Options
 open_config=Open Config
 fix_firewall=Fix firewall
+report_issue=Report an Issue
 exit=Quit
 
 // -- Errors --

@@ -9,8 +9,10 @@ credits=Lenoch
 // -- Tray icon --
 
 qr_code=QR Code
+options=Options
 open_config=Ouvrir la configuration
 fix_firewall=Réparer pare-feu
+report_issue=Signaler un bug
 exit=Quitter
 
 // -- Errors --
