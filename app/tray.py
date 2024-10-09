@@ -17,7 +17,7 @@ from app.utils.get_local_ip import get_local_ip
 from app.utils.load_lang_file import load_lang_file
 
 def reload_config():
-    port = 5000
+    port = 59997
     dark_theme = True
     open_in_integrated_browser = True
     language = "en_US"
