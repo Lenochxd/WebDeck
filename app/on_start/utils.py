@@ -9,7 +9,7 @@ from win32com.client import Dispatch
 
 from app.updater import check_files, check_for_updates
 from app.utils.global_variables import set_global_variable
-from app.utils.load_lang_file import load_lang_file
+from app.utils.languages import load_lang_file
 from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
 

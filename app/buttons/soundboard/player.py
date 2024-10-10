@@ -3,7 +3,7 @@ except: pass
 from flask import jsonify
 
 from app.utils.load_config import load_config
-from app.utils.load_lang_file import load_lang_file
+from app.utils.languages import load_lang_file
 
 from .devices import get_device
 from .ffmpeg import silence_path

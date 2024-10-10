@@ -33,7 +33,7 @@ from .utils.settings.audio_devices import get_audio_devices
 from .utils.settings.gridsize import update_gridsize
 from .utils.settings.create_folders import create_folders
 from .utils.firewall import fix_firewall_permission, check_firewall_permission
-from .utils.load_lang_file import load_lang_file
+from .utils.languages import load_lang_file
 from .utils.merge_dicts import merge_dicts
 from .buttons.usage import get_usage
 from .buttons.obs import reload_obs

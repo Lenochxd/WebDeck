@@ -14,7 +14,7 @@ from io import BytesIO
 
 from app.utils.firewall import fix_firewall_permission
 from app.utils.get_local_ip import get_local_ip
-from app.utils.load_lang_file import load_lang_file
+from app.utils.languages import load_lang_file
 
 def reload_config():
     port = 59997
