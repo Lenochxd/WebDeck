@@ -1,6 +1,23 @@
-# fr_FR.lang écrit par Lenoch, n'hésitez pas à faire un PR pour toute erreur
-# https://github.com/Lenochxd/WebDeck/pulls
-# ou alors dites nous sur discord: https://discord.gg/tUPsYHAGfm
+# Translation file: fr_FR.lang
+# Author: Lenoch — Feel free to submit a PR for any corrections:
+# GitHub: https://github.com/Lenochxd/WebDeck/pulls
+# Discord: https://discord.gg/tUPsYHAGfm
+
+
+# TRANSLATION INSTRUCTIONS:
+# 1. Update the first line with the filename and your username if you're editing.
+# 2. Do NOT translate lines starting with '//' — these are comments.
+# 3. Lines starting with '#' are optional to translate, but it's encouraged for consistency.
+# 4. Only translate the values (text after '='); do not modify the keys (text before '=').
+# 5. Keep variable placeholders like '%example_var%' unchanged.
+# 6. Edit the following fields to match your translation:
+#    - native_name: The name of the language in its native form (e.g., 'Français').
+#    - english_name: The name of the language in English (e.g., 'French').
+#    - lang_code: The ISO code of the language (e.g., 'fr' for French).
+#    - author_name: Your name or the contributor's name.
+#    - author_github_username: Your GitHub username or the contributor's.
+
+
 
 native_name=Français
 english_name=French
