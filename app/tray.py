@@ -14,7 +14,7 @@ from io import BytesIO
 
 from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
-from .utils.languages import text, load_lang_file
+from .utils.languages import text, get_languages_info, get_language, set_default_language
 
 
 def reload_config():
@@ -183,6 +183,14 @@ def generate_menu(language, server_status=1):
         pystray.MenuItem(text('qr_code'), lambda: show_qrcode(), default=True),
         pystray.MenuItem(text('options'), pystray.Menu(
             pystray.MenuItem(text('open_config'), lambda: open_config()),
+            pystray.MenuItem(text('language'), pystray.Menu(
+                *[pystray.MenuItem(
+                    f"{lang['native_name']} ({lang['code']})",
+                    (lambda lang=lang: lambda: update_language(lang['code']))(lang),
+                    radio=True,
+                    checked=lambda item, lang=lang: lang['code'] == get_language(language)
+                ) for lang in get_languages_info()]
+            )),
             pystray.MenuItem(text('fix_firewall'), lambda: fix_firewall_permission()),
         )),
         pystray.MenuItem(
@@ -213,6 +221,18 @@ def change_tray_language(new_lang):
     if icon is not None:
         icon.menu = generate_menu(language)
         icon.update_menu()
+
+def update_language(new_lang):
+    set_default_language(new_lang)
+    change_tray_language(new_lang)
+
+    with open('.config/config.json', 'r') as config_file:
+        config = json.load(config_file)
+    
+    config['settings']['language'] = new_lang
+    
+    with open('.config/config.json', 'w') as config_file:
+        json.dump(config, config_file, indent=4)
 
 def change_server_state(new_state):
     global icon
