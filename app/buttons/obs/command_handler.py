@@ -81,7 +81,7 @@ def handle_command(message):
     
     elif message.startswith("/obs_key"):
         hotkey = message.split(' ')[-1]
-        result = obs.call(obsrequests.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
+        result = obs.call(obs.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
         if "failed" in str(result):
             print("ERROR:      ", result)
             return jsonify({"success": False, "message": f"{text('failed')} :/"})
