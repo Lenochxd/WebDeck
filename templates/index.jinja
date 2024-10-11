@@ -45,7 +45,7 @@
     <script src="/static/js/upload_file.js"></script>
     {# <script src="/static/js/buttonclick.js"></script> #}
 
-    {% set language = text['lang_short'] %}
+    {% set language = text('lang_short') %}
 
     {% set dark_theme = '' %}
     {% if config['front']['dark_theme'] %}
@@ -69,7 +69,7 @@
     <div id="loading-screen">
       <div>
         <p id="server-disconnected" class="invisible">
-          {{text['server_disconnected']}}...
+          {{text('server_disconnected')}}...
         </p>
 
         <div class="loadingspinner">
@@ -218,7 +218,7 @@
     </style>
 
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
-      {{text['open_folder']}}: 
+      {{text('open_folder')}}: 
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% set folder_id = folder_id.replace('"', '&quot;') %}
         <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)">
@@ -312,7 +312,7 @@
                 {% if button_config["message"] and button_config["message"].startswith("/folder") %}
                   {% set onclick = "onclick=\"folder(`" + button_config['message'].replace('/folder ', '').replace('"','') + "`)\" onclickhandler=\"folder(`" + button_config['message'].replace('/folder ', '').replace('"','') + "`)\"" %}
                   <div class="swapMode-open-folder" {{ onclick }} style="display: none;">
-                    {{text['open_folder']}}
+                    {{text('open_folder')}}
                   </div>
                 {% endif %}
 
@@ -435,13 +435,13 @@
     <div id="EditorButtons" style="display: none;">
       <button class="button" id="SaveExitEditorButton">
         <img src="static/img/save.svg" width="20" height="20" id="EditorButtonLogo"> <!-- https://feathericons.com/?query=save -->
-        [E] {{text['save_and_exit']}}
+        [E] {{text('save_and_exit')}}
       </button>
-      <button class="button" id="exitEditorButton"> [Q] {{text['quit_without_saving']}} </button>
+      <button class="button" id="exitEditorButton"> [Q] {{text('quit_without_saving')}} </button>
       
       <button class="button" id="swapEditorButton">
         <img src="static/img/swap.png" width="20" height="20" id="EditorButtonLogo">
-        [S] {{text['swap_buttons']}}
+        [S] {{text('swap_buttons')}}
       </button>
     </div>
 
@@ -450,7 +450,7 @@
       <div class="modal-content {{dark_theme}}">
 
         <div class="modal-header bold">
-          <h1 class="config-modal"> {{text['configuration']}} </h1>
+          <h1 class="config-modal"> {{text('configuration')}} </h1>
           <div class="modal-close">
             <svg class="config-modal {{dark_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -458,11 +458,11 @@
           </div>
         </div>
         <div style="display: flex; flex-direction: column;">
-          <a class="{{dark_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="{{text['see_patchnotes']}}" alt="{{text['see_patchnotes']}}">
+          <a class="{{dark_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/releases/tag/v{{versions['versions'][0]['version']}}" target="_blank" title="{{text('see_patchnotes')}}" alt="{{text('see_patchnotes')}}">
             v{{versions['versions'][0]['version']}}
           </a>
-          <a class="{{dark_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/issues/new/choose" target="_blank" alt="{{text['github_issue']}}" style="margin-top: -4px;">
-            {{text['github_issue']}}
+          <a class="{{dark_theme}}" id="version" href="https://github.com/Lenochxd/WebDeck/issues/new/choose" target="_blank" alt="{{text('github_issue')}}" style="margin-top: -4px;">
+            {{text('github_issue')}}
           </a>
         </div>
 
@@ -470,27 +470,27 @@
           <div class="config-container choose-themes {{dark_theme}}" id="choose-themes" style="display: none;">
             <
             <button type="button" id="setting-themes-back" class="button {{dark_theme}}">
-              {{text['back']}}
+              {{text('back')}}
             </button>
 
             <div id="themes-tutorial-container">
-              <a href="{{text['link_themes']}}" target="_blank" title="{{text['themes_tutorial']}}">
+              <a href="{{text('link_themes')}}" target="_blank" title="{{text('themes_tutorial')}}">
                   <!-- source: https://phosphoricons.com/ -->
                   {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
               </a>
 
               <button type="button" onclick="send_data('/openfolder /.config/themes')" class="button" id="open-themes-folder">
-                {{text['open_themes_folder']}}
+                {{text('open_themes_folder')}}
               </button>
             </div>
 
-            <h1 class="config-title"> {{text['themes_menu_title']}} </h1>
+            <h1 class="config-title"> {{text('themes_menu_title')}} </h1>
             
             <div class="editorStyle-bar {{dark_theme}}"></div>
 
             <div id="choose-themes-titles">
-              <h2 class="disabled-themes-title"> {{text['disabled_themes']}} </h2>
-              <h2 class="enabled-themes-title"> {{text['enabled_themes']}} </h2>
+              <h2 class="disabled-themes-title"> {{text('disabled_themes')}} </h2>
+              <h2 class="enabled-themes-title"> {{text('enabled_themes')}} </h2>
             </div>
             
             <div id="choose-themes-container">
@@ -573,17 +573,17 @@
           <div class="config-container choose-background {{dark_theme}}" id="choose-background" style="display: none;">
             <
             <button type="button" id="setting-background-back" class="button {{dark_theme}}">
-              {{text['back']}}
+              {{text('back')}}
             </button>
-            <h1 class="config-title"> {{text['random_bg_menu_title']}} </h1>
+            <h1 class="config-title"> {{text('random_bg_menu_title')}} </h1>
             <div class="background-color-input-container">
               <input type="color" class="background-color-input {{dark_theme}}" id="background-color-input">
-              <input type="text" id="background-color-hex" class="background-color-setting {{dark_theme}}" placeholder="{{text['wallpaper_color']}} (HEX)">
+              <input type="text" id="background-color-hex" class="background-color-setting {{dark_theme}}" placeholder="{{text('wallpaper_color')}} (HEX)">
             </div>
 
             <div id="create-bg-choices">
-              <button class="{{dark_theme}}" id="create-color-bg"> {{text['add_background_color']}} </button>
-              {{text['or']}}
+              <button class="{{dark_theme}}" id="create-color-bg"> {{text('add_background_color')}} </button>
+              {{text('or')}}
               <input type="file" id="create-image-bg" class="{{dark_theme}}" accept="image/jpeg, image/png, image/gif, video/mp4">
             </div>
             
@@ -595,10 +595,10 @@
                 {% if bg.replace('//','').startswith(('rgb(', '#')) %}
                   <div class="choose-bg-element choose-bg-element-color choose-bg-element-pageload {{dark_theme}}"
                     background="{{bg}}"
-                    background_color_text="{{text['background_color']}}"
+                    background_color_text="{{text('background_color')}}"
                     style="background-color: {{bg.replace('//','')}};"
                   >
-                    {{text['background_color']}} : {{bg.replace('//','')}}
+                    {{text('background_color')}} : {{bg.replace('//','')}}
                     <div class="choose-bg-buttons">
 
                       {% if bg.startswith('//') %}
@@ -608,7 +608,7 @@
                       {% endif %}
 
                       <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <title> {{text['remove_background']}} </title>
+                        <title> {{text('remove_background')}} </title>
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
                       </svg>
@@ -640,7 +640,7 @@
                       {% endif %}
                     
                       <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <title> {{text['remove_background']}} </title>
+                        <title> {{text('remove_background')}} </title>
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
                       </svg>
@@ -658,7 +658,7 @@
                       {% endif %}
                     
                       <svg class="choose-bg-delete-button" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <title> {{text['remove_background']}} </title>
+                        <title> {{text('remove_background')}} </title>
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
                       </svg>
@@ -670,23 +670,25 @@
           </div>
 
           <div class="config-container {{dark_theme}}" id="config-container" style="display: block;">
-            <button class="button modal-button" id="editorButton"> [Q] {{text['enter_editor_mode']}} </button>
+            <button class="button modal-button" id="editorButton"> [Q] {{text('enter_editor_mode')}} </button>
             <form id="config-form" class="config-form">
               <div class="setting-category settings {{dark_theme}}">
-                <h1 class="config-title"> {{text['settings']}} </h1>
+                <h1 class="config-title"> {{text('settings')}} </h1>
 
                 <div class="setting language">
-                  <label for="language"> {{text['language']}} </label>
+                  <label for="language"> {{text('language')}} </label>
                   <select id="language" name="settings.language">
                     {% for lang in langs %}
-                      <option value="{{lang}}" {% if config['settings']['language'].lower() == lang.lower() %}selected{% endif %}>{{lang}}</option>
+                      <option value="{{lang['code']}}" {% if get_language(config['settings']['language']) == lang['code'] %}selected{% endif %}>
+                        {{lang['native_name']}} ({{lang['code']}})
+                      </option>
                     {% endfor %}
                   </select>
                 </div>
 
                 {% if is_exe == True %}
                   <div class="setting windows-startup">
-                    <p> {{text['config-windows_startup']}} </p>
+                    <p> {{text('config-windows_startup')}} </p>
                     <label for="windows-startup" class="switch">
                       {% if 'windows-startup' in config['settings'].keys() %}
                         <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" {% if config['settings']['windows_startup'] %}checked{% endif %}>
@@ -698,7 +700,7 @@
                   </div>
 
                   <div class="setting auto-updates">
-                    <p> {{text['auto_updates']}} </p>
+                    <p> {{text('auto_updates')}} </p>
                     <label for="auto-updates" class="switch">
                       {% if 'auto-updates' in config['settings'].keys() %}
                         <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" {% if config['settings']['auto_updates'] %}checked{% endif %}>
@@ -712,8 +714,8 @@
                 
                 <div class="setting soundboard {{dark_theme}}">
                   <div class="settings-title-info">
-                    <label for="soundboard" style="margin-top: 3px;"> {{text['soundboard']}} </label>
-                    <a href="{{text['link_soundboard']}}" target="_blank"  title="{{text['soundboard_tutorial']}}">
+                    <label for="soundboard" style="margin-top: 3px;"> {{text('soundboard')}} </label>
+                    <a href="{{text('link_soundboard')}}" target="_blank"  title="{{text('soundboard_tutorial')}}">
                         <!-- source: https://phosphoricons.com/ -->
                         {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
                     </a>
@@ -721,7 +723,7 @@
 
 
                   <div class="setting mic_input_device">
-                    <label for="mic_input_device"> {{text['input_device']}} </label>
+                    <label for="mic_input_device"> {{text('input_device')}} </label>
                     <select id="mic_input_device" name="settings.soundboard.mic_input_device">
                       {% set audio_devices = get_audio_devices() %}
                       {% for device in audio_devices %}
@@ -737,7 +739,7 @@
                   </div>
                     
                   <div class="setting mic_output_device">
-                    <label for="mic_output_device"> {{text['output_device']}} </label>
+                    <label for="mic_output_device"> {{text('output_device')}} </label>
                     <select id="mic_output_device" name="settings.soundboard.vbcable">
                       {% set audio_devices = get_audio_devices('output') %}
                       {% for device in audio_devices %}
@@ -753,7 +755,7 @@
                   </div>
 
                   <div class="setting ear-soundboard">
-                    <p> {{text['ear_soundboard']}} </p>
+                    <p> {{text('ear_soundboard')}} </p>
                     <label for="ear_soundboard" class="switch">
                       <input class="{{dark_theme}}" type="checkbox" id="ear_soundboard" name="settings.ear_soundboard" {% if config['settings']['ear_soundboard'] %}checked{% endif %}>
                       <span class="slider round"></span>
@@ -761,7 +763,7 @@
                   </div>
                   
                   <div class="setting toggle-soundboard">
-                    <p> {{text['toggle_soundboard']}} </p>
+                    <p> {{text('toggle_soundboard')}} </p>
                     <label for="toggle_soundboard" class="switch">
                       <input class="{{dark_theme}}" type="checkbox" id="toggle_soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'] %}checked{% endif %}>
                       <span class="slider round"></span>
@@ -771,8 +773,8 @@
 
                 <div class="setting spotify-api">
                   <div class="settings-title-info">
-                    <label for="spotify" style="margin-top: 3px;"> {{text['spotify_api']}} </label>
-                    <a href="{{text['link_spotify']}}" target="_blank" title="{{text['spotify_tutorial']}}">
+                    <label for="spotify" style="margin-top: 3px;"> {{text('spotify_api')}} </label>
+                    <a href="{{text('link_spotify')}}" target="_blank" title="{{text('spotify_tutorial')}}">
                         <!-- source: https://phosphoricons.com/ -->
                         {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
                     </a>
@@ -780,7 +782,7 @@
 
                   <ul>
                     <li>
-                      <label for="spotify-client_id"> {{text['username']}} </label>
+                      <label for="spotify-client_id"> {{text('username')}} </label>
                       <input class="spotify-setting {{dark_theme}}" type="text" class="spotify-setting" id="spotify-username" name="settings.spotify_api.username" {% if not config['settings']['spotify_api']['username'].strip() == ''%} value="{{config['settings']['spotify_api']['username']}}" {% endif %}>
                       
                       <label for="spotify-client_id">Client ID</label>
@@ -797,8 +799,8 @@
 
                 <div class="setting obs-ws">
                   <div class="settings-title-info">
-                    <label for="obs" style="margin-top: 3px;"> {{text['obs_studio']}} </label>
-                    <a href="{{text['link_obs']}}" target="_blank" title="{{text['obs_tutorial']}}">
+                    <label for="obs" style="margin-top: 3px;"> {{text('obs_studio')}} </label>
+                    <a href="{{text('link_obs')}}" target="_blank" title="{{text('obs_tutorial')}}">
                         <!-- source: https://phosphoricons.com/ -->
                         {{ open("static/img/info.svg").read().replace('<svg ','<svg class="info-icon' + dark_theme + '" ')  }}
                     </a>
@@ -806,13 +808,13 @@
 
                   <ul>
                     <li>
-                      <label for="obs-HOST"> {{text['host']}} </label>
+                      <label for="obs-HOST"> {{text('host')}} </label>
                       <input class="obs-setting {{dark_theme}}" type="text" class="obs-setting" id="obs-HOST" name="settings.obs.host" {% if not config['settings']['obs']['host'].strip() == ''%} value="{{config['settings']['obs']['host']}}" {% endif %}>
                       
-                      <label for="obs-PORT"> {{text['port']}} </label>
+                      <label for="obs-PORT"> {{text('port')}} </label>
                       <input class="obs-setting {{dark_theme}}" type="text" id="obs-PORT" name="settings.obs.port" {% if not config['settings']['obs']['port'] == '' %} value="{{config['settings']['obs']['port']}}" {% endif %}>
                       
-                      <label for="obs-PASSWORD"> {{text['password']}} </label>
+                      <label for="obs-PASSWORD"> {{text('password')}} </label>
                       <div class="password-container">
                         <input class="obs-setting {{dark_theme}}" type="password" id="obs-PASSWORD" name="settings.obs.password" {% if not config['settings']['obs']['password'].strip() == ''%} value="{{config['settings']['obs']['password']}}" {% endif %}>
                         <span id="show-password-obs" class="show-password" onclick="togglePasswordVisibility('obs-PASSWORD', 'show-password-obs')"></span>
@@ -824,20 +826,20 @@
               </div>
               
               <div class="setting-category visuals {{dark_theme}}">
-                <h1 class="config-title"> {{text['visuals']}} </h1>
+                <h1 class="config-title"> {{text('visuals')}} </h1>
 
                 <div class="setting gridsize">
-                  <p> {{text['gridsize']}} </p>
+                  <p> {{text('gridsize')}} </p>
                   <div class="gridsize-container">
                     <div class="gridsize-height">
-                      <label for="gridsize-height"> {{text['height']}} </label>
+                      <label for="gridsize-height"> {{text('height')}} </label>
                       <input min="1" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                         class="{{dark_theme}}" type="number" id="gridsize-height" name="front.height" {% if not config['front']['height'].strip() == ''%}value="{{config['front']['height']}}"{% endif %}>
                     </div>
 
                     <div class="gridsize-width">
-                      <label for="gridsize-width"> {{text['width']}} </label>
+                      <label for="gridsize-width"> {{text('width')}} </label>
                       <input min="1" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                         class="{{dark_theme}}" type="number" id="gridsize-width" name="front.width" {% if not config['front']['width'].strip() == ''%}value="{{config['front']['width']}}"{% endif %}>
@@ -855,24 +857,24 @@
                 </div> #}
 
                 <div class="setting themes">
-                  <label for="themes"> {{text['themes']}} </label>
+                  <label for="themes"> {{text('themes')}} </label>
                   <button type="button" id="setting-themes" class="{{dark_theme}}">
-                    {{text['open_theme_menu']}}
+                    {{text('open_theme_menu')}}
                   </button>
                   <input type="text" name="front.themes" id="choose-themes-handler" class="invisible" value="{{config['front']['themes']}}">
                 </div>
 
                 <div class="setting background">
-                  <label for="background"> {{text['backgrounds']}} </label>
+                  <label for="background"> {{text('backgrounds')}} </label>
                   <button type="button" id="setting-background" class="{{dark_theme}}">
-                    {{text['open_background_image_menu']}}
+                    {{text('open_background_image_menu')}}
                   </button>
                   {% set backgrounds = str(config['front']['background']).replace('",', "',").replace(', "', ", '").replace('["', "['").replace('"]', "']") %}
                   <input type="text" name="front.background" id="choose-background-handler" class="invisible" value="{{backgrounds}}">
                 </div>
 
                 <div class="setting {{dark_theme}}">
-                  <p> {{text['dark_theme']}} </p>
+                  <p> {{text('dark_theme')}} </p>
                   <label for="dark-theme" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="dark-theme" name="front.dark_theme" {% if config['front']['dark_theme'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -880,7 +882,7 @@
                 </div>
                 
                 <div class="setting portrait-rotate">
-                  <label for="portrait-rotate"> {{text['portrait_rotate']}} </label>
+                  <label for="portrait-rotate"> {{text('portrait_rotate')}} </label>
                   <div id="portrait-rotate-setting-container">
                     <input required class="{{dark_theme}}" type="number" min="0" pattern="[0-9]*"
                       style="width: 75px;"
@@ -907,7 +909,7 @@
                 </div>
                 
                 <div class="setting show-names">
-                  <p> {{text['show_btn_names']}} </p>
+                  <p> {{text('show_btn_names')}} </p>
                   <label for="show-names"  class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="show-names" name="front.show_names" {% if config['front']['show_names'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -928,7 +930,7 @@
                 </div>
 
                 <div class="setting edit-buttons-color">
-                  <p> {{text['edit_btn_color']}} </p>
+                  <p> {{text('edit_btn_color')}} </p>
                   <label for="edit_buttons_color"  class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="edit_buttons_color" name="front.edit_buttons_color" {% if config['front']['edit_buttons_color'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -950,11 +952,11 @@
               </div>
 
               <div class="setting-category experimental {{dark_theme}}">
-                <h1 class="config-title"> {{text['experimental']}} </h1>
+                <h1 class="config-title"> {{text('experimental')}} </h1>
                 
                 
                 <div class="setting usage-reload-time">
-                  <label for="usage-reload-time"> {{text['usage_btn_reload_time']}} </label>
+                  <label for="usage-reload-time"> {{text('usage_btn_reload_time')}} </label>
                   <input required class="{{dark_theme}}" type="number" min="0" pattern="[0-9]*"
                     oninput="this.value = this.value.replaceAll(/[^0-9]/g, '');"
                     id="usage-reload-time" name="front.computer_usage_reload_time"
@@ -967,18 +969,18 @@
                 </div>
                 
                 <div class="setting gpu_method">
-                  <label for="gpu_method"> {{text['gpu_usage_method']}} </label>
+                  <label for="gpu_method"> {{text('gpu_usage_method')}} </label>
                   <select id="gpu_method" name="settings.gpu_method">
                     <option value="nvidia (pynvml)" {% if config['settings']['gpu_method'].lower() == 'nvidia (pynvml)' %}selected{% endif %}>nvidia (pynvml)</option>
                     <option value="nvidia (GPUtil)" {% if config['settings']['gpu_method'].lower() == 'nvidia (gputil)' %}selected{% endif %}>nvidia (GPUtil)</option>
-                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'amd' %}selected{% endif %}>AMD ({{text['doesnt_work']}})</option>
-                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel ({{text['lmao']}})</option>
-                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}> {{text['none']}} </option>
+                    <option value="AMD" {% if config['settings']['gpu_method'].lower() == 'amd' %}selected{% endif %}>AMD ({{text('doesnt_work')}})</option>
+                    <option value="Intel" {% if config['settings']['gpu_method'].lower() == 'intel' %}selected{% endif %}>Intel ({{text('lmao')}})</option>
+                    <option value="None" {% if config['settings']['gpu_method'].lower() == 'none' %}selected{% endif %}> {{text('none')}} </option>
                   </select>
                 </div>
 
                 <div class="setting optimized-usage-display">
-                  <p> {{text['optimized_usage_display']}} </p>
+                  <p> {{text('optimized_usage_display')}} </p>
                   <label for="optimized_usage_display" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="optimized_usage_display" name="settings.optimized_usage_display" {% if config['settings']['optimized_usage_display'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -986,7 +988,7 @@
                 </div>
 
                 <div class="setting open-settings-in-integrated-browser">
-                  <p> {{text['open_settings_in_integrated_browser']}} </p>
+                  <p> {{text('open_settings_in_integrated_browser')}} </p>
                   <label for="open_settings_in_integrated_browser" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="open_settings_in_integrated_browser" name="settings.open_settings_in_integrated_browser" {% if config['settings']['open_settings_in_integrated_browser'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -1002,7 +1004,7 @@
                 </div> #}
 
                 <div class="setting show-console">
-                  <p> {{text['show_console']}} </p>
+                  <p> {{text('show_console')}} </p>
                   <label for="show_console" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="show_console" name="settings.show_console" {% if config['settings']['show_console'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -1011,9 +1013,9 @@
                 
                 <div class="setting automatic-firewall-bypass">
                   <button type="button" onclick="send_data('/bypass-windows_firewall')" class="button" id="authorize_windows_firewall">
-                    {{text['authorize_windows_firewall']}}
+                    {{text('authorize_windows_firewall')}}
                   </button>
-                  <p> {{text['automatic_firewall_bypass']}} </p>
+                  <p> {{text('automatic_firewall_bypass')}} </p>
                   <label for="automatic_firewall_bypass" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="automatic_firewall_bypass" name="settings.automatic_firewall_bypass" {% if config['settings']['automatic_firewall_bypass'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -1021,7 +1023,7 @@
                 </div>
 
                 <div class="setting fix-stop-soundboard">
-                  <p> {{text['fix_stop_soundboard']}} </p>
+                  <p> {{text('fix_stop_soundboard')}} </p>
                   <label for="fix_stop_soundboard" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="fix_stop_soundboard" name="settings.fix_stop_soundboard" {% if config['settings']['fix_stop_soundboard'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -1029,7 +1031,7 @@
                 </div>
                 
                 <div class="setting dev-mode">
-                  <p> {{text['dev_mode']}} </p>
+                  <p> {{text('dev_mode')}} </p>
                   <label for="dev_mode" class="switch">
                     <input class="{{dark_theme}}" type="checkbox" id="dev_mode" name="settings.dev_mode" {% if config['settings']['dev_mode'] %}checked{% endif %}>
                     <span class="slider round"></span>
@@ -1037,7 +1039,7 @@
                 </div>
               </div>
               
-              <input type="submit" value="{{text['save']}}" class="modal-button save-config {{dark_theme}}">
+              <input type="submit" value="{{text('save')}}" class="modal-button save-config {{dark_theme}}">
             </form>
           </div>
           
@@ -1051,7 +1053,7 @@
       <div class="addbutton-modal-content {{dark_theme}}" id="addbutton-modal-content">
 
         <div class="addbutton-modal-header bold">
-          <h1 class="addbutton-modal"> {{ text['add_a_button'] }} </h1>
+          <h1 class="addbutton-modal"> {{ text('add_a_button') }} </h1>
           <div class="addbutton-modal-close">
             <svg class="addbutton-config-modal {{dark_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -1370,7 +1372,7 @@
         try {
           const response = await fetch('/get_config');
           if (!response.ok) {
-            throw new Error(`{{text["settings_load_error"]}}`);
+            throw new Error(`{{text("settings_load_error")}}`);
           }
           const configData = await response.json();
           console.log(configData); // Log the config data if needed
@@ -1529,7 +1531,7 @@
             if (response.ok) {
               return response.json();
             } else {
-              throw new Error(`{{text["settings_load_error"]}}`);
+              throw new Error(`{{text("settings_load_error")}}`);
             }
           })
           .then(function (configData) {
@@ -1570,14 +1572,14 @@
                     if (response.ok) {
                         return response.json();
                     } else {
-                        throw new Error(`{{text["settings_save_error"]}}`);
+                        throw new Error(`{{text("settings_save_error")}}`);
                     }
                 })
                 .then(function(response) {
                     if (response.success) {
-                        console.log(`{{text["settings_save_success"]}}`);
+                        console.log(`{{text("settings_save_success")}}`);
                     } else {
-                        console.log(`{{text["settings_save_error"]}}`);
+                        console.log(`{{text("settings_save_error")}}`);
                     }
                 })
                 .catch(function(error) {
@@ -1633,7 +1635,7 @@
       
         // Fonction pour afficher la boîte de dialogue de confirmation de suppression
         function showDeleteConfirmation(event) {
-            if (editorMode === 1 && confirm(`{{text["button_delete_confirmation"]}}`)) {
+            if (editorMode === 1 && confirm(`{{text("button_delete_confirmation")}}`)) {
                 ifModif = 1;
                 
                 let closest_form = event.target.closest('form.form');
@@ -1853,7 +1855,7 @@
         editorButton.addEventListener('click', function () {
             editorMode = editorMode === 0 ? 1 : 0;
             toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
+            editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
             console.log('La valeur de editorMode a été modifiée :', editorMode);
             if (editorMode === 1) {
                 fetch('/get_config')
@@ -1862,7 +1864,7 @@
                         if (response.ok) {
                             return response.json();
                         } else {
-                            throw new Error(`{{text["settings_load_error"]}}`);
+                            throw new Error(`{{text("settings_load_error")}}`);
                         }
                     })
                     .then(function (configData) {
@@ -1884,13 +1886,13 @@
               editorMode = 0;
               swapMode = 0;
               showEditorPartially()
-              swapEditorButton.childNodes[1].nodeValue = `[S] {{text["swap_buttons"]}}`
+              swapEditorButton.childNodes[1].nodeValue = `[S] {{text("swap_buttons")}}`
               swapFirstBtn = 0;
               swapSecondBtn = 0;
               swapChanges = []
               console.log(`swapChanges: ${swapChanges}`);
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
+              editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
         });
@@ -1900,7 +1902,7 @@
         exitEditorButton.addEventListener('click', function () {
           editorMode = editorMode === 0 ? 1 : 0;
             toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
+            editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
             console.log('La valeur de editorMode a été modifiée :', editorMode);
             if (editorMode === 1) {
               fetch('/get_config')
@@ -1909,7 +1911,7 @@
                   if (response.ok) {
                     return response.json();
                   } else {
-                    throw new Error(`{{text["settings_load_error"]}}`);
+                    throw new Error(`{{text("settings_load_error")}}`);
                   }
                 })
                 .then(function (configData) {
@@ -1932,7 +1934,7 @@
               swapEditorButtonFunction()
               editorMode = 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
+              editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
         });
@@ -1943,7 +1945,7 @@
           swapMode = 0;
           showEditorPartially()
           swapEditorButtonFunction()
-          swapEditorButton.childNodes[1].nodeValue = `[S] {{text["swap_buttons"]}}`
+          swapEditorButton.childNodes[1].nodeValue = `[S] {{text("swap_buttons")}}`
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           swapChanges = []
@@ -1963,18 +1965,18 @@
                       return response.json();
                   } else {
                       // Le serveur a retourné une erreur
-                      throw new Error(`{{text["settings_save_error"]}}`);
+                      throw new Error(`{{text("settings_save_error")}}`);
                   }
               })
               .then(function(response) {
                   if (response.success) {
                       // Le serveur a enregistré les données avec succès
-                      alert(`{{text["settings_save_success"]}}`);
+                      alert(`{{text("settings_save_success")}}`);
                       location.reload();
                   } else {
                       // Le serveur a retourné une erreur
                       showError('Error :/');
-                      // alert(`{{text["settings_save_error"]}}`);
+                      // alert(`{{text("settings_save_error")}}`);
                   }
               })
               .catch(function(error) {
@@ -1996,7 +1998,7 @@
         function swapEditorButtonFunction(event) {
           swapMode = swapMode === 0 ? 1 : 0;
           const swapEditorButton = document.getElementById('swapEditorButton');
-          swapEditorButton.childNodes[1].nodeValue = swapMode === 0 ? `[S] {{text["swap_buttons"]}}` : `[S] {{text["stop_swap_mode"]}}`;
+          swapEditorButton.childNodes[1].nodeValue = swapMode === 0 ? `[S] {{text("swap_buttons")}}` : `[S] {{text("stop_swap_mode")}}`;
           swapFirstBtn = 0;
           swapSecondBtn = 0;
           console.log('La valeur de swapMode a été modifiée :', swapMode);
@@ -2004,7 +2006,7 @@
           var checkboxDivs = document.querySelectorAll('div.checkbox');
           var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
           if (editorMode === 1 && swapMode === 1) {
-            swapEditorButton.childNodes[1].nodeValue = `[S] {{text["stop_swap_mode"]}}`;
+            swapEditorButton.childNodes[1].nodeValue = `[S] {{text("stop_swap_mode")}}`;
             hideEditorPartially()
             // afficher swapMode-open-folder
             for (var i = 0; i < openFolderDivs.length; i++) {
@@ -2033,7 +2035,7 @@
               }
             }
           } else {
-            swapEditorButton.childNodes[1].nodeValue = `[S] {{text["swap_buttons"]}}`;
+            swapEditorButton.childNodes[1].nodeValue = `[S] {{text("swap_buttons")}}`;
             swapMode = 0;
             showEditorPartially()
 
@@ -2075,7 +2077,7 @@
           console.log(`Last change: ${lastChange}`)
           
           if (lastChange === undefined) {
-            showError(`{{text["no_changes_to_undo"]}}`);
+            showError(`{{text("no_changes_to_undo")}}`);
           } else {
             let [swapFirstBtn, swapSecondBtn] = lastChange.split(" > ");
             const [parentId1, formNumber1] = swapFirstBtn.split(";;;");
@@ -2132,7 +2134,7 @@
           console.log(`Last change: ${lastChange}`)
           
           if (lastChange === undefined) {
-            showError(`{{text["no_changes_to_undo"]}}`);
+            showError(`{{text("no_changes_to_undo")}}`);
           } else {
 
           
@@ -2196,7 +2198,7 @@
             if (event.key.toLowerCase() === 'q') {
               editorMode = editorMode === 0 ? 1 : 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
+              editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
               if (editorMode === 1) {
                 fetch('/get_config')
@@ -2205,7 +2207,7 @@
                     if (response.ok) {
                       return response.json();
                     } else {
-                      throw new Error(`{{text["settings_load_error"]}}`);
+                      throw new Error(`{{text("settings_load_error")}}`);
                     }
                   })
                   .then(function (configData) {
@@ -2227,7 +2229,7 @@
                 swapEditorButtonFunction();
                 editorMode = 0;
                 toggleEditorMode();
-                editorButton.textContent = editorMode === 0 ? `[Q] {{text["enter_editor_mode"]}}` : `[Q] {{text["exit_editor_mode"]}}`;
+                editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
                 console.log('La valeur de editorMode a été modifiée :', editorMode);
               }
             }
@@ -2400,15 +2402,15 @@
                     if (response.ok) {
                       return response.json();
                     } else {
-                      throw new Error(`{{text["settings_save_error"]}}`);
+                      throw new Error(`{{text("settings_save_error")}}`);
                     }
                   })
                   .then(function(response) {
                     if (response.success) {
-                      alert(`{{text["settings_save_success"]}}`);
+                      alert(`{{text("settings_save_success")}}`);
                     } else {
                       showError('Error :/');
-                      alert(`{{text["settings_save_error"]}}`);
+                      alert(`{{text("settings_save_error")}}`);
                     }
                   })
                   .catch(function(error) {

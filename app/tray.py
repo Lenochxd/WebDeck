@@ -12,9 +12,10 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from io import BytesIO
 
-from app.utils.firewall import fix_firewall_permission
-from app.utils.get_local_ip import get_local_ip
-from app.utils.languages import load_lang_file
+from .utils.firewall import fix_firewall_permission
+from .utils.get_local_ip import get_local_ip
+from .utils.languages import text, load_lang_file
+
 
 def reload_config():
     port = 59997
@@ -52,7 +53,6 @@ def reload_config():
     return port, dark_theme, language, open_in_integrated_browser
 
 port, dark_theme, language, open_in_integrated_browser = reload_config()
-text = load_lang_file(language)
 
 icon = None
 window = None
@@ -147,7 +147,7 @@ def show_qrcode():
     global window
     if window is None:
         window = tk.Tk()
-        window.title(text['qr_code'])
+        window.title(text('qr_code'))
         
         image_tk = ImageTk.PhotoImage(image=qr_pil_image)
         
@@ -172,27 +172,26 @@ def show_qrcode():
 
 def generate_menu(language, server_status=1):
     print('NEW STATUS: ', server_status)
-    text = load_lang_file(language)
 
     server_status_text = {
-        0: text['server_loading'],
-        1: text['server_online'],
-        2: text['server_offline']
+        0: text('server_loading'),
+        1: text('server_online'),
+        2: text('server_offline')
     }
 
     return (
-        pystray.MenuItem(text['qr_code'], lambda: show_qrcode(), default=True),
-        pystray.MenuItem(text['options'], pystray.Menu(
-            pystray.MenuItem(text['open_config'], lambda: open_config()),
-            pystray.MenuItem(text['fix_firewall'], lambda: fix_firewall_permission()),
+        pystray.MenuItem(text('qr_code'), lambda: show_qrcode(), default=True),
+        pystray.MenuItem(text('options'), pystray.Menu(
+            pystray.MenuItem(text('open_config'), lambda: open_config()),
+            pystray.MenuItem(text('fix_firewall'), lambda: fix_firewall_permission()),
         )),
         pystray.MenuItem(
-            f"{text['server_status']} {server_status_text.get(server_status, text['server_offline'])}",
+            f"{text('server_status')} {server_status_text.get(server_status, text('server_offline'))}",
             lambda: None
         ),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem(text['report_issue'], lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
-        pystray.MenuItem(text['exit'], lambda: exit_program()),
+        pystray.MenuItem(text('report_issue'), lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
+        pystray.MenuItem(text('exit'), lambda: exit_program()),
     )
 
 def generate_tray_icon():
@@ -225,5 +224,5 @@ def change_server_state(new_state):
 def create_tray_icon():
     global icon
     if icon is None:  # Only create the icon if it doesn't already exist
-        icon = generate_tray_icon()  # Replace with your actual icon creation logic
+        icon = generate_tray_icon()
         icon.run()

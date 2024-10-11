@@ -26,7 +26,12 @@ from app.utils.is_opened import is_opened
 
 
 if not is_opened():
+    import app.utils.languages as languages
     from app.tray import create_tray_icon
+    languages.init(
+        lang_files_directory="webdeck/translations",
+        default_language=settings['language']
+    )
 
     def run_server_thread():
         from app.server import run_server

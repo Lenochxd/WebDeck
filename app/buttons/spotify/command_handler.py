@@ -11,7 +11,7 @@ from .utils import initialize
 spotify_token = initialize()
 
 
-def handle_command(message, text):
+def handle_command(message):
     sp = spotipy.Spotify(auth=spotify_token)
 
     if message.startswith(("/spotify savesong", "/spotify likesong")):
@@ -36,4 +36,4 @@ def handle_command(message, text):
         artist.manage(sp, message)
 
     elif message.startswith(("/spotify volume +", "/spotify volume -", "/spotify volume set")):
-        volume.manage(sp, text, message)
+        volume.manage(sp, message)

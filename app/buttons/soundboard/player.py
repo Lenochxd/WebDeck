@@ -3,14 +3,13 @@ except: pass
 from flask import jsonify
 
 from app.utils.load_config import load_config
-from app.utils.languages import load_lang_file
+from app.utils.languages import text
 
 from .devices import get_device
 from .ffmpeg import silence_path
 
 
 config = load_config()
-text = load_lang_file(config["settings"]["language"])
 cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
 vlc_installed = cable_input_device != "ERROR_NO_VLC"
 
@@ -55,12 +54,12 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
     
     if not vlc_installed:
         print("VLC is not installed!")
-        return jsonify({"success": False, "message": text["vlc_not_installed_error"]})
+        return jsonify({"success": False, "message": text("vlc_not_installed_error")})
     else:
         if config["settings"]["fix_stop_soundboard"]:
             file_path = silence_path(file_path)
             if file_path == False:
-                return jsonify({"success": False, "message": text["ffmpeg_not_installed_error"]})
+                return jsonify({"success": False, "message": text("ffmpeg_not_installed_error")})
             
         print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
         print(len(player_vbcable))
@@ -116,7 +115,7 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
 def stopsound():
     if not vlc_installed:
         print("VLC is not installed!")
-        return jsonify({"success": False, "message": text["vlc_not_installed_error"]})
+        return jsonify({"success": False, "message": text("vlc_not_installed_error")})
     else:
         global player_vbcable, player_local
         

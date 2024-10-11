@@ -7,10 +7,11 @@ import subprocess
 import requests
 
 from app.utils.show_error import show_error
+from app.utils.languages import text
 from .updater import compare_versions
 
 
-def check_for_updates(text):
+def check_for_updates():
     if not getattr(sys, "frozen", False):
         return
     
@@ -42,16 +43,16 @@ def check_for_updates(text):
             sys.exit()
 
     except Exception as e:
-        show_error(f"{text['auto_update_error']} \n\n{text['error']}: {e}", title="WebDeck Updater Error")
+        show_error(f"{text('auto_update_error')} \n\n{text('error')}: {e}", title="WebDeck Updater Error")
 
 
-def check_for_updates_loop(text):
+def check_for_updates_loop():
     while True:
         
         with open(".config/config.json", encoding="utf-8") as f:
             config = json.load(f)
             
         if config["settings"].get("auto-updates", True):
-            check_for_updates(text)
+            check_for_updates()
 
         time.sleep(3600)

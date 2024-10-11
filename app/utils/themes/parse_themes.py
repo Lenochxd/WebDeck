@@ -1,6 +1,7 @@
 import os
+from app.utils.languages import text
 
-def parse_css_file(text, css_file_path):
+def parse_css_file(css_file_path):
     css_data = {}
     with open(css_file_path, 'r') as file:
         for line in file:
@@ -20,25 +21,25 @@ def parse_css_file(text, css_file_path):
             "page-preview"
         ]:
             if info not in css_data.keys():
-                css_data[info] = text["not_specified"]
+                css_data[info] = text("not_specified")
         
-        if css_data["theme-icon"] == text["not_specified"]:
+        if css_data["theme-icon"] == text("not_specified"):
             css_data["theme-icon"] = css_data.get("theme-icon") or css_data.get("theme-logo", "")
-        if css_data["theme-name"] == text["not_specified"]:
+        if css_data["theme-name"] == text("not_specified"):
             css_data["theme-name"] = os.path.basename(css_file_path)
-        if css_data["theme-description"] == text["not_specified"]:
+        if css_data["theme-description"] == text("not_specified"):
             css_data["theme-description"] = css_file_path
-        if css_data["page-preview"] == text["not_specified"]:
+        if css_data["page-preview"] == text("not_specified"):
             css_data["page-preview"] = ['all']
         
     return css_data
 
-def parse_themes(text):
+def parse_themes():
     parsed_themes = {}
     for file_name in os.listdir(".config/themes/"):
         if file_name.endswith(".css"):
-            parsed_themes[file_name] = parse_css_file(text, f".config/themes/{file_name}")
+            parsed_themes[file_name] = parse_css_file(f".config/themes/{file_name}")
     
-    parsed_themes["static/css/style.css"] = parse_css_file(text, "static/css/style.css")
+    parsed_themes["static/css/style.css"] = parse_css_file("static/css/style.css")
             
     return parsed_themes

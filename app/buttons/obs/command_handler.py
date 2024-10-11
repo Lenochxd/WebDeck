@@ -3,6 +3,7 @@ from obswebsocket import obsws
 from flask import jsonify
 
 from app.utils.global_variables import get_global_variables
+from app.utils.languages import text
 
 import app.buttons.obs.scenes as scene
 import app.buttons.obs.recording as recording
@@ -15,7 +16,7 @@ import app.buttons.obs.virtualcam as virtualcam
 
 
 
-def handle_command(message, text):
+def handle_command(message):
     try:
         obs_host, obs_port, obs_password = get_global_variables(("obs_host", "obs_port", "obs_password"))
         
@@ -23,54 +24,54 @@ def handle_command(message, text):
         obs.connect()
     except Exception as e:
         if "10061" in str(e):
-            e = text["obs_error_10061"]
+            e = text("obs_error_10061")
         elif "password may be inco" in str(e):
-            e = text["obs_error_incorrect_password"]
+            e = text("obs_error_incorrect_password")
 
         return jsonify({
             "success": False,
-            "message": f"{text['obs_failed_connection_error'].replace('.','')}: {e}",
+            "message": f"{text('obs_failed_connection_error').replace('.','')}: {e}",
         })
 
 
     if message.startswith("/obs_toggle_rec"):
-        recording.toggle(obs, text)
+        recording.toggle(obs)
 
     elif message.startswith("/obs_start_rec"):
-        recording.start(obs, text)
+        recording.start(obs)
 
     elif message.startswith("/obs_stop_rec"):
-        recording.stop(obs, text)
+        recording.stop(obs)
 
 
     elif message.startswith("/obs_toggle_rec_pause"):
-        recording.pause_toggle(obs, text)
+        recording.pause_toggle(obs)
 
     elif message.startswith("/obs_pause_rec"):
-        recording.pause(obs, text)
+        recording.pause(obs)
         
     elif message.startswith("/obs_resume_rec"):
-        recording.resume(obs, text)
+        recording.resume(obs)
 
 
     elif message.startswith("/obs_toggle_stream"):
-        stream.toggle(obs, text)
+        stream.toggle(obs)
 
     elif message.startswith("/obs_start_stream"):
-        stream.start(obs, text)
+        stream.start(obs)
 
     elif message.startswith("/obs_stop_stream"):
-        stream.stop(obs, text)
+        stream.stop(obs)
 
 
     elif message.startswith("/obs_toggle_virtualcam"):
-        virtualcam.toggle(obs, text)
+        virtualcam.toggle(obs)
 
     elif message.startswith("/obs_start_virtualcam"):
-        virtualcam.start(obs, text)
+        virtualcam.start(obs)
 
     elif message.startswith("/obs_stop_virtualcam"):
-        virtualcam.stop(obs, text)
+        virtualcam.stop(obs)
 
 
     elif message.startswith("/obs_scene"):
@@ -83,7 +84,7 @@ def handle_command(message, text):
         result = obs.call(obsrequests.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
         if "failed" in str(result):
             print("ERROR:      ", result)
-            return jsonify({"success": False, "message": f"{text['failed']} :/"})
+            return jsonify({"success": False, "message": f"{text('failed')} :/"})
         print("Hotkey triggered successfully.")
 
 

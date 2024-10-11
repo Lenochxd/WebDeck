@@ -20,9 +20,8 @@ import easygui
 from .on_start import on_start, check_config_update
 from .utils.global_variables import set_global_variable, get_global_variable
 
-config, text, commands, local_ip = on_start()
+config, commands, local_ip = on_start()
 folders_to_create = []
-set_global_variable("text", text)
 set_global_variable("config", config)
 
 from app.tray import change_tray_language, change_server_state
@@ -33,14 +32,12 @@ from .utils.settings.audio_devices import get_audio_devices
 from .utils.settings.gridsize import update_gridsize
 from .utils.settings.create_folders import create_folders
 from .utils.firewall import fix_firewall_permission, check_firewall_permission
-from .utils.languages import load_lang_file
+from .utils.languages import text, set_default_language, get_languages_info, get_language
 from .utils.merge_dicts import merge_dicts
 from .buttons.usage import get_usage
 from .buttons.obs import reload_obs
-
 from .buttons import soundboard
 from .buttons import handle_command as command
-
 
 
 change_server_state(0)  # Tray icon: server loading
@@ -131,9 +128,6 @@ def home():
         commands, all_func = load_plugins(commands)
         set_global_variable("all_func", all_func)
         
-    text = load_lang_file(config['settings']['language'])
-    set_global_variable("text", text)
-        
     with open("webdeck/version.json", encoding="utf-8") as f:
         versions = json.load(f)
     is_exe = bool(getattr(sys, "frozen", False))
@@ -165,20 +159,14 @@ def home():
         for file_name in os.listdir(".config/themes/")
         if file_name.endswith(".css")
     ]
-    langs = [
-        file_name.replace(".lang", "")
-        for file_name in os.listdir("webdeck/translations/")
-        if file_name.endswith(".lang")
-    ]
 
     return render_template(
         "index.jinja",
-        config=config, themes=themes, parsed_themes=parse_themes(text),
+        config=config, themes=themes, parsed_themes=parse_themes(),
         commands=commands, versions=versions, random_bg=random_bg, usage_example=get_usage(True),
-        langs=langs, text=text,
-        svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait_rotate'],
+        langs=get_languages_info(), svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait_rotate'],
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
-        isfile=os.path.isfile
+        isfile=os.path.isfile, text=text, get_language=get_language,
     )
     
 
@@ -204,7 +192,7 @@ def saveconfig():
     
     obs_reload = not config["settings"]["obs"] == new_config["settings"]["obs"]
     
-    tray_reload = not config["settings"]["language"] == new_config["settings"]["language"]
+    language_changed = not config["settings"]["language"] == new_config["settings"]["language"]
 
     soundboard_start = False
     soundboard_stop = False
@@ -271,8 +259,9 @@ def saveconfig():
     if obs_reload:
         obs_host, obs_port, obs_password, obs = reload_obs()
 
-    if tray_reload:
+    if language_changed:
         change_tray_language(new_config["settings"]["language"])
+        set_default_language(new_config["settings"]["language"])
 
     return jsonify({"success": True})
 
@@ -405,7 +394,7 @@ def upload_file():
     print("request:", request)
     print("request.files:", request.files)
     if "file" not in request.files:
-        return jsonify({"success": False, "message": text["no_files_found_error"]})
+        return jsonify({"success": False, "message": text("no_files_found_error")})
 
     uploaded_file = request.files["file"]
 
@@ -421,7 +410,7 @@ def upload_file():
         except Exception as e:
             print(e)
 
-    return jsonify({"success": True, "message": text["downloaded_successfully"]})
+    return jsonify({"success": True, "message": text("downloaded_successfully")})
 
 
 @app.route("/create_folder", methods=["POST"])

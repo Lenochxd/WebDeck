@@ -1,4 +1,6 @@
-def manage(sp, message, text):
+from app.utils.languages import text
+
+def manage(sp, message):
     # Get the current playback information
     playback_info = sp.current_playback()
 
@@ -27,14 +29,14 @@ def manage(sp, message, text):
         try:
             target_volume = int(message.replace("/spotify volume set", ""))
         except Exception as e:
-            print(f"{text['spotify_apply_volume_error']}: {e}")
+            print(f"{text('spotify_apply_volume_error')}: {e}")
             return
 
     target_volume = max(0, min(100, target_volume))
     try:
         sp.volume(target_volume, device_id=device_id)
     except Exception as e:
-        print(f"{text['spotify_volume_prenium_error']}: {e}")
+        print(f"{text('spotify_volume_prenium_error')}: {e}")
         return
 
     # Get the updated volume

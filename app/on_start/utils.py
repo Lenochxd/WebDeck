@@ -346,12 +346,9 @@ def on_start():
     # Load config & get gpu method
     config = get_gpu_method()
     
-    # Load text
-    text = load_lang_file(config["settings"]["language"])
-    
     # Checks for updates
     if config["settings"].get("auto_updates", True) == True:
-        check_for_updates(text)
+        check_for_updates()
     
     # Load commands
     with open("webdeck/commands.json", encoding="utf-8") as f:
@@ -375,4 +372,4 @@ def on_start():
     with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
     
-    return config, text, commands, local_ip
+    return config, commands, local_ip
