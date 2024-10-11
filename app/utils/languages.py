@@ -74,8 +74,10 @@ def get_languages_info(lang_files=lang_files) -> list:
         languages_info.append({
             'code': lang,
             'code_short': lang_data['lang_code'],
-            'native_name': lang_data['lang_name'],
-            'credits': lang_data['credits'],
+            'native_name': lang_data['native_name'],
+            'english_name': lang_data['english_name'],
+            'author_name': lang_data['author_name'],
+            'author_github_username': lang_data['author_github_username'],
         })
     
     return languages_info

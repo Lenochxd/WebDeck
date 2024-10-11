@@ -2,9 +2,11 @@
 # https://github.com/Lenochxd/WebDeck/pulls
 # ou alors dites nous sur discord: https://discord.gg/tUPsYHAGfm
 
-lang_name=French
+native_name=Français
+english_name=French
 lang_code=fr
-credits=Lenoch
+author_name=Lenoch
+author_github_username=Lenochxd
 
 // -- Tray icon --
 

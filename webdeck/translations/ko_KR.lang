@@ -2,9 +2,11 @@
 # https://github.com/Lenochxd/WebDeck/pulls
 # 디스코드에서 알려주셔도 좋습니다 : https://discord.gg/tUPsYHAGfm
 
-lang_name=한국어
+native_name=한국어
+english_name=Korean
 lang_code=ko
-credits=KiiMyu(KiMyu)
+author_name=KiiMyu(KiMyu)
+author_github_username=KiiMyu
 
 // -- Tray icon --
 
