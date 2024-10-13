@@ -4,17 +4,13 @@ import json
 import os.path
 
 def load_config():
-    for path in ['.config/config.json', 'config.json']:
+    for path in ['.config/config.json', 'config.json', 'webdeck/config_default.json']:
         if os.path.exists(path):
             with open(path, encoding='utf-8') as f:
                 return json.load(f).get('settings', {})
     return {}
 
-try:
-    settings = load_config()
-    settings.setdefault('app_admin', True)
-except Exception:
-    settings = {'app_admin': True}
+settings = load_config()
 
 if settings['app_admin']:
     if not ctypes.windll.shell32.IsUserAnAdmin():
