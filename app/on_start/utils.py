@@ -1,5 +1,7 @@
 import os
 import sys
+import winreg
+import subprocess
 import shutil
 import json
 import urllib.request
@@ -9,7 +11,6 @@ from win32com.client import Dispatch
 
 from app.updater import check_files, check_for_updates
 from app.utils.global_variables import set_global_variable
-from app.utils.languages import load_lang_file
 from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
 
@@ -278,6 +279,27 @@ def get_gpu_method():
         
     return config
 
+def fix_vlc_cache():
+    # https://stackoverflow.com/a/71760613/17100464
+    if os.name != 'nt':
+        return
+    
+    try:
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\VideoLAN\VLC")
+        vlc_path, _ = winreg.QueryValueEx(key, "InstallDir")
+        winreg.CloseKey(key)
+    except FileNotFoundError:
+        vlc_path = None
+
+    if vlc_path:
+        vlc_cache_gen = os.path.join(vlc_path, "vlc-cache-gen.exe")
+        vlc_plugins = os.path.join(vlc_path, "plugins")
+        command = f'"{vlc_cache_gen}" "{vlc_plugins}"'
+        try:
+            subprocess.run(command, shell=True, check=True)
+        except Exception as e:
+            print(f"Failed to execute VLC cache generation command: {e}")
+
 
 
 def on_start():
@@ -364,6 +386,9 @@ def on_start():
         with open(".config/config.json", "w", encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
             
+    # Fix VLC cache error
+    fix_vlc_cache()
+    
     # Colors json
     sort_colorsjson()
     
