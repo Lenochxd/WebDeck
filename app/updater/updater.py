@@ -89,32 +89,31 @@ def close_process(process_name):
         for proc in psutil.process_iter(["pid", "name"]):
             if process_name.lower() in proc.info["name"].lower():
                 try:
-                    pid = proc.info["pid"]
-                    os.kill(pid, psutil.signal.SIGTERM)
-                except (
-                    psutil.NoSuchProcess,
-                    psutil.AccessDenied,
-                    psutil.ZombieProcess,
-                ):
+                    proc.terminate()
+                    proc.wait(timeout=3)
+                    print(f"Terminated process {proc.info['name']} with PID {proc.info['pid']}")
+                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                     pass
-
-    except:
+    except Exception as e:
+        print(f"Error terminating process with psutil: {e}")
         try:
             wmi = win32com.client.GetObject("winmgmts:")
             processes = wmi.InstancesOf("Win32_Process")
             for process in processes:
-                if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["webdeck"]:
+                if process.Properties_('Name').Value.lower() == process_name.lower():
                     print(f"Stopping process: {process.Properties_('Name').Value}")
                     result = process.Terminate()
                     if result == 0:
                         print("Process terminated successfully.")
                     else:
                         print("Failed to terminate process.")
-        except:
+        except Exception as e:
+            print(f"Error terminating process with WMI: {e}")
             try:
-                subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
-            except:
-                pass
+                subprocess.run(f"taskkill /f /IM {process_name}", shell=True, check=True)
+                print(f"Process {process_name} terminated using taskkill.")
+            except subprocess.CalledProcessError as e:
+                print(f"Error terminating process with taskkill: {e}")
 
 
 def compare_versions(version1, version2):
