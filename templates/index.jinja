@@ -186,9 +186,7 @@
       
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% for button_config in config["front"]["buttons"][folder_id] %}
-          {% if 'background-color' in button_config.keys() %}
-            
-            {{ mdebug(button_config) }}
+          {% if 'background_color' in button_config.keys() %}
             
             @keyframes animation-{{ button_config['background_color'].replace('#','') }} {
               100% {background-color: #{{ button_config['background_color'].replace('#','') }};}
@@ -266,7 +264,7 @@
                 <div class="checkbox" style="display: none;"></div>
                 
                 {% set class = "wd_button" %}
-                {% if 'background-color' in config["front"]["buttons"][folder_id][button_id].keys() %}
+                {% if 'background_color' in config["front"]["buttons"][folder_id][button_id].keys() %}
                   {% set class = class + ' button-'+button_config['background_color'].replace('#','') %}
                 {% endif %}
 
