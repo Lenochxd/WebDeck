@@ -7,14 +7,14 @@ def toggle(obs):
     result = obs.call(obsrequests.ToggleVirtualCam())
     print("Virtual cam toggled successfully.")
     if "failed" in str(result):
-        return jsonify({"success": False, "message": f"{text('failed')} :/"})
+        raise RuntimeError(f"{text('failed')} :/")
 
 def start(obs):
     recording_status = obs.call(obsrequests.GetVirtualCamStatus())
     print("obs recording_status: ", recording_status)
     if recording_status.getOutputActive():
         print("Virtual cam is already started.")
-        return jsonify({"success": False, "message": text("obs_already_vcam")})
+        raise RuntimeError(f"{text('obs_already_vcam')} :/")
     else:
         obs.call(obsrequests.StartVirtualCam())
         print("Virtual cam started successfully.")
@@ -26,4 +26,4 @@ def stop(obs):
         print("Virtual cam stopped successfully.")
     else:
         print("Virtual cam is already stopped.")
-        return jsonify({"success": False, "message": text("obs_no_vcam")})
+        raise RuntimeError(f"{text('obs_no_vcam')} :/")

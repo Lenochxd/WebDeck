@@ -28,10 +28,7 @@ def handle_command(message):
         elif "password may be inco" in str(e):
             e = text("obs_error_incorrect_password")
 
-        return jsonify({
-            "success": False,
-            "message": f"{text('obs_failed_connection_error').replace('.','')}: {e}",
-        })
+        raise ConnectionError(f"{text('obs_failed_connection_error').replace('.','')}: {e}")
 
 
     if message.startswith("/obs_toggle_rec"):
@@ -84,7 +81,7 @@ def handle_command(message):
         result = obs.call(obs.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
         if "failed" in str(result):
             print("ERROR:      ", result)
-            return jsonify({"success": False, "message": f"{text('failed')} :/"})
+            raise RuntimeError(f"{text('failed')} :/")
         print("Hotkey triggered successfully.")
 
 

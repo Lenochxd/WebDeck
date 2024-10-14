@@ -18,7 +18,7 @@ def handle_command(message):
     if not spotify_token:
         spotify_token = initialize()
         if not spotify_token:
-            return jsonify({"success": False, "message": "Spotify token is not initialized."})
+            raise Exception("Spotify token is not initialized.")
     
     sp = spotipy.Spotify(auth=spotify_token)
 
