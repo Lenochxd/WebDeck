@@ -25,6 +25,8 @@ def handle_command(message):
         remove_hex_sharp = None
 
     print("------------------------------------------")
+    print(color)
+    print("------------------------------------------")
     print(target_language)
     print(selectedtypes)
     print(typestocopy)
