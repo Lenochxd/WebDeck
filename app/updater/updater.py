@@ -49,9 +49,9 @@ def check_files(versions_json_path, temp_json_path):
                     try:
                         os.makedirs(os.path.dirname(destination), exist_ok=True)
                         shutil.move(source, destination)
+                        print(f'moved {source} -> {destination}')
                     except FileNotFoundError:
                         pass
-                    print(f'moved {source} -> {destination}')
 
     with open(temp_json_path, "w", encoding="utf-8") as f:
         json.dump(temp_json, f, ensure_ascii=False, indent=4)
