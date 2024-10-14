@@ -254,10 +254,10 @@ def handle_command(message=None):
             audio.change_volume(message)
             
         elif message.startswith("/spotify"):
-            spotify.handle_command(message)
+            return spotify.handle_command(message)
             
         elif message.startswith("/obs"):
-            obs.handle_command(message)
+            return obs.handle_command(message)
         
         # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copy_type:raw|list displaytype:raw|list remove_hex_sharp:false
         elif message.startswith("/colorpicker"):

@@ -462,12 +462,31 @@ def send(data):
 
 @socketio.on("message_from_socket")
 def send_data_socketio(message):
-    return command(message=message)
-
+    try:
+        result = command(message=message)
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)})
+    
+    if result is False:
+        socketio.emit("json_data", {"success": False})
+    elif not isinstance(result, dict):
+        socketio.emit("json_data", {"success": True})
+    else:
+        socketio.emit("json_data", result)
 
 @app.route("/send-data", methods=["POST"])
 def send_data_route():
-    return command(message=request.get_json()["message"])
+    try:
+        result = command(message=request.get_json()["message"])
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)})
+    
+    if result is False:
+        return jsonify({"success": False})
+    elif not isinstance(result, dict):
+        return jsonify({"success": True})
+    
+    return jsonify(result)
 
 
 if (
