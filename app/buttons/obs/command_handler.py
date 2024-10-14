@@ -1,7 +1,5 @@
 from obswebsocket import obsws
 
-from flask import jsonify
-
 from app.utils.global_variables import get_global_variables
 from app.utils.languages import text
 
