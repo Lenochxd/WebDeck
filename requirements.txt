@@ -28,4 +28,5 @@ cx_Freeze
 pathspec
 python-vlc
 obs-websocket-py
+tqdm
 pydub

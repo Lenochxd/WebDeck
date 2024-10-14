@@ -1,4 +1,3 @@
-import ctypes
 import sys
 import os
 import shutil
@@ -9,6 +8,7 @@ import win32com
 import subprocess
 import ctypes
 import zipfile
+from tqdm import tqdm
 from app.utils.show_error import show_error
 
 def check_files(versions_json_path, temp_json_path):
@@ -61,15 +61,27 @@ def move_folder_content(source, destination):
     if not os.path.exists(destination):
         os.makedirs(destination)
 
-    for element in os.listdir(source):
-        source_path = os.path.join(source, element)
-        destination_path = os.path.join(destination, element)
+    elements = []
+    for root, dirs, files in os.walk(source):
+        for name in files:
+            elements.append(os.path.join(root, name))
+        for name in dirs:
+            elements.append(os.path.join(root, name))
 
-        if os.path.isfile(source_path):
-            shutil.copy2(source_path, destination_path)
+    total_elements = len(elements)
+    with tqdm(total=total_elements, desc="Moving files") as pbar:
+        for element in elements:
+            source_path = element
+            destination_path = os.path.join(destination, os.path.relpath(element, source))
 
-        elif os.path.isdir(source_path):
-            move_folder_content(source_path, destination_path)
+            if os.path.isfile(source_path):
+                os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+                shutil.copy2(source_path, destination_path)
+
+            elif os.path.isdir(source_path):
+                os.makedirs(destination_path, exist_ok=True)
+            
+            pbar.update(1)
 
 
 def close_process(process_name):
@@ -156,23 +168,24 @@ def check_updates(current_version):
                 download_and_extract(file_url["browser_download_url"])
                 break
 
-        # Remove the WebDeck directory
-        print("Removing WebDeck directory")
-        update_dir_path = os.path.join(update_dir, "WebDeck")
-        shutil.rmtree(update_dir_path, ignore_errors=True)
+        # Removing update files
+        files_to_remove = [
+            os.path.join(update_dir, "WebDeck"),
+            os.path.join(update_dir, "WD-update"),
+            os.path.join(update_dir, "WD-update.zip")
+        ]
 
-        # Remove the WD-update directory
-        print("Removing WD-update directory")
-        update_dir_path = os.path.join(update_dir, "wd-update")
-        shutil.rmtree(update_dir_path, ignore_errors=True)
-
-        # Delete the WD-update.zip file
-        print("Removing wd-update.zip")
-        zip_file_path = os.path.join(update_dir, "wd-update.zip")
-        os.remove(zip_file_path)
+        with tqdm(total=len(files_to_remove), desc="Removing update files") as pbar:
+            for file_path in files_to_remove:
+                if os.path.exists(file_path):
+                    if os.path.isdir(file_path):
+                        shutil.rmtree(file_path, ignore_errors=True)
+                    else:
+                        os.remove(file_path)
+                pbar.update(1)
 
         # Launch WebDeck.exe from the wd_dir (root) directory
-        print("Restarting WebDeck.exe")
+        print("\nRestarting WebDeck.exe")
         os.chdir(wd_dir)
         os.startfile("WebDeck.exe")
         
@@ -183,12 +196,24 @@ def download_and_extract(download_url):
     if response.status_code != 200:
         show_error("Failed to download update ZIP file.", title="WebDeck Updater Error")
     else:
+        total_size = int(response.headers.get('content-length', 0))
+        block_size = 8192
+        print()
+        t = tqdm(total=total_size, unit='iB', unit_scale=True, desc="Downloading")
+
         with open("WD-update.zip", "wb") as file:
-            for chunk in response.iter_content(chunk_size=8192):
+            for chunk in response.iter_content(chunk_size=block_size):
+                t.update(len(chunk))
                 file.write(chunk)
+        t.close()
+
+        if total_size != 0 and t.n != total_size:
+            show_error("Failed to download the complete update ZIP file.", title="WebDeck Updater Error")
+            return
 
         with zipfile.ZipFile("WD-update.zip", "r") as zip_ref:
-            zip_ref.extractall("WD-update")
+            for file in tqdm(zip_ref.namelist(), desc="Extracting"):
+                zip_ref.extract(file, "WD-update")
 
         source = os.path.join(update_dir, "WD-update/WebDeck")
         destination = wd_dir
@@ -199,10 +224,11 @@ def download_and_extract(download_url):
 # TESTING
 # def download_and_extract(download_url):
 #     shutil.copyfile("E:/Users/81len/Downloads/WD-fake-update.zip", "WD-update.zip")
-#     with zipfile.ZipFile('WD-update.zip', 'r') as zip_ref:
-#         zip_ref.extractall(wd_dir)
 #
-#     source = os.path.join(wd_dir, "WebDeck")
+#     with zipfile.ZipFile("WD-update.zip", "r") as zip_ref:
+#         zip_ref.extractall("WD-update")
+#
+#     source = os.path.join(update_dir, "WD-update/WebDeck")
 #     destination = wd_dir
 #
 #     move_folder_content(source, destination)
