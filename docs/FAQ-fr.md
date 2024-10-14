@@ -115,7 +115,7 @@ N'oubliez pas de garder votre "Client ID" et votre "Client Secret" en sécurité
 La réinitialisation des paramètres est un processus simple. Suivez ces étapes :
 
 1. Accédez aux fichiers de l'application sur votre système.
-2. Localisez le fichier nommé `config.json`.
+2. Localisez le fichier à l'emplacement `.config/config.json`.
 3. Supprimez ce fichier ou renommez-le.
 4. Redémarrez l'application.
 

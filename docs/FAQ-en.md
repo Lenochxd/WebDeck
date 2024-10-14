@@ -120,7 +120,7 @@ Remember to keep your "Client ID" and "Client Secret" secure, as they are requir
 Resetting the settings is a simple process. Follow these steps:
 
 1. Access the application files on your system.
-2. Locate the file named `config.json`.
+2. Locate the config file at `.config/config.json`.
 3. Delete this file or rename it.
 4. Restart the application.
 
