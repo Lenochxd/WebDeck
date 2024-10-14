@@ -142,7 +142,9 @@ def check_updates(current_version):
     if latest_release is not None and "tag_name" in latest_release:
         latest_version = latest_release["tag_name"].replace("v", "")
 
-    if compare_versions(latest_version, current_version) > 0:
+    if not compare_versions(latest_version, current_version) > 0:
+        print("No updates available.")
+    else:
         print(f"New version available: {latest_version}")
 
         close_process("WebDeck.exe")
