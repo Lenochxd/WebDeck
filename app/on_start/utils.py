@@ -363,7 +363,7 @@ def on_start():
         os.makedirs(".config/plugins")
         
     # Update new files
-    check_files("webdeck/version.json", "temp.json")
+    check_files()
     
     # Load config & get gpu method
     config = get_gpu_method()
