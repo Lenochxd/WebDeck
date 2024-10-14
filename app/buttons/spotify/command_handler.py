@@ -1,5 +1,6 @@
 import spotipy
 import json
+from flask import jsonify
 
 import app.buttons.spotify.albums as album
 import app.buttons.spotify.songs as song
@@ -12,6 +13,13 @@ spotify_token = initialize()
 
 
 def handle_command(message):
+    global spotify_token
+
+    if not spotify_token:
+        spotify_token = initialize()
+        if not spotify_token:
+            return jsonify({"success": False, "message": "Spotify token is not initialized."})
+    
     sp = spotipy.Spotify(auth=spotify_token)
 
     if message.startswith(("/spotify savesong", "/spotify likesong")):

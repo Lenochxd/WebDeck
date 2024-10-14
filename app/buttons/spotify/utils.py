@@ -2,11 +2,16 @@ import spotipy.util as util
 import json
 
 
-with open('.config/config.json', encoding= "utf-8") as f:
-    config = json.load(f)
-
-
 def initialize():
+    # Reload config before assuming it's not set
+    with open('.config/config.json', encoding= "utf-8") as f:
+        config = json.load(f)
+
+    # Check if client id and client secret are set in the config
+    if not config["settings"]["spotify_api"].get("client_id") or not config["settings"]["spotify_api"].get("client_secret"):
+        print("ERROR: Spotify client ID and/or client secret not set in the config.")
+        return None
+
     # Set up the Spotify API client
     try:
         spotify_redirect_uri = "http://localhost:8888/callback"
