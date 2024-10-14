@@ -67,6 +67,7 @@ obs_no_vcam=Virtuelle Kamera ist bereits gestoppt.
 obs_no_recording_can_be_paused=Es kann keine Aufnahme angehalten werden.
 obs_no_recording_is_paused=Keine Aufzeichnung ist pausiert.
 
+spotify_not_initialized=Spotify ist nicht initialisiert. Bitte überprüfen Sie, ob die 'Client ID' und das 'Client Secret' korrekt eingestellt sind.
 spotify_apply_volume_error=Fehler, Volumen kann nicht angewendet werden
 spotify_volume_prenium_error=Fehler, Volumen kann nicht angewendet werden, da Spotify Prenium erforderlich ist
 

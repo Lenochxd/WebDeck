@@ -67,6 +67,7 @@ obs_no_vcam=가상 카메라가 이미 시작되지 않았습니다.
 obs_no_recording_can_be_paused=녹화를 일시중지 할 수 없습니다.
 obs_no_recording_is_paused=중단할 녹화가 없습니다.
 
+spotify_not_initialized=Spotify가 초기화되지 않았습니다. Client ID 및 Client Secret 설정이 올바르게 정의되었는지 확인하세요.
 spotify_apply_volume_error=오류, 볼륨을 적용할 수 없습니다.
 spotify_volume_prenium_error=오류, Spotify Prenium 이 필요하여 볼륨을 설정할 수 없습니다.
 

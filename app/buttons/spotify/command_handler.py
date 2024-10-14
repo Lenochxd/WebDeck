@@ -1,15 +1,14 @@
 import spotipy
-import json
-from flask import jsonify
+from app.utils.languages import text
 
 import app.buttons.spotify.albums as album
 import app.buttons.spotify.songs as song
 import app.buttons.spotify.playlists as playlist
 import app.buttons.spotify.artists as artist
 import app.buttons.spotify.volume as volume
-
 from .utils import initialize
-spotify_token = initialize()
+
+spotify_token = ''
 
 
 def handle_command(message):
@@ -18,7 +17,7 @@ def handle_command(message):
     if not spotify_token:
         spotify_token = initialize()
         if not spotify_token:
-            raise Exception("Spotify token is not initialized.")
+            raise RuntimeError(text("spotify_not_initialized"))
     
     sp = spotipy.Spotify(auth=spotify_token)
 
