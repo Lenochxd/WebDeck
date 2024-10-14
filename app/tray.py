@@ -195,7 +195,7 @@ def generate_menu(language, server_status=1):
         )),
         pystray.MenuItem(
             f"{text('server_status')} {server_status_text.get(server_status, text('server_offline'))}",
-            lambda: None
+            lambda: open_config()
         ),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem(text('report_issue'), lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
