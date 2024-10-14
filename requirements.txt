@@ -13,7 +13,6 @@ webcolors==1.12
 deep_translator
 mss
 pyperclip
-colormath==3.0.0
 cputil
 gputil
 pynvml
