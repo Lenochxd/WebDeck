@@ -8,7 +8,7 @@ import requests
 
 from app.utils.show_error import show_error
 from app.utils.languages import text
-from .updater import compare_versions
+from .updater import compare_versions, prepare_update_directory
 
 
 def check_for_updates():
@@ -30,16 +30,9 @@ def check_for_updates():
 
         if compare_versions(latest_version, current_version) > 0:
             print(f"New version available: {latest_version}")
-
-            os.makedirs("update")
-            shutil.copyfile("python3.dll", "update/python3.dll")
-            shutil.copyfile("python311.dll", "update/python311.dll")
-            shutil.copyfile("update.exe", "update/update.exe")
-            shutil.copytree("lib", "update/lib")
-
+            prepare_update_directory()
             os.chdir("update")
             subprocess.Popen(["update/update.exe"])
-
             sys.exit()
 
     except Exception as e:

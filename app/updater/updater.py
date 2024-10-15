@@ -156,11 +156,6 @@ def compare_versions(version1, version2):
     return 0
 
 
-# TESTING
-# def compare_versions(version1, version2):
-#     return 1
-
-
 def check_updates(current_version):
     url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
     response = requests.get(url)
@@ -254,6 +249,13 @@ def download_and_extract(download_url):
 #
 #     move_folder_content(source, destination)
 
+def prepare_update_directory():
+    os.makedirs("update")
+    shutil.copyfile("python3.dll", "update/python3.dll")
+    shutil.copyfile("python311.dll", "update/python311.dll")
+    shutil.copyfile("update.exe", "update/update.exe")
+    shutil.copytree("lib", "update/lib")
+
 
 if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
     print("Starting updater...")
@@ -266,6 +268,9 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
         sys.exit(1)
     
     if not os.getcwd().endswith("update"):
+        prepare_update_directory()
+        os.chdir("update")
+        subprocess.Popen(["update/update.exe"])
         sys.exit()
     
 
