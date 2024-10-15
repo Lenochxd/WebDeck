@@ -2,6 +2,8 @@ import ctypes
 import sys
 import json
 import os.path
+import time
+import threading
 
 def load_config():
     for path in ['.config/config.json', 'config.json', 'webdeck/config_default.json']:
@@ -17,22 +19,31 @@ if settings['app_admin']:
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit()
 
-import threading
 from app.utils.is_opened import is_opened
+from app.utils.global_variables import set_global_variable
+import app.utils.languages as languages
+
+
+def run_server_thread():
+    from app.server import run_server
+    run_server()
+
+def restart_server_thread():
+    from app.server import stop_server
+    stop_server()
+    time.sleep(1)
+    threading.Thread(target=run_server_thread, daemon=True).start()
+
+def initialize_tray_icon():
+    from app.tray import create_tray_icon
+    create_tray_icon()
 
 
 if not is_opened():
-    import app.utils.languages as languages
-    from app.tray import create_tray_icon
     languages.init(
         lang_files_directory="webdeck/translations",
         default_language=settings['language']
     )
-
-    def run_server_thread():
-        from app.server import run_server
-        thread = threading.Thread(target=run_server, daemon=True)
-        thread.start()
-
+    set_global_variable('restart_server_thread', restart_server_thread)
     threading.Timer(0, run_server_thread).start()
-    create_tray_icon()
+    initialize_tray_icon()

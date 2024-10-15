@@ -14,8 +14,13 @@ from io import BytesIO
 
 from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
+from .utils.global_variables import get_global_variable
 from .utils.languages import text, get_languages_info, get_language, set_default_language
 
+def restart_server_thread():
+    restart_func = get_global_variable('restart_server_thread')
+    if restart_func:
+        restart_func()
 
 def reload_config():
     port = 59997
@@ -191,6 +196,7 @@ def generate_menu(language, server_status=1):
                     checked=lambda item, lang=lang: lang['code'] == get_language(language)
                 ) for lang in get_languages_info()]
             )),
+            pystray.MenuItem(text('restart_server'), lambda: restart_server_thread()),
             pystray.MenuItem(text('fix_firewall'), lambda: fix_firewall_permission()),
         )),
         pystray.MenuItem(

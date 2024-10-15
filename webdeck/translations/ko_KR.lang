@@ -30,6 +30,7 @@ author_github_username=KiiMyu
 qr_code=QR 코드
 options=옵션
 open_config=설정 열기
+restart_server=서버 재시작
 fix_firewall=방화벽 설정
 server_status=서버 상태:
 server_online=🟢 온라인

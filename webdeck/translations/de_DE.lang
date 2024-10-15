@@ -30,6 +30,7 @@ author_github_username=Dtrieb
 qr_code=QR Code
 options=Optionen
 open_config=Öffne Einstellungen
+restart_server=Server neu starten
 fix_firewall=Fix Firewall
 server_status=Server-Status:
 server_online=🟢 Online

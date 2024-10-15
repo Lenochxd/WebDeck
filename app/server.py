@@ -9,12 +9,14 @@ import ast
 
 # Third-party library imports
 from PIL import Image
+from werkzeug.serving import run_simple
 from flask import Flask, request, jsonify, render_template, send_file, make_response
 from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
 from win32com.client import Dispatch
 import easygui
+import requests
 
 # WebDeck imports
 from .on_start import on_start, check_config_update
@@ -499,9 +501,25 @@ print('local_ip: ', local_ip)
 
 def run_server():
     change_server_state(1)
-    app.run(
-        host=local_ip,
+    run_simple(
+        hostname=local_ip,
         port=config["url"]["port"],
-        debug=config["settings"]["flask_debug"] == True,
+        application=app,
+        use_debugger=config["settings"]["flask_debug"] == True,
         use_reloader=config["settings"]["flask_debug"] == False,
     )
+
+@app.route("/stop_server", methods=["POST"])
+def stop_server_route():
+    change_server_state(0)
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+    return jsonify({"success": True, "message": "Server is shutting down..."})
+
+def stop_server():
+    try:
+        requests.get(f'http://{local_ip}:{config["url"]["port"]}/stop_server')
+    except requests.RequestException as e:
+        print(f"Failed to stop server: {e}")

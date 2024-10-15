@@ -30,6 +30,7 @@ author_github_username=Lenochxd
 qr_code=QR Code
 options=Options
 open_config=Ouvrir la configuration
+restart_server=Redémarrer le serveur
 fix_firewall=Réparer pare-feu
 server_status=Serveur:
 server_online=🟢 En ligne
