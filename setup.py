@@ -8,7 +8,8 @@ build_options = {
                         "pygame",
                         "soundfile", "_soundfile", "_soundfile_data",
                         "vlc", "python-vlc",
-                        "numpy"
+                        "numpy",
+                        "jaraco",
                     ]
                 }
 
