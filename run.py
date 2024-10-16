@@ -46,4 +46,5 @@ if not is_opened():
     )
     set_global_variable('restart_server_thread', restart_server_thread)
     threading.Timer(0, run_server_thread).start()
+    threading.Thread(target=run_server_thread, daemon=True).start()
     initialize_tray_icon()
