@@ -11,3 +11,6 @@ def load_config():
         os.remove("config.json")
         
     return config
+
+def get_port():
+    return load_config()["url"]["port"]

@@ -14,6 +14,7 @@ from io import BytesIO
 
 from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
+from .utils.load_config import get_port
 from .utils.global_variables import get_global_variable
 from .utils.languages import text, get_languages_info, get_language, set_default_language
 
@@ -197,6 +198,7 @@ def generate_menu(language, server_status=1):
                 ) for lang in get_languages_info()]
             )),
             pystray.MenuItem(text('restart_server'), lambda: restart_server_thread()),
+            pystray.MenuItem(text('edit_port'), lambda: change_port_prompt()),
             pystray.MenuItem(text('fix_firewall'), lambda: fix_firewall_permission()),
         )),
         pystray.MenuItem(
@@ -220,6 +222,54 @@ def generate_tray_icon():
     else:
         icon = pystray.Icon("name", image, "WebDeck DEV", menu)
     return icon
+
+def change_port_prompt():
+    def save_port():
+        new_port = port_entry.get()
+        if validate_port_input(new_port) and new_port not in ['', str(get_port())]:
+            prompt_window.destroy()  # Close the window if save is successful
+            
+            with open('.config/config.json', 'r') as config_file:
+                config = json.load(config_file)
+            config['url']['port'] = int(new_port)
+            with open('.config/config.json', 'w') as config_file:
+                json.dump(config, config_file, indent=4)
+            
+            restart_server_thread()
+
+    def validate_port_input(new_value):
+        if new_value.isdigit():
+            port = int(new_value)
+            return 1 <= port <= 65535
+        return new_value == ""
+
+    prompt_window = tk.Tk()
+    prompt_window.title(text('change_server_port'))
+    prompt_window.geometry("300x130")
+    prompt_window.resizable(False, False)
+    prompt_window.iconbitmap("static/icons/icon_black.ico")
+
+    frame = tk.Frame(prompt_window, padx=10, pady=10)
+    frame.pack(expand=True)
+
+    tk.Label(frame, text=text('enter_new_port')).grid(row=0, column=0, pady=5, sticky="w")
+    port_entry = tk.Entry(frame, validate="key", validatecommand=(frame.register(validate_port_input), "%P"))
+    port_entry.insert(0, get_port())  # Set default text field value to the current port
+    port_entry.grid(row=1, column=0, pady=5, sticky="ew")
+
+    save_button = tk.Button(frame, text=text("save"), command=save_port)
+    save_button.grid(row=2, column=0, pady=5, sticky="ew")
+
+    # Bind the Enter key to the save_port function
+    prompt_window.bind("<Return>", lambda event: save_port())
+
+    # Focus the window and the text input
+    prompt_window.lift()
+    prompt_window.focus_force()
+    port_entry.focus()
+
+    prompt_window.mainloop()
+
 
 def change_tray_language(new_lang):
     global icon, language

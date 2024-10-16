@@ -29,6 +29,7 @@ set_global_variable("config", config)
 from app.tray import change_tray_language, change_server_state
 from .utils.themes.parse_themes import parse_themes
 from .utils.plugins.load_plugins import load_plugins
+from .utils.load_config import get_port
 from .utils.settings.save_config import save_config
 from .utils.settings.audio_devices import get_audio_devices
 from .utils.settings.gridsize import update_gridsize
@@ -503,7 +504,7 @@ def run_server():
     change_server_state(1)
     run_simple(
         hostname=local_ip,
-        port=config["url"]["port"],
+        port=get_port(),
         application=app,
         use_debugger=config["settings"]["flask_debug"] == True,
         use_reloader=config["settings"]["flask_debug"] == False,
@@ -520,6 +521,6 @@ def stop_server_route():
 
 def stop_server():
     try:
-        requests.get(f'http://{local_ip}:{config["url"]["port"]}/stop_server')
+        requests.get(f'http://{local_ip}:{get_port()}/stop_server')
     except requests.RequestException as e:
         print(f"Failed to stop server: {e}")
