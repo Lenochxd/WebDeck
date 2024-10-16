@@ -30,10 +30,10 @@ def check_files():
         current_version = versions["versions"][0]["version"]
 
     # Load or initialize the temporary JSON file
-    if os.path.isfile(temp_json_path):
+    try:
         with open(temp_json_path, encoding="utf-8") as f:
             temp_json = json.load(f)
-    else:
+    except (FileNotFoundError, json.JSONDecodeError):
         temp_json = {}
 
     temp_json.setdefault("checked-versions", [])
