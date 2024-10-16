@@ -1,14 +1,15 @@
-import sys  
-import pystray
 import os
+import sys  
+import signal
+import json
 import win32gui, win32con
 import win32com.client
 import subprocess
 import webbrowser
-import json
+import pystray
+import tkinter as tk
 import qrcode
 import webview
-import tkinter as tk
 from PIL import Image, ImageTk
 from io import BytesIO
 
@@ -67,45 +68,27 @@ window = None
 def exit_program():
     global icon, window
 
-    if not getattr(sys, 'frozen', False):
-        try:
-            subprocess.Popen("taskkill /f /IM python.exe", shell=True)
-        except Exception as e:
-            print(f"Failed to terminate process {process_name}: {e}")
-    else:
+    if sys.platform == "win32":
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")
 
-        processes_to_kill = [
-            "WD_main.exe",
-            "WD_start.exe",
-            "nircmd.exe",
-            "WebDeck.exe"
-        ]
-
-        for process_name in processes_to_kill:
-            try:
-                subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
-            except Exception as e:
-                print(f"Failed to terminate process {process_name}: {e}")
-
         for process in processes:
-            if process.Properties_('Name').Value.replace('.exe','').lower().strip() in ["wd_main","wd_start","nircmd","webdeck"]:
+            process_name = process.Properties_('Name').Value.lower().strip()
+            if process_name == "nircmd.exe":
                 print(f"Stopping process: {process.Properties_('Name').Value}")
-                try: 
+                try:
                     result = process.Terminate()
-                except TypeError:
-                    pass
-                if result == 0:
-                    print("Process terminated successfully.")
-                else:
-                    print("Failed to terminate process.")
-        
+                    if result == 0:
+                        print("Process terminated successfully.")
+                    else:
+                        subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
+                except Exception as e:
+                    print(f"Failed to terminate process {process_name}: {e}")
 
     close_window()
     icon.stop()  # Stop Tray Icon
 
-    exit()
+    os.kill(os.getpid(), signal.SIGINT)
 
 
 local_ip = get_local_ip()
