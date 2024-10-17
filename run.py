@@ -28,12 +28,6 @@ def run_server_thread():
     from app.server import run_server
     run_server()
 
-def restart_server_thread():
-    from app.server import stop_server
-    stop_server()
-    time.sleep(1)
-    threading.Thread(target=run_server_thread, daemon=True).start()
-
 def initialize_tray_icon():
     from app.tray import create_tray_icon
     create_tray_icon()
@@ -44,6 +38,5 @@ if not is_opened():
         lang_files_directory="webdeck/translations",
         default_language=settings['language']
     )
-    set_global_variable('restart_server_thread', restart_server_thread)
     threading.Thread(target=run_server_thread, daemon=True).start()
     initialize_tray_icon()

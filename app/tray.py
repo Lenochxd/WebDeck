@@ -19,10 +19,6 @@ from .utils.load_config import get_port
 from .utils.global_variables import get_global_variable
 from .utils.languages import text, get_languages_info, get_language, set_default_language
 
-def restart_server_thread():
-    restart_func = get_global_variable('restart_server_thread')
-    if restart_func:
-        restart_func()
 
 def reload_config():
     port = 59997
@@ -65,16 +61,20 @@ icon = None
 window = None
 
 
-def exit_program():
+def exit_program(force=False):
     global icon, window
 
     if sys.platform == "win32":
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")
 
+        process_names_to_terminate = ["nircmd.exe"]
+        if force:
+            process_names_to_terminate.append("webdeck.exe")
+
         for process in processes:
             process_name = process.Properties_('Name').Value.lower().strip()
-            if process_name == "nircmd.exe":
+            if process_name in process_names_to_terminate:
                 print(f"Stopping process: {process.Properties_('Name').Value}")
                 try:
                     result = process.Terminate()
@@ -89,6 +89,26 @@ def exit_program():
     icon.stop()  # Stop Tray Icon
 
     os.kill(os.getpid(), signal.SIGINT)
+
+def restart_program():
+    """Restarts the program, ensuring compatibility with frozen environments."""
+    try:
+        if getattr(sys, 'frozen', False):  # Check if the script is frozen
+            # If frozen, restart using the bundled executable
+            with open('temp.json', 'r') as temp_file:
+                temp_data = json.load(temp_file)
+            temp_data["allow_multiple_instances"] = True
+            with open('temp.json', 'w') as temp_file:
+                json.dump(temp_data, temp_file, indent=4)
+                
+            os.startfile(sys.executable)
+        else:
+            # If not frozen, restart the Python interpreter
+            python = sys.executable
+            os.execl(python, f'"{python}"', *sys.argv)
+        exit_program()
+    except Exception as e:
+        print(f"Error while restarting the program: {e}")
 
 
 local_ip = get_local_ip()
@@ -180,7 +200,7 @@ def generate_menu(language, server_status=1):
                     checked=lambda item, lang=lang: lang['code'] == get_language(language)
                 ) for lang in get_languages_info()]
             )),
-            pystray.MenuItem(text('restart_server'), lambda: restart_server_thread()),
+            pystray.MenuItem(text('restart_application'), lambda: restart_program()),
             pystray.MenuItem(text('edit_port'), lambda: change_port_prompt()),
             pystray.MenuItem(text('fix_firewall'), lambda: fix_firewall_permission()),
         )),
@@ -218,7 +238,7 @@ def change_port_prompt():
             with open('.config/config.json', 'w') as config_file:
                 json.dump(config, config_file, indent=4)
             
-            restart_server_thread()
+            restart_program()
 
     def validate_port_input(new_value):
         if new_value.isdigit():

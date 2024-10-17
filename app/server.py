@@ -510,17 +510,3 @@ def run_server():
         use_reloader=config["settings"]["flask_debug"] == False,
     )
 
-@app.route("/stop_server", methods=["POST"])
-def stop_server_route():
-    change_server_state(0)
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    return jsonify({"success": True, "message": "Server is shutting down..."})
-
-def stop_server():
-    try:
-        requests.get(f'http://{local_ip}:{get_port()}/stop_server')
-    except requests.RequestException as e:
-        print(f"Failed to stop server: {e}")
