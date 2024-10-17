@@ -9,7 +9,7 @@ import ast
 
 # Third-party library imports
 from PIL import Image
-from werkzeug.serving import run_simple
+from werkzeug.serving import make_server
 from flask import Flask, request, jsonify, render_template, send_file, make_response
 from flask_socketio import SocketIO
 from flask_minify import Minify
@@ -502,11 +502,13 @@ print('local_ip: ', local_ip)
 
 def run_server():
     change_server_state(1)
-    run_simple(
-        hostname=local_ip,
-        port=get_port(),
-        application=app,
-        use_debugger=config["settings"]["flask_debug"] == True,
-        use_reloader=config["settings"]["flask_debug"] == False,
-    )
-
+    if config["settings"].get("werkzeug") == "werkzeug" and not getattr(sys, "frozen", False):
+        server = make_server(local_ip, get_port(), app)
+        server.serve_forever()
+    else:
+        app.run(
+            host=local_ip,
+            port=get_port(),
+            debug=config["settings"].get("flask_debug"),
+            use_reloader=config["settings"].get("flask_reloader", False),
+        )
