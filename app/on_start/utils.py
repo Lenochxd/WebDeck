@@ -45,6 +45,14 @@ def check_config_update(config):
     if "windows_startup" not in config["settings"]:
         config["settings"]["windows_startup"] = False
 
+    # Set default flask reloader setting if not present
+    if "server" not in config["settings"]:
+        config["settings"]["server"] = "flask"
+
+    # Set default flask reloader setting if not present
+    if "flask_reloader" not in config["settings"]:
+        config["settings"]["flask_reloader"] = False
+
     # Set default flask debug setting if not present
     if "flask_debug" not in config["settings"]:
         config["settings"]["flask_debug"] = True
