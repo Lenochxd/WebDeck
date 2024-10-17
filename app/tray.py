@@ -3,8 +3,6 @@ import sys
 import signal
 import json
 import win32gui, win32con
-import win32com.client
-import subprocess
 import webbrowser
 import pystray
 import tkinter as tk
@@ -13,12 +11,12 @@ import webview
 from PIL import Image, ImageTk
 from io import BytesIO
 
+from .utils.exit import exit_program
+from .utils.restart import restart_program
 from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
 from .utils.load_config import get_port
-from .utils.global_variables import get_global_variable
 from .utils.languages import text, get_languages_info, get_language, set_default_language
-
 
 def reload_config():
     port = 59997
@@ -59,57 +57,6 @@ port, dark_theme, language, open_in_integrated_browser = reload_config()
 
 icon = None
 window = None
-
-
-def exit_program(force=False):
-    global icon, window
-
-    if sys.platform == "win32":
-        wmi = win32com.client.GetObject("winmgmts:")
-        processes = wmi.InstancesOf("Win32_Process")
-
-        process_names_to_terminate = ["nircmd.exe"]
-        if force:
-            process_names_to_terminate.append("webdeck.exe")
-
-        for process in processes:
-            process_name = process.Properties_('Name').Value.lower().strip()
-            if process_name in process_names_to_terminate:
-                print(f"Stopping process: {process.Properties_('Name').Value}")
-                try:
-                    result = process.Terminate()
-                    if result == 0:
-                        print("Process terminated successfully.")
-                    else:
-                        subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
-                except Exception as e:
-                    print(f"Failed to terminate process {process_name}: {e}")
-
-    close_window()
-    icon.stop()  # Stop Tray Icon
-
-    os.kill(os.getpid(), signal.SIGINT)
-
-def restart_program():
-    """Restarts the program, ensuring compatibility with frozen environments."""
-    try:
-        if getattr(sys, 'frozen', False):  # Check if the script is frozen
-            # If frozen, restart using the bundled executable
-            with open('temp.json', 'r') as temp_file:
-                temp_data = json.load(temp_file)
-            temp_data["allow_multiple_instances"] = True
-            with open('temp.json', 'w') as temp_file:
-                json.dump(temp_data, temp_file, indent=4)
-                
-            os.startfile(sys.executable)
-        else:
-            # If not frozen, restart the Python interpreter
-            python = sys.executable
-            os.execl(python, f'"{python}"', *sys.argv)
-        exit_program()
-    except Exception as e:
-        print(f"Error while restarting the program: {e}")
-
 
 local_ip = get_local_ip()
 
