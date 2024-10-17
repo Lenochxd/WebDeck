@@ -1028,6 +1028,30 @@
                   </label>
                 </div>
                 
+                <div class="setting server">
+                  <label for="server"> {{text('gpu_usage_method')}} </label>
+                  <select id="server" name="settings.server">
+                    <option value="flask" {% if config['settings']['server'].lower() == 'flask' %}selected{% endif %}>Flask</option>
+                    <option value="werkzeug" {% if config['settings']['server'].lower() == 'werkzeug' %}selected{% endif %}>Werkzeug</option>
+                  </select>
+                </div>
+
+                <div class="setting flask-debug">
+                  <p> {{text('flask_debug')}} </p>
+                  <label for="flask_debug" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="flask_debug" name="settings.flask_debug" {% if config['settings']['flask_debug'] %}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <div class="setting flask-reloader">
+                  <p> {{text('flask_reloader')}} </p>
+                  <label for="flask_reloader" class="switch">
+                    <input class="{{dark_theme}}" type="checkbox" id="flask_reloader" name="settings.flask_reloader" {% if config['settings']['flask_reloader'] %}checked{% endif %}>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
                 <div class="setting dev-mode">
                   <p> {{text('dev_mode')}} </p>
                   <label for="dev_mode" class="switch">
