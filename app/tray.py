@@ -60,15 +60,19 @@ local_ip = get_local_ip()
 
 def open_config():
     port, dark_theme, language, open_in_integrated_browser = reload_config()
-    if open_in_integrated_browser == True:
-        webview.create_window('WebDeck Config', url=f'http://{local_ip}:{port}?config=show', background_color='#141414')
+    config_url = f"http://{local_ip}:{port}?config=show"
+    
+    if open_in_integrated_browser:
+        webview.create_window('WebDeck Config', url=config_url, background_color='#141414')
         webview.start()
+        
         foreground_window = win32gui.GetForegroundWindow()
         window_title = win32gui.GetWindowText(foreground_window)
+        
         if "webdeck" in window_title.lower():
             win32gui.ShowWindow(foreground_window, win32con.SW_MAXIMIZE)
     else:
-        webbrowser.open(f"http://{local_ip}:{port}?config=show")
+        webbrowser.open(config_url)
 
 def generate_qr_code(dark_theme=False):
     url = f"http://{get_local_ip()}:{get_port()}/"
