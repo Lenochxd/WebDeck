@@ -32,6 +32,7 @@ options=Options
 open_config=Open Config
 restart_application=Restart WebDeck
 edit_port=Edit port
+randomize=Randomize
 change_server_port=Change server port
 enter_new_port=Enter new port:
 fix_firewall=Fix firewall

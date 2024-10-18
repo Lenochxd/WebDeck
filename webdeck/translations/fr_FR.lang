@@ -34,6 +34,7 @@ restart_application=Redémarrer WebDeck
 edit_port=Modifier le port
 change_server_port=Changer le port du serveur
 enter_new_port=Votre nouveau port :
+randomize=Randomiser
 fix_firewall=Réparer pare-feu
 server_status=Serveur:
 server_online=🟢 En ligne

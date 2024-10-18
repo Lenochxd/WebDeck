@@ -5,6 +5,7 @@ import win32gui, win32con
 import webbrowser
 import pystray
 import tkinter as tk
+import random
 import qrcode
 import webview
 from PIL import Image, ImageTk
@@ -199,9 +200,14 @@ def change_port_prompt():
             return 1 <= port <= 65535
         return new_value == ""
 
+    def randomize_port():
+        random_port = random.randint(1024, 65535)
+        port_entry.delete(0, tk.END)
+        port_entry.insert(0, random_port)
+
     prompt_window = tk.Tk()
     prompt_window.title(text('change_server_port'))
-    prompt_window.geometry("300x130")
+    prompt_window.geometry("300x160")
     prompt_window.resizable(False, False)
     prompt_window.iconbitmap("static/icons/icon_black.ico")
 
@@ -213,8 +219,11 @@ def change_port_prompt():
     port_entry.insert(0, get_port())  # Set default text field value to the current port
     port_entry.grid(row=1, column=0, pady=5, sticky="ew")
 
+    randomize_button = tk.Button(frame, text=text("randomize"), command=randomize_port)
+    randomize_button.grid(row=2, column=0, pady=5, sticky="ew")
+    
     save_button = tk.Button(frame, text=text("save"), command=save_port)
-    save_button.grid(row=2, column=0, pady=5, sticky="ew")
+    save_button.grid(row=3, column=0, pady=5, sticky="ew")
 
     # Bind the Enter key to the save_port function
     prompt_window.bind("<Return>", lambda event: save_port())

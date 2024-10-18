@@ -34,6 +34,7 @@ restart_application=WebDeck 재시작
 edit_port=포트 수정
 change_server_port=서버 포트 변경
 enter_new_port=새 포트 입력:
+randomize=무작위화
 fix_firewall=방화벽 설정
 server_status=서버 상태:
 server_online=🟢 온라인
