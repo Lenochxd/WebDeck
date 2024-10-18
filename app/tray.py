@@ -205,6 +205,9 @@ def change_port_prompt():
         port_entry.delete(0, tk.END)
         port_entry.insert(0, random_port)
 
+    def close_prompt(event=None):
+        prompt_window.destroy()
+
     prompt_window = tk.Tk()
     prompt_window.title(text('change_server_port'))
     prompt_window.geometry("300x160")
@@ -225,8 +228,9 @@ def change_port_prompt():
     save_button = tk.Button(frame, text=text("save"), command=save_port)
     save_button.grid(row=3, column=0, pady=5, sticky="ew")
 
-    # Bind the Enter key to the save_port function
+    # Key bindings
     prompt_window.bind("<Return>", lambda event: save_port())
+    prompt_window.bind("<Escape>", close_prompt)
 
     # Focus the window and the text input
     prompt_window.lift()
