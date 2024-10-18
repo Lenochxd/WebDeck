@@ -20,39 +20,39 @@ from .utils.languages import text, get_languages_info, get_language, set_default
 
 
 def reload_config():
-    port = 59997
-    dark_theme = True
-    open_in_integrated_browser = True
-    language = "en_US"
+    default_config = {
+        "port": 59997,
+        "dark_theme": True,
+        "open_in_integrated_browser": False,
+        "language": "en_US"
+    }
 
     config_path = None
-    if os.path.exists(".config/config.json"):
-        config_path = ".config/config.json"
-    elif os.path.exists("config.json"):
-        config_path = "config.json"
-    
+    for path in ['.config/config.json', 'config.json', 'webdeck/config_default.json']:
+        if os.path.exists(path):
+            config_path = path
+            break
+
     if config_path:
         with open(config_path, encoding="utf-8") as f:
             config = json.load(f)
             settings = config.get('settings', {})
             integrated_browser_key = 'open_settings_in_integrated_browser'
             browser_key = 'open-settings-in-browser'
-            
-            # update config to remove 'open-settings-in-browser'
-            if browser_key in config['settings']:
-                settings[integrated_browser_key] = not config['settings'].get(browser_key, False)
+
+            # Update config to remove 'open-settings-in-browser'
+            if browser_key in settings:
+                settings[integrated_browser_key] = not settings.get(browser_key, True)
                 settings.pop(browser_key, None)
-                
-            open_in_integrated_browser = settings.get(integrated_browser_key, False)
-            print('open_in_integrated_browser:', open_in_integrated_browser)
-            with open('.config/config.json', 'w', encoding="utf-8") as json_file:
-                json.dump(config, json_file, indent=4)
+                with open(config_path, 'w', encoding="utf-8") as json_file:
+                    json.dump(config, json_file, indent=4)
 
-            port = config['url']['port']
-            dark_theme = config['front'].get('dark-theme', config['front'].get('black-theme', True))
-            language = config['settings']['language']
+            default_config["open_in_integrated_browser"] = settings.get(integrated_browser_key, False)
+            default_config["port"] = config['url']['port']
+            default_config["dark_theme"] = config['front'].get('dark-theme', config['front'].get('black-theme', True))
+            default_config["language"] = settings.get('language', default_config["language"])
 
-    return port, dark_theme, language, open_in_integrated_browser
+    return default_config["port"], default_config["dark_theme"], default_config["language"], default_config["open_in_integrated_browser"]
 
 window = None
 icon = None
