@@ -1,6 +1,5 @@
 import os
-import sys  
-import signal
+import sys
 import json
 import win32gui, win32con
 import webbrowser
@@ -17,6 +16,7 @@ from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
 from .utils.load_config import get_port
 from .utils.languages import text, get_languages_info, get_language, set_default_language
+
 
 def reload_config():
     port = 59997
@@ -53,11 +53,9 @@ def reload_config():
 
     return port, dark_theme, language, open_in_integrated_browser
 
-port, dark_theme, language, open_in_integrated_browser = reload_config()
-
-icon = None
 window = None
-
+icon = None
+port, dark_theme, language, open_in_integrated_browser = reload_config()
 local_ip = get_local_ip()
 
 def open_config():
@@ -72,59 +70,63 @@ def open_config():
     else:
         webbrowser.open(f"http://{local_ip}:{port}?config=show")
 
-def close_window():
-    global window
-    if window:
-        window.destroy()
-        window = None
+def generate_qr_code(dark_theme=False):
+    url = f"http://{get_local_ip()}:{get_port()}/"
+    
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
 
-url = f"http://{local_ip}:{port}"
-qr = qrcode.QRCode(
-    version=1,
-    error_correction=qrcode.constants.ERROR_CORRECT_L,
-    box_size=10,
-    border=4,
-)
-qr.add_data(url)
-qr.make(fit=True)
+    img_stream = BytesIO()
+    
+    if dark_theme:
+        qr.make_image(fill_color="white", back_color="black").save(img_stream, format='PNG')
+    else:
+        qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')
+    
+    img_stream.seek(0)
 
-# Creation of the QR code image in bytes
-img_stream = BytesIO()
-# if dark_theme == True:
-#     qr.make_image(fill_color="white", back_color="black").save(img_stream, format='PNG')
-# else:
-qr.make_image(fill_color="black", back_color="white").save(img_stream, format='PNG')
-img_stream.seek(0)
-
-# Convert image to PIL format for EasyGUI
-qr_pil_image = Image.open(img_stream)
+    return Image.open(img_stream)
 
 def show_qrcode():
     global window
-    if window is None:
-        window = tk.Tk()
-        window.title(text('qr_code'))
-        
-        image_tk = ImageTk.PhotoImage(image=qr_pil_image)
-        
-        label = tk.Label(window, image=image_tk)
-        label.pack()
-        
-        text_label = tk.Label(window, text=f"http://{local_ip}:{port}/", font=("Helvetica", 13))
-        text_label.pack()
-        
-        window.iconbitmap("static/icons/icon.ico")
-        window.lift()
-        window.focus_force()
-        
-        window.bind("<Escape>", close_window)
-        window.bind("<Return>", close_window)
-        window.bind("<space>", close_window)
-        
-        window.resizable(width=False, height=False)
-        
-        window.protocol("WM_DELETE_WINDOW", close_window)
-        window.mainloop()
+    if window is not None:
+        return
+
+    window = tk.Tk()
+    window.title(text('qr_code'))
+
+    qr_pil_image = generate_qr_code()
+    image_tk = ImageTk.PhotoImage(image=qr_pil_image)
+
+    label = tk.Label(window, image=image_tk)
+    label.pack()
+
+    text_label = tk.Label(window, text=f"http://{local_ip}:{port}/", font=("Helvetica", 13))
+    text_label.pack()
+
+    window.iconbitmap("static/icons/icon.ico")
+    window.lift()
+    window.focus_force()
+
+    def close_window(event=None):
+        global window
+        if window:
+            window.destroy()
+            window = None
+
+    window.bind("<Escape>", close_window)
+    window.bind("<Return>", close_window)
+    window.bind("<space>", close_window)
+
+    window.resizable(width=False, height=False)
+    window.protocol("WM_DELETE_WINDOW", close_window)
+    window.mainloop()
 
 def generate_menu(language, server_status=1):
     print('NEW STATUS: ', server_status)
