@@ -263,8 +263,8 @@ def saveconfig():
         obs_host, obs_port, obs_password, obs = reload_obs()
 
     if language_changed:
-        change_tray_language(new_config["settings"]["language"])
         set_default_language(new_config["settings"]["language"])
+        change_tray_language(new_config["settings"]["language"])
 
     return jsonify({"success": True})
 
