@@ -2,7 +2,6 @@ import ctypes
 import sys
 import json
 import os.path
-import time
 import threading
 
 def load_config():
@@ -19,18 +18,24 @@ if settings['app_admin']:
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit()
 
+from app.utils.show_error import show_error
 from app.utils.is_opened import is_opened
-from app.utils.global_variables import set_global_variable
 import app.utils.languages as languages
 
 
 def run_server_thread():
     from app.server import run_server
-    run_server()
+    try:
+        run_server()
+    except Exception as e:
+        show_error(exception=e)
 
 def initialize_tray_icon():
     from app.tray import create_tray_icon
-    create_tray_icon()
+    try:
+        create_tray_icon()
+    except Exception as e:
+        show_error(exception=e)
 
 
 if not is_opened():
