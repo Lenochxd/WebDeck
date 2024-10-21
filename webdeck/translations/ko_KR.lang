@@ -44,6 +44,12 @@ report_issue=GitHub 이슈 보고
 exit=나가기
 
 // -- Errors --
+open_github_issue_prompt_title=GitHub 이슈 열기
+open_github_issue_prompt_message=이 오류에 대한 GitHub 이슈를 열겠습니까? (권장)
+
+copy_to_clipboard_prompt_title=클립보드에 복사
+copy_to_clipboard_prompt_message=오류 메시지를 클립보드에 복사하시겠습니까?
+
 server_disconnected=서버 연결 실패
 failed=실패
 error=에러

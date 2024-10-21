@@ -44,6 +44,12 @@ report_issue=Signaler un bug
 exit=Quitter
 
 // -- Errors --
+open_github_issue_prompt_title=Ouvrir une problème GitHub
+open_github_issue_prompt_message=Voulez-vous ouvrir un problème (issue) GitHub pour cette erreur ? (Recommandé)
+
+copy_to_clipboard_prompt_title=Copier dans le presse-papiers
+copy_to_clipboard_prompt_message=Voulez-vous copier le message d'erreur dans le presse-papiers ?
+
 server_disconnected=Reconnexion
 failed=Échec
 error=Erreur

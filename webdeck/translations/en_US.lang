@@ -44,6 +44,12 @@ report_issue=Report an Issue
 exit=Quit
 
 // -- Errors --
+open_github_issue_prompt_title=Open GitHub Issue
+open_github_issue_prompt_message=Do you want to open a GitHub issue for this error? (Recommended)
+
+copy_to_clipboard_prompt_title=Copy to Clipboard
+copy_to_clipboard_prompt_message=Do you want to copy the error message to the clipboard?
+
 server_disconnected=Server Disconnected
 failed=Failed
 error=Error
