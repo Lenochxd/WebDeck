@@ -36,6 +36,7 @@ from .utils.settings.gridsize import update_gridsize
 from .utils.settings.create_folders import create_folders
 from .utils.firewall import fix_firewall_permission, check_firewall_permission
 from .utils.languages import text, set_default_language, get_languages_info, get_language
+from .utils.logger import log
 from .utils.merge_dicts import merge_dicts
 from .buttons.usage import get_usage
 from .buttons.obs import reload_obs
@@ -90,6 +91,11 @@ def check_local_network():
             403,
         )
 
+@app.after_request
+def after_request(response):
+    if request.path != "/usage":
+        log.httprequest(request, response)
+    return response
 
 @app.context_processor
 def utility_functions():

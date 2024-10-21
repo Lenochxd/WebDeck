@@ -26,6 +26,7 @@ __pycache__/
 !copy.png
 
 # misc
+.logs/*
 .DS_Store
 tests/*
 data.json
