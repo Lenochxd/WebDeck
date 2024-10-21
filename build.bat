@@ -27,3 +27,4 @@ rem Sign the updater executable
 signtool sign /a /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 update.exe
 
 echo Build done!
+explorer .
