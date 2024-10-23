@@ -68,6 +68,19 @@ def usage():
 # Middleware to check request IP address
 @app.before_request
 def check_local_network():
+    """
+    Checks if the remote IP address of the incoming request is within the same local network
+    as the server or within the allowed networks specified in the configuration.
+    The function compares the remote IP address with the server's local IP address using a 
+    specified netmask. If the remote IP is not within the same network, it checks if the 
+    remote IP is within any of the allowed networks defined in the configuration settings.
+    
+    Returns:
+        None: If the remote IP is within the same network or an allowed network.
+        tuple: A tuple containing an error message and an HTTP status code 403 if the remote 
+               IP is not authorized.
+    """
+    
     remote_ip = request.remote_addr    
 
     netmask = '255.255.255.0'
