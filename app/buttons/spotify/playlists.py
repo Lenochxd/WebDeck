@@ -1,4 +1,4 @@
-from app.utils.show_error import show_error
+from app.utils.languages import text
 from app.utils.logger import log
 
 
@@ -19,7 +19,7 @@ def manage(sp, message, playlist_name):
     playlist_id = next((playlist["id"] for playlist in playlists["items"] if playlist["name"] == playlist_name), None)
 
     if playlist_id is None:
-        show_error(f"Playlist named '{playlist_name}' not found.")
+        raise ValueError(text("spotify_playlist_not_found_error").replace("%playlist_name%", playlist_name))
     else:
         playback = sp.current_playback()
         track_id = playback["item"]["id"]

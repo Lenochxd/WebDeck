@@ -83,6 +83,7 @@ spotify_apply_volume_error=오류, 볼륨을 적용할 수 없습니다.
 spotify_volume_prenium_error=오류, Spotify Prenium 이 필요하여 볼륨을 설정할 수 없습니다.
 spotify_no_active_device_error=활성화된 Spotify 장치를 찾을 수 없습니다. Spotify가 실행 중이고 활성화되어 있는지 확인하세요.
 spotify_no_track_playing_error=현재 재생 중인 트랙이 없습니다.
+spotify_playlist_not_found_error='%playlist_name%' 이름의 플레이리스트를 찾을 수 없습니다.
 
 
 // -- Success messages --

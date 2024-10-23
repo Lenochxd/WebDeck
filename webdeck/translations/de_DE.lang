@@ -83,6 +83,7 @@ spotify_apply_volume_error=Fehler, Volumen kann nicht angewendet werden
 spotify_volume_prenium_error=Fehler, Volumen kann nicht angewendet werden, da Spotify Prenium erforderlich ist
 spotify_no_active_device_error=Kein aktives Spotify-Gerät gefunden. Bitte stellen Sie sicher, dass Spotify läuft und aktiv ist.
 spotify_no_track_playing_error=Kein Titel wird gerade abgespielt.
+spotify_playlist_not_found_error=Playlist mit dem Namen '%playlist_name%' nicht gefunden.
 
 
 // -- Success messages --

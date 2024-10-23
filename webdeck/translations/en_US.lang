@@ -83,6 +83,7 @@ spotify_apply_volume_error=Error, unable to apply volume
 spotify_volume_prenium_error=Error, unable to apply volume because Spotify Prenium is required
 spotify_no_active_device_error=No active Spotify device found. Please ensure that Spotify is running and active.
 spotify_no_track_playing_error=No track currently playing.
+spotify_playlist_not_found_error=Playlist named '%playlist_name%' not found.
 
 
 // -- Success messages --
