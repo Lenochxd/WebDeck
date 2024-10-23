@@ -73,7 +73,7 @@ class Logger:
         log_message = self._write_log("ERROR", message)
         print(Fore.RED + log_message)
     
-    def exception(self, exception, message=None, expected=True):
+    def exception(self, exception, message=None, expected=True, log_traceback=True):
         """
         Logs an exception message along with the traceback.
         
@@ -83,9 +83,13 @@ class Logger:
             exception (Exception): The exception instance to log.
             message (str, optional): Additional message to log with the exception.
             expected (bool, optional): Indicates if the exception was expected (caught using try-except). Defaults to True.
+            log_traceback (bool, optional): Indicates if the traceback details should be logged. Defaults to True.
         """
         exception_title = f"{type(exception).__name__}:\n {str(exception)}\n"
-        exception_message = ''.join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+        if log_traceback:
+            exception_message = ''.join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+        else:
+            exception_message = str(exception)
         exception_type = "EXPECTED EXCEPTION" if expected else "UNEXPECTED EXCEPTION"
         if message:
             log_message = self._write_log(exception_type, f"{message} - {exception_title}\n{exception_message}")
