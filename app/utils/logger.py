@@ -27,6 +27,10 @@ class Logger:
     def success(self, message):
         log_message = self._write_log("SUCCESS", message)
         print(Fore.GREEN + log_message)
+        
+    def notice(self, message):
+        log_message = self._write_log("NOTICE", message)
+        print(Fore.GREEN + log_message)
 
     def warning(self, message):
         log_message = self._write_log("WARNING", message)
