@@ -21,6 +21,7 @@ if settings['app_admin']:
 from app.utils.show_error import show_error
 from app.utils.is_opened import is_opened
 import app.utils.languages as languages
+from app.utils.logger import log
 
 
 def run_server_thread():
@@ -39,9 +40,17 @@ def initialize_tray_icon():
 
 
 if not is_opened():
+    log.info("Starting WebDeck")
+    
+    log.info("Loading translations")
     languages.init(
         lang_files_directory="webdeck/translations",
         default_language=settings['language']
     )
-    threading.Thread(target=run_server_thread, daemon=True).start()
+    
+    log.info("Starting server thread")
+    server_thread = threading.Thread(target=run_server_thread, daemon=True)
+    server_thread.start()
+    
+    log.info("Initializing tray icon")
     initialize_tray_icon()
