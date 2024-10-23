@@ -1029,10 +1029,10 @@
                 </div>
                 
                 <div class="setting server">
-                  <label for="server"> {{text('gpu_usage_method')}} </label>
+                  <label for="server"> {{text('server')}} </label>
                   <select id="server" name="settings.server">
-                    <option value="flask" {% if config['settings']['server'].lower() == 'flask' %}selected{% endif %}>Flask</option>
-                    <option value="werkzeug" {% if config['settings']['server'].lower() == 'werkzeug' %}selected{% endif %}>Werkzeug</option>
+                    <option value="flask" {% if config['settings']['server'].lower() == 'flask' %}selected{% endif %}>Flask (app.run)</option>
+                    <option value="werkzeug" {% if config['settings']['server'].lower() == 'werkzeug' %}selected{% endif %}>Werkzeug (make_server)</option>
                   </select>
                 </div>
 

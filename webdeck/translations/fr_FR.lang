@@ -190,6 +190,8 @@ authorize_windows_firewall=Autoriser WebDeck via le pare feu windows
 automatic_firewall_bypass=Contournement automatique du pare-feu au démarrage
 fix_stop_soundboard=Correction du bouton stop soundboard (peut être instable)
 
+server=Serveur
+
 themes_menu_title=Liste des thèmes
 random_bg_menu_title=Liste d'arrière-plans aléatoires
 

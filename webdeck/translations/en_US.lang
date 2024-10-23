@@ -190,6 +190,8 @@ authorize_windows_firewall=Authorize WebDeck via Windows Firewall
 automatic_firewall_bypass=Automatic firewall bypass at startup
 fix_stop_soundboard=Fix stop soundboard button issue (may be unstable)
 
+server=Server
+
 themes_menu_title=Themes list
 random_bg_menu_title=Random backgrounds list
 

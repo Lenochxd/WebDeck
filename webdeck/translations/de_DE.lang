@@ -190,6 +190,8 @@ authorize_windows_firewall=WebDeck über die Windows-Firewall autorisieren
 automatic_firewall_bypass=Automatische Umgehung der Firewall beim Starten
 fix_stop_soundboard= Behebt das Problem mit der Schaltfläche zum Anhalten des Soundboards (kann instabil sein)
 
+server=Server
+
 themes_menu_title=Themenliste
 random_bg_menu_title=Zufällige Hintergründe Liste
 

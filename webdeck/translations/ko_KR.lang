@@ -190,6 +190,8 @@ authorize_windows_firewall=WebDeck을 통해 Windows 방화벽 인증
 automatic_firewall_bypass=시작 시 자동 방화벽 우회
 fix_stop_soundboard=사운드보드 중지 버튼 문제 수정 ( 불안정할 수 있음 )
 
+server=서버
+
 themes_menu_title=테마 목록
 random_bg_menu_title=무작위 배경 목록
 
