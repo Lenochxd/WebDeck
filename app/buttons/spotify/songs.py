@@ -18,6 +18,7 @@ def save(sp):
             log.success(f"Saved track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
     else:
         log.warning("No track currently playing.")
+        raise RuntimeError("spotify_no_track_playing_error")
         
         
 def play(sp, song_name):

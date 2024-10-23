@@ -10,7 +10,7 @@ def manage(sp, message):
         device_id = playback_info["device"]["id"]
     else:
         log.warning("No active devices on Spotify found.")
-        return
+        raise RuntimeError(text("spotify_no_active_device_error"))
 
     # Get the current volume
     current_volume = playback_info["device"]["volume_percent"]

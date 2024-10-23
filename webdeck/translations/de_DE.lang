@@ -81,6 +81,8 @@ obs_no_recording_is_paused=Keine Aufzeichnung ist pausiert.
 spotify_not_initialized=Spotify ist nicht initialisiert. Bitte überprüfen Sie, ob die 'Client ID' und das 'Client Secret' korrekt eingestellt sind.
 spotify_apply_volume_error=Fehler, Volumen kann nicht angewendet werden
 spotify_volume_prenium_error=Fehler, Volumen kann nicht angewendet werden, da Spotify Prenium erforderlich ist
+spotify_no_active_device_error=Kein aktives Spotify-Gerät gefunden. Bitte stellen Sie sicher, dass Spotify läuft und aktiv ist.
+spotify_no_track_playing_error=Kein Titel wird gerade abgespielt.
 
 
 // -- Success messages --
