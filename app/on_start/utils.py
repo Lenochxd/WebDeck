@@ -13,6 +13,7 @@ from app.updater import check_files, check_for_updates
 from app.utils.global_variables import set_global_variable
 from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
+from app.utils.logger import log
 
 
 
@@ -153,7 +154,7 @@ def check_config_themes(config):
         installed_themes = config["front"]["themes"]
         new_themes = [theme for theme in themes if not any(theme.endswith(name) for name in installed_themes)]
         if new_themes:
-            print("new themes:", new_themes)
+            log.debug(f"New themes found: {new_themes}")
             config["front"]["themes"].extend(iter(new_themes))
 
     # Check for deleted themes
@@ -306,7 +307,7 @@ def fix_vlc_cache():
         try:
             subprocess.run(command, shell=True, check=True)
         except Exception as e:
-            print(f"Failed to execute VLC cache generation command: {e}")
+            log.exception(e, "Failed to execute VLC cache generation command")
 
 
 

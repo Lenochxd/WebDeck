@@ -1,3 +1,6 @@
+from app.utils.logger import log
+
+
 def save(sp):
     # Get information about the user's currently playing track
     track_info = sp.current_playback()
@@ -9,12 +12,12 @@ def save(sp):
         is_saved = sp.current_user_saved_tracks_contains(tracks=[track_id])[0]
         if is_saved:
             sp.current_user_saved_tracks_delete(tracks=[track_id])
-            print(f"Removed track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
+            log.success(f"Removed track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']} from saved tracks")
         else:
             sp.current_user_saved_tracks_add(tracks=[track_id])
-            print(f"Saved track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
+            log.success(f"Saved track {track_info['item']['name']} by {track_info['item']['artists'][0]['name']}")
     else:
-        print("No track currently playing.")
+        log.warning("No track currently playing.")
         
         
 def play(sp, song_name):
@@ -23,4 +26,4 @@ def play(sp, song_name):
         track_uri = results["tracks"]["items"][0]["uri"]
         sp.start_playback(uris=[track_uri])
     else:
-        print(f"No track found for '{song_name}'")
+        log.error(f"No track found for '{song_name}'")

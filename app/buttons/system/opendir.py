@@ -1,6 +1,7 @@
 import os
 import sys
 from subprocess import Popen
+from app.utils.logger import log
 
 
 def opendir(message):
@@ -29,6 +30,6 @@ def opendir(message):
         path = f"C:/.Code/WebDeck/{path}"
     
     path = path.replace('/', '\\')
-    print(path)
+    log.debug(f"Opening directory: {path}")
     Popen(f'explorer "{path}"')
     # os.startfile(path)

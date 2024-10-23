@@ -4,6 +4,7 @@ import threading
 
 from .devices import get_device
 from app.utils.load_config import load_config
+from app.utils.logger import log
 
 
 sb_on = True
@@ -41,14 +42,14 @@ def soundboard():
             break
 
     if mic_index is None:
-        print("Cannot find microphone.")
+        log.debug("Cannot find microphone.")
     else:
-        print(f"Microphone '{microphone_name}' found at index {mic_index}")
+        log.debug(f"Microphone '{microphone_name}' found at index {mic_index}")
 
     if output_device is None:
-        print("Cannot find speakers.")
+        log.debug("Cannot find speakers.")
     else:
-        print(f"Speaker '{output_name}' found at index {output_device}")
+        log.debug(f"Speaker '{output_name}' found at index {output_device}")
 
     stream_in = None
     stream_out = None
@@ -59,8 +60,8 @@ def soundboard():
     output_device_info = audio.get_device_info_by_index(output_device)
     output_channels = input_device_info["maxInputChannels"]
 
-    print(f"i: {input_device_info}")
-    print(f"o: {output_device_info}")
+    log.debug(f"i: {input_device_info}")
+    log.debug(f"o: {output_device_info}")
 
     stream_in = audio.open(
         format=pyaudio.paInt16,
@@ -78,7 +79,7 @@ def soundboard():
         output_device_index=output_device,
     )
 
-    print("soundboard: ON")
+    log.info("Soundboard is now active and streaming audio.")
 
     try:
         while sb_on:
@@ -87,7 +88,7 @@ def soundboard():
     except KeyboardInterrupt:
         pass
     finally:
-        print("Stopping soundboard ...")
+        log.debug("Stopping soundboard ...")
 
         try:
             if stream_in is not None:
@@ -101,6 +102,7 @@ def soundboard():
             restart()
 
         audio.terminate()
+        log.info("Soundboard stopped.")
 
 
 def stop():
@@ -116,7 +118,7 @@ def restart():
     time.sleep(0.2)
     soundboard_thread = threading.Thread(target=soundboard, daemon=True)
     soundboard_thread.start()
-    print("Soundboard thread revived")
+    log.debug("Soundboard thread revived")
 
 
 # mic thread

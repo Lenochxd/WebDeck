@@ -1,4 +1,5 @@
 from app.utils.show_error import show_error
+from app.utils.logger import log
 
 
 def play(sp, playlist_name):
@@ -10,7 +11,7 @@ def play(sp, playlist_name):
             sp.start_playback(context_uri=playlist_uri)
             break
     else:
-        print(f"Playlist '{playlist_name}' not found.")
+        log.error(f"Playlist '{playlist_name}' not found.")
         
         
 def manage(sp, message, playlist_name):
@@ -30,13 +31,15 @@ def manage(sp, message, playlist_name):
 
             if track_uri in track_uris:
                 sp.playlist_remove_all_occurrences_of_items(playlist_id, [track_uri])
-                print("The track has been removed from the playlist.")
+                log.success("The track has been removed from the playlist.")
             else:
                 sp.playlist_add_items(playlist_id, [track_id])
-                print("The track has been added to the playlist.")
+                log.success("The track has been added to the playlist.")
                 
         elif "add_to_playlist" in message:
             sp.playlist_add_items(playlist_id, [track_id])
+            log.success("The track has been added to the playlist.")
             
         elif "remove_from_playlist" in message:
             sp.playlist_remove_all_occurrences_of_items(playlist_id, [track_uri])
+            log.success("The track has been removed from the playlist.")

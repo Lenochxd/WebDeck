@@ -1,6 +1,7 @@
 import sys
 import subprocess
 from win32com.client import Dispatch
+from .logger import log
 
 def fix_firewall_permission():
     command = [
@@ -17,6 +18,7 @@ def fix_firewall_permission():
         "Allow",
     ]
     subprocess.run(command)
+    log.info("Firewall permission should be fixed.")
     
 def check_firewall_permission():
     try:
@@ -26,11 +28,11 @@ def check_firewall_permission():
 
         for app in authorized_applications:
             if app.ProcessImageFileName.lower() == sys.executable.lower():
-                print(f"The application ({sys.executable}) has permission to pass through the firewall.")
+                log.debug(f"The application ({sys.executable}) has permission to pass through the firewall.")
                 return True
 
-        print(f"The application ({sys.executable}) does not have permission to pass through the firewall.")
+        log.debug(f"The application ({sys.executable}) does not have permission to pass through the firewall.")
         return False
     except Exception as e:
-        print(f"Error checking firewall : {e}")
+        log.exception(e, "Error checking firewall permissions.")
         return True

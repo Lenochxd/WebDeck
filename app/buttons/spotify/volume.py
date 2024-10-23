@@ -1,4 +1,5 @@
 from app.utils.languages import text
+from app.utils.logger import log
 
 def manage(sp, message):
     # Get the current playback information
@@ -8,12 +9,12 @@ def manage(sp, message):
     if playback_info and playback_info["is_playing"] and playback_info["device"]:
         device_id = playback_info["device"]["id"]
     else:
-        print("No active devices on Spotify found.")
+        log.warning("No active devices on Spotify found.")
         return
 
     # Get the current volume
     current_volume = playback_info["device"]["volume_percent"]
-    print(f"Current volume: {current_volume}")
+    log.debug(f"Current spotify volume: {current_volume}")
 
     if "-" in message:
         try:
@@ -26,20 +27,20 @@ def manage(sp, message):
         except ValueError:
             target_volume = current_volume + 10
     elif "set" in message:
-        try:
-            target_volume = int(message.replace("/spotify volume set", ""))
-        except Exception as e:
-            print(f"{text('spotify_apply_volume_error')}: {e}")
-            return
+        target_volume = int(message.replace("/spotify volume set", ""))
 
     target_volume = max(0, min(100, target_volume))
     try:
         sp.volume(target_volume, device_id=device_id)
     except Exception as e:
-        print(f"{text('spotify_volume_prenium_error')}: {e}")
-        return
+        if "premium" in str(e).lower():
+            log.exception(e, "Unable to apply volume because Spotify Prenium is required.")
+            raise Exception(f"{text('spotify_volume_prenium_error')}")
+        else:
+            log.exception(e, message="Error while setting the spotify volume.")
+            raise Exception(f"{text('spotify_apply_volume_error')}: {e}")
 
     # Get the updated volume
     playback_info = sp.current_playback()
     current_volume = playback_info["device"]["volume_percent"]
-    print(f"Updated volume: {current_volume}")
+    log.debug(f"Updated spotify volume: {current_volume}")

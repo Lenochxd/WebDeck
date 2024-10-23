@@ -17,6 +17,7 @@ from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
 from .utils.load_config import get_port
 from .utils.languages import text, get_languages_info, get_language, set_default_language
+from .utils.logger import log
 
 
 def reload_config():
@@ -134,7 +135,7 @@ def show_qrcode():
     window.mainloop()
 
 def generate_menu(language, server_status=1):
-    print('NEW STATUS: ', server_status)
+    log.info(f"Server status updated: {server_status}")
 
     server_status_text = {
         0: text('server_loading'),

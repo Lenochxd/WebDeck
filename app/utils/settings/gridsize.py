@@ -1,3 +1,6 @@
+from ..logger import log
+
+
 def create_matrix(config):
     matrix = []
     for folder_count, (folder_name, folder_content) in enumerate(
@@ -52,7 +55,7 @@ def update_gridsize(config, new_height, new_width):
         # if the height has decreased
         if old_height > new_height:
             difference = old_height - new_height
-            print("height decreased")
+            log.debug("gridsize: Height decreased")
             for count, _ in enumerate(range(difference), start=1):
                 for folder_count, folder in enumerate(matrix):
                     for row_count, row in enumerate(reversed(folder)):
@@ -86,7 +89,7 @@ def update_gridsize(config, new_height, new_width):
                                     if x == True:
                                         break
                                 if x == False:
-                                    print("NOT ENOUGH SPACE")
+                                    log.debug("gridsize: NOT ENOUGH SPACE")
                         folder.pop(-1)
 
     # if width has changed
@@ -108,7 +111,7 @@ def update_gridsize(config, new_height, new_width):
 
         if new_width < old_width:
             difference = old_width - new_width
-            print("width decreased")
+            log.debug("gridsize: Width decreased")
             for count, _ in enumerate(range(difference), start=1):
                 for folder in matrix:
                     for col_count in range(len(folder[0])):
@@ -140,9 +143,9 @@ def update_gridsize(config, new_height, new_width):
                                 if element_to_del == 0:
                                     break
                         if element_to_del > 0:
-                            print("NOT ENOUGH SPACE")
+                            log.debug("gridsize: NOT ENOUGH SPACE")
 
     config = unmatrix(config, matrix)
-    print(old_height, new_height)
-    print(old_width, new_width)
+    log.success("Grid size updated successfully")
+    log.info(f"Old grid size: {old_height}x{old_width}, New grid size: {new_height}x{new_width}")
     return config

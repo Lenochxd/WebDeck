@@ -2,6 +2,7 @@ from obswebsocket import obsws
 
 from app.utils.global_variables import get_global_variables
 from app.utils.languages import text
+from app.utils.logger import log
 
 import app.buttons.obs.scenes as scene
 import app.buttons.obs.recording as recording
@@ -22,11 +23,15 @@ def handle_command(message):
         obs.connect()
     except Exception as e:
         if "10061" in str(e):
-            e = text("obs_error_10061")
+            log.exception(e, "Failed connection to obs: The websocket server cannot be found.", log_traceback=False)
+            error = text("obs_error_10061")
         elif "password may be inco" in str(e):
-            e = text("obs_error_incorrect_password")
+            log.exception(e, "Failed connection to obs: Password may be incorrect.", log_traceback=False)
+            error = text("obs_error_incorrect_password")
+        else:
+            error = str(e)
 
-        raise ConnectionError(f"{text('obs_failed_connection_error').replace('.','')}: {e}")
+        raise ConnectionError(f"{text('obs_failed_connection_error').replace('.','')}: {error}")
 
 
     if message.startswith("/obs_toggle_rec"):
@@ -78,9 +83,9 @@ def handle_command(message):
         hotkey = message.split(' ')[-1]
         result = obs.call(obs.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
         if "failed" in str(result):
-            print("ERROR:      ", result)
+            log.error(f"Failed to trigger hotkey '{hotkey}': {result}")
             raise RuntimeError(f"{text('failed')} :/")
-        print("Hotkey triggered successfully.")
+        log.success(f"Hotkey triggered '{hotkey}' successfully.")
 
 
     obs.disconnect()

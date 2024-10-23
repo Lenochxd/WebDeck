@@ -5,14 +5,18 @@ import traceback
 import tkinter as tk
 from tkinter import messagebox
 from .languages import text
+from .logger import log
 
 
 def show_error(message=None, title="WebDeck Error", error=True, exception=None) -> None:
     if exception is not None:
+        log.exception(exception, message, expected=False)
         if message is not None:
             message = f"{message}\n\n\n{str(exception)}\n\n{traceback.format_exc()}"
         else:
             message = f"{str(exception)}\n\n{traceback.format_exc()}"
+    else:
+        log.error(message)
     
     if error:
         root = tk.Tk()
@@ -45,5 +49,4 @@ def show_error(message=None, title="WebDeck Error", error=True, exception=None) 
         root.destroy()
     else:
         ctypes.windll.user32.MessageBoxW(None, message, title, 0)
-    
-    print(message)
+        

@@ -14,6 +14,7 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
 
 
+from app.utils.logger import log
 from app.utils.global_variables import get_global_variable
 from app.utils.kill_nircmd import kill_nircmd
 
@@ -40,7 +41,7 @@ def handle_command(message=None):
         fix_firewall_permission()
 
     if not message.strip().replace("\n", "").replace("\r", "") == "":
-        print("command recieved: " + message)
+        log.info(f"Command received: {message}")
     if message.startswith("/debug-send"):
         data = {"message": "Hello, world!"}
         data = json.loads(message.replace("'", '"').replace("/debug-send", ""))
@@ -56,9 +57,9 @@ def handle_command(message=None):
         if device is not None:
             asked_device.append(device)
         
-        print(asked_device)
+        log.debug(f"Asked device: {asked_device}")
         usage = get_usage(False, asked_device)
-        print(usage)
+        log.debug(f"Usage data: {usage}")
         return jsonify(usage)
 
     elif message.startswith("/stop_sound"):
@@ -120,9 +121,9 @@ def handle_command(message=None):
         )
         hwnd = window.get_by_name(window_name)
         if hwnd:
-            print(f"Window '{window_name}' found with handle : {hwnd}")
+            log.debug(f"Window '{window_name}' found with handle : {hwnd}")
         else:
-            print(f"Window '{window_name}' not found")
+            log.debug(f"Window '{window_name}' not found")
         try:
             window.close(hwnd)
         except:
@@ -155,7 +156,7 @@ def handle_command(message=None):
         for session in sessions:
             volume = session._ctl.QueryInterface(ISimpleAudioVolume)
             if session.Process and session.Process.name().lower() == command[1].lower():
-                print("Current volume: %s" % volume.GetMasterVolume())
+                log.debug("Current volume: %s" % volume.GetMasterVolume())
                 old_volume = volume.GetMasterVolume()
                 old_volume_percent = round(old_volume * 100)
 
@@ -182,7 +183,7 @@ def handle_command(message=None):
                 target_volume_float = target_volume / 100.0
 
                 volume.SetMasterVolume(target_volume_float, None)
-                print("New volume: %s" % volume.GetMasterVolume())
+                log.debug("New volume: %s" % volume.GetMasterVolume())
 
         comtypes.CoUninitialize()
 
@@ -205,7 +206,7 @@ def handle_command(message=None):
             subprocess.Popen(f"taskkill /f /im {hwnd}", shell=True)
             subprocess.Popen(f"taskkill /f /im {hwnd}.exe", shell=True)
 
-    # TODO: fix /firstplan
+    # FIXME: fix /firstplan
     elif message.startswith("/firstplan"):
         window_name = message.replace("/firstplan", "").strip()
 
@@ -213,9 +214,10 @@ def handle_command(message=None):
         if hwnd:
             win32gui.SetForegroundWindow(hwnd)
             keyboard.press("ENTER")
-            print(f"Window '{window_name}' brought to the foreground")
+            log.success(f"Window '{window_name}' has been brought to the foreground")
         else:
-            print(f"Window '{window_name}' not found")
+            log.error(f"Window '{window_name}' not found")
+            raise RuntimeError(f"Window '{window_name}' not found")
 
     elif message.startswith("/setmicrophone"):
         audio.set_microphone_by_name(message.replace("/setmicrophone", "").strip())

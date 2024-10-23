@@ -1,5 +1,6 @@
 import spotipy.util as util
 import json
+from app.utils.logger import log
 
 
 def initialize():
@@ -9,7 +10,7 @@ def initialize():
 
     # Check if client id and client secret are set in the config
     if not config["settings"]["spotify_api"].get("client_id") or not config["settings"]["spotify_api"].get("client_secret"):
-        print("ERROR: Spotify client ID and/or client secret not set in the config.")
+        log.warning("Spotify client ID and/or client secret not set in the config.")
         return None
 
     # Set up the Spotify API client
@@ -24,4 +25,4 @@ def initialize():
             spotify_redirect_uri,
         )
     except Exception as e:
-        print(f'ERROR: Failed to start spotipy, {e}')
+        log.exception(e, "Failed to start spotipy")

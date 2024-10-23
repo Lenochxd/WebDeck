@@ -10,6 +10,9 @@ import ctypes
 import zipfile
 from tqdm import tqdm
 from app.utils.show_error import show_error
+from app.utils.logger import Logger
+
+log = Logger(from_updater=True)
 
 
 def get_base_dir():
@@ -55,9 +58,9 @@ def check_files():
                     if compare_versions(update_limit, current_version) > 0:
                         try:
                             os.remove(file_to_delete)
-                            print(f'Deleted {file_to_delete}')
+                            log.info(f'UPDATER: Deleted {file_to_delete}')
                         except Exception as e:
-                            print(f'Error deleting {file_to_delete}: {e}')
+                            log.exception(e, f"UPDATER: Error deleting {file_to_delete}")
 
             # Handle moved or renamed files
             files_to_move = version.get("moved_files", []) + version.get("renamed_files", [])
@@ -70,7 +73,7 @@ def check_files():
                     try:
                         os.makedirs(os.path.dirname(destination), exist_ok=True)
                         shutil.move(source, destination)
-                        print(f'Moved {source} -> {destination}')
+                        log.info(f'Moved {source} -> {destination}')
                     except FileNotFoundError:
                         print(f'File not found: {source}')
 

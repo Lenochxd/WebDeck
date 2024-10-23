@@ -6,6 +6,7 @@ import pynvml
 
 from app.utils.merge_dicts import merge_dicts
 from .asked_devices import get_asked_devices
+from app.utils.logger import log
 
 
 with open(".config/config.json", encoding="utf-8") as f:
@@ -58,7 +59,8 @@ def get_usage(
                         computer_info["disks"][disk_name]["usage_percent"] = disk_usage.percent
                         
             except Exception as e:
-                print("Usage Disks Error:", e)
+                pass
+                # log.exception(e, "Usage Disks Error", log_traceback=False)
                 
     # Network
     if get_all or any(item[0] == 'network' for item in asked_devices):

@@ -1,5 +1,6 @@
 import spotipy
 from app.utils.languages import text
+from app.utils.logger import log
 
 import app.buttons.spotify.albums as album
 import app.buttons.spotify.songs as song
@@ -17,6 +18,7 @@ def handle_command(message):
     if not spotify_token:
         spotify_token = initialize()
         if not spotify_token:
+            log.error("Spotify not initialized, check if your credentials are correct.")
             raise RuntimeError(text("spotify_not_initialized"))
     
     sp = spotipy.Spotify(auth=spotify_token)

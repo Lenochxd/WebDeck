@@ -4,6 +4,7 @@ from flask import jsonify
 
 from app.utils.load_config import load_config
 from app.utils.languages import text
+from app.utils.logger import log
 
 from .devices import get_device
 from .ffmpeg import silence_path
@@ -49,21 +50,20 @@ def get_params(msg):
 
 
 def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=False):
-
     global cable_input_device, player_vbcable, player_local
     
     if not vlc_installed:
-        print("VLC is not installed!")
+        log.error("VLC is not installed!")
         raise RuntimeError(text("vlc_not_installed_error"))
     else:
         if config["settings"]["fix_stop_soundboard"]:
             file_path = silence_path(file_path)
             if file_path == False:
+                log.error("FFmpeg is not installed!")
                 raise RuntimeError(text("ffmpeg_not_installed_error"))
             
-        print(f"Play: {file_path}  -  volume:{sound_volume}\r\n")
-        print(len(player_vbcable))
-        print(player_vbcable)
+        log.debug(f"Current VLC player for vbcable: {player_vbcable}")
+        log.debug(f"Current VLC player for local: {player_local}")
 
         p_id = max(
             len(player_vbcable.keys()), len(player_local.keys())
@@ -106,15 +106,13 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
                     lambda x: remove_player(2, p_id),
                 )
         
-        print('local:', player_local)
-        print('vbcab:', player_vbcable)
-        
+        log.success(f"Playing sound from file: {file_path} at volume: {sound_volume * 100}%")
         return jsonify({"success": True})
-    
+
 
 def stopsound():
     if not vlc_installed:
-        print("VLC is not installed!")
+        log.error("VLC is not installed!")
         raise RuntimeError(text("vlc_not_installed_error"))
     else:
         global player_vbcable, player_local
@@ -127,11 +125,12 @@ def stopsound():
                 last_key = list(player_local.keys())[-1]
                 last_value = player_local[last_key]
         except IndexError:
+            log.notice("There are no sounds actually playing")
             return jsonify({"success": True, "message": "There are no sounds actually playing"})
         
         while str(last_value.get_state()) == "State.Playing":
-            print(player_vbcable)
-            print(player_local)
+            log.debug(f"Current VLC player for vbcable: {player_vbcable}")
+            log.debug(f"Current VLC player for local: {player_local}")
             try:
                 for p_id, player in player_vbcable.items():
                     try:
@@ -150,11 +149,13 @@ def stopsound():
                         pass
                 break
             except RuntimeError as e:
-                print("RT error:", e)
+                log.exception(e, "Runtime error occurred while stopping sound, passing...")
                 ...
             
         player_vbcable.clear()
         player_local.clear()
+        
+        log.success("Soundboard: All sounds stopped")
         return jsonify({"success": True})
     
     
@@ -167,5 +168,7 @@ def remove_player(sb_type, p_id):
             del player_local[p_id]
         else:
             del p_id
+        
+        # log.debug(f"Soundboard: Player {p_id} removed")
     except KeyError:
         pass

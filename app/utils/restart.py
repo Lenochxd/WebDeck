@@ -2,6 +2,7 @@ import os
 import sys
 import json
 from .exit import exit_program
+from .logger import log
 
 
 def restart_program():
@@ -22,4 +23,4 @@ def restart_program():
             os.execl(python, f'"{python}"', *sys.argv)
         exit_program()
     except Exception as e:
-        print(f"Error while restarting the program: {e}")
+        log.exception(e, "Error while restarting the program")

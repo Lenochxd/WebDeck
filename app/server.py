@@ -6,6 +6,7 @@ import os
 import sys
 import ipaddress
 import ast
+import logging
 
 # Third-party library imports
 from PIL import Image
@@ -16,7 +17,6 @@ from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
 from win32com.client import Dispatch
 import easygui
-import requests
 
 # WebDeck imports
 from .on_start import on_start, check_config_update
@@ -46,11 +46,12 @@ from .buttons import handle_command as command
 
 change_server_state(0)  # Tray icon: server loading
 
-if getattr(sys, "frozen", False):
+if getattr(sys, "frozen", False): # FIXME: This is a workaround for the cx_freeze issue
     app = Flask(__name__, template_folder='../../../templates', static_folder='../../../static')
 else:
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
+logging.getLogger("werkzeug").disabled = True
 app.jinja_env.globals.update(get_audio_devices=get_audio_devices)
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
@@ -74,11 +75,10 @@ def check_local_network():
     ip_local = ipaddress.IPv4Network(local_ip + '/' + netmask, strict=False)
     ip_remote = ipaddress.IPv4Network(remote_ip + '/' + netmask, strict=False)
     
-    # print(f"local IP is: {local_ip}")
-    # print(f"remote: {remote_ip}")
-    # print(f"IP1: {ip_local} == IP2: {ip_remote} {ip_local == ip_remote}")
-    
-    # print(f'new connection established: {remote_ip}')
+    # log.debug(f"Local IP is: {local_ip}")
+    # log.debug(f"Remote IP is: {remote_ip}")
+    # log.debug(f"IP1: {ip_local} == IP2: {ip_remote} -> {ip_local == ip_remote}")
+    # log.info(f"New connection established from: {remote_ip}")
     
     if ip_remote != ip_local:
         # check if in allowed network list in config
@@ -99,10 +99,7 @@ def after_request(response):
 
 @app.context_processor
 def utility_functions():
-    def print_in_console(message):
-        print(message)
-
-    return dict(mdebug=print_in_console)
+    return dict(mdebug=log.debug)
 
 
 # Function to get all the svgs from the theme file, so we can load them during the loading screen
@@ -160,8 +157,8 @@ def home():
                         )
                         img_rotated.save(random_bg_90_path)
                     except Exception as e:
-                        print(e)
-    print(f"random background: {random_bg}")
+                        log.exception(e, f"Failed to rotate image {random_bg_path}")
+    log.debug(f"Selected random background image: {random_bg}")
 
     themes = [
         file_name
@@ -272,6 +269,7 @@ def saveconfig():
         set_default_language(new_config["settings"]["language"])
         change_tray_language(new_config["settings"]["language"])
 
+    log.success("Config saved successfully")
     return jsonify({"success": True})
 
 
@@ -298,6 +296,7 @@ def complete_save_config():
     with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
 
+    log.success("Config saved successfully")
     return jsonify({"success": True})
 
 
@@ -312,12 +311,12 @@ def save_single_button():
         config = json.load(f)
 
     button_folderName = list(config["front"]["buttons"])[button_folder]
-    print(
+    log.debug(
         "FETCH /save_single_button -> before :"
         + str(config["front"]["buttons"][button_folderName][button_index])
     )
     config["front"]["buttons"][button_folderName][button_index] = button_content
-    print(
+    log.debug(
         "FETCH /save_single_button -> after  :"
         + str(config["front"]["buttons"][button_folderName][button_index])
     )
@@ -326,6 +325,7 @@ def save_single_button():
         json.dump(config, json_file, indent=4)
         set_global_variable("config", config)
 
+    log.success("Button saved successfully")
     return jsonify({"success": True})
 
 
@@ -353,6 +353,8 @@ def save_buttons_only():
     config = create_folders(config, folders_to_create)
     folders_to_create = []
     config = save_config(config)
+    
+    log.success("Buttons saved successfully")
     return jsonify({"success": True})
 
 
@@ -400,9 +402,10 @@ def upload_filepath():
 
 @app.route("/upload_file", methods=["POST"])
 def upload_file():
-    print("request:", request)
-    print("request.files:", request.files)
+    log.debug(f"request: {request}")
+    log.debug(f"request.files: {request.files}")
     if "file" not in request.files:
+        log.error("No files were found in the request.")
         return jsonify({"success": False, "message": text("no_files_found_error")})
 
     uploaded_file = request.files["file"]
@@ -417,8 +420,9 @@ def upload_file():
             file_name, extension = os.path.splitext(os.path.basename(save_path))
             img_rotated.save(f".config/user_uploads/{file_name}-90{extension}")
         except Exception as e:
-            print(e)
+            log.exception(e, "Failed to rotate image during upload")
 
+    log.success(f"File '{uploaded_file.filename}' uploaded successfully")
     return jsonify({"success": True, "message": text("downloaded_successfully")})
 
 
@@ -436,9 +440,11 @@ def create_folder():
         folders_to_create.append(
             {"name": f"{folder_name}", "parent_folder": f"{parent_folder_name}"}
         )
+        log.info(f"Folder '{folder_name}' is in the queue to be created")
         return jsonify({"success": True})
     else:
-        return jsonify({"success": False})
+        log.error("Folder already exists")
+        return jsonify({"success": False, "message": "Folder already exists"})
 
 
 # https://stackoverflow.com/a/70555525/17100464
@@ -456,12 +462,13 @@ def get_config_file(directory, filename):
         else:
             return make_response(f"File '{filename}' not found.", 404)
     except Exception as e:
+        log.exception(e, f"An error occurred while trying to get the file '{file_path}'")
         return make_response(f"Error: {str(e)}", 500)
 
 
 @socketio.on("connect")
 def socketio_connect():
-    print("Socketio client connected")
+    log.info("Socketio client connected")
     with open(".config/config.json", encoding="utf-8") as f:
         config = json.load(f)
 
@@ -474,6 +481,7 @@ def send_data_socketio(message):
     try:
         result = command(message=message)
     except Exception as e:
+        log.exception(e, "An error occurred while handling a command")
         return jsonify({"success": False, "message": str(e)})
     
     if result is False:
@@ -488,6 +496,7 @@ def send_data_route():
     try:
         result = command(message=request.get_json()["message"])
     except Exception as e:
+        log.exception(e, "An error occurred while handling a command")
         return jsonify({"success": False, "message": str(e)})
     
     if result is False:
@@ -504,7 +513,7 @@ if (
 ):
     fix_firewall_permission()
 
-print('local_ip: ', local_ip)
+log.info(f"Local IP address detected: {local_ip}")
 
 def run_server():
     change_server_state(1)

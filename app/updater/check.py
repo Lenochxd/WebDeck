@@ -8,6 +8,7 @@ import requests
 
 from app.utils.show_error import show_error
 from app.utils.languages import text
+from app.utils.logger import log
 from .updater import compare_versions, prepare_update_directory
 
 
@@ -29,13 +30,14 @@ def check_for_updates():
         latest_version = latest_release["tag_name"].replace('v', '')
 
         if compare_versions(latest_version, current_version) > 0:
-            print(f"New version available: {latest_version}")
+            log.info(f"UPDATER: New version available: {latest_version}")
             prepare_update_directory()
             os.chdir("update")
             subprocess.Popen(["update/update.exe"])
             sys.exit()
 
     except Exception as e:
+        log.exception(e, "UPDATER: Error occurred while checking for updates")
         show_error(f"{text('auto_update_error')} \n\n{text('error')}: {e}", title="WebDeck Updater Error")
 
 

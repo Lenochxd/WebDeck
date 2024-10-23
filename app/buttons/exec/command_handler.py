@@ -1,6 +1,7 @@
 import threading
 from subprocess import Popen
 from sys import platform
+from app.utils.logger import log
 
 from . import python as python_code
 from . import batch as batch_code
@@ -24,8 +25,7 @@ def python(message):
         ):
             # if it is stored directly in .config/user_uploads and not in C:\example
             python_file = f".config/user_uploads/{message}"
-            print(message)
-            print(python_file)
+            log.debug(f"Message: {message}, Python file: {python_file}")
             
             threads.append(threading.Thread(target=python_code.execute, args=(python_file,), daemon=True))
             threads[-1].start()
@@ -56,8 +56,7 @@ def batch(message):
         ):
             # if it is stored directly in .config/user_uploads and not in C:\example
             batch_file = f".config/user_uploads/{message}"
-            print(message)
-            print(batch_file)
+            log.debug(f"Message: {message}, Batch file: {batch_file}")
             
             threads.append(threading.Thread(target=batch_code.execute, args=(batch_file,), daemon=True))
             threads[-1].start()

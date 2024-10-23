@@ -1,3 +1,5 @@
+from ..logger import log
+
 def create_folders(config, folders_to_create):
     for folder in folders_to_create:
 
@@ -14,6 +16,6 @@ def create_folders(config, folders_to_create):
         for _ in range(void_count - 1):
             config["front"]["buttons"][folder["name"]].append({"VOID": "VOID"})
 
-        print("NEW FOLDER :", folder["name"])
+        log.info(f"Creating new folder: {folder['name']}")
     folders_to_create = []
     return config

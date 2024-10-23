@@ -1,6 +1,7 @@
 import os
 import importlib
 import shutil
+from ..logger import log
 
 
 modules = {}
@@ -39,7 +40,7 @@ def load_plugins(commands):
                         modules[module_name].WebDeckAddon.instance._dict_func,
                         modules[module_name].WebDeckAddon.instance._addon_name
                     )
-                    print('plugin name: ', plugin_name)
+                    log.info(f"Loaded plugin: {plugin_name}")
 
                     all_func[plugin_name] = dict_func
                     dict_doc = {x: y._to_dict() for x, y in dict_doc.items()}
@@ -47,7 +48,7 @@ def load_plugins(commands):
                     commands[plugin_name] = dict_doc
                     
                 except Exception as e:
-                    print(f"Error importing module {module_name}: {e}")
+                    log.exception(e, f"Error importing module '{module_name}'")
                     continue
                 
     return commands, all_func

@@ -2,6 +2,7 @@ import json
 import pyperclip
 
 
+from app.utils.logger import log
 from app.utils.translate import translate
 from .get_arg import getarg
 from .get_color_name import get_color_name
@@ -24,16 +25,18 @@ def handle_command(message):
     except AttributeError:
         remove_hex_sharp = None
 
-    print("------------------------------------------")
-    print(color)
-    print("------------------------------------------")
-    print(target_language)
-    print(selectedtypes)
-    print(typestocopy)
-    print(copy_type)
-    print(display_type)
-    print(remove_hex_sharp)
-    print("------------------------------------------")
+    log.debug(
+        f"------------------------------------------\n"
+        f"{color}\n"
+        f"------------------------------------------\n"
+        f"{target_language}\n"
+        f"{selectedtypes}\n"
+        f"{typestocopy}\n"
+        f"{copy_type}\n"
+        f"{display_type}\n"
+        f"{remove_hex_sharp}\n"
+        f"------------------------------------------"
+    )
 
     with open("webdeck/colors.json", "r", encoding="utf-8") as f:
         colorsjson = json.load(f)

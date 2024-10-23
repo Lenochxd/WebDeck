@@ -1,4 +1,5 @@
 import pyaudio
+from ..logger import log
 
 def get_audio_devices(channels_type="input"):
     p = pyaudio.PyAudio()
@@ -22,13 +23,13 @@ def get_audio_devices(channels_type="input"):
                     ):
                         ok = False
                 if ok and not "microsoft - input" in device_info["name"].lower():
-                    print(f"Device {i}: {device_info['name']}")
+                    # log.debug(f"Device {i}: {device_info['name']}")
                     all_devices.append(device_info["name"])
         del ok
-        print(f"ALL: {len(all_devices)}")
-        print(p.get_default_output_device_info())
+        # log.debug(f"Total number of audio devices found: {len(all_devices)}")
+        # log.debug(f"Default output device info: {p.get_default_output_device_info()}")
     except Exception as e:
-        print(f"An error has occurred : {str(e)}")
+        log.exception(e, "An error has occurred while retrieving audio devices")
     finally:
         p.terminate()
     return all_devices

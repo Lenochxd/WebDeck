@@ -1,6 +1,7 @@
 import psutil
 import sys
 import json
+from .logger import log
 
 
 def is_opened():
@@ -14,6 +15,7 @@ def is_opened():
             data = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         data = {}
+        log.error("temp.json not found or invalid, creating a new one")
 
     if data.get('allow_multiple_instances', False):
         data['allow_multiple_instances'] = False
@@ -21,7 +23,7 @@ def is_opened():
             with open('temp.json', 'w', encoding='utf-8') as file:
                 json.dump(data, file, ensure_ascii=False, indent=4)
         except Exception as e:
-            print(f"Error writing to temp.json: {e}")
+            log.exception(e, "Error writing to temp.json")
         return False
 
     # Check running processes

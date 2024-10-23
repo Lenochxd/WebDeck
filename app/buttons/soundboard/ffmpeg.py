@@ -5,6 +5,8 @@ import urllib.request
 import zipfile
 import subprocess
 import shutil
+from app.utils.logger import log
+
 
 def replace_last_element(string, old_element, new_element):
     # Find the last occurrence of the old element
@@ -17,7 +19,7 @@ def replace_last_element(string, old_element, new_element):
     else:
         # If the old element is not found, return the original string
         return string
-    
+
 
 def get_ffmpeg():
     if os.path.isfile("ffmpeg.exe"):
@@ -40,19 +42,19 @@ def get_ffmpeg():
                                 ffmpeg_path = sub_dir.joinpath("bin/ffmpeg.exe")
                                 # Check if the file exists
                                 if ffmpeg_path.exists():
-                                    print("Path found:", ffmpeg_path)
+                                    log.debug(f"ffmpeg path found: {ffmpeg_path}")
                                     return str(ffmpeg_path)
                         continue
                 continue
     except Exception as e:
-        print("FFMPEG: WinGet Error:", e)
+        log.exception(e, "FFMPEG: Error occurred during search for ffmpeg installation via WinGet")
     
     # Search for ffmpeg installation via webdeck servers
     if os.path.isfile("ffmpeg.exe"):
         return "ffmpeg.exe"
 
     try:
-        print("downloading ffmpeg using webdeck servers...")
+        log.info("FFMPEG: downloading ffmpeg using webdeck servers...")
         url = "https://bishokus.fr/dl_ffmpeg"
         urllib.request.urlretrieve(url, "ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
         
@@ -62,12 +64,12 @@ def get_ffmpeg():
         os.remove("ffmpeg-N-114554-g7bf85d2d3a-win64-gpl.zip")
         return "ffmpeg.exe"
     except Exception as e:
-        print("FFMPEG:", e)
+        log.exception(e, "FFMPEG: Error occurred while downloading ffmpeg using webdeck servers")
     
-        print("FFMPEG: downloading ffmpeg using winget...")
+        log.info("FFMPEG: downloading ffmpeg using winget...")
         subprocess.Popen("winget install ffmpeg", shell=True)
     
-    print("FFMPEG: not found.")
+    log.error("FFMPEG: not found.")
     return None
     
 
@@ -78,7 +80,7 @@ def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
     try:
         audio = AudioSegment.from_mp3(os.path.abspath(input_file))
     except FileNotFoundError as e:
-        print(e)
+        log.exception(e, "Error occurred while loading the audio file")
         ffmpeg_path = get_ffmpeg()
         
         if ffmpeg_path is not None and ffmpeg_path != "ffmpeg.exe":

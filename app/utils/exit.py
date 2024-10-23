@@ -3,6 +3,7 @@ import os
 import win32com.client
 import subprocess
 import signal
+from .logger import log
 
 
 def exit_program(force=False):
@@ -17,14 +18,15 @@ def exit_program(force=False):
         for process in processes:
             process_name = process.Properties_('Name').Value.lower().strip()
             if process_name in process_names_to_terminate:
-                print(f"Stopping process: {process.Properties_('Name').Value}")
+                log.debug(f"Stopping process: {process.Properties_('Name').Value}")
                 try:
                     result = process.Terminate()
                     if result == 0:
-                        print("Process terminated successfully.")
+                        log.success(f"Process terminated successfully: {process.Properties_('Name').Value}")
                     else:
                         subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
                 except Exception as e:
-                    print(f"Failed to terminate process {process_name}: {e}")
+                    log.exception(e, f"Failed to terminate process '{process_name}'")
 
+    log.info("Exiting WebDeck...")
     os.kill(os.getpid(), signal.SIGINT)
