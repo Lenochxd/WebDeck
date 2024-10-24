@@ -9,7 +9,7 @@
         "ko": "전체 화면"
       },
       "description": {
-        "en": "Enables or disables full screen mode on the device",
+        "en": "Toggle full screen mode on the device",
         "fr": "Active ou désactive le mode plein écran sur l'appareil",
         "ko": "제어장치의 전체 화면 모드를 활성화하거나 비활성화합니다."
       },
@@ -827,7 +827,7 @@
           "command": "/mediacontrol playpause",
           "args": [],
           "name": {
-            "en": "Play/pause toggle",
+            "en": "Toggle play/pause",
             "fr": "Basculer play/pause",
             "ko": "재생/일시정지 전환"
           }
@@ -2126,7 +2126,7 @@
         }
       }
     },
-    "Add current song to a playlist (removes if already)": {
+    "Toggle playlist inclusion": {
       "command": "/spotify add_or_remove",
       "args": [
         {
@@ -2137,22 +2137,22 @@
         }
       ],
       "name": {
-        "en": "Add or remove from playlist",
-        "fr": "Ajoute ou retire le son dans la playlist",
-        "ko": "플레이리스트에 추가 또는 제거"
+        "en": "Toggle playlist inclusion",
+        "fr": "Basculer l'inclusion dans la playlist",
+        "ko": "플레이리스트 포함 전환"
       },
       "description": {
-        "en": "Add current song to a playlist (removes if already)",
-        "fr": "Ajouter le son actuellement joué à la playlist et le retire si il y est déjà",
+        "en": "Add or remove the current song from the specified playlist",
+        "fr": "Ajoute ou retire la chanson actuelle de la playlist spécifiée",
         "ko": "현재 재생 중인 음악을 플레이리스트에 추가하고 이미 있는 경우 제거합니다."
       },
       "style": {
         "image": "add-to-playlist5.png",
         "image_size": "70%",
         "name": {
-          "en": "Add or remove",
-          "fr": "Ajouter dans la playlist",
-          "ko": "추가 또는 제거"
+            "en": "Toggle playlist inclusion",
+            "fr": "Basculer l'inclusion dans la playlist",
+            "ko": "플레이리스트 포함 전환"
         }
       }
     },
@@ -2216,18 +2216,18 @@
         }
       }
     },
-    "Follow current played artist (unfollow if already)": {
+    "Toggle follow artist": {
       "command": "/spotify follow_or_unfollow_artist",
       "args": [],
       "name": {
-        "en": "Follow or unfollow artist",
+        "en": "Toggle follow artist",
         "fr": "Suivre ou ne plus suivre l'artiste",
         "ko": "아티스트 팔로우 또는 언팔로우"
       },
       "description": {
-        "en": "Follow or unfollow the artist of the currently played song",
-        "fr": "Suivre ou ne plus suivre l'artiste du son actuellement joué",
-        "ko": "현재 재생 중인 음악의 아티스트를 팔로우하거나 언팔로우합니다."
+          "en": "Toggle following the artist of the currently playing song",
+          "fr": "Suivre ou ne plus suivre l'artiste de la chanson en cours de lecture",
+          "ko": "현재 재생 중인 음악의 아티스트를 팔로우하거나 언팔로우합니다."
       }
     },
     "Follow current played artist (doesn't unfollow if already)": {
