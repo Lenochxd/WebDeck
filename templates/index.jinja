@@ -1354,8 +1354,12 @@
             if (data.success === false) {
               showError(data.message);
             } else {
-              console.log(data);
-            }
+              if (data.message) {
+                showInfo(data.message);
+              } else {
+                console.log(data);
+              }
+          }
           })
           .catch(error => console.error(error));
       }
@@ -1377,7 +1381,11 @@
                       if (data.success === false) {
                         showError(data.message);
                       } else {
-                        console.log(data);
+                        if (data.message) {
+                          showInfo(data.message);
+                        } else {
+                          console.log(data);
+                        }
                       }
                     })
             .catch(error => console.error(error));
