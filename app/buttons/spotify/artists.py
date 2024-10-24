@@ -1,7 +1,7 @@
 from app.utils.logger import log
 
 
-def manage(sp, message, playback):
+def manage(sp, message):
     playback = sp.current_playback()
     artist_id = playback["item"]["artists"][0]["id"]
     artist_name = playback["item"]["artists"][0]["name"]
