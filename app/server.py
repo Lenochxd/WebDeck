@@ -12,6 +12,7 @@ import logging
 from PIL import Image
 from werkzeug.serving import make_server
 from flask import Flask, request, jsonify, render_template, send_file, make_response
+from flask.wrappers import Response
 from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
@@ -499,6 +500,13 @@ def send_data_socketio(message):
     
     if result is False:
         socketio.emit("json_data", {"success": False})
+    elif isinstance(result, Response):
+        response_data = {
+            "status_code": result.status_code,
+            "headers": dict(result.headers),
+            "data": result.get_json() if result.is_json else result.get_data(as_text=True)
+        }
+        socketio.emit("json_data", response_data)
     elif not isinstance(result, dict):
         socketio.emit("json_data", {"success": True})
     else:
@@ -514,6 +522,8 @@ def send_data_route():
     
     if result is False:
         return jsonify({"success": False})
+    elif isinstance(result, Response):
+        return result
     elif not isinstance(result, dict):
         return jsonify({"success": True})
     
