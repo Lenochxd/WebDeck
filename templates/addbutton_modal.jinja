@@ -243,8 +243,7 @@
                       {% set buttontext_style = 'style="color:' + config["front"]["names_color"] + ';"'%}
                     {% endif %}
                     <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" {{buttontext_style}}>
-                      {% set button_name = "" %}
-                      {% if command_value["style"]["name"] %}
+                        {% set button_name = "Button name" %}
                         {% if command_value["style"]["name"] is string %}
                           {% set button_name = command_value["style"]["name"] %}
                         {% elif command_value["style"]["name"][language] %}
@@ -254,7 +253,6 @@
                         {% elif command_value["style"]["name"][0] %}
                           {% set button_name = command_value["style"]["name"][0] %}
                         {% endif %}
-                      {% endif %}
                       {{ button_name }}
                     </p>
                   {# {% endif %} #}
@@ -268,6 +266,15 @@
                     
                     <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" >
                       {% set button_name = "Button name" %}
+                      {% if command_value["name"] is string %}
+                        {% set button_name = command_value["name"] %}
+                      {% elif command_value["name"][language] %}
+                        {% set button_name = command_value["name"][language] %}
+                      {% elif command_value["name"]["en"] %}
+                        {% set button_name = command_value["name"]["en"] %}
+                      {% elif command_value["name"][0] %}
+                        {% set button_name = command_value["name"][0] %}
+                      {% endif %}
                       {{ button_name }}
                     </p>
                 {% endif %}
