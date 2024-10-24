@@ -91,6 +91,9 @@ settings_save_success=설정 저장을 완료하였습니다.
 downloaded_successfully=파일 다운로드를 완료하였습니다.
 folder_created_successfully=폴더 생성을 완료하였습니다!
 
+spotify_follow_artist_success=%artist_name% 아티스트를 팔로우했습니다.
+spotify_unfollow_artist_success=%artist_name% 아티스트 팔로우를 취소했습니다.
+
 
 // -- Button configuration --
 add_a_button=버튼 추가

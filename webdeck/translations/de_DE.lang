@@ -91,6 +91,9 @@ settings_save_success=Einstellungen erfolgreich gespeichert.
 downloaded_successfully=Datei erfolgreich heruntergeladen.
 folder_created_successfully=Ordner erfolgreich erstellt!
 
+spotify_follow_artist_success=Abonniert %artist_name%.
+spotify_unfollow_artist_success=Deabonniert %artist_name%.
+
 
 // -- Button configuration --
 add_a_button=Hinzufügen einer Schaltfläche
