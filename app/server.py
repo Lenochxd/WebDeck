@@ -53,7 +53,10 @@ else:
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
 logging.getLogger("werkzeug").disabled = True
-app.jinja_env.globals.update(get_audio_devices=get_audio_devices)
+app.jinja_env.globals.update(
+    get_audio_devices=get_audio_devices,
+    mdebug=log.debug
+)
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
 app.config["SECRET_KEY"] = "secret!"
@@ -110,10 +113,6 @@ def after_request(response):
     if request.path != "/usage":
         log.httprequest(request, response)
     return response
-
-@app.context_processor
-def utility_functions():
-    return dict(mdebug=log.debug)
 
 
 # Function to get all the svgs from the theme file, so we can load them during the loading screen
