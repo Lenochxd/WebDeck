@@ -21,7 +21,16 @@ def handle_command(message):
             log.error("Spotify not initialized, check if your credentials are correct.")
             raise RuntimeError(text("spotify_not_initialized"))
     
-    sp = spotipy.Spotify(auth=spotify_token)
+    try:
+        sp = spotipy.Spotify(auth=spotify_token)
+        sp.current_user()  # Check if the token is valid by making a simple API call
+    except spotipy.SpotifyException:
+        log.warning("Spotify token expired or invalid, reinitializing.")
+        spotify_token = initialize()
+        if not spotify_token:
+            log.error("Spotify not initialized, check if your credentials are correct.")
+            raise RuntimeError(text("spotify_not_initialized"))
+        sp = spotipy.Spotify(auth=spotify_token)
 
     if message.startswith(("/spotify savesong", "/spotify likesong")):
         return song.save(sp)
