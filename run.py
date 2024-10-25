@@ -36,7 +36,10 @@ def initialize_tray_icon():
     try:
         create_tray_icon()
     except Exception as e:
-        show_error(exception=e)
+        if os.name == 'nt':
+            show_error(exception=e)
+        else:
+            log.exception(e, "Failed to initialize tray icon", expected=False)
 
 
 if not is_opened():
