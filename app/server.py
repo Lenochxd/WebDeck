@@ -529,6 +529,15 @@ def send_data_route():
     return jsonify(result)
 
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    log.exception(e, "An error occurred during a request")
+    if not config["settings"].get("flask_debug"):
+        response = jsonify({"success": False, "message": str(e)})
+        response.status_code = 500
+        return response
+
+
 if (
     config["settings"]["automatic_firewall_bypass"] == True
     and check_firewall_permission() == False
