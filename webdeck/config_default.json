@@ -3,6 +3,7 @@
         "language": "en_US",
         "windows_startup": false,
         "auto_updates": true,
+        "update_channel": "stable",
         "dev_mode": false,
         "server": "flask",
         "flask_debug": true,

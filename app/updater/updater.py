@@ -9,6 +9,7 @@ import subprocess
 import ctypes
 import zipfile
 from tqdm import tqdm
+from app.utils.load_config import load_config
 from app.utils.show_error import show_error
 from app.utils.logger import Logger
 
@@ -142,33 +143,57 @@ def close_process(process_name):
 
 
 def compare_versions(version1, version2):
-    v1_components = list(map(int, version1.split(".")))
-    v2_components = list(map(int, version2.split(".")))
-
+    """
+    Compares two version strings in the format 'x.y.z', 'x.y.z-pre', or 'x.y.z-beta'.
+    
+    Args:
+        version1 (str): The first version string to compare.
+        version2 (str): The second version string to compare.
+    
+    Returns:
+        int: 
+            1 if version1 is greater than version2,
+           -1 if version1 is less than version2,
+            0 if both versions are equal.
+    """
+    def parse_version(version):
+        if version.endswith("-pre"):
+            return list(map(int, version[:-4].split("."))), "pre"
+        elif version.endswith("-beta"):
+            return list(map(int, version[:-5].split("."))), "beta"
+        return list(map(int, version.split("."))), None
+    
+    v1_components, v1_suffix = parse_version(version1)
+    v2_components, v2_suffix = parse_version(version2)
+    
     for v1, v2 in zip(v1_components, v2_components):
-        if v1 > v2:
-            return 1
-        elif v1 < v2:
-            return -1
-
-    if len(v1_components) > len(v2_components):
-        return 1
-    elif len(v1_components) < len(v2_components):
-        return -1
-
-    return 0
+        if v1 != v2:
+            return 1 if v1 > v2 else -1
+    
+    if len(v1_components) != len(v2_components):
+        return 1 if len(v1_components) > len(v2_components) else -1
+    
+    suffix_order = {"pre": -1, "beta": -1, None: 0}
+    return suffix_order[v1_suffix] - suffix_order[v2_suffix]
 
 
 def check_updates(current_version):
-    url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
+    url = "https://api.github.com/repos/Lenochxd/WebDeck/releases"
     response = requests.get(url)
     releases = response.json()
+    update_channel = load_config().get('update_channel', 'stable')
+
     try:
         latest_release = next(
-            (release for release in releases if not release["draft"]), None
+            (release for release in releases 
+             if not release["draft"] and 
+             ((update_channel == 'stable' and not release["prerelease"]) or 
+              (update_channel == 'beta' and release["prerelease"]))), 
+            None
         )
     except Exception:
         latest_release = None
+
     latest_version = "0.1"
     if latest_release is not None and "tag_name" in latest_release:
         latest_version = latest_release["tag_name"].replace("v", "")
