@@ -292,11 +292,11 @@ def download_and_extract(download_url):
 #     move_folder_content(source, destination)
 
 def prepare_update_directory():
-    os.makedirs("update")
+    os.makedirs("update", exist_ok=True)
     shutil.copyfile("python3.dll", "update/python3.dll")
     shutil.copyfile("python311.dll", "update/python311.dll")
     shutil.copyfile("update.exe", "update/update.exe")
-    shutil.copytree("lib", "update/lib")
+    shutil.copytree("lib", "update/lib", dirs_exist_ok=True)
 
 
 if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
