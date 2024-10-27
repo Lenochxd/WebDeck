@@ -7,7 +7,7 @@ import traceback
 init(autoreset=True)
 
 class Logger:
-    def __init__(self):
+    def __init__(self, from_updater=False):
         """
         Initializes the Logger instance.
         
@@ -16,7 +16,11 @@ class Logger:
         log_dir = ".logs"
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
-        self.log_file = f"{log_dir}/{datetime.now().date().isoformat()}.log"
+        date_str = datetime.now().date().isoformat()
+        if from_updater:
+            self.log_file = f"{log_dir}/{date_str}-updater.log"
+        else:
+            self.log_file = f"{log_dir}/{date_str}.log"
 
     def _write_log(self, level, message):
         """

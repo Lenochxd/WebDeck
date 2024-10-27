@@ -78,7 +78,7 @@ def check_files():
                         shutil.move(source, destination)
                         log.info(f'Moved {source} -> {destination}')
                     except FileNotFoundError:
-                        print(f'File not found: {source}')
+                        log.error(f'File not found: {source}')
 
     # Save the updated temporary JSON file
     with open(temp_json_path, "w", encoding="utf-8") as f:
@@ -119,29 +119,29 @@ def close_process(process_name):
                 try:
                     proc.terminate()
                     proc.wait(timeout=3)
-                    print(f"Terminated process {proc.info['name']} with PID {proc.info['pid']}")
+                    log.debug(f"Terminated process {proc.info['name']} with PID {proc.info['pid']}")
                 except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                     pass
     except Exception as e:
-        print(f"Error terminating process with psutil: {e}")
+        log.error(f"Error terminating process with psutil: {e}")
         try:
             wmi = win32com.client.GetObject("winmgmts:")
             processes = wmi.InstancesOf("Win32_Process")
             for process in processes:
                 if process.Properties_('Name').Value.lower() == process_name.lower():
-                    print(f"Stopping process: {process.Properties_('Name').Value}")
+                    log.debug(f"Stopping process: {process.Properties_('Name').Value}")
                     result = process.Terminate()
                     if result == 0:
-                        print("Process terminated successfully.")
+                        log.debug("Process terminated successfully.")
                     else:
-                        print("Failed to terminate process.")
+                        log.error("Failed to terminate process.")
         except Exception as e:
-            print(f"Error terminating process with WMI: {e}")
+            log.error(f"Error terminating process with WMI: {e}")
             try:
                 subprocess.run(f"taskkill /f /IM {process_name}", shell=True, check=True)
-                print(f"Process {process_name} terminated using taskkill.")
+                log.debug(f"Process {process_name} terminated using taskkill.")
             except subprocess.CalledProcessError as e:
-                print(f"Error terminating process with taskkill: {e}")
+                log.error(f"Error terminating process with taskkill: {e}")
 
 
 def compare_versions(version1, version2):
@@ -200,9 +200,9 @@ def check_updates(current_version):
         latest_version = latest_release["tag_name"].replace('v', '')
 
     if not compare_versions(latest_version, current_version) > 0:
-        print("No updates available.")
+        log.info("No updates available.")
     else:
-        print(f"New version available: {latest_version}")
+        log.info(f"New version available: {latest_version}")
 
         close_process("WebDeck.exe")
         for file_url in latest_release["assets"]:
@@ -230,7 +230,7 @@ def check_updates(current_version):
                 pbar.update(1)
 
         # Launch WebDeck.exe from the wd_dir (root) directory
-        print("\nRestarting WebDeck.exe")
+        log.success("\nRestarting WebDeck.exe")
         os.chdir(wd_dir)
         os.startfile("WebDeck.exe")
         
