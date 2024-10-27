@@ -15,7 +15,7 @@ def ensure_config_exists():
         os.remove("config.json")
 
 def load_config():
-    ensure_config_exists(config_path, default_config_path)
+    ensure_config_exists()
     
     with open(config_path, encoding="utf-8") as f:
         config = json.load(f)
