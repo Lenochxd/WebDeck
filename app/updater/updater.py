@@ -239,7 +239,10 @@ def check_updates(current_version):
 def download_and_extract(download_url):
     response = requests.get(download_url, stream=True)
     if response.status_code != 200:
-        show_error("Failed to download update ZIP file.", title="WebDeck Updater Error")
+        show_error(
+            f"Failed to download update ZIP file.\n\n{response.json()}",
+            title="WebDeck Updater Error"
+        )
     else:
         total_size = int(response.headers.get('content-length', 0))
         block_size = 8192
@@ -253,7 +256,17 @@ def download_and_extract(download_url):
         t.close()
 
         if total_size != 0 and t.n != total_size:
-            show_error("Failed to download the complete update ZIP file.", title="WebDeck Updater Error")
+            infos = {
+                "Response": response.json(),
+                "Downloaded": t.n,
+                "Expected": total_size,
+                "Difference": total_size - t.n,
+                "Percentage": (t.n / total_size) * 100,
+            }
+            show_error(
+                f"Failed to download the complete update ZIP file.\n\n{infos}",
+                title="WebDeck Updater Error"
+            )
             return
 
         with zipfile.ZipFile("WD-update.zip", "r") as zip_ref:

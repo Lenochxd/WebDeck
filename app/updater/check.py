@@ -54,7 +54,11 @@ def check_for_updates():
 
     except Exception as e:
         log.exception(e, "UPDATER: Error occurred while checking for updates")
-        show_error(f"{text('auto_update_error')} \n\n{text('error')}: {e}", title="WebDeck Updater Error")
+        show_error(
+            f"{text('auto_update_error')} \n\n{text('error')}: {e}",
+            title="WebDeck Updater Error",
+            exception=e
+        )
 
 
 def check_for_updates_loop():
