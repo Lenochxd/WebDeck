@@ -6,6 +6,7 @@ import time
 import subprocess
 import requests
 
+from app.utils.load_config import load_config
 from app.utils.show_error import show_error
 from app.utils.languages import text
 from app.utils.logger import log
@@ -23,7 +24,8 @@ def check_for_updates():
         with open("webdeck/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
 
-        url = "https://api.github.com/repos/Lenochxd/WebDeck/releases?per_page=1"
+        update_repo = load_config().get('update_repo', 'Lenochxd/WebDeck')
+        url = f"https://api.github.com/repos/{update_repo}/releases?per_page=1"
         response = requests.get(url)
         releases = response.json()
         latest_release = next((release for release in releases if not release["draft"]), None)

@@ -14,6 +14,7 @@ from app.utils.show_error import show_error
 from app.utils.logger import Logger
 
 log = Logger(from_updater=True)
+config = load_config()
 
 
 def get_base_dir():
@@ -178,10 +179,11 @@ def compare_versions(version1, version2):
 
 
 def check_updates(current_version):
-    url = "https://api.github.com/repos/Lenochxd/WebDeck/releases"
+    update_repo = config.get('update_repo', 'Lenochxd/WebDeck')
+    url = f"https://api.github.com/repos/{update_repo}/releases"
     response = requests.get(url)
     releases = response.json()
-    update_channel = load_config().get('update_channel', 'stable')
+    update_channel = config.get('update_channel', 'stable')
 
     try:
         latest_release = next(

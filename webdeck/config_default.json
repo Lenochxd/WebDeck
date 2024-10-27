@@ -4,6 +4,7 @@
         "windows_startup": false,
         "auto_updates": true,
         "update_channel": "stable",
+        "update_repo": "Lenochxd/WebDeck",
         "dev_mode": false,
         "server": "flask",
         "flask_debug": true,
