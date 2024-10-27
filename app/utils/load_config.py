@@ -1,5 +1,7 @@
 import json
 import os
+from .working_dir import chdir_base
+chdir_base()
 
 config_path = ".config/config.json"
 default_config_path = "webdeck/config_default.json"
