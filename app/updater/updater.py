@@ -300,8 +300,13 @@ def prepare_update_directory():
 
 
 if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
-    print("Starting updater...")
-
+    log.info("Starting updater...")
+    
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        log.info("Asking for admin permissions...")
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        sys.exit()
+    
     wd_dir = get_base_dir()
     update_dir = os.path.join(wd_dir, 'update')
     
@@ -315,10 +320,6 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
         subprocess.Popen(["update/update.exe"])
         sys.exit()
     
-
-    if not ctypes.windll.shell32.IsUserAnAdmin():
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        sys.exit()
     
     version_path = os.path.join(wd_dir, "webdeck/version.json")
     with open(version_path, encoding="utf-8") as f:
