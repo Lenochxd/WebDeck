@@ -15,6 +15,7 @@ from app.utils.logger import Logger
 
 log = Logger(from_updater=True)
 config = load_config()
+settings = config["settings"]
 
 
 def get_base_dir():
@@ -179,11 +180,11 @@ def compare_versions(version1, version2):
 
 
 def check_updates(current_version):
-    update_repo = config.get('update_repo', 'Lenochxd/WebDeck')
+    update_repo = settings.get('update_repo', 'Lenochxd/WebDeck')
     url = f"https://api.github.com/repos/{update_repo}/releases"
     response = requests.get(url)
     releases = response.json()
-    update_channel = config.get('update_channel', 'stable')
+    update_channel = settings.get('update_channel', 'stable')
 
     try:
         latest_release = next(
@@ -191,14 +192,12 @@ def check_updates(current_version):
              if not release["draft"] and 
              ((update_channel == 'stable' and not release["prerelease"]) or 
               (update_channel == 'beta' and release["prerelease"]))), 
-            None
+            {"tag_name": "v1.0.0"}
         )
     except Exception:
-        latest_release = None
-
-    latest_version = "0.1"
-    if latest_release is not None and "tag_name" in latest_release:
-        latest_version = latest_release["tag_name"].replace("v", "")
+        latest_version = "1.0.0"
+    else:
+        latest_version = latest_release["tag_name"].replace('v', '')
 
     if not compare_versions(latest_version, current_version) > 0:
         print("No updates available.")
