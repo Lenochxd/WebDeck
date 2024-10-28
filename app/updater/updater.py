@@ -305,10 +305,27 @@ def prepare_update_directory():
 
     os.chdir(current_dir)
 
+def needs_admin_permissions():
+    test_file = os.path.join(get_base_dir(), "test_admin.txt")
+    try:
+        with open(test_file, "w") as f:
+            f.write("This is a test.")
+        os.remove(test_file)
+        
+        # Test making an "update" directory and copying python3.dll in it
+        update_dir = os.path.join(get_base_dir(), "update")
+        os.makedirs(update_dir, exist_ok=True)
+        python_dll_path = os.path.join(get_base_dir(), "python3.dll")
+        shutil.copy(python_dll_path, update_dir)
+        
+        return False
+    except PermissionError:
+        return True
+    except Exception as e:
+        log.error(f"Unexpected error during admin permission check: {e}")
+        return True
 
-if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
-    log.info("Starting updater...")
-    
+def request_admin_permissions():
     if not ctypes.windll.shell32.IsUserAnAdmin():
         log.info("Asking for admin permissions...")
         if os.path.exists(os.path.join(get_update_dir(), "update.exe")):
@@ -319,20 +336,29 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
             ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit()
 
+
+if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
+    log.info("Starting updater...")
+    
     wd_dir = get_base_dir()
     update_dir = os.path.join(wd_dir, 'update')
-    
-    if not os.path.exists(os.path.join(wd_dir, 'WebDeck.exe')):
-        show_error("WebDeck.exe not found in the parent directory. The updater is not properly installed.", title="WebDeck Updater Error")
-        sys.exit(1)
     
     chdir_update()
     if not os.getcwd().endswith("update"):
         log.info("Preparing update directory...")
+
+        if needs_admin_permissions():
+            request_admin_permissions()
+
         prepare_update_directory()
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", os.path.join(get_base_dir(), "update/update.exe"), None, None, 1)
+        log.info("Launching update.exe with admin privileges...")
+        
+        update_exe_path = os.path.join(get_base_dir(), "update/update.exe")
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", update_exe_path, None, None, 1)
+        
         sys.exit()
     
+    request_admin_permissions()
     
     version_path = os.path.join(wd_dir, "webdeck/version.json")
     with open(version_path, encoding="utf-8") as f:
