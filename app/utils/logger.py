@@ -1,7 +1,8 @@
-from datetime import datetime
-from colorama import init, Fore
 import os
 import traceback
+from datetime import datetime
+from colorama import init, Fore
+from app.utils.working_dir import get_base_dir
 
 # Initialize colorama
 init(autoreset=True)
@@ -13,7 +14,7 @@ class Logger:
         
         This method creates a log directory if it doesn't exist and sets the log file path.
         """
-        log_dir = ".logs"
+        log_dir = os.path.join(get_base_dir(), ".logs")
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
         date_str = datetime.now().date().isoformat()
