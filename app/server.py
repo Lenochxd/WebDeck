@@ -551,7 +551,7 @@ log.info(f"Local IP address detected: {local_ip}")
 
 def run_server():
     change_server_state(1)
-    if config["settings"].get("werkzeug") == "werkzeug" and not getattr(sys, "frozen", False):
+    if config["settings"].get("server") == "werkzeug" and not getattr(sys, "frozen", False):
         server = make_server(local_ip, get_port(), app)
         server.serve_forever()
     else:
