@@ -9,6 +9,7 @@ import subprocess
 import ctypes
 import zipfile
 from tqdm import tqdm
+from app.utils.working_dir import get_base_dir, get_update_dir, chdir_update
 from app.utils.load_config import load_config
 from app.utils.show_error import show_error
 from app.utils.logger import Logger
@@ -18,13 +19,6 @@ config = load_config()
 settings = config["settings"]
 
 
-def get_base_dir():
-    current_dir = os.getcwd()
-    parent_dir = os.path.dirname(current_dir)
-    if os.path.exists(os.path.join(parent_dir, "WebDeck.exe")):
-        return parent_dir
-    return current_dir
-        
 def check_files():
     wd_dir = get_base_dir()
     version_path = os.path.join(wd_dir, "webdeck/version.json")
@@ -304,9 +298,14 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
     
     if not ctypes.windll.shell32.IsUserAnAdmin():
         log.info("Asking for admin permissions...")
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        if os.path.exists(os.path.join(get_update_dir(), "update.exe")):
+            log.info("Starting update.exe with admin privileges...")
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", os.path.join(get_update_dir(), "update.exe"), None, None, 1)
+        else:
+            log.info("Starting current script with admin privileges...")
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit()
-    
+
     wd_dir = get_base_dir()
     update_dir = os.path.join(wd_dir, 'update')
     
@@ -315,9 +314,10 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
         sys.exit(1)
     
     if not os.getcwd().endswith("update"):
+        log.info("Preparing update directory...")
         prepare_update_directory()
-        os.chdir("update")
-        subprocess.Popen(["update/update.exe"])
+        chdir_update()
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", os.path.join(get_base_dir(), "update/update.exe"), None, None, 1)
         sys.exit()
     
     
