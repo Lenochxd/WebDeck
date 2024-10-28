@@ -12,8 +12,10 @@ def show_error(message=None, title="WebDeck Error", error=True, exception=None) 
     if exception is not None:
         log.exception(exception, message, expected=False)
         if message is not None:
+            github_message = f"`{message}`\n\n\n```\n{str(exception)}\n```\n\n```{traceback.format_exc()}```"
             message = f"{message}\n\n\n{str(exception)}\n\n{traceback.format_exc()}"
         else:
+            github_message = f"```\n{str(exception)}\n```\n\n```{traceback.format_exc()}```"
             message = f"{str(exception)}\n\n{traceback.format_exc()}"
     else:
         log.error(message)
@@ -36,7 +38,7 @@ def show_error(message=None, title="WebDeck Error", error=True, exception=None) 
                 "2. Click on '....'\n"
                 "3. Scroll down to '....\n\n\n"
                 "## The error\n"
-                f"{message}"
+                f"{github_message}"
             )
             issue_body = issue_body.replace("\n", "%0A").replace(" ", "%20").replace("#", "%23")
             webbrowser.open(f"https://github.com/Lenochxd/WebDeck/issues/new?labels=bug&template=bug_report.md&title={issue_title}&body={issue_body}")
