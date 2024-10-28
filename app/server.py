@@ -30,6 +30,7 @@ set_global_variable("config", config)
 from app.tray import change_tray_language, change_server_state
 from .utils.themes.parse_themes import parse_themes
 from .utils.plugins.load_plugins import load_plugins
+from .utils.working_dir import get_base_dir
 from .utils.load_config import get_port
 from .utils.settings.save_config import save_config
 from .utils.settings.audio_devices import get_audio_devices
@@ -47,10 +48,12 @@ from .buttons import handle_command as command
 
 change_server_state(0)  # Tray icon: server loading
 
-if getattr(sys, "frozen", False): # FIXME: This is a workaround for the cx_freeze issue
-    app = Flask(__name__, template_folder='../../../templates', static_folder='../../../static')
-else:
-    app = Flask(__name__, template_folder='../templates', static_folder='../static')
+
+base_dir = get_base_dir()
+template_folder = os.path.join(base_dir, 'templates')
+static_folder = os.path.join(base_dir, 'static')
+
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 
 logging.getLogger("werkzeug").disabled = True
 app.jinja_env.globals.update(
