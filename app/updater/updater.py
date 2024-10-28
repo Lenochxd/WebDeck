@@ -9,7 +9,7 @@ import subprocess
 import ctypes
 import zipfile
 from tqdm import tqdm
-from app.utils.working_dir import get_base_dir, get_update_dir, chdir_update
+from app.utils.working_dir import get_base_dir, get_update_dir, chdir_base, chdir_update
 from app.utils.load_config import load_config
 from app.utils.show_error import show_error
 from app.utils.logger import Logger
@@ -286,11 +286,24 @@ def download_and_extract(download_url):
 #     move_folder_content(source, destination)
 
 def prepare_update_directory():
+    current_dir = os.getcwd()
+    chdir_base()
     os.makedirs("update", exist_ok=True)
-    shutil.copyfile("python3.dll", "update/python3.dll")
-    shutil.copyfile("python311.dll", "update/python311.dll")
-    shutil.copyfile("update.exe", "update/update.exe")
+
+    files_to_copy = [
+        "python3.dll",
+        "python311.dll",
+        "update.exe"
+    ]
+
+    for src in files_to_copy:
+        dst = os.path.join("update", src)
+        if not os.path.exists(dst):
+            shutil.copyfile(src, dst)
+
     shutil.copytree("lib", "update/lib", dirs_exist_ok=True)
+
+    os.chdir(current_dir)
 
 
 if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
@@ -313,10 +326,10 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
         show_error("WebDeck.exe not found in the parent directory. The updater is not properly installed.", title="WebDeck Updater Error")
         sys.exit(1)
     
+    chdir_update()
     if not os.getcwd().endswith("update"):
         log.info("Preparing update directory...")
         prepare_update_directory()
-        chdir_update()
         ctypes.windll.shell32.ShellExecuteW(None, "runas", os.path.join(get_base_dir(), "update/update.exe"), None, None, 1)
         sys.exit()
     
