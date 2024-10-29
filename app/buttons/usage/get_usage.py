@@ -4,18 +4,19 @@ import psutil
 import GPUtil
 import pynvml
 
+from app.utils.load_config import load_config
 from app.utils.merge_dicts import merge_dicts
 from .asked_devices import get_asked_devices
 from app.utils.logger import log
 
 
-with open(".config/config.json", encoding="utf-8") as f:
-    config = json.load(f)
+def get_usage(get_all=None, asked_devices=None):
+    config = load_config()
+    if get_all is None:
+        get_all = not config["settings"]["optimized_usage_display"]
+    if asked_devices is None:
+        asked_devices = get_asked_devices()
         
-def get_usage(
-    get_all=not config["settings"]["optimized_usage_display"],
-    asked_devices=get_asked_devices()
-):
     computer_info = {}
     
     # CPU
