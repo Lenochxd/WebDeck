@@ -20,120 +20,39 @@ from app.utils.logger import log
 def check_config_update(config):
     config = check_config_hyphen_case(config)
     
-    if "background" in config["front"]:
-        # Convert background to a list
-        if (
-            type(config["front"]["background"]) == "str"
-            and len(config["front"]["background"]) > 3
-        ):
-            config["front"]["background"] = [config["front"]["background"]]
-            
-        # If background is an empty list or a list with an empty string, set default color
-        if (
-            type(config["front"]["background"]) == "list"
-            and config["front"]["background"] in [[], [""]]
-        ):
-            config["front"]["background"] = ["#141414"]
-    else:
-        # Set default background if not present in
-        config["front"]["background"] = ["#141414"]
-
-    # Set default auto_updates setting if not present
-    if "auto_updates" not in config["settings"]:
-        config["settings"]["auto_updates"] = True
-
-    # Set default windows startup setting if not present
-    if "windows_startup" not in config["settings"]:
-        config["settings"]["windows_startup"] = False
-
-    # Set default flask reloader setting if not present
-    if "server" not in config["settings"]:
-        config["settings"]["server"] = "flask"
-
-    # Set default flask reloader setting if not present
-    if "flask_reloader" not in config["settings"]:
-        config["settings"]["flask_reloader"] = False
-
-    # Set default flask debug setting if not present
-    if "flask_debug" not in config["settings"]:
-        config["settings"]["flask_debug"] = True
-
-    # Remove open settings in browser setting if present
-    if "open_settings_in_browser" in config["settings"]:
-        del config["settings"]["open_settings_in_browser"]
-    
     # Rename 'black_theme' to 'dark_theme'
     if "black_theme" in config["front"]:
         config["front"]["dark_theme"] = config["front"].get("black_theme", True)
         del config["front"]["black_theme"]
-
-    # Set default open settings in integrated browser setting if not present
-    if "open_settings_in_integrated_browser" not in config["settings"]:
-        config["settings"]["open_settings_in_integrated_browser"] = False
-
-    # Set default portrait rotate setting if not present
-    if "portrait_rotate" not in config["front"]:
-        config["front"]["portrait_rotate"] = "90"
-
-    # Set default edit buttons color setting if not present
-    if "edit_buttons_color" not in config["front"]:
-        config["front"]["edit_buttons_color"] = False
-
-    # Set default buttons color setting if not present
-    if "buttons_color" not in config["front"]:
-        config["front"]["buttons_color"] = ""
-
-    # Set default soundboard settings if not present
-    if "soundboard" not in config["settings"]:
-        config["settings"]["soundboard"] = {
-            "mic_input_device": "",
-            "vbcable": "cable input",
-        }
-
-    # Set default mic input device if not present
-    if "mic_input_device" not in config["settings"]["soundboard"]:
-        config["settings"]["soundboard"]["mic_input_device"] = ""
-
-    # Set default vbcable if not present
-    if "vbcable" not in config["settings"]["soundboard"]:
-        config["settings"]["soundboard"]["vbcable"] = "cable input"
-
-    # Set default soundboard enabled based on mic input device
-    if "enabled" not in config["settings"]["soundboard"]:
-        config["settings"]["soundboard"]["enabled"] = (
-            config["settings"]["soundboard"]["mic_input_device"] == ""
-        )
-
-    # Set default OBS settings if not present
-    if "obs" not in config["settings"]:
-        config["settings"]["obs"] = {"host": "localhost", "port": 4455, "password": ""}
-
-    # Set default automatic firewall bypass setting if not present
-    if "automatic_firewall_bypass" not in config["settings"]:
-        config["settings"]["automatic_firewall_bypass"] = False
-
-    # Set default fix stop soundboard setting if not present
-    if "fix_stop_soundboard" not in config["settings"]:
-        config["settings"]["fix_stop_soundboard"] = False
-
-    # Set default optimized usage display setting if not present
-    if "optimized_usage_display" not in config["settings"]:
-        config["settings"]["optimized_usage_display"] = False
-
+    
     # Make every key in settings.spotify_api lowercase
     if "spotify_api" in config["settings"]:
         config["settings"]["spotify_api"] = {k.lower(): v for k, v in config["settings"]["spotify_api"].items()}
-    
-    # Set default allowed_networks setting if not present
-    if "allowed_networks" not in config["settings"]:
-        config["settings"]["allowed_networks"] = []
-    
+
     # Move allowed_networks to settings.allowed_networks
     if "allowed_networks" in config:
         config["settings"]["allowed_networks"].extend(config["allowed_networks"])
         del config["allowed_networks"]
     
     
+    with open("webdeck/config_default.json", "r", encoding="utf-8") as f:
+        default_config = json.load(f)
+
+    def update_config_with_defaults(config, default_config):
+        for section in default_config.keys():
+            if section not in config:
+                config[section] = default_config[section]
+            else:
+                if not isinstance(default_config[section], dict):
+                    continue
+                for key, value in default_config[section].items():
+                    if key not in config[section]:
+                        config[section][key] = value
+                    elif isinstance(value, dict) and key != "buttons":
+                        update_config_with_defaults(config[section][key], value)
+
+    update_config_with_defaults(config, default_config)
+
     config = check_config_themes(config)
     config = check_config_booleans(config)
 
