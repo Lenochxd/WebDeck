@@ -59,7 +59,6 @@ class Timer:
         if not self.timers and not self.stopped_timers:
             return []
 
-        count -= 1
         all_timers = {**self.timers, **self.stopped_timers}
         sorted_timers = sorted(all_timers.items(), key=lambda item: time.time() - item[1] if item[0] in self.timers else item[1], reverse=True)
         longest_timers = sorted_timers[:count]
