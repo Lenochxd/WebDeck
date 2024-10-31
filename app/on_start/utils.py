@@ -39,17 +39,18 @@ def check_config_update(config):
         default_config = json.load(f)
 
     def update_config_with_defaults(config, default_config):
-        for section in default_config.keys():
+        for section, section_value in default_config.items():
             if section not in config:
-                config[section] = default_config[section]
-            else:
-                if not isinstance(default_config[section], dict):
-                    continue
-                for key, value in default_config[section].items():
+                config[section] = section_value
+            elif isinstance(section_value, dict):
+                for key, value in section_value.items():
                     if key not in config[section]:
                         config[section][key] = value
                     elif isinstance(value, dict) and key != "buttons":
-                        update_config_with_defaults(config[section][key], value)
+                        if key not in config[section]:
+                            config[section][key] = value
+                        else:
+                            update_config_with_defaults(config[section][key], value)
 
     update_config_with_defaults(config, default_config)
 
