@@ -9,11 +9,6 @@ from app.utils.logger import log
 from .devices import get_device
 from .ffmpeg import silence_path
 
-
-config = load_config()
-cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
-vlc_installed = cable_input_device != "ERROR_NO_VLC"
-
 player_vbcable = {}
 player_local = {}
 
@@ -43,6 +38,7 @@ def get_params(msg):
         ear_soundboard = True
     else:
         localonly = False
+        config = load_config()
         ear_soundboard = config["settings"]["ear_soundboard"]
         
     
@@ -50,12 +46,12 @@ def get_params(msg):
 
 
 def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=False):
-    global cable_input_device, player_vbcable, player_local
+    global player_vbcable, player_local
     
-    if not vlc_installed:
-        log.error("VLC is not installed!")
-        raise RuntimeError(text("vlc_not_installed_error"))
-    else:
+    config = load_config()
+    cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
+    
+    if cable_input_device:
         if config["settings"]["fix_stop_soundboard"]:
             file_path = silence_path(file_path)
             if file_path == False:
@@ -111,10 +107,10 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
 
 
 def stopsound():
-    if not vlc_installed:
-        log.error("VLC is not installed!")
-        raise RuntimeError(text("vlc_not_installed_error"))
-    else:
+    config = load_config()
+    cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
+    
+    if cable_input_device:
         global player_vbcable, player_local
         
         try:
