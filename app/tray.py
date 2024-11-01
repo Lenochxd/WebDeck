@@ -79,6 +79,8 @@ def generate_qr_code(dark_theme=False):
 def show_qrcode():
     global window
     if window is not None:
+        window.lift()
+        window.focus_force()
         return
 
     window = tk.Tk()
