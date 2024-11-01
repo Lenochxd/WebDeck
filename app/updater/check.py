@@ -7,7 +7,7 @@ import subprocess
 import requests
 
 from .updater import compare_versions, prepare_update_directory
-from app.utils.load_config import load_config
+from app.utils.settings.get_config import get_config
 from app.utils.show_error import show_error
 from app.utils.languages import text
 from app.utils.logger import log
@@ -17,7 +17,7 @@ def check_for_updates():
     if not getattr(sys, "frozen", False):
         return
     
-    config = load_config()["settings"]
+    settings = get_config()["settings"]
     
     if os.path.exists("update"):
         shutil.rmtree("update", ignore_errors=True)
@@ -26,11 +26,11 @@ def check_for_updates():
         with open("webdeck/version.json", encoding="utf-8") as f:
             current_version = json.load(f)["versions"][0]["version"]
 
-        update_repo = config.get('update_repo', 'Lenochxd/WebDeck')
+        update_repo = settings.get('update_repo', 'Lenochxd/WebDeck')
         url = f"https://api.github.com/repos/{update_repo}/releases"
         response = requests.get(url)
         releases = response.json()
-        update_channel = config.get('update_channel', 'stable')
+        update_channel = settings.get('update_channel', 'stable')
 
         try:
             latest_release = next(
@@ -63,7 +63,7 @@ def check_for_updates():
 
 def check_for_updates_loop():
     while True:
-        config = load_config()
+        config = get_config()
         
         if config["settings"].get("auto-updates", True):
             check_for_updates()

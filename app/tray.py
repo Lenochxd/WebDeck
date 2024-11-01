@@ -12,18 +12,18 @@ from PIL import Image, ImageTk
 from io import BytesIO
 
 from .on_start import check_config_update
-from .utils.load_config import load_config
+from .utils.settings.get_config import get_config
 from .utils.exit import exit_program
 from .utils.restart import restart_program
 from .utils.firewall import fix_firewall_permission
 from .utils.get_local_ip import get_local_ip
-from .utils.load_config import get_port
+from .utils.settings.get_config import get_port
 from .utils.languages import text, get_languages_info, get_language, set_default_language
 from .utils.logger import log
 
 
 def reload_config():
-    config = load_config()
+    config = get_config()
     config = check_config_update(config)
     settings = config.get("settings", {})
             

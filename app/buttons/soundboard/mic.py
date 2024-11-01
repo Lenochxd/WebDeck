@@ -3,7 +3,7 @@ import time
 import threading
 
 from .devices import get_device
-from app.utils.load_config import load_config
+from app.utils.settings.get_config import get_config
 from app.utils.logger import log
 
 
@@ -11,7 +11,7 @@ sb_on = True
 def soundboard():
     global sb_on
     sb_on = True
-    config = load_config()
+    config = get_config()
 
     audio = pyaudio.PyAudio()
     num_devices = audio.get_device_count()
@@ -111,7 +111,7 @@ def stop():
 
 def restart():
     global soundboard_thread,cable_input_device, sb_on
-    config = load_config()
+    config = get_config()
     cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
     
     sb_on = False
@@ -122,7 +122,7 @@ def restart():
 
 
 # mic thread
-config = load_config()
+config = get_config()
 if config["settings"]["soundboard"]["enabled"]:
     soundboard_thread = threading.Thread(target=soundboard, daemon=True)
     soundboard_thread.start()

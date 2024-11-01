@@ -1,6 +1,6 @@
 import json
 import os
-from .working_dir import chdir_base
+from ..working_dir import chdir_base
 chdir_base()
 
 config_path = ".config/config.json"
@@ -16,7 +16,7 @@ def ensure_config_exists():
     if os.path.exists("config.json"):
         os.remove("config.json")
 
-def load_config():
+def get_config():
     ensure_config_exists()
     
     with open(config_path, encoding="utf-8") as f:
@@ -25,4 +25,4 @@ def load_config():
     return config
 
 def get_port():
-    return load_config()["url"]["port"]
+    return get_config()["url"]["port"]

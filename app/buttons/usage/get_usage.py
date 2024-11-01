@@ -4,14 +4,14 @@ import psutil
 import GPUtil
 import pynvml
 
-from app.utils.load_config import load_config
+from app.utils.settings.get_config import get_config
 from app.utils.merge_dicts import merge_dicts
 from .asked_devices import get_asked_devices
 from app.utils.logger import log
 
 
 def get_usage(get_all=None, asked_devices=[]):
-    config = load_config()
+    config = get_config()
     if get_all is None:
         get_all = not config["settings"]["optimized_usage_display"]
     if not asked_devices and not get_all:

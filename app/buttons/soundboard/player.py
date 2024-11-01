@@ -2,7 +2,7 @@ try: import vlc
 except: pass
 from flask import jsonify
 
-from app.utils.load_config import load_config
+from app.utils.settings.get_config import get_config
 from app.utils.languages import text
 from app.utils.logger import log
 
@@ -38,7 +38,7 @@ def get_params(msg):
         ear_soundboard = True
     else:
         localonly = False
-        config = load_config()
+        config = get_config()
         ear_soundboard = config["settings"]["ear_soundboard"]
         
     
@@ -48,7 +48,7 @@ def get_params(msg):
 def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=False):
     global player_vbcable, player_local
     
-    config = load_config()
+    config = get_config()
     cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
     
     if cable_input_device:
@@ -107,7 +107,7 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
 
 
 def stopsound():
-    config = load_config()
+    config = get_config()
     cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
     
     if cable_input_device:
