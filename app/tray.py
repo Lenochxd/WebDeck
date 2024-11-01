@@ -11,6 +11,8 @@ import webview
 from PIL import Image, ImageTk
 from io import BytesIO
 
+from .on_start import check_config_update
+from .utils.load_config import load_config
 from .utils.exit import exit_program
 from .utils.restart import restart_program
 from .utils.firewall import fix_firewall_permission
@@ -21,39 +23,16 @@ from .utils.logger import log
 
 
 def reload_config():
-    default_config = {
-        "port": 59997,
-        "dark_theme": True,
-        "open_in_integrated_browser": False,
-        "language": "en_US"
-    }
-
-    config_path = None
-    for path in ['.config/config.json', 'config.json', 'webdeck/config_default.json']:
-        if os.path.exists(path):
-            config_path = path
-            break
-
-    if config_path:
-        with open(config_path, encoding="utf-8") as f:
-            config = json.load(f)
-            settings = config.get('settings', {})
-            integrated_browser_key = 'open_settings_in_integrated_browser'
-            browser_key = 'open-settings-in-browser'
-
-            # Update config to remove 'open-settings-in-browser'
-            if browser_key in settings:
-                settings[integrated_browser_key] = not settings.get(browser_key, True)
-                settings.pop(browser_key, None)
-                with open(config_path, 'w', encoding="utf-8") as json_file:
-                    json.dump(config, json_file, indent=4)
-
-            default_config["open_in_integrated_browser"] = settings.get(integrated_browser_key, False)
-            default_config["port"] = config['url']['port']
-            default_config["dark_theme"] = config['front'].get('dark-theme', config['front'].get('black-theme', True))
-            default_config["language"] = settings.get('language', default_config["language"])
-
-    return default_config["port"], default_config["dark_theme"], default_config["language"], default_config["open_in_integrated_browser"]
+    config = load_config()
+    config = check_config_update(config)
+    settings = config.get("settings", {})
+            
+    return (
+        config["url"]["port"],
+        config["front"]["dark_theme"],
+        settings["language"],
+        settings["open_settings_in_integrated_browser"]
+    )
 
 window = None
 icon = None

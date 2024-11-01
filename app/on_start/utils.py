@@ -21,9 +21,12 @@ def check_config_update(config):
     config = check_config_hyphen_case(config)
     
     # Rename 'black_theme' to 'dark_theme'
-    if "black_theme" in config["front"]:
-        config["front"]["dark_theme"] = config["front"].get("black_theme", True)
-        del config["front"]["black_theme"]
+    if "black_theme" in config.get("front", {}):
+        config["front"]["dark_theme"] = config["front"].pop("black_theme")
+        
+    # Rename 'open-settings-in-browser' to 'open_settings_in_integrated_browser'
+    if "open_settings_in_browser" in config["settings"]:
+        config["settings"]["open_settings_in_integrated_browser"] = config["settings"].pop("open_settings_in_browser")
     
     # Make every key in settings.spotify_api lowercase
     if "spotify_api" in config["settings"]:
@@ -31,6 +34,8 @@ def check_config_update(config):
 
     # Move allowed_networks to settings.allowed_networks
     if "allowed_networks" in config:
+        if "allowed_networks" not in config["settings"]:
+            config["settings"]["allowed_networks"] = []
         config["settings"]["allowed_networks"].extend(config["allowed_networks"])
         del config["allowed_networks"]
     
