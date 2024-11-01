@@ -1,17 +1,11 @@
 import ctypes
 import sys
-import json
 import os.path
 import threading
 
-def load_config():
-    for path in ['.config/config.json', 'config.json', 'webdeck/config_default.json']:
-        if os.path.exists(path):
-            with open(path, encoding='utf-8') as f:
-                return json.load(f).get('settings', {})
-    return {}
+from app.utils.settings.get_config import get_config
 
-settings = load_config()
+settings = get_config()['settings']
 
 if settings['app_admin']:
     if not ctypes.windll.shell32.IsUserAnAdmin():
