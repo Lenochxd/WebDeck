@@ -120,7 +120,7 @@ def generate_menu(language, server_status=1):
         2: text('server_offline')
     }
 
-    return (
+    return pystray.Menu(
         pystray.MenuItem(text('qr_code'), lambda: show_qrcode(), default=True),
         pystray.MenuItem(text('options'), pystray.Menu(
             pystray.MenuItem(text('open_config'), lambda: open_config()),
