@@ -10,11 +10,11 @@ from .asked_devices import get_asked_devices
 from app.utils.logger import log
 
 
-def get_usage(get_all=None, asked_devices=None):
+def get_usage(get_all=None, asked_devices=[]):
     config = load_config()
     if get_all is None:
         get_all = not config["settings"]["optimized_usage_display"]
-    if asked_devices is None:
+    if not asked_devices and not get_all:
         asked_devices = get_asked_devices()
         
     computer_info = {}
