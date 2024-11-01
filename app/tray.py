@@ -11,7 +11,6 @@ import webview
 from PIL import Image, ImageTk
 from io import BytesIO
 
-from .on_start import check_config_update
 from .utils.settings.get_config import get_config
 from .utils.exit import exit_program
 from .utils.restart import restart_program
@@ -23,8 +22,7 @@ from .utils.logger import log
 
 
 def reload_config():
-    config = get_config()
-    config = check_config_update(config)
+    config = get_config(check_updates=True)
     settings = config.get("settings", {})
             
     return (

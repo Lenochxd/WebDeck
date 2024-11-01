@@ -1,10 +1,13 @@
 import json
 import os
+from app.utils.settings.check_config_update import check_config_update
 from ..working_dir import chdir_base
 chdir_base()
 
+
 config_path = ".config/config.json"
 default_config_path = "webdeck/config_default.json"
+
 
 def ensure_config_exists():
     if os.path.exists("config.json"):
@@ -16,13 +19,18 @@ def ensure_config_exists():
     if os.path.exists("config.json"):
         os.remove("config.json")
 
-def get_config():
+
+def get_config(check_updates=False):
     ensure_config_exists()
     
     with open(config_path, encoding="utf-8") as f:
         config = json.load(f)
         
+    if check_updates:
+        config = check_config_update(config)
+    
     return config
+
 
 def get_port():
     return get_config()["url"]["port"]
