@@ -3,12 +3,10 @@ import os
 import shutil
 import json
 import requests
-import psutil
-import win32com
-import subprocess
 import ctypes
 import zipfile
 from tqdm import tqdm
+from app.utils.exit import exit_program
 from app.utils.working_dir import get_base_dir, get_update_dir, chdir_base, chdir_update
 from app.utils.settings.get_config import get_config
 from app.utils.show_error import show_error
@@ -106,38 +104,6 @@ def move_folder_content(source, destination):
             pbar.update(1)
 
 
-def close_process(process_name):
-    try:
-        for proc in psutil.process_iter(["pid", "name"]):
-            if process_name.lower() in proc.info["name"].lower():
-                try:
-                    proc.terminate()
-                    proc.wait(timeout=3)
-                    log.debug(f"Terminated process {proc.info['name']} with PID {proc.info['pid']}")
-                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-                    pass
-    except Exception as e:
-        log.error(f"Error terminating process with psutil: {e}")
-        try:
-            wmi = win32com.client.GetObject("winmgmts:")
-            processes = wmi.InstancesOf("Win32_Process")
-            for process in processes:
-                if process.Properties_('Name').Value.lower() == process_name.lower():
-                    log.debug(f"Stopping process: {process.Properties_('Name').Value}")
-                    result = process.Terminate()
-                    if result == 0:
-                        log.debug("Process terminated successfully.")
-                    else:
-                        log.error("Failed to terminate process.")
-        except Exception as e:
-            log.error(f"Error terminating process with WMI: {e}")
-            try:
-                subprocess.run(f"taskkill /f /IM {process_name}", shell=True, check=True)
-                log.debug(f"Process {process_name} terminated using taskkill.")
-            except subprocess.CalledProcessError as e:
-                log.error(f"Error terminating process with taskkill: {e}")
-
-
 def compare_versions(version1, version2):
     """
     Compares two version strings in the format 'x.y.z', 'x.y.z-pre', or 'x.y.z-beta'.
@@ -198,7 +164,7 @@ def check_updates(current_version):
     else:
         log.info(f"New version available: {latest_version}")
 
-        close_process("WebDeck.exe")
+        exit_program(force=True)
         for file_url in latest_release["assets"]:
             if (
                 file_url["browser_download_url"].endswith("portable.zip")

@@ -7,6 +7,7 @@ from .logger import log
 
 
 def exit_program(force=False):
+    log.info("Exiting WebDeck...")
     if sys.platform == "win32":
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")
@@ -28,5 +29,5 @@ def exit_program(force=False):
                 except Exception as e:
                     log.exception(e, f"Failed to terminate process '{process_name}'")
 
-    log.info("Exiting WebDeck...")
-    os.kill(os.getpid(), signal.SIGINT)
+    if not force:
+        os.kill(os.getpid(), signal.SIGINT)
