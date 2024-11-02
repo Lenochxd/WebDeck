@@ -9,6 +9,7 @@
         "server": "flask",
         "flask_debug": true,
         "flask_reloader": false,
+        "flask_secret_key": "secret",
         "app_admin": true,
         "optimized_usage_display": false,
         "gpu_method": "nvidia (pynvml)",

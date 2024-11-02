@@ -31,7 +31,7 @@ from app.tray import change_tray_language, change_server_state
 from .utils.themes.parse_themes import parse_themes
 from .utils.plugins.load_plugins import load_plugins
 from .utils.working_dir import get_base_dir
-from .utils.settings.get_config import get_port
+from .utils.settings.get_config import get_port, get_config
 from .utils.settings.save_config import save_config
 from .utils.settings.audio_devices import get_audio_devices
 from .utils.settings.gridsize import update_gridsize
@@ -62,7 +62,7 @@ app.jinja_env.globals.update(
 )
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
-app.config["SECRET_KEY"] = "secret!"
+app.config["SECRET_KEY"] = get_config()["settings"]["secret_key"]
 
 socketio = SocketIO(app)
 
@@ -375,7 +375,7 @@ def save_buttons_only():
 
 
 @app.route("/get_config", methods=["GET"])
-def get_config():
+def get_config_route():
     global folders_to_create, config
 
     with open(".config/config.json", encoding="utf-8") as f:
