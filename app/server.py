@@ -62,7 +62,7 @@ app.jinja_env.globals.update(
 )
 if getattr(sys, "frozen", False):
     Minify(app=app, html=True, js=True, cssless=True)
-app.config["SECRET_KEY"] = get_config()["settings"]["secret_key"]
+app.config["SECRET_KEY"] = get_config()["settings"]["flask_secret_key"]
 
 socketio = SocketIO(app)
 
