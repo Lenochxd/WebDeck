@@ -45,13 +45,16 @@ def check_config_update(config):
 
     update_config_with_defaults(config, default_config)
 
-    config = check_config_themes(config)
     config = check_config_booleans(config)
+    config = check_config_themes(config)
 
     return config
 
 
 def check_config_themes(config):
+    if not os.path.exists(".config/themes/"):
+        return config
+    
     # Get available theme files
     themes = [
         f"//{file_name}"
