@@ -137,48 +137,37 @@ def get_svgs():
 
 @app.route("/")
 def home():
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
-
-    new_config = check_config_update(config)
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(new_config, json_file, indent=4)
-    config = new_config
+    config = get_config(save_updated_config=True)
 
     with open("webdeck/commands.json", encoding="utf-8") as f:
         commands = json.load(f)
         commands, all_func = load_plugins(commands)
         set_global_variable("all_func", all_func)
-        
+
     with open("webdeck/version.json", encoding="utf-8") as f:
         versions = json.load(f)
+
     is_exe = bool(getattr(sys, "frozen", False))
 
     random_bg = "//"
-    while random_bg.startswith("//") == True:
+    while random_bg.startswith("//"):
         random_bg = random.choice(config["front"]["background"])
         if random_bg.startswith("**uploaded/"):
             random_bg_path = random_bg.replace("**uploaded/", ".config/user_uploads/")
             if os.path.exists(random_bg_path):
-                file_name, extension = os.path.splitext(
-                    os.path.basename(random_bg_path)
-                )
+                file_name, extension = os.path.splitext(os.path.basename(random_bg_path))
                 random_bg_90_path = f".config/user_uploads/{file_name}-90{extension}"
                 if not os.path.exists(random_bg_90_path):
                     try:
                         img = Image.open(random_bg_path)
                         img_rotated = img.rotate(-90, expand=True)
-                        file_name, extension = os.path.splitext(
-                            os.path.basename(random_bg_path)
-                        )
                         img_rotated.save(random_bg_90_path)
                     except Exception as e:
                         log.exception(e, f"Failed to rotate image {random_bg_path}")
     log.debug(f"Selected random background image: {random_bg}")
 
     themes = [
-        file_name
-        for file_name in os.listdir(".config/themes/")
+        file_name for file_name in os.listdir(".config/themes/")
         if file_name.endswith(".css")
     ]
 
