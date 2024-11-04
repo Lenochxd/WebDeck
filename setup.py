@@ -1,74 +1,34 @@
 from cx_Freeze import setup, Executable
 
-build_options = {
-    "excludes": ["cx_Freeze", "pathspec"],
-    "packages": ["webdeck", "app", "static", "templates"],
-    "zip_exclude_packages": [
-        "_sounddevice_data",
-        "_soundfile",
-        "_soundfile_data",
-        "jaraco",
-        "numpy",
-        "pygame",
-        "soundfile",
-        "python-vlc",
-        "vlc",
-    ],
-    "zip_include_packages": "*",
-}
-
 import urllib.request
 import zipfile
 import pathspec
 import sys
 import os
 import json
-import shutil
 import time
-
+import uuid
 
 start_time = time.time()
 
 sys.setrecursionlimit(10000)
 
-base = "Win32GUI" if sys.platform == "win32" else None
-# base = 'console' if sys.platform=='win32' else None
-executables = [
-    Executable("run.py", base=base, target_name="WebDeck", icon="static/icons/icon.ico"),
-    Executable("app/updater/updater.py", base="console", target_name="update"),
-]
-
 with open("webdeck/version.json", encoding="utf-8") as f:
     version_info = json.load(f)
     version = version_info["versions"][0]["version"]
-
-setup(
-    name="WebDeck",
-    description="WebDeck",
-    author="bishokus.fr",
-    version=version,
-    options={"build_exe": build_options},
-    executables=executables,
-)
 
 
 
 def get_ignored_files():
     ignored_files = [
         ".git",
+        ".gitignore",
         ".github",
-        ".vscode",
-        "__pycache__",
-        "%.html%WebDeck",
-        "WebDeck.exe",
-        "update.exe",
-        "build",
         "build.bat",
         "requirements.txt",
-        "temp",
         "tests/*",
-        "README*",
         "*.py",
+        "!nircmd*.exe",
     ]
 
     with open(".gitignore", "r") as gitignore_file:
@@ -77,45 +37,54 @@ def get_ignored_files():
             if line and not line.startswith("#"):
                 if line.startswith("\\"):
                     line = line[1:]
-                if line != "*copy.*":
-                    ignored_files.append(line)
+                ignored_files.append(line)
 
     print("IGNORED:", ignored_files)
     return ignored_files
 
-def is_excluded(file_path, ignored_files):
+ignored_files = get_ignored_files()
+
+
+def is_excluded(file_path):
     rel_path = os.path.relpath(file_path)
     spec = pathspec.PathSpec.from_lines("gitwildmatch", ignored_files)
 
     if spec.match_file(rel_path):
+        # Check for negation patterns
+        negation_spec = pathspec.PathSpec.from_lines("gitwildmatch", [line[1:] for line in ignored_files if line.startswith("!")])
+        if negation_spec.match_file(rel_path):
+            print(f"NOT EXCLUDED (negation): {file_path}")
+            return False
         print(f"EXCLUDED: {file_path}")
         return True
 
-    print(f"NOT EXCLUDED: {file_path}")
+    # print(f"NOT EXCLUDED: {file_path}")
     return False
 
-def copy_files(script_dir, target_dir, ignored_files):
-    for item in os.listdir(script_dir):
-        item_path = os.path.join(script_dir, item)
-        
-        if os.path.isdir(item_path):
-            if not is_excluded(item_path, ignored_files):
-                for root, _, files in os.walk(item_path):
-                    for file in files:
-                        file_path = os.path.join(root, file)
-                        relative_path = file_path.replace(f"{script_dir}\\", "")
-                        
-                        if not is_excluded(relative_path, ignored_files):
-                            target_file_path = os.path.join(target_dir, os.path.relpath(file_path, script_dir))
-                            os.makedirs(os.path.dirname(target_file_path), exist_ok=True)
-                            shutil.copy(file_path, target_file_path)
-                            print(f"copying {file_path} -> {target_file_path}")
-        else:
-            if not is_excluded(item_path, ignored_files):
-                shutil.copy(item_path, target_dir)
-                print(f"copying {item_path} -> {target_dir}")
+def get_include_files():
+    include_files = []
+    for root, dirs, files in os.walk("."):
+        # Check if the directory itself is excluded first
+        if is_excluded(root):
+            continue
+        for file in files:
+            file_path = os.path.join(root, file)
+            if not is_excluded(file_path.replace('\\', '/')):
+                if file.lower().startswith("nircmd") and "temp" in root:
+                    include_files.append((file_path, os.path.join("lib", file)))
+                elif file.startswith("README"):
+                    if file == "README.md":
+                        include_files.append((file_path, os.path.join("docs", "README-en.md")))
+                    else:
+                        include_files.append((file_path, os.path.join("docs", file)))
+                else:
+                    include_files.append((file_path, file_path))
+    return include_files
 
 def download_nircmd():
+    if os.path.isfile("temp/nircmd.exe"):
+        return
+    
     zippath = "temp/nircmd.zip"
     url = "https://www.nirsoft.net/utils/nircmd.zip"
     urllib.request.urlretrieve(url, zippath)
@@ -125,51 +94,87 @@ def download_nircmd():
 
     os.remove(zippath)
 
-def copy_nircmd(script_dir, target_dir):
-    if not os.path.isfile("temp/nircmd.exe"):
-        download_nircmd()
+if __name__ == "__main__":
+    download_nircmd()
 
-    lib_dir = os.path.join(target_dir, "lib")
-    os.makedirs(lib_dir, exist_ok=True)
-    for file in ["nircmd.exe", "nircmdc.exe", "NirCmd.chm"]:
-        file_path = os.path.join(script_dir, f"temp/{file}")
-        target_file_path = os.path.join(lib_dir, file)
-        shutil.copy(file_path, target_file_path)
-        print(f"copying {file_path} -> {target_file_path}")
+    build_exe_options = {
+        "excludes": ["cx_Freeze", "pathspec"],
+        "packages": [],
+        "zip_exclude_packages": [
+            "_sounddevice_data",
+            "_soundfile",
+            "_soundfile_data",
+            "jaraco",
+            "numpy",
+            "pygame",
+            "soundfile",
+            "python-vlc",
+            "vlc",
+        ],
+        "zip_include_packages": "*",
+        "include_msvcr": False,
+        "include_files": get_include_files(),
+    }
 
-def copy_readmes(script_dir, target_dir):
-    docs_dir = os.path.join(target_dir, "docs")
-    os.makedirs(docs_dir, exist_ok=True)
+    bdist_msi_options = {
+        "upgrade_code": f"{{{uuid.uuid4()}}}",
+        "add_to_path": True,
+        "initial_target_dir": r"[ProgramFilesFolder]\WebDeck",
+        "install_icon": "static/icons/icon.ico",
+        "summary_data": {
+            "author": "webdeck.app",
+            "comments": "WebDeck is an open-source app for managing custom shortcuts.",
+            "keywords": "WebDeck, remote control, web application",
+        }
+    }
+
+    base = "Win32GUI" if sys.platform == "win32" else "gui"
+    # base = 'console' if sys.platform=='win32' else None
+    executables = [
+        Executable(
+            script="run.py",
+            base=base,
+            target_name="WebDeck",
+            icon="static/icons/icon.ico",
+            shortcut_name="WebDeck",
+            shortcut_dir="ProgramMenuFolder",
+            copyright="WebDeck",
+            trademarks="WebDeck",
+            manifest=None,
+            uac_admin=True,
+        ),
+        Executable(
+            script="app/updater/updater.py",
+            base="console",
+            target_name="update",
+            icon=None,
+            shortcut_name="WebDeck Updater",
+            shortcut_dir="ProgramMenuFolder",
+            copyright="WebDeck",
+            trademarks="WebDeck",
+            manifest=None,
+            uac_admin=True,
+        ),
+    ]
+
+    setup(
+        name="WebDeck",
+        description="WebDeck",
+        author="webdeck.app",
+        author_email="contact.lenoch@gmail.com",
+        url="https://webdeck.app/",
+        license="GPLv3",
+        version=version,
+        options={
+            "build_exe": build_exe_options,
+            "bdist_msi": bdist_msi_options,
+        },
+        executables=executables,
+    )
     
-    for item in os.listdir(script_dir):
-        item_path = os.path.join(script_dir, item)
-        
-        if os.path.isfile(item_path) and item.startswith("README"):
-            target_file_path = os.path.join(docs_dir, item)
-            shutil.copy(item_path, target_file_path)
-            print(f"Copying {item_path} -> {target_file_path}")
 
-def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    build_dir = os.path.join(script_dir, "build")
-
-    if os.path.exists(build_dir):
-        first_folder = next(
-            entry for entry in os.listdir(build_dir) if os.path.isdir(os.path.join(build_dir, entry))
-        )
-        target_dir = os.path.join(build_dir, first_folder)
-
-        ignored_files = get_ignored_files()
-        copy_files(script_dir, target_dir, ignored_files)
-        copy_nircmd(script_dir, target_dir)
-        copy_readmes(script_dir, target_dir)
-
-
-main()
-
-
-end_time = time.time()
-elapsed_time = end_time - start_time
-minutes, seconds = divmod(int(elapsed_time), 60)
-
-print(f"Build done! {minutes}m {seconds}s")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    minutes, seconds = divmod(int(elapsed_time), 60)
+    
+    print(f"Build done! {minutes}m {seconds}s")
