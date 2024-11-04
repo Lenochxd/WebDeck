@@ -3,8 +3,8 @@ from subprocess import Popen
 from sys import platform
 from app.utils.logger import log
 
-from . import python as python_code
-from . import batch as batch_code
+from . import python_code
+from . import batch_code
 
 
 threads = []
