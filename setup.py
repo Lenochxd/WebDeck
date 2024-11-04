@@ -5,6 +5,8 @@ import zipfile
 import pathspec
 import sys
 import os
+import subprocess
+import shutil
 import json
 import time
 import uuid
@@ -94,6 +96,53 @@ def download_nircmd():
 
     os.remove(zippath)
 
+def sign_executable(file_path):
+    signtool_path = r"C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+    timestamp_url = "http://timestamp.digicert.com"
+    command = [
+        signtool_path,
+        "sign",
+        "/a",
+        "/fd", "SHA256",
+        "/tr", timestamp_url,
+        "/td", "SHA256",
+        file_path
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"Failed to sign {file_path}: {result.stderr}")
+    else:
+        print(f"Successfully signed {file_path}")
+
+def zip_build(build_dir):
+    # Create a temporary directory outside the build directory to hold the build directory with the desired structure
+    temp_dir = os.path.join("temp", "PortableBuild")
+    os.makedirs(temp_dir, exist_ok=True)
+
+    # Move the build directory into the temporary directory
+    shutil.move(build_dir, temp_dir)
+
+    # Rename the directory inside PortableBuild to "WebDeck"
+    final_dir = os.path.join("temp", "PortableBuild")
+    inner_dir = os.path.join(final_dir, os.listdir(final_dir)[0])
+    new_inner_dir = os.path.join(final_dir, "WebDeck")
+    os.rename(inner_dir, new_inner_dir)
+
+    # Create a zip file of the temporary directory
+    zip_file = shutil.make_archive('WebDeck-win-amd64-portable', 'zip', final_dir)
+
+    # Move the zip file to the /dist directory
+    dist_dir = "dist"
+    if not os.path.exists(dist_dir):
+        os.makedirs(dist_dir)
+    shutil.move(zip_file, os.path.join(dist_dir, os.path.basename(zip_file)))
+
+    # Remove the PortableBuild directory
+    shutil.rmtree(final_dir)
+
+    print(f"Portable build zipped as '{os.path.join(dist_dir, os.path.basename(zip_file))}'")
+
+
 if __name__ == "__main__":
     download_nircmd()
 
@@ -171,8 +220,21 @@ if __name__ == "__main__":
         },
         executables=executables,
     )
-    
 
+
+    build_dir = f"build/exe.win-amd64-{sys.version_info.major}.{sys.version_info.minor}"
+    
+    # Sign the main executable
+    sign_executable(os.path.join(build_dir, "WebDeck.exe"))
+
+    # Sign the updater executable
+    sign_executable(os.path.join(build_dir, "update.exe"))
+    
+    
+    # Zip the build directory
+    zip_build(build_dir)
+    
+    
     end_time = time.time()
     elapsed_time = end_time - start_time
     minutes, seconds = divmod(int(elapsed_time), 60)
