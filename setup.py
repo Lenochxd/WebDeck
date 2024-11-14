@@ -126,6 +126,9 @@ def zip_build(build_dir):
     final_dir = os.path.join("temp", "PortableBuild")
     inner_dir = os.path.join(final_dir, os.listdir(final_dir)[0])
     new_inner_dir = os.path.join(final_dir, "WebDeck")
+    # Ensure the path doesn't exist before creating it
+    if os.path.exists(new_inner_dir):
+        shutil.rmtree(new_inner_dir)
     os.rename(inner_dir, new_inner_dir)
 
     # Create a zip file of the temporary directory
