@@ -183,7 +183,7 @@ def home():
 
 @app.route("/save_config", methods=["POST"])
 def saveconfig():
-    global config, folders_to_create, obs_host, obs_port, obs_password, obs
+    global config, folders_to_create
 
     with open(".config/config.json", encoding="utf-8") as f:
         config = json.load(f)
@@ -214,8 +214,6 @@ def saveconfig():
         soundboard_start = new_config["settings"]["soundboard"]["enabled"]
         soundboard_stop = not soundboard_start
 
-    config = check_config_update(config)
-    new_config = check_config_update(new_config)
 
     if (
         config["settings"]["windows_startup"] == False
@@ -250,14 +248,17 @@ def saveconfig():
 
     config = merge_dicts(config, new_config)
     config = create_folders(config, folders_to_create)
+    config = check_config_update(config)
+    
     folders_to_create = []
     config = save_config(config)
 
-    try:
-        config["front"]["background"] = config["front"]["background"].replace("['", '["').replace("']", '"]').replace("', '", "','").replace("','", '","')
-        config["front"]["background"] = ast.literal_eval(config["front"]["background"])
-    except TypeError:
-        pass
+    if isinstance(config["front"]["background"], str):
+        try:
+            config["front"]["background"] = config["front"]["background"].replace("['", '["').replace("']", '"]').replace("', '", "','").replace("','", '","')
+            config["front"]["background"] = ast.literal_eval(config["front"]["background"])
+        except (TypeError, ValueError):
+            pass
 
     with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
@@ -268,7 +269,7 @@ def saveconfig():
         soundboard.mic.restart()
 
     if obs_reload:
-        obs_host, obs_port, obs_password, obs = reload_obs()
+        reload_obs()
 
     if language_changed:
         set_default_language(new_config["settings"]["language"])
