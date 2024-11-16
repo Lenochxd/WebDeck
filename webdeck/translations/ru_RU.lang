@@ -1,0 +1,228 @@
+# Translation file: ru_RU.lang
+# Author: Asuma228 — Feel free to submit a PR for any corrections:
+# GitHub: https://github.com/Lenochxd/WebDeck/pulls
+# Discord: https://discord.gg/tUPsYHAGfm
+
+
+# TRANSLATION INSTRUCTIONS:
+# 1. Update the first line with the filename and your username if you're editing.
+# 2. Do NOT translate lines starting with '//' — these are comments.
+# 3. Lines starting with '#' are optional to translate, but it's encouraged for consistency.
+# 4. Only translate the values (text after '='); do not modify the keys (text before '=').
+# 5. Keep variable placeholders like '%example_var%' unchanged.
+# 6. Edit the following fields to match your translation:
+#    - native_name: The name of the language in its native form (e.g., 'Français').
+#    - english_name: The name of the language in English (e.g., 'French').
+#    - lang_code: The ISO code of the language (e.g., 'fr' for French).
+#    - author_name: Your name or the contributor's name.
+#    - author_github_username: Your GitHub username or the contributor's.
+
+
+
+native_name=Русский
+english_name=Russian
+lang_code=ru
+author_name=Asuma228
+author_github_username=Asuma228
+
+// -- Tray icon --
+
+qr_code=QR Code
+options=настройки
+open_config=Открыть конфиг
+restart_application=Перезапустить WebDeck
+edit_port=Отредактировать порт
+randomize=Слуйчайно
+change_server_port=Изменить порт сервера
+enter_new_port=Введите новый порт:
+fix_firewall=Исправить правила брандмауэра
+server_status=Статус сервера:
+server_online=🟢 В сети
+server_offline=🔴 Не в сети
+server_loading=Загрузка...
+report_issue=Отчёт об ошибке
+exit=Выход
+
+// -- Errors --
+open_github_issue_prompt_title=Открыть GitHub Issue
+open_github_issue_prompt_message=Вы хотите открыть новый GitHub issue по этой ошибке? (Recommended)
+
+copy_to_clipboard_prompt_title=Копировать в буфер обмена
+copy_to_clipboard_prompt_message=Вы хотите скопировать текст ошибки в буфер обмена?
+
+server_disconnected=Сервер отключен
+failed=Не удалось
+error=Ошибка
+error_occurred=Произошла ошибка
+
+settings_load_error=Произошла ошибка при загрузке настроек.
+settings_save_error=Произошла ошибка при сохранении настроек.
+
+auto_update_error=Ошибка при обновлении WebDeck, пожалуйста загрузите обновление вручную с https://github.com/Lenochxd/WebDeck/releases/latest
+
+no_files_found_error=Файлов не найдено
+
+ffmpeg_not_installed_error=Установка FFMPEG...
+vlc_not_installed_error=VLC не установлен!
+mp3_loading_error=Произошла ошибка при загрузке имени MP3 файла.
+
+obs_failed_connection_error=Не удалось подключиться к OBS.
+obs_error_10061=Сервер websocket не найден. (WinError 10061)
+obs_error_incorrect_password=Неверный пароль.
+obs_already_recording=OBS уже осуществляет запись.
+obs_already_streaming=OBS уже осуществляет трансляцию.
+obs_already_vcam=Виртуальная камера уже запущена.
+obs_not_recording=OBS не осуществляет запись.
+obs_not_streaming=OBS не осуществляет трансляцию.
+obs_no_vcam=Виртуальная камера уже остановлена.
+obs_no_recording_can_be_paused=Запись не может быть остановлена.
+obs_no_recording_is_paused=Запись не остановлена.
+
+spotify_not_initialized=Токен авторизации Spotify не инициализирован. Проверьте значения client ID и client secret.
+spotify_apply_volume_error=Ошибка при попытке установить громкость Spotify
+spotify_volume_prenium_error=Ошибка при попытке установить громкость Spotify, требуется Spotify Premium
+spotify_no_active_device_error=Не обнаружено активного устройства Spotify. Проверьте что Spotify запущен.
+spotify_no_track_playing_error=Сейчас ничего не играет.
+spotify_playlist_not_found_error=Плейлист с названием '%playlist_name%' не найден.
+
+
+// -- Success messages --
+settings_save_success=Настройки успешно сохранены.
+downloaded_successfully=Файл успешно загружен
+folder_created_successfully=Папка успешно создана!
+
+spotify_follow_artist_success=Подписался на  %artist_name%.
+spotify_unfollow_artist_success=Отписался от %artist_name%.
+
+
+// -- Button configuration --
+add_a_button=Добавить кнопку
+configure_your_button=Настроить кнопку
+
+image=Изображение
+image_size=Размер изображения
+background_color=Цвет фона
+background_color_hex=Цвет фона (HEX)
+button_title=Заголовок кнопки
+edit_command=Команда (экспериментально)
+
+select_your_file=Выберите файл
+no_file_chosen=Файл не выбран!
+
+choose_option=Выберите вариант
+
+button_delete_confirmation=Вы уверены, что хотите удалить эту кнопку?
+
+
+// -- Editor --
+enter_editor_mode=Открыть режим редактора
+exit_editor_mode=Закрыть режим редактора
+
+open_folder=Открыть папку
+
+quit_without_saving=Закрыть без сохранения
+save_and_exit=Сохранить и закрыть
+swap_buttons=Поменять 2 кнопки местами
+stop_swap_mode=Закрыть режим смены местами
+no_changes_to_undo=Нет изменений для отмены.
+
+
+// Settings tab
+configuration=Конфигурация
+settings=Настройки
+
+see_patchnotes=Посмотреть список изменений
+github_issue=Написать отчёт об ошибках на Github
+
+language=Язык
+config-windows_startup=Запускать при старте Windows
+auto_updates=Автообновление
+
+soundboard=Звуковая панель
+input_device=Устройство ввода
+output_device=Устройство вывода (vbcable)
+toggle_soundboard=Звуковая панель включена
+ear_soundboard=Прослушивать звуковую панель
+
+spotify_api=Spotify API
+username=Имя пользователя
+
+obs_studio=OBS Studio
+host=Адрес
+port=Порт
+password=Пароль
+
+
+visuals=Внешний вид
+
+gridsize=Размер сетки
+height=высота
+width=ширина
+
+portrait_rotate=Угол поворота портретного режима
+
+themes=Темы
+open_theme_menu=Открыть меню тем
+
+backgrounds=Фоновые изображения
+open_background_image_menu=Открыть меню фоновых изображений
+
+dark_theme=Тёмная тема
+
+show_btn_names=Показать названия кнопок
+
+edit_btn_color=Изменить цвет кнопок по-умолчанию
+
+
+experimental=Экспериментально
+
+usage_btn_reload_time=Автообновление страницы (ms)
+
+optimized_usage_display=Оптимизировать использование пространства дисплея
+
+gpu_usage_method=Метод использования GPU (if the gpu usage does not show)
+doesnt_work=не работает
+lmao=лмао
+none=Нет
+
+open_settings_in_integrated_browser=Открыть настройки в отдельном браузере
+
+show_console=Отобразить консоль
+dev_mode=Режим разработчика
+authorize_windows_firewall=Авторизовать WebDeck в брандмауэре Защитника Windows
+automatic_firewall_bypass=Автоматически обходить ограничения брандмауэра при запуске
+fix_stop_soundboard=Исправить ошибку кнопки остановки звуковой панели (может работать нестабильно)
+
+server=Сервер
+
+themes_menu_title=Список тем
+random_bg_menu_title=Список случайных фонов
+
+disabled_themes=Доступно
+enabled_themes=Выбрано
+
+open_themes_folder=Открыть папку с темами
+
+wallpaper_color=Цвет фона
+add_background_color=Добавить цвет фона
+or=or
+
+remove_background=Убрать этот фон
+
+
+// Links
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+
+soundboard_tutorial=Обучение установки звуковой панели
+spotify_tutorial=Обучение установки Spotify
+obs_tutorial=Обучение установки OBS
+themes_tutorial=Обучение создания тем
+
+
+not_specified=Не указано
+
+save=Сохранить
+back=Вернуться
