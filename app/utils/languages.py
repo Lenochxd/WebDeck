@@ -4,12 +4,16 @@ lang_files = {}
 languages_info = []
 default_lang = 'en_US'
 lang_files_dir = ''
+misc_lang_files_dir = ''
 
 
 def load_lang_file(lang) -> dict:
     lang_dictionary = {}
     lang_path = f"{lang_files_dir}/{lang}.lang"
 
+    if not os.path.isfile(lang_path):
+        lang_path = f"{misc_lang_files_dir}/{lang}.lang"
+    
     if not os.path.isfile(lang_path):
         for root, dirs, files in os.walk(lang_files_dir):
             for file in files:
@@ -54,11 +58,19 @@ def set_default_language(lang: str) -> None:
 
 def load_all_lang_files() -> dict:
     lang_files = {}
-    for root, dirs, files in os.walk("webdeck/translations"):
-        for file in files:
+    for file in os.listdir(lang_files_dir):
+        if file.endswith(".lang"):
+            lang = file.split(".")[0]
+            lang_files[lang] = load_lang_file(lang)
+            lang_files[lang]['misc'] = False
+
+    if misc_lang_files_dir and os.path.isdir(misc_lang_files_dir):
+        for file in os.listdir(misc_lang_files_dir):
             if file.endswith(".lang"):
                 lang = file.split(".")[0]
-                lang_files[lang] = load_lang_file(lang)
+                if lang not in lang_files:
+                    lang_files[lang] = load_lang_file(lang)
+                lang_files[lang]['misc'] = True
     return lang_files
 
 def reload_all_lang_files() -> None:
@@ -78,15 +90,19 @@ def get_languages_info(lang_files=lang_files) -> list:
             'english_name': lang_data['english_name'],
             'author_name': lang_data['author_name'],
             'author_github_username': lang_data['author_github_username'],
+            'misc': lang_data.get('misc', False),
         })
     
     return languages_info
 
-def init(lang_files_directory=None, default_language=None):
-    global languages_info, default_lang, lang_files_dir
+def init(lang_files_directory=None, misc_lang_files_directory=None, default_language=None):
+    global languages_info, default_lang, lang_files_dir, misc_lang_files_dir
     
     if lang_files_directory is None:
         raise ValueError("'lang_files_directory' must be specified")
+    
+    if not misc_lang_files_directory is None:
+        misc_lang_files_dir = misc_lang_files_directory
     
     lang_files_dir = lang_files_directory
     default_language = default_language or default_lang

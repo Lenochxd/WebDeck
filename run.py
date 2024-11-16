@@ -42,6 +42,7 @@ if not is_opened():
     log.info("Loading translations")
     languages.init(
         lang_files_directory="webdeck/translations",
+        misc_lang_files_directory="webdeck/translations/misc",
         default_language=settings['language']
     )
     

@@ -122,29 +122,43 @@ def generate_menu(language, server_status=1):
         2: text('server_offline')
     }
 
+    languages_info = get_languages_info()
+    misc_languages = [lang for lang in languages_info if lang.get('misc', False)]
+    non_misc_languages = [lang for lang in languages_info if not lang.get('misc', False)]
+
+    def create_language_menu_item(lang):
+        button_text = lang['code']
+        if lang['native_name'] != lang['code']:
+            button_text = f"{lang['native_name']} ({lang['code']})"
+        return pystray.MenuItem(
+            button_text,
+            lambda: update_language(lang['code']),
+            radio=True,
+            checked=lambda item: lang['code'] == get_language(language)
+        )
+
+    language_menu_items = [create_language_menu_item(lang) for lang in non_misc_languages]
+
+    if misc_languages:
+        language_menu_items.append(pystray.Menu.SEPARATOR)
+        language_menu_items.extend([create_language_menu_item(lang) for lang in misc_languages])
+
     return pystray.Menu(
-        pystray.MenuItem(text('qr_code'), lambda: show_qrcode(), default=True),
+        pystray.MenuItem(text('qr_code'), show_qrcode, default=True),
         pystray.MenuItem(text('options'), pystray.Menu(
-            pystray.MenuItem(text('open_config'), lambda: open_config()),
-            pystray.MenuItem(text('language'), pystray.Menu(
-                *[pystray.MenuItem(
-                    f"{lang['native_name']} ({lang['code']})",
-                    (lambda lang=lang: lambda: update_language(lang['code']))(lang),
-                    radio=True,
-                    checked=lambda item, lang=lang: lang['code'] == get_language(language)
-                ) for lang in get_languages_info()]
-            )),
-            pystray.MenuItem(text('restart_application'), lambda: restart_program()),
-            pystray.MenuItem(text('edit_port'), lambda: change_port_prompt()),
-            pystray.MenuItem(text('fix_firewall'), lambda: fix_firewall_permission()),
+            pystray.MenuItem(text('open_config'), open_config),
+            pystray.MenuItem(text('language'), pystray.Menu(*language_menu_items)),
+            pystray.MenuItem(text('restart_application'), restart_program),
+            pystray.MenuItem(text('edit_port'), change_port_prompt),
+            pystray.MenuItem(text('fix_firewall'), fix_firewall_permission),
         )),
         pystray.MenuItem(
             f"{text('server_status')} {server_status_text.get(server_status, text('server_offline'))}",
-            lambda: open_config()
+            open_config
         ),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem(text('report_issue'), lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
-        pystray.MenuItem(text('exit'), lambda: exit_program()),
+        pystray.MenuItem(text('exit'), exit_program),
     )
 
 def generate_tray_icon():
