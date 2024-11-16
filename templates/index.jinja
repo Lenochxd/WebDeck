@@ -684,31 +684,29 @@
                   </select>
                 </div>
 
-                {% if is_exe == True %}
-                  <div class="setting windows-startup">
-                    <p> {{text('config-windows_startup')}} </p>
-                    <label for="windows-startup" class="switch">
-                      {% if 'windows-startup' in config['settings'].keys() %}
-                        <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" {% if config['settings']['windows_startup'] %}checked{% endif %}>
-                      {% else %}
-                        <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" checked>
-                      {% endif %}
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
+                <div class="setting windows-startup {% if is_exe == True %}invisible{% endif %}">
+                  <p> {{text('config-windows_startup')}} </p>
+                  <label for="windows-startup" class="switch">
+                    {% if 'windows-startup' in config['settings'].keys() %}
+                      <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" {% if config['settings']['windows_startup'] %}checked{% endif %}>
+                    {% else %}
+                      <input class="{{dark_theme}}" type="checkbox" id="windows-startup" name="settings.windows_startup" checked>
+                    {% endif %}
+                    <span class="slider round"></span>
+                  </label>
+                </div>
 
-                  <div class="setting auto-updates">
-                    <p> {{text('auto_updates')}} </p>
-                    <label for="auto-updates" class="switch">
-                      {% if 'auto-updates' in config['settings'].keys() %}
-                        <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" {% if config['settings']['auto_updates'] %}checked{% endif %}>
-                      {% else %}
-                        <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" checked>
-                      {% endif %}
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                {% endif %}
+                <div class="setting auto-updates {% if is_exe == True %}invisible{% endif %}">
+                  <p> {{text('auto_updates')}} </p>
+                  <label for="auto-updates" class="switch">
+                    {% if 'auto-updates' in config['settings'].keys() %}
+                      <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" {% if config['settings']['auto_updates'] %}checked{% endif %}>
+                    {% else %}
+                      <input class="{{dark_theme}}" type="checkbox" id="auto-updates" name="settings.auto_updates" checked>
+                    {% endif %}
+                    <span class="slider round"></span>
+                  </label>
+                </div>
                 
                 <div class="setting soundboard {{dark_theme}}">
                   <div class="settings-title-info">
