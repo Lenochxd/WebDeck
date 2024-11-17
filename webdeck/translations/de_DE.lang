@@ -25,6 +25,7 @@ lang_code=de
 author_name=Dtrieb
 author_github_username=Dtrieb
 
+
 // -- Tray icon --
 
 qr_code=QR Code
@@ -43,7 +44,9 @@ server_loading=Lädt...
 report_issue=Ein Problem melden
 exit=Beenden
 
+
 // -- Errors --
+
 open_github_issue_prompt_title=GitHub-Problem öffnen
 open_github_issue_prompt_message=Möchten Sie ein GitHub-Problem für diesen Fehler öffnen? (Empfohlen)
 
@@ -87,6 +90,7 @@ spotify_playlist_not_found_error=Playlist mit dem Namen '%playlist_name%' nicht 
 
 
 // -- Success messages --
+
 settings_save_success=Einstellungen erfolgreich gespeichert.
 downloaded_successfully=Datei erfolgreich heruntergeladen.
 folder_created_successfully=Ordner erfolgreich erstellt!
@@ -96,6 +100,7 @@ spotify_unfollow_artist_success=Deabonniert %artist_name%.
 
 
 // -- Button configuration --
+
 add_a_button=Hinzufügen einer Schaltfläche
 configure_your_button=Konfigurieren Sie Ihre Schaltfläche
 
@@ -115,6 +120,7 @@ button_delete_confirmation=Möchten Sie diese Schaltfläche wirklich entfernen?
 
 
 // -- Editor --
+
 enter_editor_mode=Editor-Modus aufrufen
 exit_editor_mode=Editor-Modus beenden
 

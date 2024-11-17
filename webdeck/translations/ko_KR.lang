@@ -25,6 +25,7 @@ lang_code=ko
 author_name=KiiMyu(KiMyu)
 author_github_username=KiiMyu
 
+
 // -- Tray icon --
 
 qr_code=QR 코드
@@ -43,7 +44,9 @@ server_loading=로딩 중...
 report_issue=GitHub 이슈 보고
 exit=나가기
 
+
 // -- Errors --
+
 open_github_issue_prompt_title=GitHub 이슈 열기
 open_github_issue_prompt_message=이 오류에 대한 GitHub 이슈를 열겠습니까? (권장)
 
@@ -87,6 +90,7 @@ spotify_playlist_not_found_error='%playlist_name%' 이름의 플레이리스트�
 
 
 // -- Success messages --
+
 settings_save_success=설정 저장을 완료하였습니다.
 downloaded_successfully=파일 다운로드를 완료하였습니다.
 folder_created_successfully=폴더 생성을 완료하였습니다!
@@ -96,6 +100,7 @@ spotify_unfollow_artist_success=%artist_name% 아티스트 팔로우를 취소�
 
 
 // -- Button configuration --
+
 add_a_button=버튼 추가
 configure_your_button=버튼 구성
 
@@ -115,6 +120,7 @@ button_delete_confirmation=버튼을 정말 제거하시겠습니까?
 
 
 // -- Editor --
+
 enter_editor_mode=편집 모드 진입
 exit_editor_mode=편집 모드 종료
 

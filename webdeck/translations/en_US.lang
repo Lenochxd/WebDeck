@@ -25,6 +25,7 @@ lang_code=en
 author_name=Lenoch
 author_github_username=Lenochxd
 
+
 // -- Tray icon --
 
 qr_code=QR Code
@@ -43,7 +44,9 @@ server_loading=Loading...
 report_issue=Report an Issue
 exit=Quit
 
+
 // -- Errors --
+
 open_github_issue_prompt_title=Open GitHub Issue
 open_github_issue_prompt_message=Do you want to open a GitHub issue for this error? (Recommended)
 
@@ -87,6 +90,7 @@ spotify_playlist_not_found_error=Playlist named '%playlist_name%' not found.
 
 
 // -- Success messages --
+
 settings_save_success=Settings saved successfully.
 downloaded_successfully=File downloaded successfully
 folder_created_successfully=Folder created successfully!
@@ -96,6 +100,7 @@ spotify_unfollow_artist_success=Unsubscribed from %artist_name%.
 
 
 // -- Button configuration --
+
 add_a_button=Add a button
 configure_your_button=Configure your button
 
@@ -115,6 +120,7 @@ button_delete_confirmation=Do you really want to remove this button?
 
 
 // -- Editor --
+
 enter_editor_mode=Enter editor mode
 exit_editor_mode=Exit editor mode
 

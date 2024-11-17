@@ -25,6 +25,7 @@ lang_code=ru
 author_name=Asuma228
 author_github_username=Asuma228
 
+
 // -- Tray icon --
 
 qr_code=QR Code
@@ -43,7 +44,9 @@ server_loading=Загрузка...
 report_issue=Отчёт об ошибке
 exit=Выход
 
+
 // -- Errors --
+
 open_github_issue_prompt_title=Открыть GitHub Issue
 open_github_issue_prompt_message=Вы хотите открыть новый GitHub issue по этой ошибке? (Recommended)
 
@@ -87,6 +90,7 @@ spotify_playlist_not_found_error=Плейлист с названием '%playli
 
 
 // -- Success messages --
+
 settings_save_success=Настройки успешно сохранены.
 downloaded_successfully=Файл успешно загружен
 folder_created_successfully=Папка успешно создана!
@@ -96,6 +100,7 @@ spotify_unfollow_artist_success=Отписался от %artist_name%.
 
 
 // -- Button configuration --
+
 add_a_button=Добавить кнопку
 configure_your_button=Настроить кнопку
 
@@ -115,6 +120,7 @@ button_delete_confirmation=Вы уверены, что хотите удалит
 
 
 // -- Editor --
+
 enter_editor_mode=Открыть режим редактора
 exit_editor_mode=Закрыть режим редактора
 
