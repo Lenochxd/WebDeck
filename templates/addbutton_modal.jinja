@@ -29,8 +29,6 @@
                 {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
               {% endif %}
               {% set arg_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ ns.arg_id ~ '_name') %}
-              <!-- {{mdebug(arg_name)}}
-              {{mdebug(type(arg_name))}} -->
               {% if "input" in arg['TYPE'] %}
                 <div class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                   
@@ -133,7 +131,6 @@
                 
                 <div class="choices_ALL">
                   <label for="choice">{{text("choose_option")}} :</label><br>
-                  {% set language = text('lang_short') %}
                   {% for choice in arg['options'] %}
                     {% set choice_id = loop.index0 + 1 %}
                     {% set choice_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ ns.arg_id ~ '_option_' ~ choice_id ~ '_name') %}
