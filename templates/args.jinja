@@ -93,13 +93,15 @@
     {# lister toutes les options #}
     <select name="{{file}}" >
         {% for option in arg['options'] %}
-            {% if option[language] %}
-                {% set option_name = option[language] %}
-            {% elif arg["en"] %}
-                {% set option_name = option["en"] %}
-            {% else %}
-                {% set option_name = "option_name is missing!" %}
+            {% set option_id = loop.index %}
+            
+            {% set _category = category|replace(' ','')|upper %}
+            {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+            {% if str(arg_id) == '' %}
+                {% set arg_id = 1 %}
             {% endif %}
+            {% set option_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ arg_id ~ '_option_' ~ option_id ~ '_name') %}
+            
             <option value="{{ option['ID'] }}"> {{ option_name }} </option>
         {% endfor %}
     </select>

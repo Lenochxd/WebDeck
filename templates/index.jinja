@@ -1087,20 +1087,18 @@
             
             <div class="all-commands {{dark_theme}}">
               {% for category, category_value in commands.items() %}
-                {% set category_name = category %}
-                {% if category_value['CATEGORY-SETTINGS'] %}
-                  {% if category_value['CATEGORY-SETTINGS']["NAME"] %}
-                    {% if category_value['CATEGORY-SETTINGS']["NAME"][language] %}
-                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"][language] %}
-                    {% elif category_value['CATEGORY-SETTINGS']["NAME"]["en"] %}
-                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"]["en"] %}
-                    {% elif category_value['CATEGORY-SETTINGS']["NAME"][0] %}
-                      {% set category_name = category_value['CATEGORY-SETTINGS']["NAME"][0] %}
-                    {% endif %}
-                  {% endif %}
+                
+                {% set _category = category|replace(' ','')|upper %}
+
+                {% set query = _category ~ '_CATEGORY_NAME' %}
+                {% set category_name = text(query) %}
+                {% if category_name == query or category_name == '' %}
+                  {% set category_name = category %}
                 {% endif %}
 
-                <button class="dropdown-btn {{dark_theme}}" dropdown-category="{{category_name}}">{{category_name}}</button>
+                <button class="dropdown-btn {{dark_theme}}" dropdown-category="{{category_name}}">
+                  {{category_name}}
+                </button>
                 <div class="dropdown-container">
                   {% set arg_modal_ID1 = loop.index0 %}
                   {% for command, command_value in category_value.items() %}
@@ -1109,88 +1107,107 @@
                       {# {{ mdebug(command) }} #}
                       <div class="dropdown-item-container">
                         {% set command_name = command %}
-                        {% if command_value["name"] %}
-                          {% if command_value["name"][language] %}
-                            {% set command_name = command_value["name"][language] %}
-                          {% elif command_value["name"]["en"] %}
-                            {% set command_name = command_value["name"]["en"] %}
-                          {% elif command_value["name"][0] %}
-                            {% set command_name = command_value["name"][0] %}
-                          {% endif %}
-                        {% endif %}
-                        {% set command_desc = "" %}
-                        {% if command_value["description"] %}
-                          {% if command_value["description"][language] %}
-                            {% set command_desc = command_value["description"][language] %}
-                          {% elif command_value["description"]["en"] %}
-                            {% set command_desc = command_value["description"]["en"] %}
-                          {% elif command_value["description"][0] %}
-                            {% set command_desc = command_value["description"][0] %}
-                          {% endif %}
-                        {% endif %}
                         {% set command_id = command_value["command"] %}
 
-                        {% if command_value["description"] %}
+                        {% set sub_id = 0 %}
+                        
+                        {% set btn = 'btn' %}
+                        {% if "multiple" in command_value["TYPE"] %}
+                          {% set btn = 'category' %}
+                        {% endif %}
+                        
+                        {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+                        {% set query = _category ~ '_' ~ _command ~ '__' ~ btn ~ '_description' %}
+                        {% set button_description = text(query) %}
+                        {% if button_description == query %}
+                          {% set button_description = '' %}
+                        {% endif %}
+
+                        {% if button_description %}
                           <div class="addbutton-description">
-                            <p>{{command_desc}}</p>
+                            <p>{{button_description}}</p>
                           </div>
                         {% endif %}
 
                         {% if not command_value["TYPE"] == "multiple" %}
-                          
-                          {# <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}" onclick="argsInput('commands[\'{{category}}\'][\'{{command}}\']')" > {{command_name}} </button> #}
-                          <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{dark_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+
+                          {% set _category = category|replace(' ','')|upper %}
+                          {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+                          {% if sub_id != 0 %}
+                            {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
+                          {% endif %}
+                          {% set query = _category ~ '_' ~ _command ~ '__' ~ 'btn' ~ '_name' %}
+                          {% set button_title = text(query) %}
+
+                          {% if button_title == query or button_title == '' %}
+                            {% set button_title = command_name %}
+                          {% endif %}
+                          <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{dark_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}">
+                            {{button_title}}
+                          </button>
                         
                           {% include 'addbutton_modal.jinja' %}
 
                         {% else %}
-                          {# si type = multiple #}
+                          {# if type is multiple #}
 
-                          {% if command_value["name"] %}
-                            {% if command_value["name"][language] %}
-                              {% set command = command_value["name"][language] %}
-                            {% elif command_value["name"]["en"] %}
-                              {% set command = command_value["name"]["en"] %}
-                            {% elif command_value["name"][0] %}
-                              {% set command = command_value["name"][0] %}
-                            {% endif %}
+                          {% set _category = category|replace(' ','')|upper %}
+                          {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+          
+                          {% set query = _category ~ '_' ~ _command ~ '__' ~ 'category' ~ '_name' %}
+                          {% set button_title = text(query) %}
+                          {% if button_title == query or button_title == '' %}
+                            {% set button_title = category %}
                           {% endif %}
+                          
                           {% set command_values = command_value["commands"] %}
-                          <button class="dropdown-btn {{dark_theme}}" dropdown-category="{{command}}">{{command}}</button>
+                          <button class="dropdown-btn {{dark_theme}}" dropdown-category="{{command}}">
+                            {{button_title}}
+                          </button>
                           <div class="dropdown-container">
                             <div class="dropdown-item-container">
                               {% for command_value in command_values %}
+                                {% set sub_id = loop.index0 + 1 %}
+
                                 {% set arg_modal_ID = str(arg_modal_ID) + "X" + str(loop.index0) %}
+                                {% set parent_command = command %}
+
                                 {% set command = command_value["command"].replace('/','') %}
                                 {# {{ mdebug(command) }} #}
-                                {% set command_name = command %}
-                                {% if command_value["name"] %}
-                                  {% if command_value["name"][language] %}
-                                    {% set command_name = command_value["name"][language] %}
-                                  {% elif command_value["name"]["en"] %}
-                                    {% set command_name = command_value["name"]["en"] %}
-                                  {% elif command_value["name"][0] %}
-                                    {% set command_name = command_value["name"][0] %}
-                                  {% endif %}
-                                {% endif %}
-                                {% set command_desc = "" %}
-                                {% if command_value["description"] %}
-                                  {% if command_value["description"][language] %}
-                                    {% set command_desc = command_value["description"][language] %}
-                                  {% elif command_value["description"]["en"] %}
-                                    {% set command_desc = command_value["description"]["en"] %}
-                                  {% elif command_value["description"][0] %}
-                                    {% set command_desc = command_value["description"][0] %}
-                                  {% endif %}
-                                {% endif %}
+                                
                                 {% set command_id = command_value["command"] %}
-                                {% if command_value["description"] %}
+
+                                {% set query = _category ~ '_' ~ _command ~ '__' ~ 'category' ~ '_description' %}
+                                {% set button_description = text(query) %}
+                                {% if button_description == query %}
+                                  {% set button_description = '' %}
+                                {% endif %}
+
+                                {% if button_description %}
                                   <div class="addbutton-description">
-                                    <p>{{command_desc}}</p>
+                                    <p>{{button_description}}</p>
                                   </div>
                                 {% endif %}
                                 
-                                <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{dark_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}"> {{command_name}} </button>
+                                {% set btn = 'btn' %}
+                                {% if "multiple" in command_value["TYPE"] %}
+                                  {% set btn = 'category' %}
+                                {% endif %}
+                                
+                                {% set _category = category|replace(' ','')|upper %}
+                                {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+                                {% if sub_id != 0 %}
+                                  {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
+                                {% endif %}
+                                {% set query = _category ~ '_' ~ _command ~ '__' ~ btn ~ '_name' %}
+                                {% set button_title = text(query) %}
+
+                                {% if button_title == query or button_title == '' %}
+                                  {% set button_title = command %}
+                                {% endif %}
+                                <button arg_modal_ID="{{ arg_modal_ID }}" class="dropdown-btn no-dropdown {{dark_theme}}" id="open-button-{{ arg_modal_ID }}" dropdown-commandTag="{{command}}">
+                                  {{button_title}}
+                                </button>
                                 
                                 {% include 'addbutton_modal.jinja' %}
                               {% endfor %}

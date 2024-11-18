@@ -3,275 +3,128 @@
     "Fullscreen": {
       "command": "/fullscreen",
       "args": [],
-      "name": {
-        "en": "Fullscreen",
-        "fr": "Plein écran",
-        "ko": "전체 화면"
-      },
-      "description": {
-        "en": "Toggle full screen mode on the device",
-        "fr": "Active ou désactive le mode plein écran sur l'appareil",
-        "ko": "제어장치의 전체 화면 모드를 활성화하거나 비활성화합니다."
-      },
       "style": {
         "image": "fullscreen2.png",
-        "image_size": "50%",
-        "name": {
-          "en": "Fullscreen",
-          "fr": "Plein écran",
-          "ko": "전체 화면"
-        }
+        "image_size": "50%"
       }
     },
     "Reload page": {
       "command": "/reload",
       "args": [],
-      "name": {
-        "en": "Reload page",
-        "fr": "Recharger la page",
-        "ko": "새로고침"
-      },
       "style": {
         "image": "reload.png",
-        "image_size": "50%",
-        "name": {
-          "en": "Reload",
-          "fr": "Recharger la page",
-          "ko": "새로고침"
-        }
+        "image_size": "50%"
       }
     },
     "Open a folder": {
       "command": "/folder",
       "args": [
         {
-          "TYPE": "input webdeck_foldername",
-          "fr": "Nom du dossier",
-          "en": "Folder name",
-          "ko": "폴더 이름"
+          "TYPE": "input webdeck_foldername"
         }
       ],
-      "name": {
-        "en": "Open a folder",
-        "fr": "Ouvrir un dossier",
-        "ko": "폴더 열기"
-      },
-      "description": {
-        "en": "Opens the specified webdeck folder",
-        "fr": "Ouvre le dossier spécifié du webdeck",
-        "ko": "웹덱 폴더를 엽니다."
-      },
       "style": {
         "image": "folder.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Open folder",
-          "fr": "Ouvrir le dossier",
-          "ko": "폴더 열기"
-          
-        }
+        "image_size": "70%"
       }
     },
     "Config": {
       "command": "/open-config",
       "args": [],
-      "name": {
-        "en": "Configuration",
-        "fr": "Configuration",
-        "ko": "설정"
-      },
-      "description": {
-        "en": "Open settings menu",
-        "fr": "Ouvre le menu des paramètres",
-        "ko": "설정 메뉴를 엽니다."
-      },
       "style": {
         "image": "settings2.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Settings",
-          "fr": "Paramètres",
-          "ko": "설정"
-        }
+        "image_size": "70%"
       }
     }
   },
   "Display": {
-    "CATEGORY-SETTINGS": {
-      "NAME": {
-        "fr": "Affichage",
-        "ko": "디스플레이"
-
-      }
-    },
     "CPU": {
       "command": "/usage '",
       "args": [
         {
           "TYPE": "input usage-title-text",
-          "value": "CPU",
-          "en": "Button text",
-          "fr": "Nom affiché",
-          "ko": "버튼 이름"
+          "value": "CPU"
         },
         {
           "TYPE": "text",
           "value": "' usage_dict['cpu']['usage_percent']"
         }
       ],
-      "name": {
-        "en": "CPU usage %",
-        "fr": "Utilisation du CPU (%)",
-        "ko": "CPU 사용률 (%)"
-      },
       "style": {
         "image": "",
-        "image_size": "",
-        "name": {
-          "en": "CPU usage",
-          "fr": "Utilisation processeur",
-          "ko": "CPU 사용률"
-        }
+        "image_size": ""
       }
     },
     "Memory": {
       "TYPE": "multiple",
-      "name": {
-        "en": "Memory (RAM)",
-        "fr": "Memoire (RAM)",
-        "ko": "메모리 (RAM)"
-      },
       "commands": [
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "RAM",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "RAM"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['memory']['usage_percent']"
             }
           ],
-          "name": {
-            "en": "RAM usage (%)",
-            "fr": "Utilisation de la RAM (%)",
-            "ko": "RAM 사용률 (%)"
-          },
-          "style": {
-            "name": {
-              "en": "RAM usage",
-              "fr": "Utilisation de la RAM",
-              "ko": "RAM 사용률"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "RAM",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "RAM"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['memory']['used_gb']"
             }
           ],
-          "name": {
-            "en": "RAM usage (gb)",
-            "fr": "Utilisation de la RAM (gb)",
-            "ko": "RAM 사용량 (gb)"
-          },
-          "style": {
-            "name": {
-              "en": "RAM usage",
-              "fr": "Utilisation de la RAM",
-              "ko": "RAM 사용량"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "RAM",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "RAM"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['memory']['available_gb']"
             }
           ],
-          "name": {
-            "en": "Available RAM (gb)",
-            "fr": "RAM disponible (gb)",
-            "ko": "사용 가능한 RAM (gb)"
-          },
-          "style": {
-            "name": {
-              "en": "Available RAM",
-              "fr": "RAM disponible",
-              "ko": "사용 가능한 RAM"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "RAM",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "RAM"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['memory']['total_gb']"
             }
           ],
-          "name": {
-            "en": "total RAM (gb)",
-            "fr": "RAM totale (gb)",
-            "ko": "총 RAM (gb)"
-          },
-          "style": {
-            "name": {
-              "en": "total RAM",
-              "fr": "RAM totale",
-              "ko": "총 RAM"
-            }
-          }
+          "style": {}
         }
       ]
     },
     "Disks": {
       "TYPE": "multiple",
-      "name": {
-        "en": "Disks",
-        "fr": "Disques"
-      },
       "commands": [
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "Disk",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
@@ -279,38 +132,21 @@
             },
             {
               "TYPE": "input disk-letter",
-              "value": "Disk",
-              "en": "Disk letter",
-              "fr": "Lettre du disque",
-              "ko": "확인할 드라이브"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
               "value": "']['usage_percent']"
             }
           ],
-          "name": {
-            "en": "Disk usage (%)",
-            "fr": "Utilisation du disque (%)",
-            "ko": "디스크 사용률 (%)"
-          },
-          "style": {
-            "name": {
-              "en": "Disk usage",
-              "fr": "Utilisation du disque",
-              "ko": "디스크 사용률"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "Disk",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
@@ -318,38 +154,21 @@
             },
             {
               "TYPE": "input disk-letter",
-              "value": "Disk",
-              "en": "Disk letter",
-              "fr": "Lettre du disque",
-              "ko": "확인할 드라이브"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
               "value": "']['free_gb']"
             }
           ],
-          "name": {
-            "en": "Storage available (gb)",
-            "fr": "Stockage disponible (gb)",
-            "ko": "남은 저장 공간 (gb)"
-          },
-          "style": {
-            "name": {
-              "en": "Storage available",
-              "fr": "Stockage disponible",
-              "ko": "남은 저장 공간"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "Disk",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
@@ -357,38 +176,21 @@
             },
             {
               "TYPE": "input disk-letter",
-              "value": "Disk",
-              "en": "Disk letter",
-              "fr": "Lettre du disque",
-              "ko": "확인할 드라이브"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
               "value": "']['used_gb']"
             }
           ],
-          "name": {
-            "en": "Disk usage (gb)",
-            "fr": "Stockage utilisé (gb)",
-            "ko": "디스크 사용량 (gb)"
-          },
-          "style": {
-            "name": {
-              "en": "Disk usage",
-              "fr": "Utilisation du disque",
-              "ko": "디스크 사용량"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "Disk",
-              "en": "Button text",
-              "fr": "Nom affiché",
-              "ko": "버튼 이름"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
@@ -396,455 +198,210 @@
             },
             {
               "TYPE": "input disk-letter",
-              "value": "Disk",
-              "en": "Disk letter",
-              "fr": "Lettre du disque",
-              "ko": "확인할 드라이브"
+              "value": "Disk"
             },
             {
               "TYPE": "text",
               "value": "']['total_gb']"
             }
           ],
-          "name": {
-            "en": "Total disk storage (gb)",
-            "fr": "Capacité totale du disque (gb)",
-            "ko": "총 저장 공간 (gb)"
-          },
-          "style": {
-            "name": {
-              "en": "Total disk storage",
-              "fr": "Capacité totale du disque",
-              "ko": "총 저장 공간"
-            }
-          }
+          "style": {}
         }
       ]
     },
     "GPU": {
       "TYPE": "multiple",
-      "name": {
-        "en": "GPU",
-        "fr": "GPU"
-      },
       "commands": [
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "GPU",
-              "en": "Button text",
-              "fr": "Texte affiché",
-              "ko": "버튼 이름"
+              "value": "GPU"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input available_gpus",
-              "en": "Select GPU",
-              "fr": "GPU sélectionné",
-              "ko": "확인할 GPU"
+              "TYPE": "input available_gpus"
             },
             {
               "TYPE": "text",
               "value": "']['usage_percent']"
             }
           ],
-          "name": {
-            "en": "GPU usage %",
-            "fr": "Utilisation du GPU (%)",
-            "ko": "GPU 사용률 (%)"
-          },
-          "style": {
-            "name": {
-              "en": "GPU usage",
-              "fr": "Utilisation du GPU",
-              "ko": "GPU 사용률"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "GPU",
-              "en": "Button text",
-              "fr": "Texte affiché",
-              "ko": "버튼 이름"
+              "value": "GPU"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input available_gpus",
-              "en": "Select GPU",
-              "fr": "GPU sélectionné",
-              "ko": "확인할 GPU"
+              "TYPE": "input available_gpus"
             },
             {
               "TYPE": "text",
               "value": "']['used_mb']"
             }
           ],
-          "name": {
-            "en": "VRAM usage (mb)",
-            "fr": "Utilisation de la VRAM (mb)",
-            "ko": "VRAM 사용량 (mb)"
-          },
-          "style": {
-            "name": {
-              "en": "VRAM usage",
-              "fr": "Utilisation de la VRAM",
-              "ko": "VRAM 사용량"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "GPU",
-              "en": "Button text",
-              "fr": "Texte affiché",
-              "ko": "버튼 이름"
+              "value": "GPU"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input available_gpus",
-              "en": "Select GPU",
-              "fr": "GPU sélectionné",
-              "ko": "확인할 GPU"
+              "TYPE": "input available_gpus"
             },
             {
               "TYPE": "text",
               "value": "']['total_mb']"
             }
           ],
-          "name": {
-            "en": "Available VRAM (mb)",
-            "fr": "VRAM disponible (mb)",
-            "ko": "사용 가능한 VRAM (mb)"
-          },
-          "style": {
-            "name": {
-              "en": "Available VRAM",
-              "fr": "VRAM disponible",
-              "ko": "사용 가능한 VRAM"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "GPU",
-              "en": "Button text",
-              "fr": "Texte affiché",
-              "ko": "버튼 이름"
+              "value": "GPU"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['gpus']['"
             },
             {
-              "TYPE": "input available_gpus",
-              "en": "Select GPU",
-              "fr": "GPU sélectionné",
-              "ko": "확인할 GPU"
+              "TYPE": "input available_gpus"
             },
             {
               "TYPE": "text",
               "value": "']['total_mb']"
             }
           ],
-          "name": {
-            "en": "total VRAM (mb)",
-            "fr": "VRAM totale (mb)",
-            "ko": "총 VRAM (mb)"
-          },
-          "style": {
-            "name": {
-              "en": "total VRAM",
-              "fr": "VRAM totale",
-              "ko": "총 VRAM"
-            }
-          }
+          "style": {}
         }
       ]
     },
     "Network": {
       "TYPE": "multiple",
-      "name": {
-        "en": "Network",
-        "fr": "Réseau",
-        "ko": "네트워크"
-      },
       "commands": [
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "Upload",
-              "en": "Button text",
-              "fr": "Texte affiché",
-              "ko": "버튼 이름"
+              "value": "Upload"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['network']['bytes_sent']"
             }
           ],
-          "name": {
-            "en": "Network upload (bytes)",
-            "fr": "Upload réseau (octets)",
-            "ko": "네트워크 업로드 속도 (bytes)"
-          },
-          "style": {
-            "name": {
-              "en": "Network upload",
-              "fr": "Upload réseau",
-              "ko": "네트워크 업로드 속도"
-            }
-          }
+          "style": {}
         },
         {
           "command": "/usage '",
           "args": [
             {
               "TYPE": "input usage-title-text",
-              "value": "Download",
-              "en": "Button text",
-              "fr": "Texte affiché",
-              "ko": "버튼 이름"
+              "value": "Download"
             },
             {
               "TYPE": "text",
               "value": "' usage_dict['network']['bytes_recv']"
             }
           ],
-          "name": {
-            "en": "Network download (bytes)",
-            "fr": "Download réseau (octets)",
-            "ko": "네트워크 다운로드 속도 (bytes)"
-          },
-          "style": {
-            "name": {
-              "en": "Network download",
-              "fr": "Download réseau",
-              "ko": "네트워크 다운로드 속도"
-            }
-          }
+          "style": {}
         }
       ]
     }
   },
   "System": {
-    "CATEGORY-SETTINGS": {
-      "NAME": {
-        "fr": "Système",
-        "ko": "시스템"
-      }
-    },
     "Volume": {
       "TYPE": "multiple",
-      "name": {
-        "en": "Volume control",
-        "fr": "Contrôle du volume",
-        "ko": "볼륨 조절"
-      },
-      "description": {
-        "en": "Manage system volume",
-        "fr": "Gérer le volume du système",
-        "ko": "시스템 볼륨을 관리합니다."
-      },
       "commands": [
         {
           "command": "/volume +",
           "args": [
             {
-              "TYPE": "NONE",
-              "en": "Increase by 1",
-              "fr": "Augmente de 1",
-              "ko": "볼륨 1 증가"
+              "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']",
-              "en": "Increase by ...",
-              "fr": "Augmente de ...",
-              "ko": "볼륨 증가량"
+              "TYPE": "input number['1','100']"
             }
           ],
-          "name": {
-            "en": "Increase volume",
-            "fr": "Augmenter le volume",
-            "ko": "볼륨 증가"
-          },
-          "description": {
-            "en": "Increase computer volume",
-            "fr": "Augmente le volume de l'ordinateur",
-            "ko": "컴퓨터 볼륨을 높입니다."
-          },
           "style": {
             "image": "volume-up.svg",
-            "image_size": "75%",
-            "name": {
-              "en": "Increase volume",
-              "fr": "Augmenter le volume",
-              "ko": "볼륨 증가"
-            }
+            "image_size": "75%"
           }
         },
         {
           "command": "/volume -",
           "args": [
             {
-              "TYPE": "NONE",
-              "en": "Decrease by 1",
-              "fr": "Diminue de 1",
-              "ko": "볼륨 1 감소"
+              "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']",
-              "en": "Decrease by ...",
-              "fr": "Diminue de ...",
-              "ko": "볼륨 감소량"
+              "TYPE": "input number['1','100']"
             }
           ],
-          "name": {
-            "en": "Decrease volume",
-            "fr": "Diminuer le volume",
-            "ko": "볼륨 감소"
-          },
-          "description": {
-            "en": "Decrease computer volume",
-            "fr": "Baisse le volume de l'ordinateur",
-            "ko": "컴퓨터 볼륨을 줄입니다."
-          },
           "style": {
             "image": "volume-down.svg",
-            "image_size": "75%",
-            "name": {
-              "en": "Decrease volume",
-              "fr": "Diminuer le volume",
-              "ko": "볼륨 감소"
-            }
+            "image_size": "75%"
           }
         },
         {
           "command": "/volume set",
           "args": [
             {
-              "TYPE": "input number['0','100']",
-              "en": "Set to ...",
-              "fr": "Mettre à ...",
-              "ko": "볼륨 설정값"
+              "TYPE": "input number['0','100']"
             }
           ],
-          "name": {
-            "en": "Set volume",
-            "fr": "Modifier le volume",
-            "ko": "볼륨 설정"
-          },
-          "description": {
-            "en": "Set computer volume",
-            "fr": "Modifie le volume de l'ordinateur",
-            "ko": "컴퓨터 볼륨을 설정합니다."
-          },
           "style": {
             "image": "sound.png",
-            "image_size": "75%",
-            "name": {
-              "en": "Set volume",
-              "fr": "Modifier le volume",
-              "ko": "볼륨 설정"
-            }
+            "image_size": "75%"
           }
         },
         {
           "command": "/soundcontrol mute",
           "args": [],
-          "name": {
-            "en": "Mute the volume",
-            "fr": "Couper le volume",
-            "ko": "음소거"
-          },
-          "description": {
-            "en": "Mute computer volume",
-            "fr": "Coupe le volume deu système",
-            "ko": "컴퓨터 볼륨을 음소거합니다."
-          },
           "style": {
             "image": "volume-mute.svg",
-            "image_size": "75%",
-            "name": {
-              "en": "Mute the volume",
-              "fr": "Couper le volume",
-              "ko": "음소거"
-            }
+            "image_size": "75%"
           }
         }
       ]
     },
     "Media control": {
       "TYPE": "multiple",
-      "name": {
-        "en": "Media control",
-        "fr": "Contrôle des médias",
-        "ko": "미디어 제어"
-      },
-      "description": {
-        "en": "Manage system media",
-        "fr": "Gérer les médias du système",
-        "ko": "시스템 미디어를 관리합니다."
-      },
       "commands": [
         {
           "command": "/mediacontrol previous",
-          "args": [],
-          "name": {
-            "en": "Previous",
-            "fr": "Précédent",
-            "ko": "이전"
-          },
-          "description": {
-            "en": "Play the previous sound",
-            "fr": "Joue le son précédent",
-            "ko": "이전 음악을 재생합니다"
-          }
+          "args": []
         },
         {
           "command": "/mediacontrol playpause",
-          "args": [],
-          "name": {
-            "en": "Toggle play/pause",
-            "fr": "Basculer play/pause",
-            "ko": "재생/일시정지 전환"
-          }
+          "args": []
         },
         {
           "command": "/mediacontrol next",
-          "args": [],
-          "name": {
-            "en": "Skip",
-            "fr": "Skip",
-            "ko": "다음"
-          },
-          "description": {
-            "en": "Skip the actual song",
-            "fr": "Joue le son suivant",
-            "ko": "다음 음악을 재생합니다"
-          }
+          "args": []
         }
       ]
     },
@@ -852,167 +409,67 @@
       "command": "/start",
       "args": [
         {
-          "TYPE": "input file",
-          "fr": "Emplacement du fichier",
-          "en": "File location",
-          "ko": "파일 위치"
+          "TYPE": "input file"
         }
       ],
-      "name": {
-        "en": "Open ...",
-        "fr": "Ouvrir ...",
-        "ko": "열기"
-      },
-      "description": {
-        "en": "Open the specified file or software",
-        "fr": "Ouvre le fichier ou logiciel spécifié",
-        "ko": "지정된 파일 또는 소프트웨어를 엽니다."
-      },
-      "style": {
-        "name": {
-          "en": "Open",
-          "fr": "Ouvrir",
-          "ko": "열기"
-        }
-      }
+      "style": {}
     },
     "opendir": {
       "command": "/openfolder",
       "args": [
         {
-          "TYPE": "input folderpath",
-          "fr": "Emplacement du dossier",
-          "en": "Folder location",
-          "ko": "폴더 위치"
+          "TYPE": "input folderpath"
         }
       ],
-      "name": {
-        "en": "Open a directory",
-        "fr": "Ouvrir un dossier",
-        "ko": "폴더 열기"
-      },
-      "description": {
-        "en": "Open the specified directory on the explorer",
-        "fr": "Ouvre le dossier spécifié dans l'explorateur de fichiers",
-        "ko": "탐색기에서 지정된 폴더를 엽니다."
-      },
-      "style": {
-        "name": {
-          "en": "Open directory",
-          "fr": "Ouvrir le dossier",
-          "ko": "폴더 열기"
-        }
-      }
+      "style": {}
     },
     "Open a website": {
       "command": "/start",
       "args": [
         {
-          "TYPE": "input url",
-          "en": "url",
-          "ko": "url"
+          "TYPE": "input url"
         }
       ],
-      "name": {
-        "en": "Open a website",
-        "fr": "Ouvrir une page Web",
-        "ko": "웹 사이트 열기"
-      },
-      "style": {
-        "name": {
-          "en": "Open website",
-          "fr": "Ouvrir la page web",
-          "ko": "웹 사이트 열기"
-        }
-      }
+      "style": {}
     },
     "Lock session": {
       "command": "/locksession",
       "args": [],
-      "name": {
-        "en": "Lock session",
-        "fr": "Verrouiller la session",
-        "ko": "컴퓨터 잠금"
-      },
       "style": {
         "image": "lock-session.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Lock session",
-          "fr": "Verrouiller la session",
-          "ko": "컴퓨터 잠금"
-        }
+        "image_size": "70%"
       }
     },
     "Shutdown PC": {
       "command": "/PCshutdown",
       "args": [],
-      "name": {
-        "en": "Shutdown PC",
-        "fr": "Éteindre l'ordinateur",
-        "ko": "컴퓨터 종료"
-      },
       "style": {
         "image": "",
-        "image_size": "70%",
-        "name": {
-          "en": "Shutdown PC",
-          "fr": "Éteindre l'ordinateur",
-          "ko": "컴퓨터 종료"
-        }
+        "image_size": "70%"
       }
     },
     "Restart PC": {
       "command": "/PCrestart",
       "args": [],
-      "name": {
-        "en": "Restart PC",
-        "fr": "Redémarrer l'ordinateur",
-        "ko": "컴퓨터 재시작"
-      },
       "style": {
         "image": "",
-        "image_size": "70%",
-        "name": {
-          "en": "Restart PC",
-          "fr": "Redémarrer l'ordinateur",
-          "ko": "컴퓨터 재시작"
-        }
+        "image_size": "70%"
       }
     },
     "Sleep PC": {
       "command": "/PCsleep",
       "args": [],
-      "name": {
-        "en": "Sleep PC",
-        "fr": "Mettre en veille l'ordinateur",
-        "ko": "컴퓨터 절전"
-      },
       "style": {
         "image": "",
-        "image_size": "70%",
-        "name": {
-          "en": "Sleep PC",
-          "fr": "Entrer en veille",
-          "ko": "컴퓨터 절전"
-        }
+        "image_size": "70%"
       }
     },
     "Hibernate PC": {
       "command": "/PChibernate",
       "args": [],
-      "name": {
-        "en": "Hibernate PC",
-        "fr": "Mettre en veille prolongée l'ordinateur"
-      },
       "style": {
         "image": "",
-        "image_size": "70%",
-        "name": {
-          "en": "Hibernate PC",
-          "fr": "Veille prolongée",
-          "ko": "컴퓨터 최대절전"
-        }
+        "image_size": "70%"
       }
     },
     "ScreenSaver": {
@@ -1020,143 +477,66 @@
       "args": [
         {
           "TYPE": "input dropdown",
-          "en": "Screen saver",
-          "fr": "Écran de veille",
-          "ko": "화면 보호기",
           "options": [
             {
-              "ID": "NONE",
-              "en": "Enable screen saver",
-              "fr": "Activer l'écran de veille",
-              "ko": "화면 보호기 시작"
+              "ID": "NONE"
             },
             {
-              "ID": "full",
-              "en": "Enable full screen saver",
-              "fr": "Activer l'écran de veille complet",
-              "ko": "전체 화면 보호기 시작"
+              "ID": "full"
             },
             {
-              "ID": "off",
-              "en": "Disable screen saver",
-              "fr": "Désactive l'écran de veille",
-              "ko": "화면 보호기 중지"
+              "ID": "off"
             }
           ]
         }
       ],
-      "name": {
-        "en": "ScreenSaver",
-        "fr": "Écran de veille",
-        "ko": "화면 보호기"
-      },
       "style": {
         "image": "screensaver-full.png",
-        "image_size": "50%",
-        "name": {
-          "en": "ScreenSaver",
-          "fr": "Écran de veille",
-          "ko": "화면 보호기"
-        }
+        "image_size": "50%"
       }
     },
     "Restart explorer": {
       "command": "/restartexplorer",
       "args": [],
-      "name": {
-        "en": "Restart explorer",
-        "fr": "Redémarrer l'explorateur de fichiers",
-        "ko": "파일 탐색기 재시작"
-      },
       "style": {
         "image": "restart_explorer.png",
-        "image_size": "80%",
-        "name": {
-          "en": "Restart explorer",
-          "fr": "Redémarrer l'explorateur de fichiers",
-          "ko": "파일 탐색기 재시작"
-        }
+        "image_size": "80%"
       }
     },
     "SuperAltF4": {
       "command": "/superAltF4",
       "args": [],
-      "name": {
-        "en": "SuperAltF4",
-        "fr": "SuperAltF4",
-        "ko": "창 강제종료"
-      },
-      "description": {
-        "en": "Force close the foreground window",
-        "fr": "Ferme de force la fenêtre au premier plan",
-        "ko": "현재 창을 강제로 종료합니다."
-      },
       "style": {
         "image": "altf4.png",
-        "image_size": "75%",
-        "name": "Super Alt+F4"
+        "image_size": "75%"
       }
     },
     "Kill a task": {
       "command": "/forceclose",
       "args": [
         {
-          "TYPE": "input filetype['.exe']",
-          "en": "Task (app.exe)",
-          "fr": "Tache (app.exe)",
-          "ko": "프로그램 (app.exe)"
+          "TYPE": "input filetype['.exe']"
         }
       ],
-      "name": {
-        "en": "Kill a task",
-        "fr": "Tuer une tâche",
-        "ko": "프로그램 종료"
-      },
-      "style": {
-        "name": {
-          "en": "Kill task",
-          "fr": "Tuer la tâche",
-          "ko": "프로그램 종료"
-        }
-      }
+      "style": {}
     },
     "Restart a task": {
       "command": "/restart",
       "args": [
         {
-          "TYPE": "input filetype['.exe']",
-          "en": "Task (app.exe)",
-          "fr": "Tache (app.exe)",
-          "ko": "프로그램 (app.exe)"
+          "TYPE": "input filetype['.exe']"
         }
       ],
-      "name": {
-        "en": "Restart a task",
-        "fr": "Redémarrer une application",
-        "ko": "프로그램 재시작"
-      },
-      "style": {
-        "name": {
-          "en": "Restart task",
-          "fr": "Redémarrer l'application",
-          "ko": "프로그램 재시작"
-        }
-      }
+      "style": {}
     },
     "Execute python code": {
       "command": "/exec",
       "args": [
         {
           "TYPE": "choice",
-          "en": "Option",
-          "fr": "Option",
-          "ko": "옵션",
           "options": [
             {
               "TYPE": "multiple checked",
-              "en": "Python file (upload)",
-              "fr": "Fichier Python (upload)",
-              "ko": "파이썬 파일 (업로드)",
               "items": [
                 {
                   "TYPE": "text",
@@ -1169,9 +549,6 @@
             },
             {
               "TYPE": "multiple",
-              "en": "Python file (path)",
-              "fr": "Fichier Python (chemin)",
-              "ko": "파이썬 파일 (경로)",
               "items": [
                 {
                   "TYPE": "text",
@@ -1184,9 +561,6 @@
             },
             {
               "TYPE": "multiple",
-              "en": "Python code (single line)",
-              "fr": "Code Python (une seule ligne)",
-              "ko": "파이썬 코드 (한 줄)",
               "items": [
                 {
                   "TYPE": "text",
@@ -1200,165 +574,64 @@
           ]
         }
       ],
-      "name": {
-        "en": "Execute python code",
-        "fr": "Exécuter du code python",
-        "ko": "파이썬 코드 실행"
-      },
-      "description": {
-        "en": "Execute python code from the webdeck program",
-        "fr": "Exécute du code python depuis le programme du webdeck",
-        "ko": "웹덱에서 파이썬 코드를 실행합니다."
-      },
       "style": {
         "image": "execpython.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Execute python code",
-          "fr": "Exécuter le code python",
-          "ko": "파이썬 코드 실행"
-        }
+        "image_size": "70%"
       }
     },
     "Execute batch code": {
       "command": "/batch",
       "args": [
         {
-          "TYPE": "input longtext",
-          "en": "Batch code",
-          "fr": "Code batch",
-          "ko": "Batch 코드"
+          "TYPE": "input longtext"
         }
       ],
-      "name": {
-        "en": "Execute batch code",
-        "fr": "Exécuter du batch",
-        "ko": "Batch 코드 실행"
-      },
-      "description": {
-        "en": "Execute batch from the webdeck program",
-        "fr": "Exécute du batch depuis le programme du webdeck",
-        "ko": "웹덱에서 Batch 코드를 실행합니다."
-      },
-      "style": {
-        "name": {
-          "en": "Execute batch code",
-          "fr": "Exécuter le code batch",
-          "ko": "Batch 코드 실행"
-        }
-      }
+      "style": {}
     }
   },
   "Text": {
-    "CATEGORY-SETTINGS": {
-      "NAME": {
-        "fr": "Texte",
-        "ko": "텍스트"
-      }
-    },
     "Press a key": {
       "command": "/key",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Key",
-          "ko": "키"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Keyboard key",
-        "fr": "Touche du clavier",
-        "ko": "키보드 키"
-      },
       "style": {
         "image": "key.png",
-        "image_size": "75%",
-        "name": {
-          "en": "Press key",
-          "fr": "Presser la touche",
-          "ko": "키 입력"
-        }
+        "image_size": "75%"
       }
     },
     "Write text": {
       "command": "/write",
       "args": [
         {
-          "TYPE": "input longtext",
-          "en": "Text",
-          "ko": "텍스트"
+          "TYPE": "input longtext"
         }
       ],
-      "name": {
-        "en": "Text",
-        "fr": "Écrire",
-        "ko": "텍스트"
-      },
-      "description": {
-        "en": "Write text instantly",
-        "fr": "Écrire du texte instantanément",
-        "ko": "텍스트를 입력합니다."
-      },
       "style": {
         "image": "write.png",
-        "image_size": "75%",
-        "name": {
-          "en": "Write text",
-          "fr": "Écrire le texte",
-          "ko": "텍스트 입력"
-        }
+        "image_size": "75%"
       }
     },
     "Write text and press Enter": {
       "command": "/writeandsend",
       "args": [
         {
-          "TYPE": "input longtext",
-          "en": "Text",
-          "ko": "텍스트"
+          "TYPE": "input longtext"
         }
       ],
-      "name": {
-        "en": "Write text and press Enter",
-        "fr": "Écrit et envoie",
-        "ko": "텍스트 입력 후 엔터"
-      },
-      "description": {
-        "en": "Write text instantly and press Enter",
-        "fr": "Écrit du texte instantanément et presse Entrée",
-        "ko": "텍스트를 입력하고 엔터를 누릅니다."
-      },
       "style": {
         "image": "write.png",
-        "image_size": "75%",
-        "name": {
-          "en": "Write text (then enter)",
-          "fr": "Écrire le texte (et envoyer)",
-          "ko": "텍스트 입력 (엔터)"
-        }
+        "image_size": "75%"
       }
     },
     "Speech recognition": {
       "command": "/speechrecognition",
       "args": [],
-      "name": {
-        "en": "Speech recognition",
-        "fr": "Reconnaissance vocale",
-        "ko": "음성 텍스트 변환"
-      },
-      "description": {
-        "en": "Activate Windows speech recognition to write while speaking",
-        "fr": "Active la reconnaissance vocale de Windows pour écrire en parlant",
-        "ko": "음성을 텍스트로 변환하기 위해 Windows 음성 인식을 활성화합니다."
-      },
       "style": {
         "image": "speech-recognition.png",
-        "image_size": "55%",
-        "name": {
-          "en": "Speech recognition",
-          "fr": "Reconnaissance vocale",
-          "ko": "음성 텍스트 변환"
-        }
+        "image_size": "55%"
       }
     },
     "Copy": {
@@ -1366,38 +639,19 @@
       "args": [
         {
           "TYPE": "choice",
-          "en": "Option",
-          "fr": "Option",
-          "ko": "옵션",
           "options": [
             {
-              "TYPE": "NONE checked",
-              "en": "Copy (ctrl+c)",
-              "fr": "Copier (ctrl+c)",
-              "ko": "복사 (ctrl+c)"
+              "TYPE": "NONE checked"
             },
             {
-              "TYPE": "input text",
-              "en": "Copy text in the clipboard",
-              "fr": "Copie un texte dans le presse-papier",
-              "ko": "클립보드에 텍스트 복사"
+              "TYPE": "input text"
             }
           ]
         }
       ],
-      "name": {
-        "en": "Copy",
-        "fr": "Copier",
-        "ko": "복사"
-      },
       "style": {
         "image": "copy.png",
-        "image_size": "100%",
-        "name": {
-          "en": "Copy",
-          "fr": "Copier",
-          "ko": "복사"
-        }
+        "image_size": "100%"
       }
     },
     "Paste": {
@@ -1405,194 +659,78 @@
       "args": [
         {
           "TYPE": "choice",
-          "en": "Option",
-          "fr": "Option",
-          "ko": "옵션",
           "options": [
             {
-              "TYPE": "NONE checked",
-              "en": "Paste (ctrl+v)",
-              "fr": "Coller (ctrl+v)",
-              "ko": "붙여넣기 (ctrl+v)"
+              "TYPE": "NONE checked"
             },
             {
-              "TYPE": "input text",
-              "en": "Paste text",
-              "fr": "Colle un texte voulu",
-              "ko": "원하는 텍스트 붙여넣기"
+              "TYPE": "input text"
             }
           ]
         }
       ],
-      "name": {
-        "en": "Paste",
-        "fr": "Coller",
-        "ko": "붙여넣기"
-      },
       "style": {
         "image": "paste.png",
-        "image_size": "75%",
-        "name": {
-          "en": "Paste",
-          "fr": "Coller",
-          "ko": "붙여넣기"
-        }
+        "image_size": "75%"
       }
     },
     "Cut (ctrl+x)": {
       "command": "/cut",
       "args": [],
-      "name": {
-        "en": "Cut (ctrl+x)",
-        "fr": "Couper (ctrl+x)",
-        "ko": "잘라내기 (ctrl+x)"
-      },
       "style": {
         "image": "cut.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Cut",
-          "fr": "Couper",
-          "ko": "잘라내기"
-        }
+        "image_size": "70%"
       }
     },
     "Open clipboard": {
       "command": "/clipboard",
       "args": [],
-      "name": {
-        "en": "Open clipboard",
-        "fr": "Ouvrir le presse-papier",
-        "ko": "클립보드 열기"
-      },
       "style": {
         "image": "clipboard.png",
-        "image_size": "75%",
-        "name": {
-          "en": "Clipboard",
-          "fr": "Presse-papier",
-          "ko": "클립보드"
-        }
+        "image_size": "75%"
       }
     },
     "Clear clipboard": {
       "command": "/clearclipboard",
       "args": [],
-      "name": {
-        "en": "Clear clipboard",
-        "fr": "Vider le presse-papier",
-        "ko": "클립보드 비우기"
-      },
-      "description": {
-        "en": "",
-        "fr": "Vide presse-papier",
-        "ko": "클리보드를 비웁니다."
-      },
       "style": {
         "image": "clipboard-clear.png",
-        "image_size": "75%",
-        "name": {
-          "en": "Clear clipboard",
-          "fr": "Vider le presse-papier",
-          "ko": "클립보드 비우기"
-        }
+        "image_size": "75%"
       }
     }
   },
   "Utilities": {
-    "CATEGORY-SETTINGS": {
-      "NAME": {
-        "fr": "Utilitaires",
-        "ko": "유틸리티"
-      }
-    },
     "Color picker": {
       "command": "/colorpicker lang:en",
       "args": [],
-      "name": {
-        "en": "Color picker",
-        "fr": "Color picker",
-        "ko": "색상 선택"
-      },
-      "description": {
-        "en": "Indicates in a system notification the color pointed by your mouse",
-        "fr": "Indique dans une notification système la couleur pointée par votre souris",
-        "ko": "마우스로 가리킨 색상을 시스템 알림으로 표시합니다."
-      },
       "style": {
         "image": "eyedropper.svg",
-        "image_size": "50%",
-        "name": {
-          "en": "Color picker",
-          "fr": "Color picker",
-          "ko": "색상 선택"
-        }
+        "image_size": "50%"
       }
     }
   },
   "Soundboard": {
-    "CATEGORY-SETTINGS": {
-      "NAME": {
-        "ko": "사운드보드"
-      }
-    },
     "Playsound": {
       "command": "/playsound",
       "args": [
         {
-          "TYPE": "input filetype['.mp3']",
-          "en": "Audio file (.mp3)",
-          "fr": "Fichier audio (.mp3)",
-          "ko": "오디오 파일 (.mp3)"
+          "TYPE": "input filetype['.mp3']"
         },
         {
-          "TYPE": "input number['1','100']",
-          "en": "Audio volume (0-100%)",
-          "fr": "Volume audio (0-100%)",
-          "ko": "오디오 볼륨 (0-100%)"
+          "TYPE": "input number['1','100']"
         }
       ],
-      "name": {
-        "en": "Play a sound",
-        "fr": "Jouer un son",
-        "ko": "오디오 재생"
-      },
-      "description": {
-        "en": "Play a sound on the soundboard",
-        "fr": "Joue un son sur la soundboard",
-        "ko": "사운드보드에서 오디오를 재생합니다."
-      },
       "style": {
         "image": "volume-up.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Soundboard",
-          "fr": "Jouer le son",
-          "ko": "오디오 재생"
-        }
+        "image_size": "70%"
       }
     },
     "Stopsound": {
       "command": "/stop_soundboard",
       "args": [],
-      "name": {
-        "en": "Stop sounds",
-        "fr": "Arrêter les sons",
-        "ko": "오디오 중단"
-      },
-      "description": {
-        "en": "Stop all sounds currently playing by the soundboard",
-        "fr": "Arrête tous les sons actuellement joués par la soundboard",
-        "ko": "현재 사운드보드에서 재생 중인 모든 사운드를 중지합니다."
-      },
       "style": {
         "image": "sound-off.png",
-        "image_size": "60%",
-        "name": {
-          "en": "stop soundboard",
-          "fr": "stop soundboard",
-          "ko": "오디오 중단"
-        }
+        "image_size": "60%"
       }
     }
   },
@@ -1601,421 +739,175 @@
       "command": "/obs_key",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Key name",
-          "fr": "Nom de la clé",
-          "ko": "키 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Hotkey",
-        "fr": "raccourci clavier",
-        "ko": "단축키"
-      },
-      "description": {
-        "en": "Trigger a hotkey in OBS",
-        "fr": "Déclencher un raccourci clavier dans OBS",
-        "ko": "OBS에서 핫키 트리거"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "OBS Hotkey",
-          "fr": "Raccourci clavier OBS",
-          "ko": "OBS 단축키"
-        }
+        "image_size": "70%"
       }
     },
     "changeScene": {
       "command": "/obs_scene",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Scene name",
-          "fr": "Nom de la scène",
-          "ko": "장면 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Change scene",
-        "fr": "Changer de scene",
-        "ko": "장면 변경"
-      },
-      "description": {
-        "en": "Set current scene by name on OBS",
-        "fr": "Changer la scène actuelle avec son nom",
-        "ko": "OBS에서 해당되는 장면으로 변경합니다."
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Change scene",
-          "fr": "Changer de scene",
-          "ko": "장면 변경"
-        }
+        "image_size": "70%"
       }
     },
     "toggleRecording": {
       "command": "/obs_toggle_rec",
       "args": [],
-      "name": {
-        "en": "Toggle recording",
-        "fr": "Démarrer/arrêter l'enregistrement",
-        "ko": "녹화 시작/중지"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Toggle recording",
-          "fr": "Débuter/arrêter l'enregistrement",
-          "ko": "녹화 시작/중지"
-        }
+        "image_size": "70%"
       }
     },
     "startRecording": {
       "command": "/obs_start_rec",
       "args": [],
-      "name": {
-        "en": "Start recording",
-        "fr": "Démarrer l'enregistrement",
-        "ko": "녹화 시작"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Start recording",
-          "fr": "Enregistrer",
-          "ko": "녹화 시작"
-        }
+        "image_size": "70%"
       }
     },
     "stopRecording": {
       "command": "/obs_stop_rec",
       "args": [],
-      "name": {
-        "en": "Stop recording",
-        "fr": "Arrêter l'enregistrement",
-        "ko": "녹화 중지"
-      },
-      "description": {
-        "en": "Stop OBS recording",
-        "fr": "Arrêter l'enregistrement OBS",
-        "ko": "OBS 녹화를 중지합니다."
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Stop recording",
-          "fr": "Arrêter l'enregistrement",
-          "ko": "녹화 중지"
-        }
+        "image_size": "70%"
       }
     },
     "toggleRecordingPause": {
       "command": "/obs_toggle_rec_pause",
       "args": [],
-      "name": {
-        "en": "Pause/resume toggle",
-        "fr": "Basculer play/pause",
-        "ko": "일시정지/재개 전환"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Pause/resume toggle",
-          "fr": "play/pause",
-          "ko": "일시정지/재개 전환"
-        }
+        "image_size": "70%"
       }
     },
     "pauseRecording": {
       "command": "/obs_pause_rec",
       "args": [],
-      "name": {
-        "en": "Pause recording",
-        "fr": "Mettre l'enregistrement en pause",
-        "ko": "녹화 일시정지"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Pause recording",
-          "fr": "Pause l'enregistrement",
-          "ko": "녹화 일시정지"
-        }
+        "image_size": "70%"
       }
     },
     "resumeRecording": {
       "command": "/obs_resume_rec",
       "args": [],
-      "name": {
-        "en": "Resume recording",
-        "fr": "Continuer l'enregistrement",
-        "ko": "녹화 재개"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Resume recording",
-          "fr": "Continuer l'enregistrement",
-          "ko": "녹화 재개"
-        }
+        "image_size": "70%"
       }
     },
     "toggleStreaming": {
       "command": "/obs_toggle_stream",
       "args": [],
-      "name": {
-        "en": "Toggle streaming",
-        "fr": "Démarrer/arrêter le stream",
-        "ko": "스트리밍 시작/중지"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Toggle streaming",
-          "fr": "Débuter/arrêter le stream",
-          "ko": "스트리밍 시작/중지"
-        }
+        "image_size": "70%"
       }
     },
     "startStreaming": {
       "command": "/obs_start_stream",
       "args": [],
-      "name": {
-        "en": "Start streaming",
-        "fr": "Démarrer le stream",
-        "ko": "스트리밍 시작"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Start streaming",
-          "fr": "Streamer",
-          "ko": "스트리밍 시작"
-        }
+        "image_size": "70%"
       }
     },
     "stopStreaming": {
       "command": "/obs_stop_stream",
       "args": [],
-      "name": {
-        "en": "Stop streaming",
-        "fr": "Arrêter le stream",
-        "ko": "스트리밍 중지"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Stop streaming",
-          "fr": "Arrêter le stream",
-          "ko": "스트리밍 중지"
-        }
+        "image_size": "70%"
       }
     },
     "toggleVirtualCam": {
       "command": "/obs_toggle_virtualcam",
       "args": [],
-      "name": {
-        "en": "Toggle virtual cam",
-        "fr": "Démarrer/arrêter la caméra virtuelle",
-        "ko": "가상 카메라 시작/중지"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Toggle virtual cam",
-          "fr": "Débuter/arrêter la caméra virtuelle",
-          "ko": "가상 카메라 시작/중지"
-        }
+        "image_size": "70%"
       }
     },
     "startVirtualCam": {
       "command": "/obs_start_virtualcam",
       "args": [],
-      "name": {
-        "en": "Start virtual cam",
-        "fr": "Démarrer la caméra virtuelle",
-        "ko": "가상 카메라 시작"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Start virtual cam",
-          "fr": "Démarrer la caméra virtuelle",
-          "ko": "가상 카메라 시작"
-        }
+        "image_size": "70%"
       }
     },
     "stopVirtualCam": {
       "command": "/obs_stop_virtualcam",
       "args": [],
-      "name": {
-        "en": "Stop virtual cam",
-        "fr": "Arrêter la caméra virtuelle",
-        "ko": "가상 카메라 중지"
-      },
       "style": {
         "image": "obs_logo2.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Stop virtual cam",
-          "fr": "Arrêter la caméra virtuelle",
-          "ko": "가상 카메라 중지"
-        }
+        "image_size": "70%"
       }
     }
   },
   "Spotify": {
     "Volume (ONLY WITH SPOTIFY PREMIUM)": {
       "TYPE": "multiple",
-      "name": {
-        "en": "Spotify volume control",
-        "fr": "Volume de spotify",
-        "ko": "Spotify 볼륨 조절"
-      },
-      "description": {
-        "en": "Manage spotify volume (ONLY WITH SPOTIFY PREMIUM)",
-        "fr": "Gérer le volume de spotify (SEULEMENT AVEC SPOTIFY PRENIUM)",
-        "ko": "Spotify 볼륨을 관리합니다. (SPOTIFY PREMIUM 전용)"
-      },
       "commands": [
         {
           "command": "/spotify volume +",
           "args": [
             {
-              "TYPE": "NONE",
-              "en": "Increase by 1",
-              "fr": "Augmente de 1",
-              "ko": "볼륨 1 증가"
+              "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']",
-              "en": "Increase by ...",
-              "fr": "Augmente de ...",
-              "ko": "볼륨 증가량"
+              "TYPE": "input number['1','100']"
             }
           ],
-          "name": {
-            "en": "Increase volume",
-            "fr": "Augmenter le volume",
-            "ko": "볼륨 증가"
-          },
-          "description": {
-            "en": "Increase spotiy volume",
-            "fr": "Augmente le volume de spotify",
-            "ko": "Spotify 볼륨을 높입니다."
-          },
           "style": {
             "image": "volume-up.svg",
-            "image_size": "75%",
-            "name": {
-              "en": "Increase volume",
-              "fr": "Augmenter le volume",
-              "ko": "볼륨 증가"
-            }
+            "image_size": "75%"
           }
         },
         {
           "command": "/spotify volume -",
           "args": [
             {
-              "TYPE": "NONE",
-              "en": "Decrease by 1",
-              "fr": "Diminue de 1",
-              "ko": "볼륨 1 감소"
+              "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']",
-              "en": "Decrease by ...",
-              "fr": "Diminue de ...",
-              "ko": "볼륨 감소량"
+              "TYPE": "input number['1','100']"
             }
           ],
-          "name": {
-            "en": "Decrease volume",
-            "fr": "Diminuer le volume",
-            "ko": "볼륨 감소"
-          },
-          "description": {
-            "en": "Decrease spotify volume",
-            "fr": "Baisse le volume de spotify",
-            "ko": "Spotify 볼륨을 줄입니다."
-          },
           "style": {
             "image": "volume-down.svg",
-            "image_size": "75%",
-            "name": {
-              "en": "Decrease volume",
-              "fr": "Diminuer le volume",
-              "ko": "볼륨 감소"
-            }
+            "image_size": "75%"
           }
         },
         {
           "command": "/spotify volume set",
           "args": [
             {
-              "TYPE": "input number['0','100']",
-              "en": "Set to ...",
-              "fr": "Mettre à ...",
-              "ko": "볼륨 설정"
+              "TYPE": "input number['0','100']"
             }
           ],
-          "name": {
-            "en": "Set volume",
-            "fr": "Modifier le volume",
-            "ko": "볼륨 설정"
-          },
-          "description": {
-            "en": "Set spotify volume",
-            "fr": "Modifie le volume de spotify",
-            "ko": "Spotify 볼륨을 설정합니다."
-          },
           "style": {
             "image": "sound.png",
-            "image_size": "75%",
-            "name": {
-              "en": "Set volume",
-              "fr": "Modifier le volume",
-              "ko": "볼륨 설정"
-            }
+            "image_size": "75%"
           }
         },
         {
           "command": "/soundcontrol mute",
           "args": [],
-          "name": {
-            "en": "Mute the volume",
-            "fr": "Couper le volume",
-            "ko": "음소거"
-          },
-          "description": {
-            "en": "Mute computer volume",
-            "fr": "Coupe le volume du système",
-            "ko": "Spotify 볼륨을 음소거합니다."
-          },
           "style": {
             "image": "volume-mute.svg",
-            "image_size": "75%",
-            "name": {
-              "en": "Mute the volume",
-              "fr": "Couper le volume",
-              "ko": "음소거"
-            }
+            "image_size": "75%"
           }
         }
       ]
@@ -2024,239 +916,89 @@
       "command": "/spotify playsong",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Song name",
-          "fr": "Nom de la musique",
-          "ko": "노래 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Play a specific music",
-        "fr": "Jouer une musique",
-        "ko": "제목으로 음악 재생"
-      },
-      "description": {
-        "en": "Plays specific music from a name (ONLY WITH SPOTIFY PREMIUM)",
-        "fr": "Joue une musique spécifique à partir d'un nom (SEULEMENT AVEC SPOTIFY PRENIUM)",
-        "ko": "제목으로 음악을 재생합니다. (SPOTIFY PREMIUM 전용)"
-      },
       "style": {
         "image": "play.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Play the specified sound",
-          "fr": "Jouer le son spécifié",
-          "ko": "제목으로 음악 재생"
-        }
+        "image_size": "70%"
       }
     },
     "Play playlist": {
       "command": "/spotify playplaylist",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Playlist name",
-          "fr": "Nom de la playlist",
-          "ko": "플레이리스트 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Play a specific playlist",
-        "fr": "Jouer une playlist",
-        "ko": "플레이리스트 이름으로 재생"
-      },
-      "description": {
-        "en": "Plays specific playlist from a name (ONLY WITH SPOTIFY PREMIUM)",
-        "fr": "Joue une playlist spécifique à partir d'un nom (SEULEMENT AVEC SPOTIFY PRENIUM)",
-        "ko": "플레이리스트 이름으로 플레이리스트를 재생합니다. (SPOTIFY PREMIUM 전용)"
-      },
       "style": {
         "image": "playlist2.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Play the specified playlist",
-          "fr": "Jouer la playlist",
-          "ko": "플레이리스트 이름으로 재생"
-        }
+        "image_size": "70%"
       }
     },
     "Like the played song": {
       "command": "/spotify likesong",
       "args": [],
-      "name": {
-        "en": "Add song to favorites",
-        "fr": "Ajouter le son en favoris",
-        "ko": "음악을 즐겨찾기에 추가"
-      },
-      "description": {
-        "en": "Add the sound currently playing on spotify to favorites",
-        "fr": "Mettre le son actuellement joué sur spotify en favoris",
-        "ko": "현재 재생 중인 음악을 즐겨찾기에 추가합니다."
-      },
       "style": {
         "image": "heart.svg",
-        "image_size": "70%",
-        "name": {
-          "en": "Add song to favorites",
-          "fr": "Favoris",
-          "ko": "즐겨찾기에 추가"
-        }
+        "image_size": "70%"
       }
     },
     "Save the played album": {
       "command": "/spotify likealbum",
       "args": [],
-      "name": {
-        "en": "Save the played album",
-        "fr": "Ajouter l'album en favoris",
-        "ko": "앨범을 즐겨찾기에 추가"
-      },
-      "description": {
-        "en": "Add the currently playing album on spotify to favorites",
-        "fr": "Mettre l'album actuellement joué dans les albums favoris",
-        "ko": "현재 재생 중인 앨범을 즐겨찾기에 추가합니다."
-      },
       "style": {
         "image": "add-to-playlist5.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Save the played album",
-          "fr": "Ajouter l'album en favoris",
-          "ko": "앨범을 즐겨찾기에 추가"
-        }
+        "image_size": "70%"
       }
     },
     "Toggle playlist inclusion": {
       "command": "/spotify add_or_remove",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Playlist name",
-          "fr": "Nom de la playlist",
-          "ko": "플레이리스트 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Toggle playlist inclusion",
-        "fr": "Basculer l'inclusion dans la playlist",
-        "ko": "플레이리스트 포함 전환"
-      },
-      "description": {
-        "en": "Add or remove the current song from the specified playlist",
-        "fr": "Ajoute ou retire la chanson actuelle de la playlist spécifiée",
-        "ko": "현재 재생 중인 음악을 플레이리스트에 추가하고 이미 있는 경우 제거합니다."
-      },
       "style": {
         "image": "add-to-playlist5.png",
-        "image_size": "70%",
-        "name": {
-            "en": "Toggle playlist inclusion",
-            "fr": "Basculer l'inclusion dans la playlist",
-            "ko": "플레이리스트 포함 전환"
-        }
+        "image_size": "70%"
       }
     },
     "Add current song to a playlist (do not remove if already)": {
       "command": "/spotify add_to_playlist",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Playlist name",
-          "fr": "Nom de la playlist",
-          "ko": "플레이리스트 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Add to playlist",
-        "fr": "Ajouter à la playlist",
-        "ko": "플레이리스트에 추가"
-      },
-      "description": {
-        "en": "Add current song to the specified playlist",
-        "fr": "Ajouter le son actuellement joué à la playlist",
-        "ko": "현재 재생 중인 음악을 지정된 플레이리스트에 추가합니다."
-      },
       "style": {
         "image": "add-to-playlist5.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Add to playlist",
-          "fr": "Ajouter dans la playlist",
-          "ko": "플레이리스트에 추가"
-        }
+        "image_size": "70%"
       }
     },
     "Remove current song from a playlist": {
       "command": "/spotify remove_from_playlist",
       "args": [
         {
-          "TYPE": "input text",
-          "en": "Playlist name",
-          "fr": "Nom de la playlist",
-          "ko": "플레이리스트 이름"
+          "TYPE": "input text"
         }
       ],
-      "name": {
-        "en": "Remove from playlist",
-        "fr": "Retirer de la playlist",
-        "ko": "플레이리스트에서 제거"
-      },
-      "description": {
-        "en": "Removes the current song from the specified playlist",
-        "fr": "Retire le son actuellement joué d'une playlist",
-        "ko": "현재 재생 중인 음악을 지정된 플레이리스트에서 제거합니다."
-      },
       "style": {
         "image": "remove-from-playlist.png",
-        "image_size": "70%",
-        "name": {
-          "en": "Remove from playlist",
-          "fr": "Retirer de la playlist",
-          "ko": "플레이리스트에서 제거"
-        }
+        "image_size": "70%"
       }
     },
     "Toggle follow artist": {
       "command": "/spotify follow_or_unfollow_artist",
-      "args": [],
-      "name": {
-        "en": "Toggle follow artist",
-        "fr": "Suivre ou ne plus suivre l'artiste",
-        "ko": "아티스트 팔로우 또는 언팔로우"
-      },
-      "description": {
-          "en": "Toggle following the artist of the currently playing song",
-          "fr": "Suivre ou ne plus suivre l'artiste de la chanson en cours de lecture",
-          "ko": "현재 재생 중인 음악의 아티스트를 팔로우하거나 언팔로우합니다."
-      }
+      "args": []
     },
     "Follow current played artist (doesn't unfollow if already)": {
       "command": "/spotify follow_artist",
-      "args": [],
-      "name": {
-        "en": "Follow artist",
-        "fr": "Suivre l'artiste",
-        "ko": "아티스트 팔로우"
-      },
-      "description": {
-        "en": "Follow the artist of the currently played song",
-        "fr": "Suivre l'artiste du son actuellement joué",
-        "ko": "현재 재생 중인 음악의 아티스트를 팔로우합니다."
-      }
+      "args": []
     },
     "Unfollow current played artist": {
       "command": "/spotify unfollow_artist",
-      "args": [],
-      "name": {
-        "en": "Unfollow artist",
-        "fr": "Ne plus suivre l'artiste",
-        "ko": "아티스트 언팔로우"
-      },
-      "description": {
-        "en": "Unfollow the artist of the currently played song",
-        "fr": "Ne plus suivre l'artiste du son actuellement joué",
-        "ko": "현재 재생 중인 음악의 아티스트를 언팔로우합니다."
-      }
+      "args": []
     }
   }
 }

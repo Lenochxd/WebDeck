@@ -2,7 +2,7 @@
   <div class="addbutton-modal-content-args {{dark_theme}}">
 
     <div class="addbutton-modal-header-args bold modal-container-{{ arg_modal_ID }}">
-      <h1 class="addbutton-modal-args"> {{text('configure_your_button')}}: {{command_name}}</h1>
+      <h1 class="addbutton-modal-args"> {{text('configure_your_button')}}: {{button_title}}</h1>
       <div class="addbutton-modal-close-args">
         <svg class="addbutton-args-config-modal {{dark_theme}}" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -16,16 +16,21 @@
         <form class="args-form" arg_modal_ID="{{ arg_modal_ID }}" novalidate>
           
           <div class="args-container {{dark_theme}}" arg_modal_ID="{{ arg_modal_ID }}">
-        
+            
+            {% set ns = namespace(arg_id=0) %}
             {% for arg in command_value["args"] %}
-              
-              {% if arg[language] %}
-                {% set arg_name = arg[language] %}
-              {% elif arg["en"] %}
-                {% set arg_name = arg["en"] %}
-              {% else %}
-                {% set arg_name = "arg_name is missing!" %}
+              {% if arg.get('TYPE') != 'text' %}
+                {% set ns.arg_id = ns.arg_id + 1 %}
               {% endif %}
+              
+              {% set _category = category|replace(' ','')|upper %}
+              {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+              {% if sub_id != 0 %}
+                {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
+              {% endif %}
+              {% set arg_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ ns.arg_id ~ '_name') %}
+              <!-- {{mdebug(arg_name)}}
+              {{mdebug(type(arg_name))}} -->
               {% if "input" in arg['TYPE'] %}
                 <div class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                   
@@ -130,13 +135,8 @@
                   <label for="choice">{{text("choose_option")}} :</label><br>
                   {% set language = text('lang_short') %}
                   {% for choice in arg['options'] %}
-                    {% if choice[language] %}
-                      {% set choice_name = choice[language] %}
-                    {% elif arg["en"] %}
-                      {% set choice_name = choice["en"] %}
-                    {% else %}
-                      {% set choice_name = "choice_name is missing!" %}
-                    {% endif %}
+                    {% set choice_id = loop.index0 + 1 %}
+                    {% set choice_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ ns.arg_id ~ '_option_' ~ choice_id ~ '_name') %}
 
                     {% set checked = "" %}
                     {% set style = 'style="display: none;"' %}
@@ -243,16 +243,22 @@
                       {% set buttontext_style = 'style="color:' + config["front"]["names_color"] + ';"'%}
                     {% endif %}
                     <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" {{buttontext_style}}>
-                        {% set button_name = "Button name" %}
-                        {% if command_value["style"]["name"] is string %}
-                          {% set button_name = command_value["style"]["name"] %}
-                        {% elif command_value["style"]["name"][language] %}
-                          {% set button_name = command_value["style"]["name"][language] %}
-                        {% elif command_value["style"]["name"]["en"] %}
-                          {% set button_name = command_value["style"]["name"]["en"] %}
-                        {% elif command_value["style"]["name"][0] %}
-                          {% set button_name = command_value["style"]["name"][0] %}
-                        {% endif %}
+                      {% set btn = 'btn' %}
+                      {% if "multiple" in command_value["TYPE"] %}
+                        {% set btn = 'category' %}
+                      {% endif %}
+                      
+                      {% set _category = category|replace(' ','')|upper %}
+                      {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+                      {% if sub_id != 0 %}
+                        {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
+                      {% endif %}
+
+                      {% set query = _category ~ '_' ~ _command ~ '__' ~ btn ~ '_default_display_name' %}
+                      {% set button_name = text(query) %}
+                      {% if button_name == query or button_name == '' %}
+                        {% set button_name = text(_category ~ '_' ~ _command ~ '__' ~ btn ~ '_name') %}
+                      {% endif %}
                       {{ button_name }}
                     </p>
                   {# {% endif %} #}
@@ -265,16 +271,17 @@
                     </button>
                     
                     <p class="buttontext" id="button-text-preview_{{arg_modal_ID}}" >
-                      {% set button_name = "Button name" %}
-                      {% if command_value["name"] is string %}
-                        {% set button_name = command_value["name"] %}
-                      {% elif command_value["name"][language] %}
-                        {% set button_name = command_value["name"][language] %}
-                      {% elif command_value["name"]["en"] %}
-                        {% set button_name = command_value["name"]["en"] %}
-                      {% elif command_value["name"][0] %}
-                        {% set button_name = command_value["name"][0] %}
+                      {% set btn = 'btn' %}
+                      {% if "multiple" in command_value["TYPE"] %}
+                        {% set btn = 'category' %}
                       {% endif %}
+                      
+                      {% set _category = category|replace(' ','')|upper %}
+                      {% set _command = command|replace(' ','_')|replace("'",'')|lower %}
+                      {% if sub_id != 0 %}
+                        {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
+                      {% endif %}
+                      {% set button_name = text(_category ~ '_' ~ _command ~ '__' ~ btn ~ '_name') %}
                       {{ button_name }}
                     </p>
                 {% endif %}
