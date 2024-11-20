@@ -83,7 +83,8 @@ def get_usage(get_all=None, asked_devices=[]):
                     computer_info["gpus"][f"GPU{count + 1}"] = {
                         "usage_percent": int(utilization.gpu),
                     }
-            except (pynvml.nvml.NVML_ERROR_NOT_SUPPORTED, Exception):
+            # Unsupported graphics cards
+            except Exception:
                 computer_info["gpus"]["defaultGPU"] = {}
                 
                 config["settings"]["gpu_method"] = "None"
