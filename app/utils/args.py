@@ -13,6 +13,10 @@ available_args = {
         "help": "Run the application without requesting sudo/admin permissions",
         "action": "store_true"
     },
+    "--no-tray": {
+        "help": "Run the application without the system tray icon",
+        "action": "store_true"
+    },
 }
 
 def parse_args():

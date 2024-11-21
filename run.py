@@ -56,5 +56,10 @@ if not is_opened():
     server_thread = threading.Thread(target=run_server_thread, daemon=True)
     server_thread.start()
     
-    log.info("Initializing tray icon")
-    initialize_tray_icon()
+    if not get_arg('no_tray'):
+        log.info("Initializing tray icon")
+        initialize_tray_icon()
+    else:
+        log.info("Running without tray icon")
+        while True:
+            pass
