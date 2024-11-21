@@ -3,19 +3,25 @@ import sys
 import os.path
 import threading
 
+from app.utils.logger import log
 from app.utils.settings.get_config import get_config
+from app.utils.args import parse_args, get_arg
+
+parse_args()
 
 settings = get_config()['settings']
 
-if settings['app_admin']:
+if settings['app_admin'] and not get_arg('no_admin'):
     if not ctypes.windll.shell32.IsUserAnAdmin():
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        # Rebuild the command including all arguments
+        params = " ".join([__file__] + sys.argv[1:])
+        # Restart the program with admin privileges and include arguments
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
         sys.exit()
 
 from app.utils.show_error import show_error
 from app.utils.is_opened import is_opened
 import app.utils.languages as languages
-from app.utils.logger import log
 
 
 def run_server_thread():
