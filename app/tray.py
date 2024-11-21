@@ -39,7 +39,7 @@ local_ip = get_local_ip()
 
 def open_config():
     port, dark_theme, language, open_in_integrated_browser = reload_config()
-    config_url = f"http://{local_ip}:{port}?config=show"
+    config_url = f"http://{local_ip}:{get_port()}?config=show"
     
     if open_in_integrated_browser:
         webview.create_window('WebDeck Config', url=config_url, background_color='#141414')
@@ -92,7 +92,7 @@ def show_qrcode():
     label = tk.Label(window, image=image_tk)
     label.pack()
 
-    text_label = tk.Label(window, text=f"http://{local_ip}:{port}/", font=("Helvetica", 13))
+    text_label = tk.Label(window, text=f"http://{local_ip}:{get_port()}/", font=("Helvetica", 13))
     text_label.pack()
 
     window.iconbitmap("static/icons/icon.ico")
