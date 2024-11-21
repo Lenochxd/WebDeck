@@ -1,5 +1,6 @@
 import json
 import os
+from app.utils.args import get_arg
 from app.utils.settings.check_config_update import check_config_update
 from ..working_dir import chdir_base
 chdir_base()
@@ -36,4 +37,7 @@ def get_config(check_updates=False, save_updated_config=False):
 
 
 def get_port():
-    return get_config()["url"]["port"]
+    port = get_arg("port")
+    if port is None:
+        port = get_config().get("url", {}).get("port")
+    return port
