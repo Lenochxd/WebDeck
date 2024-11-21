@@ -1,6 +1,5 @@
 import json
 import os
-import sys
 import argparse
 from .logger import log
 
@@ -8,6 +7,11 @@ temp_file = os.path.join("temp", "webdeck_args.json")
 args = {}
 
 available_args = {
+    "-V": {
+        "aliases": ["--version"],
+        "help": "Display the application version and exit",
+        "action": "store_true"
+    },
     "--no-admin": {
         "aliases": ["--no-sudo"],
         "help": "Run the application without requesting sudo/admin permissions",

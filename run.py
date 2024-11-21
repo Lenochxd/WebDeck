@@ -8,6 +8,12 @@ from app.utils.settings.get_config import get_config
 from app.utils.args import parse_args, get_arg
 
 parse_args()
+if get_arg('version'):
+    import json
+    with open("webdeck/version.json", encoding="utf-8") as f:
+        version = json.load(f)["versions"][0]["version"]
+    print(f"WebDeck v{version}")
+    sys.exit()
 
 settings = get_config()['settings']
 
