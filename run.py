@@ -12,7 +12,18 @@ if get_arg('version'):
     import json
     with open("webdeck/version.json", encoding="utf-8") as f:
         version = json.load(f)["versions"][0]["version"]
-    print(f"WebDeck v{version}")
+    
+    last_commit = ""
+    if not getattr(sys, 'frozen', False) and os.path.isdir(".git"):
+        import subprocess
+        try:
+            last_commit = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode('utf-8')
+            last_commit = f"({last_commit[:7]})"
+        except subprocess.CalledProcessError:
+            pass
+            # print("Could not retrieve the last commit.")
+            
+    print(f"WebDeck v{version} {last_commit}")
     sys.exit()
 
 settings = get_config()['settings']
