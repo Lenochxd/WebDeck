@@ -47,6 +47,10 @@ available_args = {
         "help": "Authorize the start of the app even if it is already running",
         "action": "store_true"
     },
+    "--log-file": {
+        "help": "Specify a custom log file path",
+        "action": "store"
+    },
 }
 
 positionals = {
@@ -177,6 +181,12 @@ def handle_startup_arguments():
             log.error("Invalid timeout value provided. It should be an integer.")
             exit_program(force=True, from_timeout=True)
     
+    # --log-file
+    log_file = get_arg('log_file')
+    if log_file:
+        log.set_log_file(log_file)
+        log.info(f"Logging to file: {log_file}")
+
     # exit
     if get_arg('exit'):
         if get_arg('exit') in positionals['exit']['choices']:

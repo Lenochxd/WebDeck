@@ -37,6 +37,15 @@ class Logger:
             file.write(log_message + '\n')
         return log_message
     
+    def set_log_file(self, log_file: str):
+        """
+        Sets the log file path to the specified file.
+        
+        Args:
+            log_file (str): The path to the log file.
+        """
+        self.log_file = log_file
+
     def enable_debug(self):
         """
         Enables the printing of debug messages.
