@@ -18,16 +18,19 @@ available_args = {
     "-p": {
         "aliases": ["--port"],
         "help": "Specify a custom port for the Flask server",
+        "type": int,
         "action": "store"
     },
     "-H": {
         "aliases": ["--host"],
         "help": "Specify the host for the Flask server",
+        "type": str,
         "action": "store"
     },
     "-t": {
         "aliases": ["--timeout"],
         "help": "Specify the timeout in seconds to close the app after",
+        "type": int,
         "action": "store"
     },
     "--no-admin": {
@@ -49,6 +52,7 @@ available_args = {
     },
     "--log-file": {
         "help": "Specify a custom log file path",
+        "type": str,
         "action": "store"
     },
 }
@@ -72,12 +76,21 @@ def parse_args():
     
     # Add arguments to the parser
     for arg, arg_params in available_args.items():
-        parser.add_argument(
-            arg,
-            *arg_params.get("aliases", []),
-            help=arg_params.get("help"),
-            action=arg_params.get("action", None),
-        )
+        if "type" in arg_params:
+            parser.add_argument(
+                arg,
+                *arg_params.get("aliases", []),
+                help=arg_params.get("help"),
+                type=arg_params["type"],
+                action=arg_params.get("action", None),
+            )
+        else:
+            parser.add_argument(
+                arg,
+                *arg_params.get("aliases", []),
+                help=arg_params.get("help"),
+                action=arg_params.get("action", None),
+            )
     
     for arg, arg_params in positionals.items():
         parser.add_argument(
