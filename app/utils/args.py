@@ -39,6 +39,10 @@ available_args = {
         "help": "Run the application without the system tray icon",
         "action": "store_true"
     },
+    "--force-start": {
+        "help": "Authorize the start of the app even if it is already running",
+        "action": "store_true"
+    },
 }
 
 def parse_args():

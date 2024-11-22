@@ -43,7 +43,7 @@ def initialize_tray_icon():
             log.exception(e, "Failed to initialize tray icon", expected=False)
 
 
-if not is_opened():
+if not is_opened() or get_arg('force_start'):
     log.info("Starting WebDeck")
     
     log.info("Loading translations")
