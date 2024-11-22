@@ -10,12 +10,12 @@ temp_file = os.path.join("temp", "webdeck_args.json")
 args = {}
 
 available_args = {
-    "-V": {
+    "-v": {
         "aliases": ["--version"],
         "help": "Display the application version and exit",
         "action": "store_true"
     },
-    "-P": {
+    "-p": {
         "aliases": ["--port"],
         "help": "Specify a custom port for the Flask server",
         "action": "store"
@@ -25,7 +25,7 @@ available_args = {
         "help": "Specify the host for the Flask server",
         "action": "store"
     },
-    "-T": {
+    "-t": {
         "aliases": ["--timeout"],
         "help": "Specify the timeout in seconds to close the app after",
         "action": "store"
