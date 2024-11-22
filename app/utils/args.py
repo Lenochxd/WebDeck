@@ -45,6 +45,16 @@ available_args = {
     },
 }
 
+positionals = {
+    "exit": {
+        "help": "Exit all instances of WebDeck running on the device",
+        "choices": ["exit", "stop", "close", "quit", "kill", "terminate", "shutdown"],
+        "nargs": "?",
+        "default": None
+    },
+}
+
+
 def parse_args():
     # Clear any previously saved arguments
     clear_args()
@@ -58,6 +68,17 @@ def parse_args():
             arg,
             *arg_params.get("aliases", []),
             help=arg_params.get("help"),
+            action=arg_params.get("action", None),
+        )
+    
+    for arg, arg_params in positionals.items():
+        parser.add_argument(
+            arg,
+            *arg_params.get("aliases", []),
+            help=arg_params.get("help"),
+            default=arg_params.get("default", None),
+            nargs=arg_params.get("nargs", None),
+            const=arg_params.get("const", None),
             action=arg_params.get("action", None),
         )
     
@@ -146,3 +167,11 @@ def handle_startup_arguments():
         except ValueError:
             log.error("Invalid timeout value provided. It should be an integer.")
             exit_program(force=True, from_timeout=True)
+    
+    # exit
+    if get_arg('exit'):
+        if get_arg('exit') in positionals['exit']['choices']:
+            exit_program(force=True)
+        else:
+            log.error("Invalid command provided.")
+            exit_program(force=True)
