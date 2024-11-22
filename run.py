@@ -62,5 +62,8 @@ if not is_opened() or get_arg('force_start'):
         initialize_tray_icon()
     else:
         log.info("Running without tray icon")
-        while True:
-            pass
+        try:
+            while True:
+                pass
+        except KeyboardInterrupt:
+            log.info("Exiting WebDeck... (Ctrl+C)")
