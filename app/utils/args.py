@@ -20,6 +20,11 @@ available_args = {
         "help": "Specify a custom port for the Flask server",
         "action": "store"
     },
+    "-H": {
+        "aliases": ["--host"],
+        "help": "Specify the host for the Flask server",
+        "action": "store"
+    },
     "-T": {
         "aliases": ["--timeout"],
         "help": "Specify the timeout in seconds to close the app after",

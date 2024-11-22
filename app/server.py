@@ -39,6 +39,7 @@ from .utils.settings.create_folders import create_folders
 from .utils.firewall import fix_firewall_permission, check_firewall_permission
 from .utils.languages import text, set_default_language, get_languages_info, get_language
 from .utils.logger import log
+from .utils.args import get_arg
 from .utils.merge_dicts import merge_dicts
 from .buttons.usage import get_usage
 from .buttons.obs import reload_obs
@@ -546,7 +547,7 @@ def run_server():
         server.serve_forever()
     else:
         app.run(
-            host=local_ip,
+            host=get_arg("host") or local_ip,
             port=get_port(),
             debug=config["settings"].get("flask_debug"),
             use_reloader=config["settings"].get("flask_reloader", False),
