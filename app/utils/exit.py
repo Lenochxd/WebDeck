@@ -13,7 +13,7 @@ def exit_program(force=True, from_timeout=False):
         log.info("Exiting WebDeck...")
     
     if sys.platform == "win32":
-        wmi = win32com.client.GetObject("winmgmts:")
+        wmi = win32com.client.GetObject("winmgmts:\\\\.\\root\\cimv2")
         processes = wmi.InstancesOf("Win32_Process")
 
         process_names_to_terminate = ["nircmd.exe"]
