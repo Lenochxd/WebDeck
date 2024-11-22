@@ -136,3 +136,4 @@ def handle_startup_arguments():
             threading.Timer(timeout, lambda: exit_program(force=True, from_timeout=True)).start()
         except ValueError:
             log.error("Invalid timeout value provided. It should be an integer.")
+            exit_program(force=True, from_timeout=True)
