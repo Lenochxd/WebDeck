@@ -6,6 +6,7 @@ import threading
 from app.utils.logger import log
 from app.utils.settings.get_config import get_config
 from app.utils.args import parse_args, get_arg
+from app.utils.exit import exit_program
 
 parse_args()
 if get_arg('version'):
@@ -25,6 +26,16 @@ if get_arg('version'):
             
     print(f"WebDeck v{version} {last_commit}")
     sys.exit()
+
+timeout = get_arg('timeout')
+if timeout:
+    try:
+        timeout = int(timeout)
+        log.info(f"Setting timeout to {timeout} seconds")
+        threading.Timer(timeout, lambda: exit_program(force=True, from_timeout=True)).start()
+    except ValueError:
+        log.error("Invalid timeout value provided. It should be an integer.")    
+
 
 settings = get_config()['settings']
 

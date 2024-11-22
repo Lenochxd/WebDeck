@@ -6,8 +6,12 @@ import signal
 from .logger import log
 
 
-def exit_program(force=True):
-    log.info("Exiting WebDeck...")
+def exit_program(force=True, from_timeout=False):
+    if from_timeout:
+        log.info("Timeout reached. Exiting WebDeck...")
+    else:
+        log.info("Exiting WebDeck...")
+    
     if sys.platform == "win32":
         wmi = win32com.client.GetObject("winmgmts:")
         processes = wmi.InstancesOf("Win32_Process")

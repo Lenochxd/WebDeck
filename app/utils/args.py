@@ -17,6 +17,11 @@ available_args = {
         "help": "Specify a custom port for the Flask server",
         "action": "store"
     },
+    "-T": {
+        "aliases": ["--timeout"],
+        "help": "Specify the timeout in seconds to close the app after",
+        "action": "store"
+    },
     "--no-admin": {
         "aliases": ["--no-sudo"],
         "help": "Run the application without requesting sudo/admin permissions",
