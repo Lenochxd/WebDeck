@@ -22,6 +22,7 @@ class Logger:
             self.log_file = f"{log_dir}/{date_str}-updater.log"
         else:
             self.log_file = f"{log_dir}/{date_str}.log"
+        self.debug_enabled = True  # Add this line
 
     def _write_log(self, level, message):
         """
@@ -35,6 +36,18 @@ class Logger:
         with open(self.log_file, 'a') as file:
             file.write(log_message + '\n')
         return log_message
+    
+    def enable_debug(self):
+        """
+        Enables the printing of debug messages.
+        """
+        self.debug_enabled = True
+
+    def disable_debug(self):
+        """
+        Disables the printing of debug messages.
+        """
+        self.debug_enabled = False
 
     def info(self, message):
         """
@@ -69,7 +82,8 @@ class Logger:
         Use this method for detailed information, typically of interest only when diagnosing problems.
         """
         log_message = self._write_log("DEBUG", message)
-        print(Fore.BLUE + log_message)
+        if self.debug_enabled:
+            print(Fore.BLUE + log_message)
 
     def error(self, message):
         """

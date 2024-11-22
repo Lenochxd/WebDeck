@@ -39,6 +39,10 @@ available_args = {
         "help": "Run the application without the system tray icon",
         "action": "store_true"
     },
+    "--no-debug": {
+        "help": "Disable the printing of debug messages (does not affect Flask debug mode)",
+        "action": "store_true"
+    },
     "--force-start": {
         "help": "Authorize the start of the app even if it is already running",
         "action": "store_true"
@@ -86,7 +90,8 @@ def parse_args():
         # Parse the arguments
         parsed_args = parser.parse_args()
         save_args(parsed_args)
-        log.debug(f'All args: {parsed_args}')
+        if not get_arg('no_debug') and not get_arg('version'):
+            log.debug(f'All args: {parsed_args}')
     except Exception as e:
         log.error(f"Error parsing arguments: {e}")
         save_args(parser.parse_args([]))  # Save default arguments
@@ -137,6 +142,10 @@ def get_arg(arg):
 
 
 def handle_startup_arguments():
+    # --no-debug
+    if get_arg('no_debug'):
+        log.disable_debug()
+    
     # -V, --version
     if get_arg('version'):
         import json
