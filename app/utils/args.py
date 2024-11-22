@@ -122,6 +122,9 @@ def clear_args():
         os.remove(temp_file)
 
 def save_args(args):
+    # Ensure the temp directory exists
+    os.makedirs(os.path.dirname(temp_file), exist_ok=True)
+    
     # Save arguments to a temporary file
     with open(temp_file, "w") as f:
         json.dump(vars(args), f)
