@@ -1,4 +1,5 @@
 from obswebsocket import obsws
+from obswebsocket import requests as obsrequests
 
 from app.utils.global_variables import get_global_variables
 from app.utils.languages import text
@@ -81,7 +82,7 @@ def handle_command(message):
     
     elif message.startswith("/obs_key"):
         hotkey = message.split(' ')[-1]
-        result = obs.call(obs.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
+        result = obs.call(obsrequests.TriggerHotkeyByKeySequence(keyId="OBS_KEY_"+hotkey))
         if "failed" in str(result):
             log.error(f"Failed to trigger hotkey '{hotkey}': {result}")
             raise RuntimeError(f"{text('failed')} :/")
