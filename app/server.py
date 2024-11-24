@@ -264,10 +264,6 @@ def saveconfig():
     with open(".config/config.json", "w", encoding="utf-8") as json_file:
         json.dump(config, json_file, indent=4)
 
-    if soundboard_stop:
-        soundboard.mic.stop()
-    elif soundboard_restart or soundboard_start:
-        soundboard.mic.restart()
 
     if obs_reload:
         reload_obs()
@@ -275,6 +271,16 @@ def saveconfig():
     if language_changed:
         set_default_language(new_config["settings"]["language"])
         change_tray_language(new_config["settings"]["language"])
+    
+    if soundboard_stop:
+        soundboard.mic.stop()
+    elif soundboard_restart or soundboard_start:
+        if config["settings"]["soundboard"]["enabled"]:
+            try:
+                soundboard.mic.restart()
+            except Exception as e:
+                log.exception(e, "Failed to restart soundboard")
+                return jsonify({"success": False, "message": str(e)})
 
     log.success("Config saved successfully")
     return jsonify({"success": True})

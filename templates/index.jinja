@@ -2452,8 +2452,13 @@
                     if (response.success) {
                       alert(`{{text("settings_save_success")}}`);
                     } else {
-                      showError('Error :/');
-                      alert(`{{text("settings_save_error")}}`);
+                      if (response.message && response.message !== '') {
+                        showError(response.message);
+                        alert(response.message);
+                      } else {
+                        showError('Error :/');
+                        alert(`{{text("settings_save_error")}}`);
+                      }
                     }
                   })
                   .catch(function(error) {
