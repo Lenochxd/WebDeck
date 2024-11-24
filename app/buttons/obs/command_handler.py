@@ -76,7 +76,7 @@ def handle_command(message):
 
 
     elif message.startswith("/obs_scene"):
-        scene_name = message.replace("/obs_scene", "")
+        scene_name = message.replace("/obs_scene", "").strip()
         scene.set(obs, scene_name)
     
     
