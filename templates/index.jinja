@@ -682,7 +682,7 @@
                   </select>
                 </div>
 
-                <div class="setting windows-startup {% if is_exe == True %}invisible{% endif %}">
+                <div class="setting windows-startup {% if not is_exe %}invisible{% endif %}">
                   <p> {{text('config-windows_startup')}} </p>
                   <label for="windows-startup" class="switch">
                     {% if 'windows-startup' in config['settings'].keys() %}
@@ -694,7 +694,7 @@
                   </label>
                 </div>
 
-                <div class="setting auto-updates {% if is_exe == True %}invisible{% endif %}">
+                <div class="setting auto-updates {% if not is_exe %}invisible{% endif %}">
                   <p> {{text('auto_updates')}} </p>
                   <label for="auto-updates" class="switch">
                     {% if 'auto-updates' in config['settings'].keys() %}
