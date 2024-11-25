@@ -4,6 +4,7 @@ import shutil
 import json
 import requests
 import ctypes
+import subprocess
 import zipfile
 from tqdm import tqdm
 from app.utils.exit import exit_program
@@ -11,6 +12,7 @@ from app.utils.working_dir import get_base_dir, get_update_dir, chdir_base, chdi
 from app.utils.settings.get_config import get_config
 from app.utils.show_error import show_error
 from app.utils.logger import Logger
+from app.utils.args import parse_args, raw_args, get_arg
 
 log = Logger(from_updater=True)
 config = get_config()
@@ -192,7 +194,7 @@ def check_updates(current_version):
         # Launch WebDeck.exe from the wd_dir (root) directory
         log.success("\nRestarting WebDeck.exe")
         os.chdir(wd_dir)
-        os.startfile("WebDeck.exe")
+        os.startfile("WebDeck.exe", " ".join(raw_args))
         
 
 
@@ -292,19 +294,25 @@ def needs_admin_permissions():
         return True
 
 def request_admin_permissions():
+    if get_arg('no_admin'):
+        log.info("Skipping admin permissions request due to '--no-admin' argument.")
+        return
+
     if not ctypes.windll.shell32.IsUserAnAdmin():
         log.info("Asking for admin permissions...")
         if os.path.exists(os.path.join(get_update_dir(), "update.exe")):
             log.info("Starting update.exe with admin privileges...")
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", os.path.join(get_update_dir(), "update.exe"), None, None, 1)
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", os.path.join(get_update_dir(), "update.exe"), " ".join(raw_args), None, 1)
         else:
             log.info("Starting current script with admin privileges...")
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, f'"{__file__}" {" ".join(raw_args)}', None, 1)
         sys.exit()
 
 
 if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures the script only runs when executed as a built executable, not when run as a Python script
     log.info("Starting updater...")
+    
+    parse_args()
     
     wd_dir = get_base_dir()
     update_dir = os.path.join(wd_dir, 'update')
@@ -317,14 +325,15 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
             request_admin_permissions()
 
         prepare_update_directory()
-        log.info("Launching update.exe with admin privileges...")
+        log.info("Launching update.exe...")
         
         update_exe_path = os.path.join(get_base_dir(), "update/update.exe")
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", update_exe_path, None, None, 1)
+        subprocess.Popen([update_exe_path] + raw_args)
         
         sys.exit()
     
-    request_admin_permissions()
+    if needs_admin_permissions():
+        request_admin_permissions()
     
     version_path = os.path.join(wd_dir, "webdeck/version.json")
     with open(version_path, encoding="utf-8") as f:

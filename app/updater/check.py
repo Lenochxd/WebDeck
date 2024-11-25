@@ -11,6 +11,7 @@ from app.utils.settings.get_config import get_config
 from app.utils.show_error import show_error
 from app.utils.languages import text
 from app.utils.logger import log
+from app.utils.args import raw_args
 
 
 def check_for_updates():
@@ -49,7 +50,7 @@ def check_for_updates():
             log.info(f"UPDATER: New version available: {latest_version}")
             prepare_update_directory()
             os.chdir("update")
-            subprocess.Popen(["update/update.exe"])
+            subprocess.Popen(["update/update.exe"] + raw_args)
             sys.exit()
 
     except Exception as e:
