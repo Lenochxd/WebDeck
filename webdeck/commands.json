@@ -343,7 +343,8 @@
               "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']"
+              "TYPE": "input number['1','100']",
+              "placeholder": "1"
             }
           ],
           "style": {
@@ -358,7 +359,8 @@
               "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']"
+              "TYPE": "input number['1','100']",
+              "placeholder": "1"
             }
           ],
           "style": {
@@ -717,7 +719,8 @@
           "TYPE": "input filetype['.mp3']"
         },
         {
-          "TYPE": "input number['1','100']"
+          "TYPE": "input number['1','100']",
+          "placeholder": "50"
         }
       ],
       "style": {
@@ -867,7 +870,8 @@
               "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']"
+              "TYPE": "input number['1','100']",
+              "placeholder": "10"
             }
           ],
           "style": {
@@ -882,7 +886,8 @@
               "TYPE": "NONE"
             },
             {
-              "TYPE": "input number['1','100']"
+              "TYPE": "input number['1','100']",
+              "placeholder": "10"
             }
           ],
           "style": {

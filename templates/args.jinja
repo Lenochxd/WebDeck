@@ -50,13 +50,14 @@
     {% set number_list = [] %}
     {% for i in string_list %}
         {% if i.startswith('number') %}
+            {% set placeholder = arg.get('placeholder', '') %}
             {% set number_list = eval(i.replace('number', '')) %}
             {% set min = number_list[0] %}
             {% set max = number_list[1] %}
             {% if min.startswith('-') or max.startswith('-') %}
-                <input class="{{dark_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" >
+                <input class="{{dark_theme}}" type="number" name="{{file}}" min="{{min}}" max="{{max}}" placeholder="{{placeholder}}">
             {% else %}
-                <input class="{{dark_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" >
+                <input class="{{dark_theme}}" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" name="{{file}}" min="{{min}}" max="{{max}}" placeholder="{{placeholder}}">
             {% endif %}
         {% endif %}
     {% endfor %}
