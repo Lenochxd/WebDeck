@@ -8,6 +8,8 @@ from .exit import exit_program
 
 temp_file = os.path.join("temp", "webdeck_args.json")
 args = {}
+raw_args = [arg for arg in sorted(sys.argv[1:]) if not (arg.endswith('.pyc') or arg.endswith('library.zip'))]
+# log.debug(f"{raw_args=}")
 
 available_args = {
     "-v": {
@@ -105,7 +107,7 @@ def parse_args():
     
     try:
         # Parse the arguments
-        parsed_args = parser.parse_args()
+        parsed_args = parser.parse_args(raw_args)
         save_args(parsed_args)
         if not get_arg('no_debug') and not get_arg('version'):
             log.debug(f'All args: {parsed_args}')
