@@ -715,6 +715,13 @@
                     </a>
                   </div>
 
+                  <div class="setting toggle-soundboard">
+                    <p> {{text('toggle_soundboard')}} </p>
+                    <label for="toggle_soundboard" class="switch">
+                      <input class="{{dark_theme}}" type="checkbox" id="toggle_soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'] %}checked{% endif %}>
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
 
                   <div class="setting mic_input_device">
                     <label for="mic_input_device"> {{text('input_device')}} </label>
@@ -752,14 +759,6 @@
                     <p> {{text('ear_soundboard')}} </p>
                     <label for="ear_soundboard" class="switch">
                       <input class="{{dark_theme}}" type="checkbox" id="ear_soundboard" name="settings.ear_soundboard" {% if config['settings']['ear_soundboard'] %}checked{% endif %}>
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  
-                  <div class="setting toggle-soundboard">
-                    <p> {{text('toggle_soundboard')}} </p>
-                    <label for="toggle_soundboard" class="switch">
-                      <input class="{{dark_theme}}" type="checkbox" id="toggle_soundboard" name="settings.soundboard.enabled" {% if config['settings']['soundboard']['enabled'] %}checked{% endif %}>
                       <span class="slider round"></span>
                     </label>
                   </div>
