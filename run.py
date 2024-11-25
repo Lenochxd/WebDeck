@@ -7,6 +7,25 @@ from app.utils.logger import log
 from app.utils.settings.get_config import get_config
 from app.utils.args import parse_args, get_arg
 
+
+def attach_console():
+    if not getattr(sys, "frozen", False):
+        return
+    
+    try:
+        # Attach to an existing console
+        ctypes.windll.kernel32.AttachConsole(-1)
+        
+        # Redirect standard output and error to the console
+        sys.stdout = open("CONOUT$", "w")
+        sys.stderr = open("CONOUT$", "w")
+        
+        print()
+    except Exception as e:
+        print(f"Error attaching console: {e}")
+
+attach_console()
+
 parse_args()
 
 
