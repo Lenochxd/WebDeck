@@ -5,7 +5,7 @@ def translate(word, target_language):
     # Separate words with spaces before each capital letter
     word = "".join([f" {i}" if i.isupper() else i for i in word]).strip()
     
-    if word == "Discord" or target_language.upper() == "EN":
+    if target_language.upper() == "EN":
         return word
         
     try:
