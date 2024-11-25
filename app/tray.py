@@ -158,7 +158,7 @@ def generate_menu(language, server_status=1):
         ),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem(text('report_issue'), lambda: webbrowser.open('https://github.com/Lenochxd/WebDeck/issues')),
-        pystray.MenuItem(text('exit'), exit_program),
+        pystray.MenuItem(text('exit'), lambda: exit_program()),
     )
 
 def generate_tray_icon():
