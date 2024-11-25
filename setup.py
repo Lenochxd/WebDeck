@@ -193,7 +193,7 @@ if __name__ == "__main__":
             copyright="WebDeck",
             trademarks="WebDeck",
             manifest=None,
-            uac_admin=True,
+            uac_admin=False,
         ),
         Executable(
             script="app/updater/updater.py",
@@ -205,7 +205,7 @@ if __name__ == "__main__":
             copyright="WebDeck",
             trademarks="WebDeck",
             manifest=None,
-            uac_admin=True,
+            uac_admin=False,
         ),
     ]
 
