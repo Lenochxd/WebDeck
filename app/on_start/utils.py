@@ -29,12 +29,17 @@ def sort_colorsjson():
     try:
         with open("webdeck/colors.json", "r", encoding="utf-8") as f:
             data = json.load(f)
-    except Exception:
-        url = "https://gist.githubusercontent.com/Lenochxd/12a1927943a2ce151560e1b9585d4bfa/raw/41d5a0dc9336827cefb217c1728f0e9415b1c7b9/colors_db.json"
-        with urllib.request.urlopen(url) as response:
-            data = json.load(response)
-        with open("webdeck/colors.json", "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4)
+    except Exception as e:
+        log.exception(e, "Failed to load colors.json")
+        try:
+            url = "https://gist.githubusercontent.com/Lenochxd/12a1927943a2ce151560e1b9585d4bfa/raw/41d5a0dc9336827cefb217c1728f0e9415b1c7b9/colors_db.json"
+            with urllib.request.urlopen(url) as response:
+                data = json.load(response)
+            with open("webdeck/colors.json", "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4)
+        except Exception as e:
+            log.exception(e, "Failed to load colors.json from Gist")
+            return
 
 
     # Sort colors using the distance between each pair of colors
