@@ -2,8 +2,6 @@ import json
 import os
 from app.utils.args import get_arg
 from app.utils.settings.check_config_update import check_config_update
-from ..working_dir import chdir_base
-chdir_base()
 
 
 config_path = ".config/config.json"

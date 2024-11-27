@@ -6,6 +6,7 @@ import threading
 from app.utils.logger import log
 from app.utils.settings.get_config import get_config
 from app.utils.args import parse_args, get_arg
+from app.utils.working_dir import chdir_base
 
 
 def attach_console():
@@ -25,6 +26,7 @@ def attach_console():
         print(f"Error attaching console: {e}")
 
 attach_console()
+chdir_base()
 
 parse_args()
 

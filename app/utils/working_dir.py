@@ -4,18 +4,23 @@ import sys
 
 def locate_file_directory(filename, base_dir=None) -> str:
     """
-    Helper function to locate a file in the current directory or up to 2 parent directories.
+    Helper function to locate a file in the current directory or up to 4 parent directories.
+    This is necessary because the base path can be 'WebDeck/lib/library.zip/app/utils' for example.
     If the application is not frozen, returns the current directory directly.
     """
     if not getattr(sys, 'frozen', False):
         return os.getcwd()
-    
-    current_dir = base_dir or os.getcwd()
-    for _ in range(3):  # Check current directory and up to 2 parent directories
-        if os.path.exists(os.path.join(current_dir, filename)):
-            return current_dir
-        current_dir = os.path.dirname(current_dir)
-    raise FileNotFoundError(f"{filename} not found in the current directory or up to 2 parent directories.")
+
+    search_dirs = [base_dir or os.getcwd(), os.path.abspath(os.path.dirname(__file__))]
+
+    for search_dir in search_dirs:
+        current_dir = search_dir
+        for _ in range(5):  # Check current directory and up to 4 parent directories
+            if os.path.exists(os.path.join(current_dir, filename)):
+                return current_dir
+            current_dir = os.path.dirname(current_dir)
+
+    raise FileNotFoundError(f"{filename} not found in the current directory.")
 
 
 def get_base_dir() -> str:
