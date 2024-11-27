@@ -10,7 +10,7 @@ from math import sqrt
 from win32com.client import Dispatch
 
 from app.updater import check_files, check_for_updates
-from app.utils.settings.check_config_update import check_config_update
+from app.utils.settings.get_config import get_config
 from app.utils.global_variables import set_global_variable
 from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
@@ -99,21 +99,13 @@ def fix_vlc_cache():
 
 
 def on_start():
-    # Create config.json
-    if not os.path.exists(".config"):
-        os.makedirs(".config")
-        
-    if not os.path.exists(".config/config.json"):
-        if os.path.exists("config.json"):
-            shutil.move("config.json", ".config/config.json")
-        else:
-            shutil.copy("webdeck/config_default.json", ".config/config.json")
-        
-        if os.name == 'nt':
-            
+    config = get_config(check_updates=True, save_updated_config=True)
+    
+    if os.name == 'nt':
+        if config['settings']['windows_start_menu_shortcut']:
             # Set DLLs directory
             os.add_dll_directory(os.getcwd())
-    
+            
             # Add windows start menu shortcut
             file_path = (
                 os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs\WebDeck.lnk"
@@ -132,6 +124,19 @@ def on_start():
                 shortcut.WorkingDirectory = working_dir
                 shortcut.IconLocation = icon
                 shortcut.save()
+        else:
+            # Remove windows start menu shortcut
+            
+            pass  # NOTE: This section is reserved for future use. It is intended for portable versions where the start menu shortcut should be removable. 
+                  # Currently, 'windows_start_menu_shortcut' is false by default, which would cause the MSI installed version to remove its start menu shortcut unintentionally.
+                  # This issue will be addressed in a future update.
+            
+            
+            # file_path = (
+            #     os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs\WebDeck.lnk"
+            # )
+            # if os.path.exists(file_path):
+            #     os.remove(file_path)
                 
     # Create user_uploads dir if needed
     if not os.path.exists(".config/user_uploads"):
@@ -187,10 +192,5 @@ def on_start():
     
     # Colors json
     sort_colorsjson()
-    
-    # Config updater
-    config = check_config_update(config)
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
     
     return config, commands, local_ip

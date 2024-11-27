@@ -20,7 +20,7 @@ from win32com.client import Dispatch
 import easygui
 
 # WebDeck imports
-from .on_start import on_start, check_config_update
+from .on_start import on_start
 from .utils.global_variables import set_global_variable, get_global_variable
 
 config, commands, local_ip = on_start()
@@ -33,6 +33,7 @@ from .utils.plugins.load_plugins import load_plugins
 from .utils.working_dir import get_base_dir
 from .utils.settings.get_config import get_port, get_config
 from .utils.settings.save_config import save_config
+from .utils.settings.check_config_update import check_config_update
 from .utils.settings.audio_devices import get_audio_devices
 from .utils.settings.gridsize import update_gridsize
 from .utils.settings.create_folders import create_folders
