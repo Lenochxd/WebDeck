@@ -5,7 +5,7 @@ Thank you for considering contributing to WebDeck! Here are some guidelines to h
 
 ## Table of Contents
 
-<!-- - [Code of Conduct](#code-of-conduct) -->
+- [Code of Conduct](#code-of-conduct)
 - [Development Setup](#development-setup)
 - [Languages](#languages)
 - [Python](#python)
@@ -14,9 +14,9 @@ Thank you for considering contributing to WebDeck! Here are some guidelines to h
 - [Reporting Issues](#reporting-issues)
 - [Submitting a Pull Request](#submitting-a-pull-request)
 
-<!-- ## Code of Conduct
+## Code of Conduct
 
-Please adhere to the [Code of Conduct](https://github.com/Lenochxd/WebDeck/blob/master/.github/CODE_OF_CONDUCT.md) in all your interactions with the project. -->
+Please adhere to the [Code of Conduct](https://github.com/Lenochxd/WebDeck/blob/master/.github/CODE_OF_CONDUCT.md) in all your interactions with the project.
 
 
 ## Development Setup
