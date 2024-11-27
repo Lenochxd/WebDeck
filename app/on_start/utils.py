@@ -105,7 +105,7 @@ def on_start():
         if config['settings']['windows_start_menu_shortcut']:
             # Set DLLs directory
             os.add_dll_directory(os.getcwd())
-            
+
             # Add windows start menu shortcut
             file_path = (
                 os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs\WebDeck.lnk"
@@ -191,6 +191,8 @@ def on_start():
     fix_vlc_cache()
     
     # Colors json
-    sort_colorsjson()
+    
+    if config["settings"]["sort_colors_on_startup"]:
+        sort_colorsjson()
     
     return config, commands, local_ip

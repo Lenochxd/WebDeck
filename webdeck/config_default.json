@@ -18,6 +18,7 @@
         "open_settings_in_integrated_browser": false,
         "data_transfer_method": "http",
         "automatic_firewall_bypass": false,
+        "sort_colors_on_startup": false,
         "fix_stop_soundboard": false,
         "ear_soundboard": true,
         "allowed_networks": [],
