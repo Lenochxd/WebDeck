@@ -197,7 +197,10 @@ def check_updates(current_version):
         log.success("\nRestarting WebDeck.exe")
         os.chdir(wd_dir)
         webdeck_path = os.path.join(wd_dir, "WebDeck.exe")
-        os.startfile(webdeck_path, " ".join(raw_args))
+        if compare_versions(latest_version, "2.0.0") < 0:
+            os.startfile(webdeck_path)
+        else:
+            os.startfile(webdeck_path, " ".join(raw_args))
         
 
 
