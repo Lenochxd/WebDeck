@@ -2,10 +2,11 @@ import json
 import os
 from app.utils.args import get_arg
 from app.utils.settings.check_config_update import check_config_update
+from app.utils.working_dir import get_base_dir
 
-
-config_path = ".config/config.json"
-default_config_path = "webdeck/config_default.json"
+base_dir = get_base_dir()
+config_path = os.path.join(base_dir, ".config/config.json")
+default_config_path = os.path.join(base_dir, "webdeck/config_default.json")
 
 
 def ensure_config_exists():
