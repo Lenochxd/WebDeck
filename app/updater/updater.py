@@ -259,10 +259,12 @@ def prepare_update_directory():
     os.makedirs("update", exist_ok=True)
 
     files_to_copy = [
-        "python3.dll",
-        "python311.dll",
         "update.exe"
     ]
+    # Copy all python3*.dll files
+    for file in os.listdir():
+        if file.startswith("python3") and file.endswith(".dll"):
+            files_to_copy.append(file)
 
     for src in files_to_copy:
         dst = os.path.join("update", src)
