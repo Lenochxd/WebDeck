@@ -161,9 +161,11 @@ def check_updates(current_version):
     else:
         latest_version = latest_release["tag_name"].replace('v', '')
 
-    if not compare_versions(latest_version, current_version) > 0:
+    if not compare_versions(latest_version, current_version) > 0 and not get_arg('force_update'):
         log.info("No updates available.")
     else:
+        if get_arg('force_update'):
+            log.info("Force update enabled.")
         log.info(f"New version available: {latest_version}")
 
         exit_program(force=True)
@@ -194,7 +196,8 @@ def check_updates(current_version):
         # Launch WebDeck.exe from the wd_dir (root) directory
         log.success("\nRestarting WebDeck.exe")
         os.chdir(wd_dir)
-        os.startfile("WebDeck.exe", " ".join(raw_args))
+        webdeck_path = os.path.join(wd_dir, "WebDeck.exe")
+        os.startfile(webdeck_path, " ".join(raw_args))
         
 
 

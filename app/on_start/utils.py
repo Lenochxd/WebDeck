@@ -14,6 +14,7 @@ from app.utils.settings.get_config import get_config
 from app.utils.global_variables import set_global_variable
 from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
+from app.utils.args import get_arg
 from app.utils.logger import log
 
 
@@ -170,7 +171,7 @@ def on_start():
     config = get_gpu_method()
     
     # Checks for updates
-    if config["settings"].get("auto_updates", True) == True:
+    if config["settings"].get("auto_updates", True) or get_arg('force_update'):
         check_for_updates()
     
     # Load commands

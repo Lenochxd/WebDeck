@@ -57,6 +57,11 @@ available_args = {
         "type": str,
         "action": "store"
     },
+    "--force-update": {
+        "aliases": ["--update"],
+        "help": "Force update the application to the latest version",
+        "action": "store_true"
+    },
 }
 
 positionals = {

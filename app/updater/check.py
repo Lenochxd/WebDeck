@@ -11,7 +11,7 @@ from app.utils.settings.get_config import get_config
 from app.utils.show_error import show_error
 from app.utils.languages import text
 from app.utils.logger import log
-from app.utils.args import raw_args
+from app.utils.args import raw_args, get_arg
 
 
 def check_for_updates():
@@ -46,7 +46,10 @@ def check_for_updates():
         else:
             latest_version = latest_release["tag_name"].replace('v', '')
 
-        if compare_versions(latest_version, current_version) > 0:
+        is_new_version_available = compare_versions(latest_version, current_version) > 0
+        is_force_update = get_arg('force_update')
+        
+        if is_new_version_available or is_force_update:
             log.info(f"UPDATER: New version available: {latest_version}")
             prepare_update_directory()
             os.chdir("update")
@@ -66,7 +69,7 @@ def check_for_updates_loop():
     while True:
         config = get_config()
         
-        if config["settings"].get("auto-updates", True):
+        if config["settings"].get("auto-updates", True) or get_arg('force_update'):
             check_for_updates()
 
         time.sleep(3600)
