@@ -37,7 +37,7 @@ def exit_program(force=True, from_timeout=False):
                         log.debug(f"Failed to terminate process {process_name} using WMI. Attempting taskkill.")
                         subprocess.Popen(f"taskkill /f /IM {process_name}", shell=True)
                 except Exception as e:
-                    log.exception(e, f"Failed to terminate process '{process_name}'")
+                    log.exception(e, f"Failed to terminate process '{process_name}'", print_log=False)
 
     if not force:
         log.debug("Force exit not enabled. Sending SIGINT to current process.")

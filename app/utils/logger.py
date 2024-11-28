@@ -101,7 +101,7 @@ class Logger:
         log_message = self._write_log("ERROR", message)
         print(Fore.RED + log_message)
     
-    def exception(self, exception, message=None, expected=True, log_traceback=True):
+    def exception(self, exception, message=None, expected=True, log_traceback=True, print_log=True):
         """
         Logs an exception message along with the traceback.
         
@@ -112,6 +112,7 @@ class Logger:
             message (str, optional): Additional message to log with the exception.
             expected (bool, optional): Indicates if the exception was expected (caught using try-except). Defaults to True.
             log_traceback (bool, optional): Indicates if the traceback details should be logged. Defaults to True.
+            print_log (bool, optional): Indicates if the log message should be printed. Defaults to True.
         """
         exception_title = f"{type(exception).__name__}:\n {str(exception)}\n"
         if log_traceback:
@@ -123,7 +124,8 @@ class Logger:
             log_message = self._write_log(exception_type, f"{message} - {exception_title}\n{exception_message}")
         else:
             log_message = self._write_log(exception_type, f"{exception_title}\n{exception_message}")
-        print(Fore.MAGENTA + log_message)
+        if print_log:
+            print(Fore.MAGENTA + log_message)
 
     def httprequest(self, req, response):
         """
