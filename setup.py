@@ -162,6 +162,8 @@ if __name__ == "__main__":
             "soundfile",
             "python-vlc",
             "vlc",
+            "customtkinter",
+            "CTkMessagebox",
         ],
         "zip_include_packages": "*",
         "include_msvcr": False,

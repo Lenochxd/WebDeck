@@ -1,13 +1,13 @@
-import os
 import sys
 import json
 import win32gui, win32con
 import webbrowser
 import pystray
-import tkinter as tk
+import customtkinter as ctk
 import random
 import qrcode
 import webview
+import threading
 from PIL import Image, ImageTk
 from io import BytesIO
 
@@ -77,27 +77,7 @@ def generate_qr_code(dark_theme=False):
     return Image.open(img_stream)
 
 def show_qrcode():
-    global window
-    if window is not None:
-        window.lift()
-        window.focus_force()
-        return
-
-    window = tk.Tk()
-    window.title(text('qr_code'))
-
-    qr_pil_image = generate_qr_code()
-    image_tk = ImageTk.PhotoImage(image=qr_pil_image)
-
-    label = tk.Label(window, image=image_tk)
-    label.pack()
-
-    text_label = tk.Label(window, text=f"http://{local_ip}:{get_port()}/", font=("Helvetica", 13))
-    text_label.pack()
-
-    window.iconbitmap("static/icons/icon.ico")
-    window.lift()
-    window.focus_force()
+    global window, image_tk
 
     def close_window(event=None):
         global window
@@ -105,13 +85,48 @@ def show_qrcode():
             window.destroy()
             window = None
 
-    window.bind("<Escape>", close_window)
-    window.bind("<Return>", close_window)
-    window.bind("<space>", close_window)
+    def create_or_lift_window():
+        global window, image_tk
 
-    window.resizable(width=False, height=False)
-    window.protocol("WM_DELETE_WINDOW", close_window)
-    window.mainloop()
+        if window is not None:
+            # If the window exists, just bring it to the front
+            window.lift()
+            window.focus_force()
+        else:
+            # Create the QR code window
+            
+            ctk.set_appearance_mode("light")  # Set the appearance mode to light
+            window = ctk.CTk()
+            window.title("QR Code")
+
+            # Generate QR code and create CTkImage
+            qr_pil_image = generate_qr_code()
+            image_tk = ctk.CTkImage(light_image=qr_pil_image, size=(300, 300))  # Adjust size as needed
+
+            # Add the label with the CTkImage
+            label = ctk.CTkLabel(window, image=image_tk, text="")
+            label.pack()
+
+            text_label = ctk.CTkLabel(window, text=f"http://{local_ip}:{get_port()}/", font=("Helvetica", 13))
+            text_label.pack()
+
+            window.iconbitmap("static/icons/icon.ico")
+            window.lift()
+            window.focus_force()
+
+            # Bind events and configure window
+            window.bind("<Escape>", close_window)
+            window.bind("<Return>", close_window)
+            window.bind("<space>", close_window)
+            window.resizable(width=False, height=False)
+            window.protocol("WM_DELETE_WINDOW", close_window)
+
+            window.mainloop()
+
+    # Ensure GUI operations are handled in the main thread
+    if threading.current_thread().name == "MainThread":
+        create_or_lift_window()
+
 
 def generate_menu(language, server_status=1):
     log.info(f"Server status updated: {server_status}")
@@ -196,30 +211,31 @@ def change_port_prompt():
 
     def randomize_port():
         random_port = random.randint(1024, 65535)
-        port_entry.delete(0, tk.END)
+        port_entry.delete(0, ctk.END)
         port_entry.insert(0, random_port)
 
     def close_prompt(event=None):
         prompt_window.destroy()
 
-    prompt_window = tk.Tk()
+    ctk.set_appearance_mode("light")
+    prompt_window = ctk.CTk()
     prompt_window.title(text('change_server_port'))
     prompt_window.geometry("300x160")
     prompt_window.resizable(False, False)
     prompt_window.iconbitmap("static/icons/icon_black.ico")
 
-    frame = tk.Frame(prompt_window, padx=10, pady=10)
-    frame.pack(expand=True)
+    frame = ctk.CTkFrame(prompt_window, fg_color=prompt_window.cget("fg_color"))  # Match frame color with window color
+    frame.pack(expand=True, padx=10, pady=(5, 10))  # Adjust padding to bring the frame closer to the top
 
-    tk.Label(frame, text=text('enter_new_port')).grid(row=0, column=0, pady=5, sticky="w")
-    port_entry = tk.Entry(frame, validate="key", validatecommand=(frame.register(validate_port_input), "%P"))
+    ctk.CTkLabel(frame, text=text('enter_new_port')).grid(row=0, column=0, pady=(2, 2), sticky="w")  # Adjust padding
+    port_entry = ctk.CTkEntry(frame, validate="key", validatecommand=(frame.register(validate_port_input), "%P"))
     port_entry.insert(0, get_port())  # Set default text field value to the current port
-    port_entry.grid(row=1, column=0, pady=5, sticky="ew")
+    port_entry.grid(row=1, column=0, pady=(2, 5), sticky="ew")  # Adjust padding
 
-    randomize_button = tk.Button(frame, text=text("randomize"), command=randomize_port)
+    randomize_button = ctk.CTkButton(frame, text=text("randomize"), command=randomize_port)
     randomize_button.grid(row=2, column=0, pady=5, sticky="ew")
     
-    save_button = tk.Button(frame, text=text("save"), command=save_port)
+    save_button = ctk.CTkButton(frame, text=text("save"), command=save_port)
     save_button.grid(row=3, column=0, pady=5, sticky="ew")
 
     # Key bindings
@@ -232,7 +248,6 @@ def change_port_prompt():
     port_entry.focus()
 
     prompt_window.mainloop()
-
 
 def change_tray_language(new_lang):
     global icon, language

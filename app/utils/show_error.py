@@ -2,7 +2,8 @@ import pyperclip
 import webbrowser
 import ctypes
 import traceback
-import tkinter as tk
+import customtkinter as ctk
+from CTkMessagebox import CTkMessagebox
 from tkinter import messagebox
 from .languages import text
 from .logger import log
@@ -21,7 +22,7 @@ def show_error(message=None, title="WebDeck Error", error=True, exception=None) 
         log.error(message)
     
     if error:
-        root = tk.Tk()
+        root = ctk.CTk()
         root.withdraw()
         messagebox.showerror(title, message)
         
