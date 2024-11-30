@@ -171,7 +171,7 @@ def on_start():
     config = get_gpu_method()
     
     # Checks for updates
-    if config["settings"].get("auto_updates", True) or get_arg('force_update'):
+    if (config["settings"].get("auto_updates", True) or get_arg('force_update')) and not get_arg('no_auto_update'):
         check_for_updates()
     
     # Load commands

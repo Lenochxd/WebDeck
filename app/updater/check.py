@@ -48,8 +48,9 @@ def check_for_updates():
 
         is_new_version_available = compare_versions(latest_version, current_version) > 0
         is_force_update = get_arg('force_update')
+        is_no_auto_update = get_arg('no_auto_update')
         
-        if is_new_version_available or is_force_update:
+        if (is_new_version_available or is_force_update) and not is_no_auto_update:
             log.info(f"UPDATER: New version available: {latest_version}")
             prepare_update_directory()
             os.chdir("update")
@@ -69,7 +70,7 @@ def check_for_updates_loop():
     while True:
         config = get_config()
         
-        if config["settings"].get("auto-updates", True) or get_arg('force_update'):
+        if (config["settings"].get("auto-updates", True) or get_arg('force_update')) and not get_arg('no_auto_update'):
             check_for_updates()
 
         time.sleep(3600)

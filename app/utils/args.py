@@ -62,6 +62,11 @@ available_args = {
         "help": "Force update the application to the latest version",
         "action": "store_true"
     },
+    "--no-auto-update": {
+        "aliases": ["--no-update"],
+        "help": "Disable the auto-update feature",
+        "action": "store_true"
+    },
 }
 
 positionals = {
