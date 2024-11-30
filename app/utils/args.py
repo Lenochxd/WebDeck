@@ -3,6 +3,7 @@ import os
 import sys
 import threading
 import argparse
+from .show_error import show_error
 from .logger import log
 from .exit import exit_program
 
@@ -67,6 +68,11 @@ available_args = {
         "help": "Disable the auto-update feature",
         "action": "store_true"
     },
+    "--fake-error": {
+        "help": "Simulate an error to test the error handling",
+        "action": "store_true",
+        "condition": not getattr(sys, 'frozen', False),
+    },
 }
 
 positionals = {
@@ -88,6 +94,9 @@ def parse_args():
     
     # Add arguments to the parser
     for arg, arg_params in available_args.items():
+        if not arg_params.get("condition", True):
+            continue
+        
         if "type" in arg_params:
             parser.add_argument(
                 arg,
@@ -214,6 +223,23 @@ def handle_startup_arguments():
     if log_file:
         log.set_log_file(log_file)
         log.info(f"Logging to file: {log_file}")
+    
+    # --fake-error
+    if get_arg('fake_error'):
+        try:
+            1 / 0
+        except Exception as e:
+            import app.utils.languages as languages
+            languages.init(
+                lang_files_directory="webdeck/translations",
+                misc_lang_files_directory="webdeck/translations/misc",
+                default_language="en_US"
+            )
+            
+            if os.name == 'nt':
+                show_error(exception=e)
+            else:
+                log.exception(e, "Failed to initialize tray icon", expected=False)
 
     # exit
     if get_arg('exit'):
