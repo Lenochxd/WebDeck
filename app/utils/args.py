@@ -69,7 +69,12 @@ available_args = {
         "action": "store_true"
     },
     "--fake-error": {
-        "help": "Simulate an error to test the error handling",
+        "help": "[DEV] Simulate an error to test the error handling",
+        "action": "store_true",
+        "condition": not getattr(sys, 'frozen', False),
+    },
+    "--test-ffmpeg": {
+        "help": "[DEV] Attempt to install FFmpeg if it is not found",
         "action": "store_true",
         "condition": not getattr(sys, 'frozen', False),
     },
@@ -240,6 +245,15 @@ def handle_startup_arguments():
                 show_error(exception=e)
             else:
                 log.exception(e, "Failed to initialize tray icon", expected=False)
+                
+    # --test-ffmpeg
+    if get_arg('test_ffmpeg'):
+        log.debug("Testing FFmpeg installation...")
+        
+        from app.buttons.soundboard.ffmpeg import get_ffmpeg
+        path = get_ffmpeg()
+        log.debug(f"FFmpeg path: {path}")
+        exit_program(force=True)
 
     # exit
     if get_arg('exit'):
