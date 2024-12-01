@@ -1,11 +1,12 @@
 from obswebsocket import obsws
 
-from app.utils.global_variables import set_global_variable, get_global_variable
+from app.utils.global_variables import set_global_variable
+from app.utils.settings.get_config import get_config
 
 
 def reload_obs():
     # Set up the OBS WebSocket client
-    config = get_global_variable("config")
+    config = get_config()
     obs_host = config["settings"]["obs"]["host"]
     obs_port = int(config["settings"]["obs"]["port"])
     obs_password = config["settings"]["obs"]["password"]
