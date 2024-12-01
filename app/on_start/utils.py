@@ -6,6 +6,7 @@ import shutil
 import json
 import urllib.request
 import pynvml
+import threading
 from math import sqrt
 from win32com.client import Dispatch
 
@@ -187,13 +188,19 @@ def on_start():
         
         with open(".config/config.json", "w", encoding="utf-8") as json_file:
             json.dump(config, json_file, indent=4)
-            
-    # Fix VLC cache error
-    fix_vlc_cache()
     
-    # Colors json
-    
-    if config["settings"]["sort_colors_on_startup"]:
-        sort_colorsjson()
+    # Run threaded tasks
+    on_start_threaded(config)
     
     return config, commands, local_ip
+
+def on_start_threaded(config):
+    def run_threaded_tasks():
+        # Fix VLC cache error
+        fix_vlc_cache()
+        
+        # Colors json
+        if config["settings"]["sort_colors_on_startup"]:
+            sort_colorsjson()
+    
+    threading.Thread(target=run_threaded_tasks).start()
