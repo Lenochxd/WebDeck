@@ -27,6 +27,7 @@ pywebview
 cx_Freeze
 pathspec
 python-vlc
+nava==0.7
 obs-websocket-py
 tqdm
 pydub

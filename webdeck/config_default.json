@@ -29,6 +29,7 @@
         },
         "soundboard": {
             "enabled": false,
+            "audio_method": "vlc",
             "mic_input_device": "",
             "vbcable": "cable input"
         },

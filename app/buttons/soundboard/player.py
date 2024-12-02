@@ -1,5 +1,6 @@
 try: import vlc
 except: pass
+import nava
 from flask import jsonify
 
 from app.utils.settings.get_config import get_config
@@ -7,10 +8,11 @@ from app.utils.languages import text
 from app.utils.logger import log
 
 from .devices import get_device
-from .ffmpeg import silence_path
+from .ffmpeg import silence_path, to_wav
 
 player_vbcable = {}
 player_local = {}
+
 
 def get_params(msg):
     message = msg.replace("C:\\fakepath\\", "").replace("/playsound ", "").replace("/playlocalsound ", "")
@@ -46,6 +48,25 @@ def get_params(msg):
 
 
 def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=False):
+    global player_vbcable, player_local
+    config = get_config()
+    
+    if config["settings"]["soundboard"]["audio_method"] == "vlc":
+        return playsound_vlc(file_path, sound_volume, ear_soundboard, localonly)
+    
+    elif config["settings"]["soundboard"]["audio_method"] == "nava":
+        return playsound_nava(file_path, sound_volume, ear_soundboard, localonly)
+
+
+def playsound_nava(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=False):
+    # Play a sound file using the nava library. THIS IS BETA, the sound is only on the default output device and not in VB-Cable.
+    # Note: The volume parameter is not supported and this function uses ffmpeg to convert files to WAV format.
+    
+    file_path = to_wav(file_path)
+    sound_id = nava.play(file_path, async_mode=True)
+    return jsonify({"success": True})
+    
+def playsound_vlc(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=False):
     global player_vbcable, player_local
     
     config = get_config()
@@ -107,6 +128,10 @@ def playsound(file_path: str, sound_volume=0.5, ear_soundboard=True, localonly=F
 
 
 def stopsound():
+    # NAVA
+    nava.stop_all()
+    
+    # VLC
     config = get_config()
     cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
     

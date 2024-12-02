@@ -98,6 +98,18 @@ def get_ffmpeg():
     return ffmpeg_path
 
 
+def replace_last_element(string, old_element, new_element):
+    # Find the last occurrence of the old element
+    last_index = string.rfind(old_element)
+
+    if last_index != -1:  # If the old element is found
+        return string[:last_index] + string[last_index:].replace(
+            old_element, new_element, 1
+        )
+    else:
+        # If the old element is not found, return the original string
+        return string
+
 def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
     global ffmpeg_path
     
@@ -116,20 +128,7 @@ def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
 
     return True
 
-
-
 def silence_path(input_file, remove_previous=False):
-    def replace_last_element(string, old_element, new_element):
-        # Find the last occurrence of the old element
-        last_index = string.rfind(old_element)
-
-        if last_index != -1:  # If the old element is found
-            return string[:last_index] + string[last_index:].replace(
-                old_element, new_element, 1
-            )
-        else:
-            # If the old element is not found, return the original string
-            return string
     
     output_file = replace_last_element(input_file, ".mp3", "_.mp3")
     if os.path.exists(output_file):
@@ -141,4 +140,25 @@ def silence_path(input_file, remove_previous=False):
     if remove_previous:
         os.remove(input_file)
 
+    return output_file
+
+
+def to_wav(input_file, output_file=None):
+    global ffmpeg_path
+    ffmpeg_path = get_ffmpeg()
+    
+    try:
+        # Load the audio file
+        audio = AudioSegment.from_file(os.path.abspath(input_file))
+    except FileNotFoundError as e:
+        log.exception(e, "Error occurred while loading the audio file")
+        if ffmpeg_path is None:
+            return False
+
+    # Set default output file name if not provided
+    if not output_file:
+        output_file = replace_last_element(input_file, ".mp3", ".wav")
+    
+    # Export as WAV
+    audio.export(output_file, format="wav")
     return output_file
