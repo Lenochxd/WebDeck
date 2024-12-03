@@ -147,7 +147,10 @@ def stopsound():
                 last_value = player_local[last_key]
         except IndexError:
             log.notice("There are no sounds actually playing")
-            return jsonify({"success": True, "message": "There are no sounds actually playing"})
+            if not config["settings"]["soundboard"]["audio_method"] == "nava":
+                return jsonify({"success": True, "message": "There are no sounds actually playing"})
+            return jsonify({"success": True})
+
         
         while str(last_value.get_state()) == "State.Playing":
             log.debug(f"Current VLC player for vbcable: {player_vbcable}")
