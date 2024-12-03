@@ -62,7 +62,7 @@ def playsound_nava(file_path: str, sound_volume=0.5, ear_soundboard=True, localo
     # Play a sound file using the nava library. THIS IS BETA, the sound is only on the default output device and not in VB-Cable.
     # Note: The volume parameter is not supported and this function uses ffmpeg to convert files to WAV format.
     
-    file_path = to_wav(file_path)
+    file_path = to_wav(file_path, volume=sound_volume)
     sound_id = nava.play(file_path, async_mode=True)
     return jsonify({"success": True})
     

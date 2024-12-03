@@ -143,9 +143,17 @@ def silence_path(input_file, remove_previous=False):
     return output_file
 
 
-def to_wav(input_file, output_file=None):
+def to_wav(input_file: str, output_file: str=None, volume: float=0.5):
     global ffmpeg_path
     ffmpeg_path = get_ffmpeg()
+    
+    # Set default output file name if not provided
+    if not output_file:
+        output_file = replace_last_element(input_file, ".mp3", f"_vol{int(volume*100)}.wav")
+    
+    # Check if the output file already exists
+    if os.path.exists(output_file):
+        return output_file
     
     try:
         # Load the audio file
@@ -155,9 +163,8 @@ def to_wav(input_file, output_file=None):
         if ffmpeg_path is None:
             return False
 
-    # Set default output file name if not provided
-    if not output_file:
-        output_file = replace_last_element(input_file, ".mp3", ".wav")
+    # Adjust volume
+    audio = audio + (volume * 10)  # pydub uses dB for volume adjustment
     
     # Export as WAV
     audio.export(output_file, format="wav")
