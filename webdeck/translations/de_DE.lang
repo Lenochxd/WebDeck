@@ -26,6 +26,15 @@ author_name=Dtrieb
 author_github_username=Dtrieb
 
 
+// -- Welcome Message --
+
+welcome_message_window_title=Welcome
+welcome_message_label_1=Welcome to WebDeck!
+welcome_message_label_2=You can find the tray icon here for quick access.
+welcome_message_button_dont_show_again=Don't show again
+welcome_message_button_ok=OK
+
+
 // -- Tray icon --
 
 qr_code=QR Code

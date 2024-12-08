@@ -26,6 +26,15 @@ author_name=Lenoch
 author_github_username=Lenochxd
 
 
+// -- Welcome Message --
+
+welcome_message_window_title=∴ᒷꖎᓵ𝙹ᒲᒷ
+welcome_message_label_1=∴ᒷꖎᓵ𝙹ᒲᒷ  ℸ ̣ 𝙹  ∴ᒷʖ↸ᒷᓵꖌ!
+welcome_message_label_2=||𝙹⚍  ᓵᔑリ  ⎓╎リ↸  ℸ ̣ ⍑ᒷ  ℸ ̣ ∷ᔑ||  ╎ᓵ𝙹リ  ⍑ᒷ∷ᒷ  ⎓𝙹∷  ᑑ⚍╎ᓵꖌ  ᔑᓵᓵᒷᓭᓭ.
+welcome_message_button_dont_show_again=↸𝙹リ'ℸ ̣   ᓭ⍑𝙹∴  ᔑ⊣ᔑ╎リ
+welcome_message_button_ok=𝙹ꖌ
+
+
 // -- Tray icon --
 
 qr_code=ᑑ∷  ᓵ𝙹↸ᒷ

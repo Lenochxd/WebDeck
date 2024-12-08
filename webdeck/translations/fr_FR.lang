@@ -26,6 +26,15 @@ author_name=Lenoch
 author_github_username=Lenochxd
 
 
+// -- Welcome Message --
+
+welcome_message_window_title=Bienvenue
+welcome_message_label_1=Bienvenue sur WebDeck !
+welcome_message_label_2=Vous pouvez trouver l'icône de la barre d'état juste ici.
+welcome_message_button_dont_show_again=Ne plus afficher
+welcome_message_button_ok=OK
+
+
 // -- Tray icon --
 
 qr_code=QR Code

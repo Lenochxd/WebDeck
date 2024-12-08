@@ -20,7 +20,7 @@ pynvml
 spotipy
 simple-websocket
 pystray
-tk
+customtkinter==5.2.2
 easygui
 qrcode
 pywebview

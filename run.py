@@ -30,8 +30,8 @@ chdir_base()
 
 parse_args()
 
-
-settings = get_config()['settings']
+config = get_config(check_updates=True, save_updated_config=True)
+settings = config['settings']
 
 if settings['app_admin'] and not get_arg('no_admin'):
     if not ctypes.windll.shell32.IsUserAnAdmin():
@@ -41,6 +41,7 @@ if settings['app_admin'] and not get_arg('no_admin'):
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
         sys.exit()
 
+from app.utils.welcome_popup import show_popup
 from app.utils.show_error import show_error
 from app.utils.is_opened import is_opened
 import app.utils.languages as languages
@@ -77,6 +78,9 @@ if not is_opened() or get_arg('force_start'):
     log.info("Starting server thread")
     server_thread = threading.Thread(target=run_server_thread, daemon=True)
     server_thread.start()
+    
+    popup_thread = threading.Thread(target=show_popup, daemon=True)
+    popup_thread.start()
     
     if not get_arg('no_tray'):
         log.info("Initializing tray icon")
