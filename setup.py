@@ -117,6 +117,8 @@ def sign_executable(file_path):
 def zip_build(build_dir):
     # Create a temporary directory outside the build directory to hold the build directory with the desired structure
     temp_dir = os.path.join("temp", "PortableBuild")
+    if os.path.exists(temp_dir):
+        shutil.rmtree(temp_dir)
     os.makedirs(temp_dir, exist_ok=True)
 
     # Move the build directory into the temporary directory
