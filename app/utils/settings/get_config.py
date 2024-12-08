@@ -40,3 +40,12 @@ def get_port():
     if port is None:
         port = get_config().get("url", {}).get("port")
     return port
+
+
+def get_config_path():
+    return config_path
+
+
+def save_config(config):
+    with open(config_path, "w", encoding="utf-8") as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
