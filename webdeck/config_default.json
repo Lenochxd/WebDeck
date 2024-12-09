@@ -23,6 +23,7 @@
         "fix_stop_soundboard": false,
         "ear_soundboard": true,
         "allowed_networks": [],
+        "netmask": "16",
         "spotify_api": {
             "client_id": "",
             "client_secret": "",

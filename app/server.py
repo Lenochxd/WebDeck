@@ -90,8 +90,9 @@ def check_local_network():
                IP is not authorized.
     """
     
+    netmask = config["settings"].get("netmask", 16)
     remote_ip = ipaddress.ip_address(request.remote_addr)
-    local_ip_network = ipaddress.ip_network(f"{local_ip}/24", strict=False)
+    local_ip_network = ipaddress.ip_network(f"{local_ip}/{netmask}", strict=False)
     
     # log.debug(f"Remote IP address: {remote_ip}")
     # log.debug(f"Local IP network: {local_ip_network}")
