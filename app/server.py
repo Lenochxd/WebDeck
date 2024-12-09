@@ -90,28 +90,21 @@ def check_local_network():
                IP is not authorized.
     """
     
-    remote_ip = request.remote_addr    
-
-    netmask = '255.255.255.0'
-
-    ip_local = ipaddress.IPv4Network(local_ip + '/' + netmask, strict=False)
-    ip_remote = ipaddress.IPv4Network(remote_ip + '/' + netmask, strict=False)
+    remote_ip = ipaddress.ip_address(request.remote_addr)
+    local_ip_network = ipaddress.ip_network(f"{local_ip}/24", strict=False)
     
-    # log.debug(f"Local IP is: {local_ip}")
-    # log.debug(f"Remote IP is: {remote_ip}")
-    # log.debug(f"IP1: {ip_local} == IP2: {ip_remote} -> {ip_local == ip_remote}")
-    # log.info(f"New connection established from: {remote_ip}")
+    # log.debug(f"Remote IP address: {remote_ip}")
+    # log.debug(f"Local IP network: {local_ip_network}")
+    # log.debug(f"{remote_ip in local_ip_network = }")
     
-    if ip_remote != ip_local:
-        # check if in allowed network list in config
+    if remote_ip not in local_ip_network:
+        
         for network in config["settings"].get("allowed_networks", []):
-            if ipaddress.IPv4Address(remote_ip) in ipaddress.IPv4Network(network):
-                return
-            
-        return (
-            "Unauthorized access: you are not on the same network as the server.",
-            403,
-        )
+            if remote_ip in ipaddress.ip_address(network):
+                return None
+        
+        return jsonify({"success": False, "message": "Access denied: IP not in local network"}), 403
+
 
 @app.after_request
 def after_request(response):
