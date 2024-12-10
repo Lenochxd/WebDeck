@@ -1,4 +1,5 @@
 import os
+import locale
 
 lang_files = {}
 languages_info = []
@@ -37,8 +38,8 @@ def load_lang_file(lang) -> dict:
 
 
 def get_language(lang=None) -> str:
-    if lang is None:
-        lang = default_lang
+    if lang is None or lang.lower() == 'system':
+        lang = get_system_language()
     
     for available_lang in lang_files:
         if available_lang.lower().startswith(lang.lower()):
@@ -46,15 +47,22 @@ def get_language(lang=None) -> str:
     
     return default_lang
 
-def language_exists(lang=None) -> bool:
-    return get_language(lang) in lang_files
+def language_exists(language_code=None) -> bool:
+    resolved_language = get_language(language_code)
+    if resolved_language.lower() == language_code.lower():
+        return resolved_language in lang_files
+    
+    return False
 
 def set_default_language(lang: str) -> None:
     global default_lang
+    if lang.lower() == 'system':
+        lang = get_system_language()
     if language_exists(lang):
         default_lang = lang
     else:
-        raise ValueError(f"Language '{lang}' does not exist. Default language remains '{default_lang}'.")
+        # raise ValueError(f"Language '{lang}' does not exist. Default language remains '{default_lang}'.")
+        print(f"Language '{lang}' does not exist. Default language remains '{default_lang}'.")
 
 def load_all_lang_files() -> dict:
     lang_files = {}
@@ -95,6 +103,16 @@ def get_languages_info(lang_files=lang_files) -> list:
     
     return languages_info
 
+def get_system_language() -> str:
+    """
+    Retrieves the system's default language setting.
+
+    Returns:
+        str: The system's default language code (e.g., 'en_US'). If the system's default language cannot be determined, returns a default language code.
+    """
+    system_lang = locale.getdefaultlocale()[0]
+    return system_lang if system_lang else default_lang
+
 def init(lang_files_directory=None, misc_lang_files_directory=None, default_language=None):
     global languages_info, default_lang, lang_files_dir, misc_lang_files_dir
     
@@ -122,6 +140,9 @@ def text(text=None, lang=None) -> str:
         return ""
 
     if lang not in lang_files:
-        raise KeyError(f"Language '{lang}' not found in lang_files")
+        lang = default_lang
+        if lang not in lang_files:
+            raise KeyError(f"Language '{lang}' not found in lang_files")
+        # raise KeyError(f"Language '{lang}' not found in lang_files")
     
     return lang_files[lang].get(text, text)

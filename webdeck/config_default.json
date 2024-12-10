@@ -1,6 +1,6 @@
 {
     "settings": {
-        "language": "en_US",
+        "language": "system",
         "show_popup": true,
         "windows_startup": false,
         "windows_start_menu_shortcut": false,
