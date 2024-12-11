@@ -213,7 +213,11 @@ def change_port_prompt():
 
     prompt_window = tk.Tk()
     prompt_window.title(text('change_server_port'))
-    prompt_window.geometry("300x160")
+    if is_win:
+        prompt_window.geometry("300x160")
+    else:
+        prompt_window.geometry("300x220") # Increase height for Linux to fit the buttons
+        
     prompt_window.resizable(False, False)
     if is_win:
         prompt_window.iconbitmap("static/icons/icon_black.ico")
