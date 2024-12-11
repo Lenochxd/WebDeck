@@ -1,7 +1,8 @@
-import os
+from .utils.platform import is_win
+
 import sys
 import json
-import win32gui, win32con
+if is_win: import win32gui, win32con
 import webbrowser
 import pystray
 import tkinter as tk
@@ -45,6 +46,10 @@ def open_config():
         webview.create_window('WebDeck Config', url=config_url, background_color='#141414')
         webview.start()
         
+        if not is_win:
+            return
+        
+        # Maximize the window if not already maximized
         foreground_window = win32gui.GetForegroundWindow()
         window_title = win32gui.GetWindowText(foreground_window)
         

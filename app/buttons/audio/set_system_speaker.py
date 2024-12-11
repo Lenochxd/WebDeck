@@ -1,10 +1,18 @@
+from app.utils.platform import is_win
+
 import pyaudio
-import win32api
-import win32con
+if is_win:
+    import win32api
+    import win32con
+from app.utils.logger import log
 
 
 p = pyaudio.PyAudio()
 def set_speakers_by_name(speakers_name):
+    if not is_win:
+        log.error("This command is only available on Windows")
+        raise RuntimeError("This command is only available on Windows")
+    
     # TODO: (not working rn)
     device_count = p.get_device_count()
 

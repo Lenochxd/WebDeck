@@ -7,6 +7,8 @@ from app.utils.logger import log
 from app.utils.settings.get_config import get_config
 from app.utils.args import parse_args, get_arg
 from app.utils.working_dir import chdir_base
+from app.utils.permissions import is_admin
+from app.utils.platform import is_windows, is_linux
 
 
 def attach_console():
@@ -34,12 +36,32 @@ config = get_config(check_updates=True, save_updated_config=True)
 settings = config['settings']
 
 if settings['app_admin'] and not get_arg('no_admin'):
-    if not ctypes.windll.shell32.IsUserAnAdmin():
-        # Rebuild the command including all arguments
-        params = " ".join([__file__] + sys.argv[1:])
-        # Restart the program with admin privileges and include arguments
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
-        sys.exit()
+    if not is_admin():
+        if is_windows:
+            # Rebuild the command including all arguments
+            params = " ".join([__file__] + sys.argv[1:])
+            # Restart the program with admin privileges and include arguments
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
+            sys.exit()
+        
+        elif is_linux:
+            if getattr(sys, "frozen", False):
+                command = f"{sys.executable}"
+            else:
+                command = f"python3 {__file__}"
+            log.error(
+                "Insufficient Permissions: \n"
+                "This application requires elevated privileges (sudo) to function properly. \n"
+                "\n"
+                "Please run the application with `sudo` to enable all features: \n"
+                f"  sudo {command} \n"
+                "\n"
+                "If you prefer not to grant sudo permissions, you can run the application with the `--no-root` or `--no-sudo` flag. Note that some features may be disabled in this mode: \n"
+                f"  {command} --no-root \n"
+                "\n"
+                "For more information, refer to the application's documentation or use the `--help` flag. \n"
+            )
+            sys.exit()
 
 from app.utils.welcome_popup import show_popup
 from app.utils.show_error import show_error

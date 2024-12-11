@@ -1,9 +1,10 @@
 import sys
 import os
-import win32com.client
 import subprocess
 import signal
+if sys.platform == "win32": import win32com.client
 from .logger import log
+from .platform import is_windows, is_linux
 
 
 def exit_program(force=True, from_timeout=False):
@@ -12,7 +13,7 @@ def exit_program(force=True, from_timeout=False):
     else:
         log.info("Exiting WebDeck...")
     
-    if sys.platform == "win32":
+    if is_windows:
         wmi = win32com.client.GetObject("winmgmts:\\\\.\\root\\cimv2")
         processes = wmi.InstancesOf("Win32_Process")
 

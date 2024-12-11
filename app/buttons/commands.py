@@ -1,3 +1,5 @@
+from app.utils.platform import is_win
+
 import json
 import sys
 import subprocess
@@ -5,13 +7,13 @@ import time
 import inspect
 from flask import jsonify
 
-import win32gui
+if is_win: import win32gui
 import pyperclip
 import pyautogui
 import keyboard
 
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
-import comtypes
+if is_win: from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
+if is_win: import comtypes
 
 
 from app.utils.logger import log
@@ -91,7 +93,7 @@ def handle_command(message=None):
 
     elif message.startswith("/screensaver") and not message.startswith("/screensaversettings"):
         if message.endswith(("on", "/screensaver", "start")):
-            subprocess.Popen("%windir%\system32\scrnsave.scr /s", shell=True)
+            subprocess.Popen("%windir%/system32/scrnsave.scr /s", shell=True)
 
         elif message.endswith(("hard", "full", "black")):
             subprocess.Popen('"lib/nircmd.exe" monitor off', shell=True)
@@ -150,6 +152,10 @@ def handle_command(message=None):
 
 
     elif message.startswith(("/appvolume +", "/appvolume -", "/appvolume set")):
+        if not is_win:
+            log.error("This command is only available on Windows")
+            raise RuntimeError("This command is only available on Windows")
+        
         comtypes.CoInitialize()
         command = message.replace("/appvolume ", "").replace("set ", "set").split()
         sessions = AudioUtilities.GetAllSessions()
@@ -208,6 +214,10 @@ def handle_command(message=None):
 
     # FIXME: fix /firstplan
     elif message.startswith("/firstplan"):
+        if not is_win:
+            log.error("This command is only available on Windows")
+            raise RuntimeError("This command is only available on Windows")
+        
         window_name = message.replace("/firstplan", "").strip()
 
         hwnd = window.get_by_name(window_name)

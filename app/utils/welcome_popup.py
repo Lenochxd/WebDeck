@@ -1,7 +1,8 @@
 import customtkinter as ctk
-from PIL import Image
+from PIL import Image, ImageTk
 
 from .settings.get_config import get_config, save_config
+from .platform import is_windows
 from .logger import log
 from .languages import text
 
@@ -12,10 +13,22 @@ def show_popup():
         return
     
     # Create a popup window
-    popup = ctk.CTk()
+    try:
+        popup = ctk.CTk()
+    except Exception as e:
+        log.exception(e, message="Failed to create popup window. Skipping welcome message.", print_log=False)
+        return
     popup.wm_title(text("welcome_message_window_title"))
     popup.configure(bg='black')
-    popup.iconbitmap('static/icons/icon.ico')
+    try:
+        if is_windows:
+            popup.iconbitmap('./static/icons/icon.ico')
+        else:
+            logo_image = Image.open("./static/icons/icon.ico")
+            logo_photo = ImageTk.PhotoImage(logo_image)
+            popup.iconphoto(True, logo_photo)
+    except Exception as e:
+        log.exception(e, message="Failed to set window icon.", print_log=False)
     popup.geometry("450x220")
     popup.resizable(False, False)
 

@@ -1,3 +1,5 @@
+from .utils.platform import is_win
+
 # Standard library imports
 import re
 import random
@@ -16,7 +18,7 @@ from flask.wrappers import Response
 from flask_socketio import SocketIO
 from flask_minify import Minify
 from engineio.async_drivers import gevent # DO NOT REMOVE
-from win32com.client import Dispatch
+if is_win: from win32com.client import Dispatch
 import easygui
 
 # WebDeck imports
@@ -215,7 +217,9 @@ def saveconfig():
         config["settings"]["windows_startup"] == False
         and new_config["settings"]["windows_startup"] == True
     ):
-        if getattr(sys, "frozen", False):
+        if not is_win:
+            log.error("Windows startup is only supported on windows!")
+        elif getattr(sys, "frozen", False):
             dir = (
                 os.getenv("APPDATA") + r"\Microsoft\Windows\Start Menu\Programs\Startup"
             )

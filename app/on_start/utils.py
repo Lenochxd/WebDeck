@@ -1,6 +1,8 @@
+from app.utils.platform import is_win
+
 import os
 import sys
-import winreg
+if is_win: import winreg
 import subprocess
 import shutil
 import json
@@ -8,7 +10,7 @@ import urllib.request
 import pynvml
 import threading
 from math import sqrt
-from win32com.client import Dispatch
+if is_win: from win32com.client import Dispatch
 
 from app.updater import check_files, check_for_updates
 from app.utils.settings.get_config import get_config

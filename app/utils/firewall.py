@@ -1,9 +1,15 @@
+from .platform import is_win
+
 import sys
 import subprocess
-from win32com.client import Dispatch
+if is_win: from win32com.client import Dispatch
 from .logger import log
 
 def fix_firewall_permission():
+    if not is_win:
+        log.info("Skipping firewall permission fix on non-Windows system.")
+        return
+    
     command = [
         "powershell",
         "-NoProfile",
@@ -21,6 +27,10 @@ def fix_firewall_permission():
     log.info("Firewall permission should be fixed.")
     
 def check_firewall_permission():
+    if not is_win:
+        log.info("Skipping firewall permission check on non-Windows system.")
+        return True
+    
     try:
         firewall_manager = Dispatch("HNetCfg.FwMgr")
         policy = firewall_manager.LocalPolicy.CurrentProfile

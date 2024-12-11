@@ -1,14 +1,22 @@
+from app.utils.platform import is_win
+
 import time
 import math
 import ctypes
-import win32api
-import win32con
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
+if is_win:
+    import win32api
+    import win32con
+    from comtypes import CLSCTX_ALL
+    from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
+from app.utils.logger import log
 
 
 
 def get_current_volume():
+    if not is_win:
+        log.error("This command is only available on Windows")
+        raise RuntimeError("This command is only available on Windows")
+    
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = ctypes.cast(interface, ctypes.POINTER(IAudioEndpointVolume))
@@ -16,6 +24,10 @@ def get_current_volume():
 
 
 def set_volume(target_volume):
+    if not is_win:
+        log.error("This command is only available on Windows")
+        raise RuntimeError("This command is only available on Windows")
+    
     current_volume = get_current_volume()
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
@@ -32,6 +44,10 @@ def set_volume(target_volume):
 
 
 def increase_volume(delta):
+    if not is_win:
+        log.error("This command is only available on Windows")
+        raise RuntimeError("This command is only available on Windows")
+    
     win32api.keybd_event(win32con.VK_VOLUME_UP, 0)
     win32api.keybd_event(win32con.VK_VOLUME_UP, 0, win32con.KEYEVENTF_KEYUP)
     if delta == "":
@@ -41,6 +57,10 @@ def increase_volume(delta):
 
 
 def decrease_volume(delta):
+    if not is_win:
+        log.error("This command is only available on Windows")
+        raise RuntimeError("This command is only available on Windows")
+    
     win32api.keybd_event(win32con.VK_VOLUME_DOWN, 0)
     win32api.keybd_event(win32con.VK_VOLUME_DOWN, 0, win32con.KEYEVENTF_KEYUP)
     if delta == "":

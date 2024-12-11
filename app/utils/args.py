@@ -37,7 +37,7 @@ available_args = {
         "action": "store"
     },
     "--no-admin": {
-        "aliases": ["--no-sudo"],
+        "aliases": ["--no-sudo", "--no-root"],
         "help": "Run the application without requesting sudo/admin permissions",
         "action": "store_true"
     },
