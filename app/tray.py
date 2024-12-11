@@ -100,7 +100,11 @@ def show_qrcode():
     text_label = tk.Label(window, text=f"http://{local_ip}:{get_port()}/", font=("Helvetica", 13))
     text_label.pack()
 
-    window.iconbitmap("static/icons/icon.ico")
+    if is_win:
+        window.iconbitmap("static/icons/icon.ico")
+    else:
+        icon_image = ImageTk.PhotoImage(file="static/icons/icon.ico")
+        window.iconphoto(False, icon_image)
     window.lift()
     window.focus_force()
 
@@ -168,7 +172,7 @@ def generate_menu(language, server_status=1):
 
 def generate_tray_icon():
     global icon
-    image = Image.open("static/icons/icon.ico")
+    image = Image.open("static/icons/icon.png")
 
     menu = generate_menu(language, server_status=0)
 
@@ -211,7 +215,11 @@ def change_port_prompt():
     prompt_window.title(text('change_server_port'))
     prompt_window.geometry("300x160")
     prompt_window.resizable(False, False)
-    prompt_window.iconbitmap("static/icons/icon_black.ico")
+    if is_win:
+        prompt_window.iconbitmap("static/icons/icon_black.ico")
+    else:
+        icon_image = ImageTk.PhotoImage(file="static/icons/icon_black.png")
+        prompt_window.iconphoto(False, icon_image)
 
     frame = tk.Frame(prompt_window, padx=10, pady=10)
     frame.pack(expand=True)
