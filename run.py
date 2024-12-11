@@ -81,11 +81,7 @@ def initialize_tray_icon():
     try:
         create_tray_icon()
     except Exception as e:
-        if os.name == 'nt':
-            show_error(exception=e)
-        else:
-            log.exception(e, "Failed to initialize tray icon", expected=False)
-
+        show_error(message="Failed to initialize tray icon", exception=e)
 
 if not is_opened() or get_arg('force_start'):
     log.info("Starting WebDeck")

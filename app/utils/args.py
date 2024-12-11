@@ -241,11 +241,8 @@ def handle_startup_arguments():
                 default_language="en_US"
             )
             
-            if os.name == 'nt':
-                show_error(exception=e)
-            else:
-                log.exception(e, "Failed to initialize tray icon", expected=False)
-                
+            show_error(exception=e)
+            
     # --test-ffmpeg
     if get_arg('test_ffmpeg'):
         log.debug("Testing FFmpeg installation...")

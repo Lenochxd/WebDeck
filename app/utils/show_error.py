@@ -8,7 +8,7 @@ from .languages import text
 from .logger import log
 
 
-def show_error(message=None, title="WebDeck Error", error=True, exception=None) -> None:
+def _show_error(message=None, title="WebDeck Error", error=True, exception=None) -> None:
     if exception is not None:
         log.exception(exception, message, expected=False)
         if message is not None:
@@ -52,3 +52,13 @@ def show_error(message=None, title="WebDeck Error", error=True, exception=None) 
     else:
         ctypes.windll.user32.MessageBoxW(None, message, title, 0)
         
+def show_error(message=None, title="WebDeck Error", error=True, exception=None) -> None:
+    try:
+        _show_error(message, title, error, exception)
+    except Exception as e:
+        log.exception(
+            e,
+            message="An error occurred while trying to display an error message.\nError message: {message}\nTitle: {title}\nError: {error}",
+            expected=True,
+            print_log=False
+        )
