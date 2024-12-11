@@ -81,7 +81,7 @@ def get_gpu_method():
 
 def fix_vlc_cache():
     # https://stackoverflow.com/a/71760613/17100464
-    if os.name != 'nt':
+    if not is_win:
         return
     
     try:
@@ -105,7 +105,7 @@ def fix_vlc_cache():
 def on_start():
     config = get_config(check_updates=True, save_updated_config=True)
     
-    if os.name == 'nt':
+    if is_win:
         if config['settings']['windows_start_menu_shortcut']:
             # Set DLLs directory
             os.add_dll_directory(os.getcwd())
