@@ -53,6 +53,16 @@ def _show_error(message=None, title="WebDeck Error", error=True, exception=None)
         ctypes.windll.user32.MessageBoxW(None, message, title, 0)
         
 def show_error(message=None, title="WebDeck Error", error=True, exception=None) -> None:
+    """
+    Displays an error message using a message box and optionally logs the error and opens a GitHub issue.
+    Args:
+        message (str, optional): The error message to display. Defaults to None.
+        title (str, optional): The title of the error message box. Defaults to "WebDeck Error".
+        error (bool, optional): Display the error message box using tkinter instead of windll.user32.messageBoxW. Defaults to True.
+        exception (Exception, optional): The exception to log and include in the message. Defaults to None.
+    Returns:
+        None
+    """
     try:
         _show_error(message, title, error, exception)
     except Exception as e:
