@@ -1,7 +1,8 @@
-from app.utils.platform import is_win
+from app.utils.platform import is_win, is_linux
 
 import json
 import sys
+import os
 import subprocess
 import time
 import inspect
@@ -9,7 +10,8 @@ from flask import jsonify
 
 if is_win: import win32gui
 import pyperclip
-import pyautogui
+if not is_linux or os.environ.get("DISPLAY"):
+    import pyautogui
 import keyboard
 
 if is_win: from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume

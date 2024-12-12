@@ -1,6 +1,6 @@
 import ctypes
 import sys
-import os.path
+import os
 import threading
 
 from app.utils.logger import log
@@ -79,12 +79,20 @@ def run_server_thread():
 def initialize_tray_icon():
     from app.tray import create_tray_icon
     try:
+        if is_linux and not os.environ.get('DISPLAY'):
+            log.warning("No display available. Skipping tray icon initialization.")
+            return False
         create_tray_icon()
     except Exception as e:
         show_error(message="Failed to initialize tray icon", exception=e)
 
 if not is_opened() or get_arg('force_start'):
     log.info("Starting WebDeck")
+    
+    # Check if a display is available on Linux
+    if is_linux and not os.environ.get('DISPLAY'):
+        log.debug(f"DISPLAY: {os.environ.get('DISPLAY')}")
+        log.warning("No display available. Please run WebDeck on a graphical environment.")
     
     log.info("Loading translations")
     languages.init(
@@ -97,13 +105,18 @@ if not is_opened() or get_arg('force_start'):
     server_thread = threading.Thread(target=run_server_thread, daemon=True)
     server_thread.start()
     
+    log.info("Starting welcome popup thread")
     popup_thread = threading.Thread(target=show_popup, daemon=True)
     popup_thread.start()
     
+    # Initialize tray icon
+    result = True
     if not get_arg('no_tray'):
         log.info("Initializing tray icon")
-        initialize_tray_icon()
-    else:
+        result = initialize_tray_icon()
+    
+    # Run without tray icon if it failed to initialize or if the user disabled it
+    if not result or get_arg('no_tray'):
         log.info("Running without tray icon")
         try:
             while True:

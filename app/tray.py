@@ -1,10 +1,12 @@
-from .utils.platform import is_win
+from .utils.platform import is_win, is_linux
 
 import sys
+import os
 import json
 if is_win: import win32gui, win32con
 import webbrowser
-import pystray
+if not is_linux or os.environ.get("DISPLAY"):
+    import pystray
 import tkinter as tk
 import random
 import qrcode

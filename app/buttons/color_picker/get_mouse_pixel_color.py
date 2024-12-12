@@ -1,6 +1,10 @@
+from app.utils.platform import is_linux
+
+import os
 import numpy as np
 import mss
-from pyautogui import position
+if not is_linux or os.environ.get("DISPLAY"):
+    from pyautogui import position
 from PIL import Image
 
 
