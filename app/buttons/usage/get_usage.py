@@ -7,6 +7,7 @@ import pynvml
 from app.utils.settings.get_config import get_config
 from app.utils.merge_dicts import merge_dicts
 from .asked_devices import get_asked_devices
+from app.utils.platform import is_linux
 from app.utils.logger import log
 
 
@@ -41,14 +42,27 @@ def get_usage(get_all=None, asked_devices=[]):
     # Hard disk
     if get_all or any(item[0] == 'disks' for item in asked_devices):
         computer_info["disks"] = {}
-        disks = psutil.disk_partitions()
+        disks = psutil.disk_partitions(all=True)
         for disk in disks:
             try:
-                disk_name = disk.device.replace("\\", "").replace(":", "")
-                if get_all or any(item[1] == disk_name for item in asked_devices):
+                disk_name = disk.device.replace("\\", "").replace(":", "").strip()
+                
+                # Skip loop devices (Linux) (e.g. /dev/loop0)
+                if is_linux and (disk_name.startswith("/dev/loop") or "snap" in disk.mountpoint):
+                    continue
+                
+                # Skip boot partition (Linux)
+                # if is_linux and disk.mountpoint == "/boot":
+                #     continue
+                
+                # Skip duplicates entries
+                if computer_info["disks"].get(disk_name):
+                    continue
+                
+                if get_all or any(item[1] == disk_name for item in asked_devices or "squashfs" in disk.fstype):
                     
                     computer_info["disks"][disk_name] = {}
-                    disk_usage = psutil.disk_usage(disk.device)
+                    disk_usage = psutil.disk_usage(disk.mountpoint)
                     
                     if get_all or any(item[2] == "total_gb" for item in asked_devices if len(item) == 3):
                         computer_info["disks"][disk_name]["total_gb"] = round(disk_usage.total / 1024**3, 2)
@@ -58,11 +72,17 @@ def get_usage(get_all=None, asked_devices=[]):
                         computer_info["disks"][disk_name]["free_gb"] = round(disk_usage.free / 1024**3, 2)
                     if get_all or any(item[2] == "usage_percent" for item in asked_devices if len(item) == 3):
                         computer_info["disks"][disk_name]["usage_percent"] = disk_usage.percent
+                    
+                    if not computer_info["disks"][disk_name].get("total_gb"):
+                        computer_info["disks"].pop(disk_name)
                         
             except Exception as e:
-                pass
                 # log.exception(e, "Usage Disks Error", log_traceback=False)
-                
+                pass
+            
+        # Sort the disks by total size
+        computer_info["disks"] = dict(sorted(computer_info["disks"].items(), key=lambda item: item[1].get("total_gb", 0), reverse=True))
+        
     # Network
     if get_all or any(item[0] == 'network' for item in asked_devices):
         network_io_counters = psutil.net_io_counters()

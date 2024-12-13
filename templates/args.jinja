@@ -117,12 +117,15 @@
     </select>
 {% elif "disk-letter" in arg['TYPE'] %}
     <select id="disk-letter_{{arg_modal_ID}}" name="{{file}}" >
+        
         {% for disk, usage in usage_example['disks'].items() %}
-            <option value="{{disk}}"
-                {% if disk == "C" %}
-                    selected
+            {% if not str(usage['total_gb']).strip() == '' %}
+                <option value="{{disk.strip()}}"
+                {% if disk in ["C", "/dev/sda3"] %}
+                selected
                 {% endif %}
-            > {{ disk }} </option>
+                > {{ disk.strip() }} ({{usage['total_gb']}} GB) </option>
+            {% endif %}
         {% endfor %}
     </select>
 {% endif %}

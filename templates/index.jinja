@@ -1519,31 +1519,32 @@
                     loadingScreen.classList.add("hidden");
                     disconnectCount = 0;
                   }
-                  // console.log(usage_dict);
                   forms.forEach(form => {
                     const divElements = document.querySelectorAll('.usage-value');
                     divElements.forEach(divElement => {
                       const otherClass = divElement.classList[1];
                       if (otherClass !== undefined && otherClass.includes('.')) {
-                        if (eval(otherClass) !== '-') {
+                        const usage_path = otherClass.replace('.', '["').replaceAll(/\./g, '"]["') + '"]';
+                        
+                        if (eval(usage_path) !== '-') {
                           try {
                             let newValue;
-                            if (otherClass.includes('percent')) {
-                              newValue = eval(otherClass) + '%';
-                            } else if (otherClass.includes('_gb')) {
-                              newValue = eval(otherClass) + ' gb';
-                            } else if (otherClass.includes('_mb')) {
-                              newValue = eval(otherClass) + ' mb';
-                            } else if (otherClass.includes('bytes')) {
-                              newValue = eval(otherClass) + ' bytes';
+                            if (usage_path.includes('percent')) {
+                              newValue = eval(usage_path) + '%';
+                            } else if (usage_path.includes('_gb')) {
+                              newValue = eval(usage_path) + ' gb';
+                            } else if (usage_path.includes('_mb')) {
+                              newValue = eval(usage_path) + ' mb';
+                            } else if (usage_path.includes('bytes')) {
+                              newValue = eval(usage_path) + ' bytes';
                             } else {
-                              newValue = eval(otherClass);
+                              newValue = eval(usage_path);
                             }
                             if (!newValue.includes('undefined')) {
                               divElement.textContent = newValue;
                             }
                           } catch (error) {
-                            return;
+                          // Do nothing
                           }
                         }
                       }
@@ -2489,24 +2490,29 @@
                     divElements.forEach(divElement => {
                       const otherClass = divElement.classList[1];
                       if (otherClass !== undefined || eval(otherClass) !== '-') {
+                        let usage_path = otherClass;
+                        if (otherClass !== undefined) {
+                          usage_path = otherClass.replace('.', '["').replaceAll(/\./g, '"]["') + '"]';
+                        }
+                        
                         try {
                           let newValue;
-                          if (otherClass.includes('percent')) {
-                            newValue = eval(otherClass) + '%';
-                          } else if (otherClass.includes('_gb')) {
-                            newValue = eval(otherClass) + ' gb';
-                          } else if (otherClass.includes('_mb')) {
-                            newValue = eval(otherClass) + ' mb';
-                          } else if (otherClass.includes('bytes')) {
-                            newValue = eval(otherClass) + ' bytes';
+                          if (usage_path.includes('percent')) {
+                            newValue = eval(usage_path) + '%';
+                          } else if (usage_path.includes('_gb')) {
+                            newValue = eval(usage_path) + ' gb';
+                          } else if (usage_path.includes('_mb')) {
+                            newValue = eval(usage_path) + ' mb';
+                          } else if (usage_path.includes('bytes')) {
+                            newValue = eval(usage_path) + ' bytes';
                           } else {
-                            newValue = eval(otherClass);
+                            newValue = eval(usage_path);
                           }
                           if (!newValue.includes('undefined')) {
                             divElement.textContent = newValue;
                           }
                         } catch (error) {
-                          return;
+                          // Do nothing
                         }
                       }
                     });
