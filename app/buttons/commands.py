@@ -197,12 +197,9 @@ def handle_command(message=None):
 
     elif message.startswith("/soundcontrol mute"):
         pyautogui.press("volumemute")
-    elif message.startswith("/mediacontrol playpause"):
-        pyautogui.press("playpause")
-    elif message.startswith("/mediacontrol previous"):
-        pyautogui.press("prevtrack")
-    elif message.startswith("/mediacontrol next"):
-        pyautogui.press("nexttrack")
+    
+    elif message.startswith("/mediacontrol"):
+        audio.media_control(message)
 
     elif message.startswith("/speechrecognition"):
         pyautogui.hotkey("win", "h")
