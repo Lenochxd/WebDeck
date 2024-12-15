@@ -29,7 +29,25 @@ def playpause():
             keyboard.send(-179)
 
 def prevtrack():
-    pyautogui.press("prevtrack")
+    try:
+        if is_linux:
+            keyboard.send("previous track")
+        else:
+            pyautogui.press("prevtrack")
+    except:
+        if is_linux:
+            keyboard.send(165)
+        else:
+            keyboard.send(-177)
 
 def nexttrack():
-    pyautogui.press("nexttrack")
+    try:
+        if is_linux:
+            keyboard.send("next track")
+        else:
+            pyautogui.press("nexttrack")
+    except:
+        if is_linux:
+            keyboard.send(163)
+        else:
+            keyboard.send(-176)
