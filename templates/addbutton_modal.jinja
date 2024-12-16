@@ -18,7 +18,7 @@
           <div class="args-container {{dark_theme}}" arg_modal_ID="{{ arg_modal_ID }}">
             
             {% set ns = namespace(arg_id=0) %}
-            {% for arg in command_value["args"] %}
+            {% for arg in command_value["args"] if not arg.get('os') or platform_name == arg.get('os').lower() %}
               {% if arg.get('TYPE') != 'text' %}
                 {% set ns.arg_id = ns.arg_id + 1 %}
               {% endif %}
@@ -28,7 +28,12 @@
               {% if sub_id != 0 %}
                 {% set _command = parent_command|replace(' ','_')|replace("'",'')|lower ~ '_sub' ~ sub_id %}
               {% endif %}
-              {% set arg_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ ns.arg_id ~ '_name') %}
+              
+              {% set platform = "" %}
+              {% if arg.get('os') %}
+                {% set platform = '__' ~ platform_name %}
+              {% endif %}
+              {% set arg_name = text(_category ~ '_' ~ _command ~ '__arg_' ~ ns.arg_id ~ '_name' ~ platform) %}
               {% if "input" in arg['TYPE'] %}
                 <div class="arg_container" arg_modal_ID="{{ arg_modal_ID }}" arg_id="{{ loop.index0 }}">
                   

@@ -1,4 +1,4 @@
-from .utils.platform import is_win
+from .utils.platform import is_win, platform
 
 # Standard library imports
 import re
@@ -172,7 +172,7 @@ def home():
     return render_template(
         "index.jinja",
         config=config, themes=themes, parsed_themes=parse_themes(),
-        commands=commands, versions=versions, random_bg=random_bg, usage_example=get_usage(True),
+        commands=commands, versions=versions, random_bg=random_bg, usage_example=get_usage(True), platform_name=platform(lower=True),
         langs=get_languages_info(), svgs=get_svgs(), is_exe=is_exe, portrait_rotate=config['front']['portrait_rotate'],
         int=int, str=str, dict=dict, json=json, type=type, eval=eval, open=open,
         isfile=os.path.isfile, text=text, get_language=get_language,
