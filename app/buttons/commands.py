@@ -72,19 +72,6 @@ def handle_command(message=None):
     elif message.startswith(("/playsound ", "/playlocalsound ")):
         return soundboard.playsound(*soundboard.get_params(message))
 
-
-    elif message.startswith("/PCshutdown"):
-        subprocess.Popen("shutdown /s /f /t 0", shell=True)
-
-    elif message.startswith("/PCrestart"):
-        subprocess.Popen("shutdown /r /f /t 0", shell=True)
-
-    elif message.startswith("/PCsleep"):
-        subprocess.Popen("rundll32.exe powrprof.dll,SetSuspendState 0,1,0", shell=True)
-
-    elif message.startswith("/PChibernate"):
-        subprocess.Popen("shutdown /h /t 0", shell=True)
-
     elif message.startswith("/locksession"):
         subprocess.Popen("Rundll32.exe user32.dll,LockWorkStation", shell=True)
 
@@ -275,7 +262,8 @@ def handle_command(message=None):
             color_picker.handle_command(message)
         
         elif message.startswith(("/openfolder", "/opendir",
-                                "/openfile", "/start")):
+                                "/openfile", "/start",
+                                "/PC")):
             system.handle_command(message)
             
         elif message.startswith("/exec"):
