@@ -517,7 +517,13 @@
       "command": "/forceclose",
       "args": [
         {
-          "TYPE": "input filetype['.exe']"
+          "TYPE": "input filetype['.exe']",
+          "os": "windows"
+        },
+        {
+          "TYPE": "input text",
+          "placeholder": "killall process_name",
+          "os": "linux"
         }
       ],
       "style": {}

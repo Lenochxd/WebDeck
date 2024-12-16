@@ -95,23 +95,7 @@ def handle_command(message=None):
             window.close(hwnd)
 
     elif message.startswith(("/kill", "/taskill", "/taskkill", "/forceclose")):
-        window_name = (
-            message.replace("/kill", "")
-            .replace("/taskill", "")
-            .replace("/taskkill", "")
-            .replace("/forceclose", "")
-        )
-        hwnd = window.get_by_name(window_name)
-        if hwnd:
-            log.debug(f"Window '{window_name}' found with handle : {hwnd}")
-        else:
-            log.debug(f"Window '{window_name}' not found")
-        try:
-            window.close(hwnd)
-        except:
-            if not "." in window_name:
-                window_name += ".exe"
-            subprocess.Popen(f"taskkill /f /im {window_name}", shell=True)
+        system.kill(message)
 
     elif message.startswith("/restart"):
         exe = message.replace("/restart", "")

@@ -456,7 +456,8 @@ SYSTEM_superaltf4__btn_description=현재 창을 강제로 종료합니다.
 SYSTEM_kill_a_task__btn_name=프로그램 종료
 SYSTEM_kill_a_task__btn_default_display_name=
 SYSTEM_kill_a_task__btn_description=
-SYSTEM_kill_a_task__arg_1_name=프로그램 (app.exe)
+SYSTEM_kill_a_task__arg_1_name__windows=프로그램 (app.exe)
+SYSTEM_kill_a_task__arg_1_name__linux=프로세스 이름 ('ps -A' 에 표시된 대로)
 
 SYSTEM_restart_a_task__btn_name=프로그램 재시작
 SYSTEM_restart_a_task__btn_default_display_name=
