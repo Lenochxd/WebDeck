@@ -3,6 +3,10 @@ from app.utils.platform import is_windows, is_linux
 import time
 import math
 import ctypes
+import keyboard
+import os
+if not is_linux or os.environ.get("DISPLAY"):
+    import pyautogui
 if is_windows:
     import win32api
     import win32con
@@ -103,6 +107,26 @@ def decrease_volume(delta=1):
         raise NotImplementedError("This command is not implemented for this platform.")
 
 
+def mute_volume():
+    if is_windows:
+        try:
+            keyboard.send("volume mute")
+        except Exception:
+            try:
+                keyboard.send(-173)
+            except Exception:
+                pyautogui.press("volumemute")
+    
+    elif is_linux:
+        try:
+            keyboard.send("volume mute")
+        except Exception:
+            keyboard.send(113)
+    
+    else:
+        raise NotImplementedError("This command is not implemented for this platform.")
+
+
 def handle_command(message):
     if message.startswith("/volume +"):
         delta = message.replace("/volume +", "").strip()
@@ -117,3 +141,6 @@ def handle_command(message):
     elif message.startswith("/volume set"):
         target_volume = int(message.replace("/volume set ", "")) / 100.0
         set_volume(target_volume)
+        
+    elif message.startswith("/volume mute"):
+        mute_volume()

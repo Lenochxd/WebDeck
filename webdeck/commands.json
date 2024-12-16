@@ -381,7 +381,7 @@
           }
         },
         {
-          "command": "/soundcontrol mute",
+          "command": "/volume mute",
           "args": [],
           "style": {
             "image": "volume-mute.svg",

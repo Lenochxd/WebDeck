@@ -172,9 +172,6 @@ def handle_command(message=None):
                 log.debug("New volume: %s" % volume.GetMasterVolume())
 
         comtypes.CoUninitialize()
-
-    elif message.startswith("/soundcontrol mute"):
-        pyautogui.press("volumemute")
     
     elif message.startswith("/mediacontrol"):
         audio.media_control(message)
@@ -239,7 +236,7 @@ def handle_command(message=None):
         pyautogui.hotkey("win", "v")
 
     else:
-        if message.startswith("/volume"):
+        if message.startswith(("/volume", "/soundcontrol mute")):
             audio.change_volume(message)
             
         elif message.startswith("/spotify"):
