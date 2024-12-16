@@ -20,7 +20,6 @@ if is_win: import comtypes
 
 from app.utils.logger import log
 from app.utils.global_variables import get_global_variable
-from app.utils.kill_nircmd import kill_nircmd
 
 from app.utils.firewall import fix_firewall_permission
 from .usage import extract_asked_device, get_usage
@@ -81,15 +80,7 @@ def handle_command(message=None):
         )
 
     elif message.startswith("/screensaver") and not message.startswith("/screensaversettings"):
-        if message.endswith(("on", "/screensaver", "start")):
-            subprocess.Popen("%windir%/system32/scrnsave.scr /s", shell=True)
-
-        elif message.endswith(("hard", "full", "black")):
-            subprocess.Popen('"lib/nircmd.exe" monitor off', shell=True)
-            kill_nircmd()
-
-        elif message.endswith(("off", "false")):
-            pyautogui.press("CTRL")
+        system.screensaver(message)
 
     elif message.startswith("/key"):
         key = message.replace("/key", "", 1).strip()
