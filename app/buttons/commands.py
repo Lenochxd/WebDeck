@@ -72,7 +72,7 @@ def handle_command(message=None):
         return soundboard.playsound(*soundboard.get_params(message))
 
     elif message.startswith("/locksession"):
-        subprocess.Popen("Rundll32.exe user32.dll,LockWorkStation", shell=True)
+        system.lock_session()
 
     elif message.startswith("/screensaversettings"):
         subprocess.Popen(
