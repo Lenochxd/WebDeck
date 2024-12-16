@@ -44,7 +44,7 @@
         <input type="text" class="folderpath {{dark_theme}}" placeholder="{{text('no_file_chosen')}}">
     </div>
 {% elif "url" in arg['TYPE'] %}
-    <input class="{{dark_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="https://example.com">
+    <input class="{{dark_theme}}" type="url" name="{{file}}" id="url_{{arg_modal_ID}}" placeholder="{{arg.get('placeholder', 'https://example.com')}}">
 {% elif "number" in arg['TYPE'] %}
     {% set string_list = arg['TYPE'].split(" ") %}
     {% set number_list = [] %}
@@ -62,7 +62,7 @@
         {% endif %}
     {% endfor %}
 {% elif "longtext" in arg['TYPE'] or "textarea" in arg['TYPE'] %}
-    <textarea class="{{dark_theme}}" name="{{file}}" rows="5" cols="33" ></textarea>
+    <textarea class="{{dark_theme}}" name="{{file}}" rows="5" cols="33" placeholder="{{arg.get('placeholder', '')}}"></textarea>
 {% elif "usage-title-text" in arg['TYPE'] and "input" in arg['TYPE'] %}
     <input id="usage-title-input_{{arg_modal_ID}}" class="{{dark_theme}}" type="text" name="{{file}}" size="10"
         {% if arg['value'] %}
@@ -83,13 +83,13 @@
         });
     </script>
 {% elif "text" in arg['TYPE'] and "input" in arg['TYPE'] %}
-    <input class="{{dark_theme}}" type="text" name="{{file}}" size="10"
+    <input class="{{dark_theme}}" type="text" name="{{file}}" size="10" placeholder="{{arg.get('placeholder', '')}}"
         {% if arg['value'] %}
             value="{{arg['value']}}"
         {% endif %}
     >
 {% elif "text" in arg['TYPE'] and arg['value'] %}
-    <input class="invisible" type="text" size="10" value="{{arg['value']}}">
+    <input class="invisible" type="text" size="10" value="{{arg['value']}}" placeholder="{{arg.get('placeholder', '')}}">
 {% elif "dropdown" in arg['TYPE'] %}
     {# lister toutes les options #}
     <select name="{{file}}" >
