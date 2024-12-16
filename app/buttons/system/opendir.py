@@ -1,5 +1,5 @@
 import os
-from subprocess import Popen
+from app.utils.platform import is_windows, is_linux, is_mac
 from app.utils.logger import log
 
 
@@ -12,6 +12,12 @@ def opendir(message):
 
     path = os.path.abspath(path)
     log.debug(f"Opening directory: {path}")
-    Popen(f'explorer "{path}"')
+
+    if is_windows:
+        os.system(f'explorer "{path}"')
+    elif is_linux:
+        os.system(f'xdg-open "{path}"')
+    elif is_mac:
+        os.system(f'open "{path}"')
 
     return path
