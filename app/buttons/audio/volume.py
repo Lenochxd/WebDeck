@@ -142,5 +142,5 @@ def handle_command(message):
         target_volume = int(message.replace("/volume set ", "")) / 100.0
         set_volume(target_volume)
         
-    elif message.startswith("/volume mute"):
+    elif message.startswith(("/volume mute", "/soundcontrol mute")):
         mute_volume()
