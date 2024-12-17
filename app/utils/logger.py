@@ -33,8 +33,14 @@ class Logger:
         """
         timestamp = datetime.now().strftime("%H:%M:%S")
         log_message = f"[{level} @ {timestamp}] - {message}"
-        with open(self.log_file, 'a') as file:
-            file.write(log_message + '\n')
+        try:
+            with open(self.log_file, 'a') as file:
+                file.write(log_message + '\n')
+        except PermissionError:
+            new_log_file = os.path.join(os.path.dirname(self.log_file), os.path.basename(self.log_file).replace('.log', '-new.log'))
+            self.set_log_file(new_log_file)
+            with open(self.log_file, 'a') as file:
+                file.write(log_message + '\n')
         return log_message
     
     def set_log_file(self, log_file: str):
