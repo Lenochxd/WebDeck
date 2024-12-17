@@ -102,14 +102,9 @@ def handle_command(message=None):
 
     elif message.startswith("/clearclipboard"):
         system.clear_clipboard()
-
-    elif message.startswith("/write "):
-        keyboard.write(message.replace("/write ", ""))
-
-    elif message.startswith("/writeandsend "):
-        keyboard.write(message.replace("/writeandsend ", ""))
-        keyboard.press("ENTER")
-
+    
+    elif message.startswith("/write"):
+        system.write(message)
 
     elif message.startswith(("/appvolume +", "/appvolume -", "/appvolume set")):
         if not is_win:
