@@ -98,11 +98,7 @@ def handle_command(message=None):
         system.kill(message)
 
     elif message.startswith("/restart"):
-        exe = message.replace("/restart", "")
-        if not "." in exe:
-            exe += ".exe"
-        subprocess.Popen(f"taskkill /f /im {exe}", shell=True)
-        subprocess.Popen(f"start {exe}", shell=True)
+        system.restart_app(message)
 
     elif message.startswith("/clearclipboard"):
         subprocess.Popen('cmd /c "echo off | clip"', shell=True)

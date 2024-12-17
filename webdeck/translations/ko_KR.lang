@@ -462,7 +462,9 @@ SYSTEM_kill_a_task__arg_1_name__linux=프로세스 이름 ('ps -A' 에 표시된
 SYSTEM_restart_a_task__btn_name=프로그램 재시작
 SYSTEM_restart_a_task__btn_default_display_name=
 SYSTEM_restart_a_task__btn_description=
-SYSTEM_restart_a_task__arg_1_name=프로그램 (app.exe)
+SYSTEM_restart_a_task__arg_1_name__windows=프로그램 (app.exe)
+SYSTEM_restart_a_task__arg_1_name__linux=종료할 프로세스 이름 ('ps -A' 에 표시된 대로)
+SYSTEM_restart_a_task__arg_2_name__linux=재시작 명령어
 
 SYSTEM_execute_python_code__btn_name=파이썬 코드 실행
 SYSTEM_execute_python_code__btn_default_display_name=

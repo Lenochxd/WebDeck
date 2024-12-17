@@ -456,13 +456,15 @@ SYSTEM_superaltf4__btn_description=Ferme de force la fenêtre au premier plan
 SYSTEM_kill_a_task__btn_name=Tuer une tâche
 SYSTEM_kill_a_task__btn_default_display_name=Tuer la tâche
 SYSTEM_kill_a_task__btn_description=
-SYSTEM_kill_a_task__arg_1_name__windows=Tache (app.exe)
+SYSTEM_kill_a_task__arg_1_name__windows=Tâche (app.exe)
 SYSTEM_kill_a_task__arg_1_name__linux=Nom du processus (tel qu'affiché dans 'ps -A')
 
 SYSTEM_restart_a_task__btn_name=Redémarrer une application
 SYSTEM_restart_a_task__btn_default_display_name=Redémarrer l'application
 SYSTEM_restart_a_task__btn_description=
-SYSTEM_restart_a_task__arg_1_name=Tache (app.exe)
+SYSTEM_restart_a_task__arg_1_name__windows=Tâche (app.exe)
+SYSTEM_restart_a_task__arg_1_name__linux=Nom du processus à fermer (tel qu'affiché dans 'ps -A')
+SYSTEM_restart_a_task__arg_2_name__linux=Commande de redémarrage
 
 SYSTEM_execute_python_code__btn_name=Exécuter du code python
 SYSTEM_execute_python_code__btn_default_display_name=Exécuter le code python

@@ -532,7 +532,23 @@
       "command": "/restart",
       "args": [
         {
-          "TYPE": "input filetype['.exe']"
+          "TYPE": "input filetype['.exe']",
+          "os": "windows"
+        },
+        {
+          "TYPE": "input text",
+          "placeholder": "pkill -f process_name",
+          "os": "linux"
+        },
+        {
+          "TYPE": "text",
+          "value": "---",
+          "os": "linux"
+        },
+        {
+          "TYPE": "input text",
+          "placeholder": "nohup your_command > /dev/null 2>&1 &",
+          "os": "linux"
         }
       ],
       "style": {}

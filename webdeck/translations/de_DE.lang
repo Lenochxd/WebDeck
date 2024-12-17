@@ -462,7 +462,9 @@ SYSTEM_kill_a_task__arg_1_name__linux=Process name (as shown in 'ps -A')
 SYSTEM_restart_a_task__btn_name=Restart a task
 SYSTEM_restart_a_task__btn_default_display_name=Restart task
 SYSTEM_restart_a_task__btn_description=
-SYSTEM_restart_a_task__arg_1_name=Task (app.exe)
+SYSTEM_restart_a_task__arg_1_name__windows=Task (app.exe)
+SYSTEM_restart_a_task__arg_1_name__linux=Process name to close (as shown in 'ps -A')
+SYSTEM_restart_a_task__arg_2_name__linux=Restart command
 
 SYSTEM_execute_python_code__btn_name=Execute python code
 SYSTEM_execute_python_code__btn_default_display_name=
