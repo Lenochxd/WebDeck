@@ -158,6 +158,10 @@ def handle_command(message=None):
         hwnd = window.get_focused()
         if hwnd:
             window.close(hwnd)
+            
+            if not is_win:
+                return jsonify({"success": True})
+            # Make sure the window is closed by killing the process if necessary (windows only)
             subprocess.Popen(f"taskkill /f /im {hwnd}", shell=True)
             subprocess.Popen(f"taskkill /f /im {hwnd}.exe", shell=True)
 
