@@ -101,7 +101,7 @@ def handle_command(message=None):
         system.restart_app(message)
 
     elif message.startswith("/clearclipboard"):
-        subprocess.Popen('cmd /c "echo off | clip"', shell=True)
+        system.clear_clipboard()
 
     elif message.startswith("/write "):
         keyboard.write(message.replace("/write ", ""))
