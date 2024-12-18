@@ -1,12 +1,16 @@
-from sys import platform
-if platform == 'win32':
+from app.utils.platform import is_windows, is_linux
+from app.utils.working_dir import get_base_dir
+from app.utils.logger import log
+
+import subprocess
+import os
+if is_windows:
     from win10toast import ToastNotifier
     toaster = ToastNotifier()
 
 
 def toast(display_type, typestocopy, color_names_final):
-    if platform != 'win32':
-        return
+    
     icon = "static\\icons\\icon.ico"
     duration = 5
     message = ""
@@ -26,6 +30,23 @@ def toast(display_type, typestocopy, color_names_final):
         )
 
     title = "WebDeck Color Picker"
-    toaster.show_toast(
-        title, message, icon_path=icon, duration=duration, threaded=True
-    )
+    
+    if is_windows:
+        toaster.show_toast(
+            title, message, icon_path=icon, duration=duration, threaded=True
+        )
+        return
+        
+    elif is_linux:
+        icon_path = os.path.join(get_base_dir(), icon.replace('.ico', '.png'))
+        log.debug(f"Icon path: {icon_path}")
+        subprocess.Popen([
+            'notify-send', 
+            title, 
+            message, 
+            '-a', title,
+            '-i', icon_path, 
+            '-u', 'normal', 
+            # '-t', str(duration * 1000), 
+        ])
+        return
