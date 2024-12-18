@@ -5,6 +5,7 @@ import math
 import ctypes
 import keyboard
 import os
+import subprocess
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
 if is_windows:
@@ -18,6 +19,12 @@ else:
 from app.utils.logger import log
 
 
+def test_pulseaudio():
+    try:
+        subprocess.run(["pactl", "info"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+        raise RuntimeError("Failed to connect to PulseAudio server. Ensure PulseAudio is running as the current user.")
+
 
 def get_current_volume():
     if is_windows:
@@ -27,6 +34,7 @@ def get_current_volume():
         return volume.GetMasterVolumeLevelScalar()
     
     elif is_linux:
+        test_pulseaudio()
         with Pulse('volume') as pulse:
             sink = pulse.sink_list()[0]
             return round(sink.volume.value_flat, 2)
@@ -52,6 +60,7 @@ def set_volume(target_volume):
         return current_volume
     
     elif is_linux:
+        test_pulseaudio()
         with Pulse('volume') as pulse:
             sink = pulse.sink_list()[0]
             volume = sink.volume
@@ -73,6 +82,7 @@ def increase_volume(delta=1):
         return set_volume(target_volume)
     
     elif is_linux:
+        test_pulseaudio()
         with Pulse('volume') as pulse:
             sink = pulse.sink_list()[0]
             target_volume = min(sink.volume.value_flat + (int(delta) / 100.0), 1.0)
@@ -95,6 +105,7 @@ def decrease_volume(delta=1):
         return set_volume(target_volume)
     
     elif is_linux:
+        test_pulseaudio()
         with Pulse('volume') as pulse:
             sink = pulse.sink_list()[0]
             target_volume = max(sink.volume.value_flat - (int(delta) / 100.0), 0.0)
