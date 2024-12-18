@@ -4,4 +4,5 @@ from .lock_session import lock_session
 from .taskkill import kill
 from .restart_app import restart_app
 from .clear_clipboard import clear_clipboard
+from .open_clipboard import open_clipboard
 from .write import handle_command as write

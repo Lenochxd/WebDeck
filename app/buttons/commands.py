@@ -212,7 +212,7 @@ def handle_command(message=None):
         pyautogui.hotkey("ctrl", "x")
 
     elif message.startswith("/clipboard"):
-        pyautogui.hotkey("win", "v")
+        system.open_clipboard()
 
     else:
         if message.startswith(("/volume", "/soundcontrol mute")):
