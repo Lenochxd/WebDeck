@@ -39,8 +39,13 @@ class Logger:
         except PermissionError:
             new_log_file = os.path.join(os.path.dirname(self.log_file), os.path.basename(self.log_file).replace('.log', '-new.log'))
             self.set_log_file(new_log_file)
-            with open(self.log_file, 'a') as file:
-                file.write(log_message + '\n')
+            try:
+                with open(self.log_file, 'a') as file:
+                    file.write(log_message + '\n')
+            except PermissionError:
+                if not hasattr(self, '_log_write_failed'):
+                    self._log_write_failed = True
+                    print(Fore.RED + f"Failed to write log message to file.")
         return log_message
     
     def set_log_file(self, log_file: str):
