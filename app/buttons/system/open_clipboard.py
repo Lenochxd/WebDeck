@@ -1,7 +1,9 @@
 from app.utils.platform import is_windows, is_linux
 
+import os
 import subprocess
-import pyautogui
+if not is_linux or os.environ.get("DISPLAY"):
+    import pyautogui
 from app.utils.logger import log
 
 
