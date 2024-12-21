@@ -1,9 +1,11 @@
 from app.utils.platform import is_linux
 
 import os
-import keyboard
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
+from pynput.keyboard import Controller, Key
+
+keyboard = Controller()
 
 
 def handle_command(message):
@@ -18,36 +20,18 @@ def handle_command(message):
 
 def playpause():
     try:
-        if is_linux:
-            keyboard.send("play/pause media")
-        else:
-            pyautogui.press("playpause")
-    except:
-        if is_linux:
-            keyboard.send(164)
-        else:
-            keyboard.send(-179)
+        keyboard.tap(Key.media_play_pause)
+    except Exception:
+        pyautogui.press("playpause")
 
 def prevtrack():
     try:
-        if is_linux:
-            keyboard.send("previous track")
-        else:
-            pyautogui.press("prevtrack")
-    except:
-        if is_linux:
-            keyboard.send(165)
-        else:
-            keyboard.send(-177)
+        keyboard.tap(Key.media_previous)
+    except Exception:
+        pyautogui.press("prevtrack")
 
 def nexttrack():
     try:
-        if is_linux:
-            keyboard.send("next track")
-        else:
-            pyautogui.press("nexttrack")
-    except:
-        if is_linux:
-            keyboard.send(163)
-        else:
-            keyboard.send(-176)
+        keyboard.tap(Key.media_next)
+    except Exception:
+        pyautogui.press("nexttrack")

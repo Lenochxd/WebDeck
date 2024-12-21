@@ -3,7 +3,6 @@ from app.utils.platform import is_windows, is_linux
 import time
 import math
 import ctypes
-import keyboard
 import os
 import subprocess
 if not is_linux or os.environ.get("DISPLAY"):
@@ -17,6 +16,9 @@ else:
     from pulsectl import Pulse
 
 from app.utils.logger import log
+from pynput.keyboard import Controller, Key
+
+keyboard = Controller()
 
 
 def test_pulseaudio():
@@ -119,23 +121,10 @@ def decrease_volume(delta=1):
 
 
 def mute_volume():
-    if is_windows:
-        try:
-            keyboard.send("volume mute")
-        except Exception:
-            try:
-                keyboard.send(-173)
-            except Exception:
-                pyautogui.press("volumemute")
-    
-    elif is_linux:
-        try:
-            keyboard.send("volume mute")
-        except Exception:
-            keyboard.send(113)
-    
-    else:
-        raise NotImplementedError("This command is not implemented for this platform.")
+    try:
+        keyboard.tap(Key.media_volume_mute)
+    except Exception:
+        pyautogui.press("volumemute")
 
 
 def handle_command(message):
