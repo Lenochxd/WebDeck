@@ -1,7 +1,8 @@
 from app.utils.platform import is_windows, is_linux
 
 import os
-import keyboard
+if is_windows:
+    import keyboard
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
     from pynput.keyboard import Controller

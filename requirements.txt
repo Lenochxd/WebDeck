@@ -5,7 +5,7 @@ numpy==2.1.2
 gevent==24.10.3
 win10toast; sys_platform == 'win32'
 notify_py==0.3.43
-keyboard==0.13.5
+keyboard==0.13.5; sys_platform == 'win32'
 PyAutoGUI==0.9.54
 pywin32; sys_platform == 'win32'
 pycaw==20240210; sys_platform == 'win32'
