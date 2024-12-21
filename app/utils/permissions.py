@@ -3,7 +3,8 @@ import sys
 import ctypes
 
 def is_root():
-    return os.getuid() == 0
+    # Checks the effective UID
+    return os.geteuid() == 0
 
 is_sudo = is_root
 
