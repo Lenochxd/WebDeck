@@ -3,9 +3,8 @@ from app.utils.platform import is_linux
 import os
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
-from pynput.keyboard import Controller, Key
-
-keyboard = Controller()
+    from pynput.keyboard import Controller, Key
+    keyboard = Controller()
 
 
 def handle_command(message):

@@ -7,6 +7,8 @@ import os
 import subprocess
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
+    from pynput.keyboard import Controller, Key
+    keyboard = Controller()
 if is_windows:
     import win32api
     import win32con
@@ -16,9 +18,6 @@ else:
     from pulsectl import Pulse
 
 from app.utils.logger import log
-from pynput.keyboard import Controller, Key
-
-keyboard = Controller()
 
 
 def test_pulseaudio():
