@@ -1,5 +1,6 @@
 import re
 import json
+from app.utils.settings.get_config import get_config
 
 
 def extract_asked_device(input_string):
@@ -9,8 +10,7 @@ def extract_asked_device(input_string):
 def get_asked_devices():
     devices = []
     
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
     
     for folder_id, value in config["front"]["buttons"].items():
         for button in config["front"]["buttons"][folder_id]:
