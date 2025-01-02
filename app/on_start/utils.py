@@ -18,6 +18,9 @@ from app.utils.get_local_ip import get_local_ip
 from app.utils.args import get_arg
 from app.utils.logger import log
 
+from utils.settings.get_config import get_config
+from utils.settings.save_config import save_config
+
 
 def color_distance(color1, color2):
     """
@@ -61,8 +64,7 @@ def sort_colorsjson():
             json.dump(sorted_colors, f, indent=4)
             
 def get_gpu_method():
-    with open(".config/config.json", "r", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
     
     if not "gpu_method" in config["settings"]:
         config["settings"]["gpu_method"] = "nvidia (pynvml)"
@@ -72,8 +74,8 @@ def get_gpu_method():
         except pynvml.NVMLError:
             config["settings"]["gpu_method"] = "AMD"
                 
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
+                
+    save_config(config)
         
     return config
 
@@ -186,8 +188,7 @@ def on_start():
     if config["url"]["ip"] == "local_ip":
         config["url"]["ip"] = local_ip
         
-        with open(".config/config.json", "w", encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
+        save_config(config)
     
     # Run threaded tasks
     on_start_threaded(config)
