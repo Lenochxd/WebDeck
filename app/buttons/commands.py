@@ -30,7 +30,6 @@ from . import color_picker
 from . import system
 
 
-
 def handle_command(message=None):
     global all_func
 
@@ -101,8 +100,8 @@ def handle_command(message=None):
             pyautogui.press("CTRL")
 
     elif message.startswith("/key"):
-        key = message.replace("/key", "", 1).strip()
-        pyautogui.press(key)
+        key = message.removeprefix('/key').strip()
+        keyboard.send(key)
 
     elif message.startswith("/restartexplorer"):
         subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
