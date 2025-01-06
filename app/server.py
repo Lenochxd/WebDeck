@@ -68,7 +68,6 @@ app.config["SECRET_KEY"] = get_config()["settings"]["flask_secret_key"]
 
 socketio = SocketIO(app)
 
-registered_hotkeys = set()
 
 @app.route("/usage", methods=["POST"])
 def usage():
@@ -135,14 +134,6 @@ def get_svgs():
 @app.route("/")
 def home():
     config = get_config(save_updated_config=True)
-    
-    global registered_hotkeys
-    registered_hotkeys = {
-        button['message'].removeprefix('/key').strip()
-        for folders in config['front']['buttons'].values() 
-        for button in folders 
-        if 'message' in button.keys() and button['message'].startswith('/key')
-    }
 
     with open("webdeck/commands.json", encoding="utf-8") as f:
         commands = json.load(f)
@@ -484,7 +475,7 @@ def send(data):
 @socketio.on("message_from_socket")
 def send_data_socketio(message):
     try:
-        result = command(message=message, registered_hotkeys=registered_hotkeys)
+        result = command(message=message)
     except Exception as e:
         log.exception(e, "An error occurred while handling a command")
         return jsonify({"success": False, "message": str(e)})
@@ -506,7 +497,7 @@ def send_data_socketio(message):
 @app.route("/send-data", methods=["POST"])
 def send_data_route():
     try:
-        result = command(message=request.get_json()["message"], registered_hotkeys=registered_hotkeys)
+        result = command(message=request.get_json()["message"])
     except Exception as e:
         log.exception(e, "An error occurred while handling a command")
         return jsonify({"success": False, "message": str(e)})

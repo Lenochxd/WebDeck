@@ -30,7 +30,7 @@ from . import color_picker
 from . import system
 
 
-def handle_command(message=None, registered_hotkeys=None):
+def handle_command(message=None):
     global all_func
 
     command_arguments = message
@@ -101,8 +101,7 @@ def handle_command(message=None, registered_hotkeys=None):
 
     elif message.startswith("/key"):
         key = message.removeprefix('/key').strip()
-        if key in registered_hotkeys:
-            keyboard.send(key)
+        keyboard.send(key)
 
     elif message.startswith("/restartexplorer"):
         subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
