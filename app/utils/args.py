@@ -4,6 +4,7 @@ import sys
 import threading
 import argparse
 from .show_error import show_error
+from .platform import is_windows
 from .logger import log
 from .exit import exit_program
 
@@ -37,9 +38,11 @@ available_args = {
         "action": "store"
     },
     "--no-admin": {
-        "aliases": ["--no-sudo", "--no-root"],
-        "help": "Run the application without requesting sudo/admin permissions",
-        "action": "store_true"
+        # "aliases": ["--no-sudo", "--no-root"],
+        # "help": "Run the application without requesting sudo/admin permissions",
+        "help": "Run the application without requesting admin permissions",
+        "action": "store_true",
+        "condition": is_windows,
     },
     "--no-tray": {
         "help": "Run the application without the system tray icon",

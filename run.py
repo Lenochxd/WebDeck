@@ -44,24 +44,9 @@ if settings['app_admin'] and not get_arg('no_admin'):
             ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
             sys.exit()
         
-        elif is_linux:
-            if getattr(sys, "frozen", False):
-                command = f"{sys.executable}"
-            else:
-                command = f"python3 {__file__}"
-            log.error(
-                "Insufficient Permissions: \n"
-                "This application requires elevated privileges (sudo) to function properly. \n"
-                "\n"
-                "Please run the application with `sudo` to enable all features: \n"
-                f"  sudo {command} \n"
-                "\n"
-                "If you prefer not to grant sudo permissions, you can run the application with the `--no-root` or `--no-sudo` flag. Note that some features may be disabled in this mode: \n"
-                f"  {command} --no-root \n"
-                "\n"
-                "For more information, refer to the application's documentation or use the `--help` flag. \n"
-            )
-            sys.exit()
+        else:
+            # No need to run as admin on Linux
+            pass
 
 from app.utils.welcome_popup import show_popup
 from app.utils.show_error import show_error
