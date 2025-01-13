@@ -21,7 +21,7 @@ settings = config["settings"]
 
 def check_files():
     wd_dir = get_base_dir()
-    version_path = os.path.join(wd_dir, "webdeck/version.json")
+    version_path = os.path.join(wd_dir, "resources/version.json")
     temp_json_path = os.path.join(wd_dir, "temp.json")
 
     # Get version from the versions JSON file
@@ -343,7 +343,7 @@ if __name__ == "__main__" and getattr(sys, "frozen", False):   # This ensures th
     if needs_admin_permissions():
         request_admin_permissions()
     
-    version_path = os.path.join(wd_dir, "webdeck/version.json")
+    version_path = os.path.join(wd_dir, "resources/version.json")
     with open(version_path, encoding="utf-8") as f:
         current_version = json.load(f)["versions"][0]["version"]
 

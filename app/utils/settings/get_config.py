@@ -6,7 +6,7 @@ from app.utils.working_dir import get_base_dir
 
 base_dir = get_base_dir()
 config_path = os.path.join(base_dir, ".config/config.json")
-default_config_path = os.path.join(base_dir, "webdeck/config_default.json")
+default_config_path = os.path.join(base_dir, "resources/config_default.json")
 
 
 def ensure_config_exists():

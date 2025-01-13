@@ -43,13 +43,13 @@ To set up the development environment, follow these steps:
 
 ## Languages
 
-- Translation files are in `webdeck/translations/*`.
+- Translation files are in `resources/translations/*`.
 - To add or update a translation:
   1. Copy `en_US.lang` to a new file named with your language code (e.g., `fr_FR.lang`).
   2. Follow the instructions in the file to translate only the necessary text.
 
 > **Note**:
-> - Only translate the `.lang` files. Do not translate other files like `webdeck/version.json`.
+> - Only translate the `.lang` files. Do not translate other files like `resources/version.json`.
 > - Translating `README.md` files is optional but not recommended as it increases maintenance work.
 
 

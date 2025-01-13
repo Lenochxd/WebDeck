@@ -31,7 +31,7 @@ def color_distance(color1, color2):
 
 def sort_colorsjson():
     try:
-        with open("webdeck/colors.json", "r", encoding="utf-8") as f:
+        with open("resources/colors.json", "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception as e:
         log.exception(e, "Failed to load colors.json")
@@ -39,7 +39,7 @@ def sort_colorsjson():
             url = "https://gist.githubusercontent.com/Lenochxd/12a1927943a2ce151560e1b9585d4bfa/raw/41d5a0dc9336827cefb217c1728f0e9415b1c7b9/colors_db.json"
             with urllib.request.urlopen(url) as response:
                 data = json.load(response)
-            with open("webdeck/colors.json", "w", encoding="utf-8") as f:
+            with open("resources/colors.json", "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
         except Exception as e:
             log.exception(e, "Failed to load colors.json from Gist")
@@ -59,7 +59,7 @@ def sort_colorsjson():
         data.remove(nearest_color)
 
     if not sorted_colors == data:
-        with open("webdeck/colors.json", "w", encoding="utf-8") as f:
+        with open("resources/colors.json", "w", encoding="utf-8") as f:
             json.dump(sorted_colors, f, indent=4)
             
 def get_gpu_method():
@@ -178,7 +178,7 @@ def on_start():
         check_for_updates()
     
     # Load commands
-    with open("webdeck/commands.json", encoding="utf-8") as f:
+    with open("resources/commands.json", encoding="utf-8") as f:
         commands = json.load(f)
         commands, all_func = load_plugins(commands)
         set_global_variable("all_func", all_func)

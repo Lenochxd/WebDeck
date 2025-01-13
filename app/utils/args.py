@@ -198,7 +198,7 @@ def handle_startup_arguments():
     # -V, --version
     if get_arg('version'):
         import json
-        with open("webdeck/version.json", encoding="utf-8") as f:
+        with open("resources/version.json", encoding="utf-8") as f:
             version = json.load(f)["versions"][0]["version"]
         
         last_commit = ""
@@ -239,8 +239,8 @@ def handle_startup_arguments():
         except Exception as e:
             import app.utils.languages as languages
             languages.init(
-                lang_files_directory="webdeck/translations",
-                misc_lang_files_directory="webdeck/translations/misc",
+                lang_files_directory="resources/translations",
+                misc_lang_files_directory="resources/translations/misc",
                 default_language="en_US"
             )
             

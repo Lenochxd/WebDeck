@@ -81,8 +81,8 @@ if not is_opened() or get_arg('force_start'):
     
     log.info("Loading translations")
     languages.init(
-        lang_files_directory="webdeck/translations",
-        misc_lang_files_directory="webdeck/translations/misc",
+        lang_files_directory="resources/translations",
+        misc_lang_files_directory="resources/translations/misc",
         default_language=settings['language']
     )
     

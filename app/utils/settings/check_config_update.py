@@ -26,7 +26,7 @@ def check_config_update(config):
         del config["allowed_networks"]
     
     
-    with open("webdeck/config_default.json", "r", encoding="utf-8") as f:
+    with open("resources/config_default.json", "r", encoding="utf-8") as f:
         default_config = json.load(f)
 
     def update_config_with_defaults(config, default_config):

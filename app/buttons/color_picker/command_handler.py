@@ -38,7 +38,7 @@ def handle_command(message):
         f"------------------------------------------"
     )
 
-    with open("webdeck/colors.json", "r", encoding="utf-8") as f:
+    with open("resources/colors.json", "r", encoding="utf-8") as f:
         colorsjson = json.load(f)
 
     color_name_original = get_color_name(color['hex'], colorsjson)

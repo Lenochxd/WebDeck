@@ -15,7 +15,7 @@ start_time = time.time()
 
 sys.setrecursionlimit(10000)
 
-with open("webdeck/version.json", encoding="utf-8") as f:
+with open("resources/version.json", encoding="utf-8") as f:
     version_info = json.load(f)
     version = version_info["versions"][0]["version"]
 
