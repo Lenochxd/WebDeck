@@ -2,6 +2,7 @@ import psutil
 import sys
 import json
 from .logger import log
+from .platform import is_windows
 
 
 def is_opened():
@@ -28,10 +29,17 @@ def is_opened():
 
     # Check running processes
     processes = [p.name().lower() for p in psutil.process_iter(["name"])]
+    log.debug(f"Running processes: {processes}")
     
-    if "webdeck.exe" in processes:
-        # Remove the current instance of webdeck.exe from the list of processes
-        processes.remove("webdeck.exe")
+    if is_windows:
+        if "webdeck.exe" in processes:
+            # Remove the current instance of webdeck.exe from the list of processes
+            processes.remove("webdeck.exe")
+    else:
+        if "webdeck" in processes:
+            # Remove the current instance of webdeck from the list of processes
+            processes.remove("webdeck")
+    
     return any("webdeck" in p for p in processes)
 
 # tests
