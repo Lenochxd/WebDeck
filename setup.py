@@ -30,8 +30,10 @@ def get_ignored_files():
         "requirements.txt",
         "tests/*",
         "*.py",
-        "!nircmd*.exe",
     ]
+
+    if sys.platform == "win32":
+        ignored_files.append("!nircmd*.exe")
 
     with open(".gitignore", "r") as gitignore_file:
         for line in gitignore_file:
@@ -57,7 +59,7 @@ def is_excluded(file_path):
         if negation_spec.match_file(rel_path):
             print(f"NOT EXCLUDED (negation): {file_path}")
             return False
-        print(f"EXCLUDED: {file_path}")
+        # print(f"EXCLUDED: {file_path}")
         return True
 
     # print(f"NOT EXCLUDED: {file_path}")
@@ -72,15 +74,63 @@ def get_include_files():
         for file in files:
             file_path = os.path.join(root, file)
             if not is_excluded(file_path.replace('\\', '/')):
-                if file.lower().startswith("nircmd") and "temp" in root:
-                    include_files.append((file_path, os.path.join("lib", file)))
+                destination_path = file_path
+                if sys.platform == "win32" and file.lower().startswith("nircmd") and "temp" in root:
+                    destination_path = os.path.join("lib", file)
                 elif file.startswith("README"):
-                    if file == "README.md":
-                        include_files.append((file_path, os.path.join("docs", "README-en.md")))
-                    else:
-                        include_files.append((file_path, os.path.join("docs", file)))
-                else:
-                    include_files.append((file_path, file_path))
+                    destination_path = os.path.join("docs", "README-en.md") if file == "README.md" else os.path.join("docs", file)
+                
+                include_files.append((file_path, destination_path))
+    
+    # Include necessary dependencies for Linux
+    if sys.platform != "win32":
+        dependencies = [
+            "xdotool",       # /superAltF4
+            "copyq",         # /clipboard
+            "xclip",         # /clearclipboard
+            "notify-send",   # /colorpicker
+        ]
+        for dep in dependencies:
+            result = subprocess.run(["which", dep], capture_output=True, text=True)
+            if result.returncode == 0:
+                dep_path = result.stdout.strip()
+                include_files.append((dep_path, os.path.join("lib", os.path.basename(dep_path))))
+            else:
+                print(f"Warning: {dep} not found in system path.")
+        
+        # Fix for missing Tcl/Tk libraries on some systems
+        if not os.environ.get('TCL_LIBRARY') or not os.environ.get('TK_LIBRARY'):
+            tcl_path = subprocess.check_output(["which", "tclsh"]).decode().strip()
+            if not tcl_path:
+                print("error: tclsh not found in system path. Please install Tcl/Tk.")
+                sys.exit(1)
+            
+            tcl_lib_dir = os.path.join(os.path.dirname(tcl_path), "..", "lib")
+            tcl_library = os.path.join(tcl_lib_dir, "tcl8.6")
+            tk_library = os.path.join(tcl_lib_dir, "tk8.6")
+
+            if not os.path.exists(tcl_library) or not os.path.exists(tk_library):
+                tcl_library = os.path.join(tcl_lib_dir, "tcltk")
+                tk_library = tcl_library
+
+            os.environ['TCL_LIBRARY'] = tcl_library
+            os.environ['TK_LIBRARY'] = tk_library
+            include_files.append((os.environ['TCL_LIBRARY'], os.path.join("lib", os.path.basename(tcl_library))))
+            include_files.append((os.environ['TK_LIBRARY'], os.path.join("lib", os.path.basename(tk_library))))
+
+        # Fix for missing libpng libraries on some systems
+        try:
+            libpng_path = subprocess.check_output(["which", "libpng16.so"], stderr=subprocess.STDOUT).decode().strip()
+            include_files.append((libpng_path, os.path.join("lib", "libpng16.so")))
+        except subprocess.CalledProcessError:
+            print("Warning: libpng16 not found in system path.")
+        
+        try:
+            libpng_path = subprocess.check_output(["which", "libpng15.so"], stderr=subprocess.STDOUT).decode().strip()
+            include_files.append((libpng_path, os.path.join("lib", "libpng15.so")))
+        except subprocess.CalledProcessError:
+            print("Warning: libpng15 not found in system path.")
+    
     return include_files
 
 def download_nircmd():
@@ -97,22 +147,27 @@ def download_nircmd():
     os.remove(zippath)
 
 def sign_executable(file_path):
-    signtool_path = r"C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
-    timestamp_url = "http://timestamp.digicert.com"
-    command = [
-        signtool_path,
-        "sign",
-        "/a",
-        "/fd", "SHA256",
-        "/tr", timestamp_url,
-        "/td", "SHA256",
-        file_path
-    ]
+    if sys.platform == "win32":
+        signtool_path = r"C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe"
+        timestamp_url = "http://timestamp.digicert.com"
+        command = [
+            signtool_path,
+            "sign",
+            "/a",
+            "/fd", "SHA256",
+            "/tr", timestamp_url,
+            "/td", "SHA256",
+            file_path
+        ]
+    else:
+        command = ["echo", "Skipping signing on non-Windows platforms"]
+
     result = subprocess.run(command, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"Failed to sign {file_path}: {result.stderr}")
     else:
-        print(f"Successfully signed {file_path}")
+        if sys.platform == "win32":
+            print(f"Successfully signed {file_path}")
 
 def zip_build(build_dir):
     # Create a temporary directory outside the build directory to hold the build directory with the desired structure
@@ -133,8 +188,14 @@ def zip_build(build_dir):
         shutil.rmtree(new_inner_dir)
     os.rename(inner_dir, new_inner_dir)
 
-    # Create a zip file of the temporary directory
-    zip_file = shutil.make_archive('WebDeck-win-amd64-portable', 'zip', final_dir)
+    # Create an archive of the temporary directory
+    if sys.platform == "win32":
+        archive_name = 'WebDeck-win-amd64'
+        zip_file = shutil.make_archive(archive_name, 'zip', final_dir)
+    else:
+        arch = subprocess.check_output(["uname", "-m"]).decode().strip()
+        archive_name = f'WebDeck-linux-{arch}'
+        zip_file = shutil.make_archive(archive_name, 'gztar', final_dir)
 
     # Move the zip file to the /dist directory
     dist_dir = "dist"
@@ -149,11 +210,17 @@ def zip_build(build_dir):
 
 
 if __name__ == "__main__":
-    download_nircmd()
+    if sys.platform == "win32":
+        download_nircmd()
 
-    build_exe_options = {
+    build_options = {
         "excludes": ["cx_Freeze", "pathspec"],
-        "packages": [],
+        "packages": [
+            "tkinter",
+            "Xlib" if sys.platform != "win32" else None,
+            "pynput.keyboard._xorg" if sys.platform != "win32" else None,
+            "pynput.mouse._xorg" if sys.platform != "win32" else None,
+        ],
         "zip_exclude_packages": [
             "_sounddevice_data",
             "_soundfile",
@@ -183,16 +250,16 @@ if __name__ == "__main__":
         }
     }
 
-    base = "Win32GUI" if sys.platform == "win32" else "gui"
+    base = "Win32GUI" if sys.platform == "win32" else None
     # base = 'console' if sys.platform=='win32' else None
     executables = [
         Executable(
             script="run.py",
             base=base,
-            target_name="WebDeck",
+            target_name="WebDeck" if sys.platform == "win32" else "webdeck",
             icon="static/icons/icon.ico",
             shortcut_name="WebDeck",
-            shortcut_dir="ProgramMenuFolder",
+            shortcut_dir="ProgramMenuFolder" if sys.platform == "win32" else None,
             copyright="WebDeck",
             trademarks="WebDeck",
             manifest=None,
@@ -201,10 +268,10 @@ if __name__ == "__main__":
         Executable(
             script="app/updater/updater.py",
             base="console",
-            target_name="update",
+            target_name="update" if sys.platform == "win32" else "webdeck-update",
             icon=None,
             shortcut_name="WebDeck Updater",
-            shortcut_dir="ProgramMenuFolder",
+            shortcut_dir="ProgramMenuFolder" if sys.platform == "win32" else None,
             copyright="WebDeck",
             trademarks="WebDeck",
             manifest=None,
@@ -221,28 +288,30 @@ if __name__ == "__main__":
         license="GPLv3",
         version=version,
         options={
-            "build_exe": build_exe_options,
-            "bdist_msi": bdist_msi_options,
+            "build_exe": build_options,
+            "bdist_msi": bdist_msi_options if sys.platform == "win32" else {},
         },
         executables=executables,
     )
 
+    arch = ''
+    if sys.platform != "win32":
+        arch = '-' + subprocess.check_output(["uname", "-m"]).decode().strip()
+    build_dir = f"build/exe.{sys.platform}{arch}-{sys.version_info.major}.{sys.version_info.minor}"
 
-    build_dir = f"build/exe.win-amd64-{sys.version_info.major}.{sys.version_info.minor}"
-    
-    # Sign the main executable
-    sign_executable(os.path.join(build_dir, "WebDeck.exe"))
+    try:
+        # Sign the main executable
+        sign_executable(os.path.join(build_dir, "WebDeck.exe" if sys.platform == "win32" else "webdeck"))
 
-    # Sign the updater executable
-    sign_executable(os.path.join(build_dir, "update.exe"))
-    
-    
+        # Sign the updater executable
+        sign_executable(os.path.join(build_dir, "update.exe" if sys.platform == "win32" else "webdeck-update"))
+    except Exception as e:
+        print(f"Failed to sign executables: {e}")
+
     # Zip the build directory
     zip_build(build_dir)
-    
-    
+
     end_time = time.time()
     elapsed_time = end_time - start_time
     minutes, seconds = divmod(int(elapsed_time), 60)
-    
     print(f"Build done! {minutes}m {seconds}s")

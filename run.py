@@ -3,16 +3,23 @@ import sys
 import os
 import threading
 
+from app.utils.platform import is_windows, is_linux
+from app.utils.working_dir import chdir_base, get_base_dir
+
+# Add the 'lib' directory to the PATH on Linux
+if is_linux:
+    lib_path = os.path.join(get_base_dir(), "lib")
+    if os.path.isdir(lib_path):
+        os.environ["LD_LIBRARY_PATH"] = os.environ.get("LD_LIBRARY_PATH", "") + os.pathsep + lib_path
+
 from app.utils.logger import log
 from app.utils.settings.get_config import get_config
 from app.utils.args import parse_args, get_arg
-from app.utils.working_dir import chdir_base
 from app.utils.permissions import is_admin
-from app.utils.platform import is_windows, is_linux
 
 
 def attach_console():
-    if not getattr(sys, "frozen", False):
+    if not getattr(sys, "frozen", False) or is_linux:
         return
     
     try:
@@ -70,6 +77,7 @@ def initialize_tray_icon():
         create_tray_icon()
     except Exception as e:
         show_error(message="Failed to initialize tray icon", exception=e)
+
 
 if not is_opened() or get_arg('force_start'):
     log.info("Starting WebDeck")

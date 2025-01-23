@@ -4,6 +4,7 @@ import subprocess
 if is_windows:
     import win32gui
     import win32con
+from app.utils.get_process_path import xdotool
 from app.utils.logger import log
 
 
@@ -22,7 +23,7 @@ def close_window(window):
     elif is_linux:
         # While using Linux, the window name is the window ID
         window_id = window
-        if subprocess.run(["xdotool", "windowclose", window_id]).returncode != 0:
+        if subprocess.run([xdotool, "windowclose", window_id]).returncode != 0:
             log.warning(f"Window with ID '{window_id}' not found or already closed")
             raise RuntimeError(f"Window with ID '{window_id}' not found or already closed")
         log.success(f"Window with ID '{window_id}' has been closed")

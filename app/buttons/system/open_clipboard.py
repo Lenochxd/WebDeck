@@ -4,6 +4,8 @@ import os
 import subprocess
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
+    
+from app.utils.get_process_path import get_process_path
 from app.utils.logger import log
 
 
@@ -23,13 +25,13 @@ def open_clipboard():
 
         # Check for common clipboard managers and open them if installed
         clipboard_managers = {
-            "copyq": "copyq show",
-            "gpaste-client": "gpaste-client ui",
-            "clipman": "clipman show-history",
-            "parcellite": "parcellite",
-            "xfce4-clipman": "xfce4-clipman-history",
-            "klipper": "qdbus org.kde.klipper /klipper org.kde.klipper.klipper.showHistory",
-            "diodon": "diodon --indicator",
+            "copyq": f"{get_process_path('copyq')} show",
+            "gpaste-client": f"{get_process_path('gpaste-client')} ui",
+            "clipman": f"{get_process_path('clipman')} show-history",
+            "parcellite": f"{get_process_path('parcellite')}",
+            "xfce4-clipman": f"{get_process_path('xfce4-clipman-history')}",
+            "klipper": f"{get_process_path('qdbus')} org.kde.klipper /klipper org.kde.klipper.klipper.showHistory",
+            "diodon": f"{get_process_path('diodon')} --indicator",
         }
 
         for manager, command in clipboard_managers.items():

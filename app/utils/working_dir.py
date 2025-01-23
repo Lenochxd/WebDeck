@@ -1,5 +1,6 @@
 import os
 import sys
+from .platform import is_linux
 
 
 def locate_file_directory(filename, base_dir=None) -> str:
@@ -25,17 +26,21 @@ def locate_file_directory(filename, base_dir=None) -> str:
 
 def get_base_dir() -> str:
     """
-    Returns the base project directory by navigating up to 2 levels to find 'WebDeck.exe'.
-    If the application is not frozen, returns the current directory directly.
+    Returns the base project directory by navigating up to 2 levels to find 'WebDeck.exe' on Windows
+    or 'webdeck' binary on Linux. If the application is not frozen, returns the current directory directly.
     """
+    if is_linux and getattr(sys, 'frozen', False):
+        return locate_file_directory("webdeck")
     return locate_file_directory("WebDeck.exe")
 
 def get_update_dir() -> str:
     """
-    Returns the directory containing 'update/update.exe' by priority, then 'update.exe' by navigating up to 2 levels.
-    If the application is not frozen, returns the current directory directly.
+    Returns the directory containing 'update/update.exe' by priority, then 'update.exe' on Windows
+    or 'webdeck-update' binary on Linux by navigating up to 2 levels. If the application is not frozen, returns the current directory directly.
     """
     base_dir = os.path.join(get_base_dir(), "update")
+    if is_linux and getattr(sys, 'frozen', False):
+        return locate_file_directory("webdeck-update", base_dir)
     return locate_file_directory("update.exe", base_dir)
 
 

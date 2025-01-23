@@ -1,6 +1,7 @@
 from app.utils.platform import is_windows, is_linux
 
 import subprocess
+from app.utils.get_process_path import get_process_path, xclip
 from app.utils.logger import log
 
 
@@ -11,16 +12,16 @@ def clear_clipboard():
     
     elif is_linux:
         # Method 1: Using xclip
-        if subprocess.run("echo -n | xclip -selection clipboard", shell=True).returncode == 0:
+        if subprocess.run(f"echo -n | {xclip} -selection clipboard", shell=True).returncode == 0:
             log.success("Clipboard cleared using xclip")
             return
         # Method 2: Using xsel
-        elif subprocess.run("xsel --clipboard --clear", shell=True).returncode == 0:
+        elif subprocess.run(f"{get_process_path('xsel')} --clipboard --clear", shell=True).returncode == 0:
             log.success("Clipboard cleared using xsel")
             return
         
         # Method 3: Using wl-copy (for Wayland)
-        elif subprocess.run("echo -n | wl-copy", shell=True).returncode == 0:
+        elif subprocess.run(f"echo -n | {get_process_path('wl-copy')}", shell=True).returncode == 0:
             log.success("Clipboard cleared using wl-copy")
             return
         

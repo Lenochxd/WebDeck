@@ -2,6 +2,7 @@ from app.utils.platform import is_windows, is_linux
 from app.utils.working_dir import get_base_dir
 from app.utils.logger import log
 
+from app.utils.get_process_path import get_process_path
 import subprocess
 import os
 if is_windows:
@@ -41,7 +42,7 @@ def toast(display_type, typestocopy, color_names_final):
         icon_path = os.path.join(get_base_dir(), icon.replace('.ico', '.png'))
         log.debug(f"Icon path: {icon_path}")
         subprocess.Popen([
-            'notify-send', 
+            get_process_path('notify-send'), 
             title, 
             message, 
             '-a', title,

@@ -7,6 +7,7 @@ win10toast; sys_platform == 'win32'
 notify_py==0.3.43
 keyboard==0.13.5; sys_platform == 'win32'
 PyAutoGUI==0.9.54
+pynput
 pywin32; sys_platform == 'win32'
 pycaw==20240210; sys_platform == 'win32'
 pulsectl==24.11.0; sys_platform == 'linux'
@@ -28,7 +29,7 @@ customtkinter==5.2.2
 easygui==0.98.3
 qrcode==8.0
 pywebview==5.3.2
-cx_Freeze; sys_platform == 'win32'
+cx_Freeze==7.2.8
 pathspec==0.12.1
 python-vlc==3.0.21203
 nava==0.7
