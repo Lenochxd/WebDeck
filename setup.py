@@ -27,6 +27,7 @@ def get_ignored_files():
         ".gitignore",
         ".github",
         "build.bat",
+        "build.sh",
         "requirements.txt",
         "tests/*",
         "*.py",

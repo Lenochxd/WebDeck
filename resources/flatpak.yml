@@ -1,0 +1,24 @@
+id: com.webdeck.app
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+command: webdeck
+finish-args:
+  - --share=network
+  - --socket=wayland
+  - --socket=x11
+  - --device=dri
+  - --filesystem=home
+
+modules:
+  - name: WebDeck
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin
+      - cp -r WebDeck/* /app/bin/
+      - chmod +x /app/bin/webdeck
+    sources:
+      - type: archive
+        path: ../dist/WebDeck-linux-x86_64.tar.gz
+        dest-dir: WebDeck
+        version: $(jq -r '.versions[0].version' resources/version.json)
