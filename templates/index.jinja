@@ -2528,6 +2528,7 @@
           modal.style.opacity = '1';
           modal.style.display = 'block';
           lastModals.push("config-modal");
+          window.history.replaceState({}, document.title, window.location.pathname);
         }
         
         function hide_last_modal() {
