@@ -632,7 +632,7 @@
                     .then(function(response) {
                       if (response.success) {
                         alert(`{{text("settings_save_success")}}`);
-                        location.reload();
+                        window.location.href = window.location.href + '?edit=true'
                       } else {
                         throw new Error(`{{text("settings_save_error")}}`);
                       }
