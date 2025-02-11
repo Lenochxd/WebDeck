@@ -1,6 +1,6 @@
 import os
 import subprocess
-from .platform import is_linux
+from .platform import is_linux, is_wayland
 
 
 def get_process_path(process_name):
@@ -17,6 +17,7 @@ def get_process_path(process_name):
         raise NotImplementedError("This function is not implemented for this platform")
 
 
-xdotool = get_process_path("xdotool")
-copyq = get_process_path("copyq")
+if not is_wayland:
+    xdotool = get_process_path("xdotool")
+    copyq = get_process_path("copyq")
 xclip = get_process_path("xclip")

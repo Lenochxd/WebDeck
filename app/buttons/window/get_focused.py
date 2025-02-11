@@ -1,7 +1,8 @@
-from app.utils.platform import is_windows, is_linux
+from app.utils.platform import is_windows, is_linux, is_wayland
 
 if is_windows: import win32gui
-from app.utils.get_process_path import xdotool
+if not is_wayland:
+    from app.utils.get_process_path import xdotool
 from app.utils.logger import log
 import subprocess
 
