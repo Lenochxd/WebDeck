@@ -1599,37 +1599,6 @@
         });
 
         // =========== EDITORMODE ======== START
-        var buttons = document.querySelectorAll('.createbutton_submit');
-        
-        buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                fetch('/save_buttons_only', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(tempEditorConfig)
-                })
-                .then(function(response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error(`{{text("settings_save_error")}}`);
-                    }
-                })
-                .then(function(response) {
-                    if (response.success) {
-                        console.log(`{{text("settings_save_success")}}`);
-                    } else {
-                        console.log(`{{text("settings_save_error")}}`);
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error.message);
-                });
-            });
-        });
-
         var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
         var isMouseOverOpenFolder = false;
         
@@ -1844,10 +1813,8 @@
             }
         }
       
-      
-      
         // Ajouter la classe CSS pour la croix lors de la modification de editorMode
-        function toggleEditorMode() {
+        function toggleEditorButtonsMode() {
             let addButtonElements = document.querySelectorAll('.add-button');
             let editButtonElements = document.querySelectorAll('.edit-button');
             let deleteButtonElements = document.querySelectorAll('.delete-button');
@@ -1864,6 +1831,7 @@
             EditorButtons.style.display = editorMode === 0 ? 'none' : 'flex';
             EditorButtonsFolders.style.display = editorMode === 0 ? 'none' : 'block';
         }
+
         function hideEditorPartially() {
           let editButtonElements = document.querySelectorAll('.edit-button');
           let deleteButtonElements = document.querySelectorAll('.delete-button');
@@ -1878,6 +1846,7 @@
               deleteButtonElements[i].style.display = 'none'
           }
         }
+
         function showEditorPartially() {
           let editButtonElements = document.querySelectorAll('.edit-button');
           let deleteButtonElements = document.querySelectorAll('.delete-button');
@@ -1892,13 +1861,13 @@
               deleteButtonElements[i].style.display = 'flex'
           }
         }
-      
-        // Ajouter un gestionnaire d'événements pour le clic sur le bouton editorButton
-        editorButton.addEventListener('click', function () {
+
+        function toggleEditorMode() {
             editorMode = editorMode === 0 ? 1 : 0;
-            toggleEditorMode();
+            toggleEditorButtonsMode();
             editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
             console.log('La valeur de editorMode a été modifiée :', editorMode);
+
             if (editorMode === 1) {
                 fetch('/get_config')
                     .then(function (response) {
@@ -1911,7 +1880,6 @@
                     })
                     .then(function (configData) {
                         tempEditorConfig = configData;
-                        // console.log(tempEditorConfig);
                     })
                     .catch(function (error) {
                         console.error(error);
@@ -1919,67 +1887,22 @@
             } else {
               if (ifModif === 1) {
                 console.log(`swapChanges ${swapChanges}`);
-                // while (swapChanges.length > 0) {
-                //   console.log(swapChanges.length);
-                //   undoSwap()
-                // }
-                location.reload();
-              }
-              editorMode = 0;
-              swapMode = 0;
-              showEditorPartially()
-              swapEditorButton.childNodes[1].nodeValue = `[S] {{text("swap_buttons")}}`
-              swapFirstBtn = 0;
-              swapSecondBtn = 0;
-              swapChanges = []
-              console.log(`swapChanges: ${swapChanges}`);
-              toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
-              console.log('La valeur de editorMode a été modifiée :', editorMode);
-            }
-        });
-      
-        // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
-        const exitEditorButton = document.getElementById('exitEditorButton');
-        exitEditorButton.addEventListener('click', function () {
-          editorMode = editorMode === 0 ? 1 : 0;
-            toggleEditorMode();
-            editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
-            console.log('La valeur de editorMode a été modifiée :', editorMode);
-            if (editorMode === 1) {
-              fetch('/get_config')
-                .then(function (response) {
-                  var tempEditorConfig = {}; // Déclarer tempEditorConfig
-                  if (response.ok) {
-                    return response.json();
-                  } else {
-                    throw new Error(`{{text("settings_load_error")}}`);
-                  }
-                })
-                .then(function (configData) {
-                  // Utilisez les données de configuration retournées
-                  tempEditorConfig = configData; // Stockez les données JSON dans la variable "configData"
-                })
-                .catch(function (error) {
-                  // Gérez les erreurs ici
-                  console.error(error);
-                });
-            } else {
-              if (ifModif === 1) {
-                console.log(`swapChanges ${swapChanges}`);
-                // while (swapChanges.length > 0) {
-                //   console.log(swapChanges.length);
-                //   undoSwap()
-                // }
                 location.reload();
               }
               swapEditorButtonFunction()
               editorMode = 0;
-              toggleEditorMode();
+              toggleEditorButtonsMode();
               editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
               console.log('La valeur de editorMode a été modifiée :', editorMode);
             }
-        });
+        }
+
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton editorButton
+        editorButton.addEventListener('click', toggleEditorMode);
+      
+        // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
+        const exitEditorButton = document.getElementById('exitEditorButton');
+        exitEditorButton.addEventListener('click', toggleEditorMode);
       
         // Ajouter un gestionnaire d'événements pour le clic sur le bouton SaveExitEditorButton
         function SaveExitEditor(tempEditorConfig) {
@@ -1992,7 +1915,7 @@
           swapSecondBtn = 0;
           swapChanges = []
           console.log(`swapChanges: ${swapChanges}`);
-          toggleEditorMode();
+          toggleEditorButtonsMode();
           if (ifModif === 1 || swapChanges.length !== 0) {
               fetch('/save_buttons_only', {
                   method: 'POST',
@@ -2036,6 +1959,7 @@
           console.log(JSON.stringify(tempEditorConfig));
           SaveExitEditor(tempEditorConfig);
         });
+
         // Ajouter un gestionnaire d'événements pour le clic sur le bouton exitEditorButton
         function swapEditorButtonFunction(event) {
           swapMode = swapMode === 0 ? 1 : 0;
@@ -2238,42 +2162,7 @@
               SaveExitEditor(tempEditorConfig);
             }
             if (event.key.toLowerCase() === 'q') {
-              editorMode = editorMode === 0 ? 1 : 0;
               toggleEditorMode();
-              editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
-              console.log('La valeur de editorMode a été modifiée :', editorMode);
-              if (editorMode === 1) {
-                fetch('/get_config')
-                  .then(function (response) {
-                    var tempEditorConfig = {};
-                    if (response.ok) {
-                      return response.json();
-                    } else {
-                      throw new Error(`{{text("settings_load_error")}}`);
-                    }
-                  })
-                  .then(function (configData) {
-                    // Utilisez les données de configuration retournées
-                    tempEditorConfig = configData; // Stocker les données JSON dans la variable "configData"
-                  })
-                  .catch(function (error) {
-                    console.error(error);
-                  });
-              } else {
-                if (ifModif === 1) {
-                  console.log(`swapChanges ${swapChanges}`);
-                  // while (swapChanges.length > 0) {
-                  //   console.log(swapChanges.length);
-                  //   undoSwap()
-                  // }
-                  location.reload();
-                }
-                swapEditorButtonFunction();
-                editorMode = 0;
-                toggleEditorMode();
-                editorButton.textContent = editorMode === 0 ? `[Q] {{text("enter_editor_mode")}}` : `[Q] {{text("exit_editor_mode")}}`;
-                console.log('La valeur de editorMode a été modifiée :', editorMode);
-              }
             }
             if (editorMode === 1) {
               if (event.key.toLowerCase() === 's') {
@@ -2520,14 +2409,24 @@
 
         let lastModals = [];
 
-        // ?modal=show ?config=show
+
         const urlParams = new URLSearchParams(window.location.search);
+
+        // ?modal=show ?config=show
         const modalParam = urlParams.get('config');
         if (modalParam === 'show' || modalParam === 'true') {
           let modal = document.querySelector('.modal-container');
           modal.style.opacity = '1';
           modal.style.display = 'block';
           lastModals.push("config-modal");
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // ?edit=true
+        const editParams = urlParams.get('edit')
+        if(editParams === 'true') {
+          toggleEditorMode();
+          window.history.replaceState({}, document.title, window.location.pathname);
         }
         
         function hide_last_modal() {
