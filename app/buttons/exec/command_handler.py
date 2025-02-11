@@ -2,6 +2,7 @@ import threading
 from subprocess import Popen
 from sys import platform
 from app.utils.logger import log
+from app.utils.platform import is_windows, is_linux
 
 from . import python_code
 from . import batch_code
@@ -41,7 +42,7 @@ def python(message):
 
 
 def batch(message):
-    if platform != 'win32':
+    if not is_windows and not is_linux:
         return
     
     if "type:uploaded_file" in message:
