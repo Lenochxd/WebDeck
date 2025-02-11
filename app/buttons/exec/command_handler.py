@@ -42,9 +42,6 @@ def python(message):
 
 
 def batch(message):
-    if not is_windows and not is_linux:
-        return
-    
     if "type:uploaded_file" in message:
         message = message.replace("C:\\fakepath\\", "").replace("/batch ", "").replace("type:uploaded_file", "").strip()
         if all(
