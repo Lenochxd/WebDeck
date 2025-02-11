@@ -1,3 +1,4 @@
+import os
 import sys
 
 def platform(lower=False):
@@ -30,11 +31,15 @@ def is_linux():
 def is_macos():
     return platform() == 'macOS'
 
+def is_wayland():
+    return os.environ.get("XDG_SESSION_TYPE") == "wayland"
+
 
 is_windows = is_windows()
 is_win = is_windows
 
 is_linux = is_linux()
+is_wayland = is_wayland()
 
 is_macos = is_macos()
 is_mac = is_macos
