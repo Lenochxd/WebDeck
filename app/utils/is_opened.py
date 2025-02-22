@@ -29,7 +29,7 @@ def is_opened():
 
     # Check running processes
     processes = [p.name().lower() for p in psutil.process_iter(["name"])]
-    log.debug(f"Running processes: {processes}")
+    # log.debug(f"Running processes: {processes}")
     
     if is_windows:
         if "webdeck.exe" in processes:
