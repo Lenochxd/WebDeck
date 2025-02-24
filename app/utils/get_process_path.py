@@ -1,6 +1,8 @@
 import os
 import subprocess
 from .platform import is_linux, is_wayland
+from .working_dir import get_base_dir
+from .logger import log
 
 
 def get_process_path(process_name):
@@ -11,8 +13,9 @@ def get_process_path(process_name):
     if result.returncode == 0:
         return result.stdout.strip()
     
-    if os.path.exists(f"/lib/{process_name}"):
-        return f"/lib/{process_name}"
+    lib_path = os.path.join(get_base_dir(), "lib", process_name)
+    if os.path.exists(lib_path):
+        return os.path.abspath(lib_path)
     else:
         raise NotImplementedError("This function is not implemented for this platform")
 
