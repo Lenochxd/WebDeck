@@ -135,6 +135,10 @@ exit_editor_mode=Salir del modo editor
 
 open_folder=Abrir carpeta
 
+delete_folder=Eliminar Carpeta
+delete_folder_confirm=¿Estas seguro de eliminar esta carpeta?
+folder_not_found=Carpeta no encontrada
+
 quit_without_saving=Salir sin guardar
 save_and_exit=Guardar y salir
 swap_buttons=Intercambiar 2 botones

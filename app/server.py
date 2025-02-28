@@ -241,9 +241,8 @@ def saveconfig():
             if os.path.exists(file_path):
                 os.remove(file_path)
 
-    config = merge_dicts(config, new_config)
-    config = create_folders(config, folders_to_create)
-    config = check_config_update(config)
+    config = check_config_update(create_folders(merge_dicts(config, new_config), folders_to_create))
+
     
     folders_to_create = []
     config = save_config(config)
@@ -341,12 +340,6 @@ def save_buttons_only():
 
     # Retrieve form data
     new_config = request.get_json()["front"]["buttons"]
-
-    for folder in new_config:
-        for button in new_config[folder]:
-            #check if button key value is VOID
-            if button != {"VOID": "VOID"}:
-                print(button)
     temp_order_list = [key for key, value in config["front"]["buttons"].items()]
 
     sorted_buttons = {}
@@ -367,6 +360,7 @@ def get_config_route():
     global folders_to_create, config
 
     config = get_config()
+    
 
     config = create_folders(config, folders_to_create)
     folders_to_create = []

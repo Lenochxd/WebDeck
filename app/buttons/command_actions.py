@@ -1,33 +1,28 @@
-import json
-import sys
-import subprocess
-import time
 import inspect
-from flask import jsonify
+import json
+import subprocess
+import sys
+import time
 
-import win32gui
-import pyperclip
-import pyautogui
-import keyboard
 
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 import comtypes
+import keyboard
+import pyautogui
+import pyperclip
+import win32gui
+from flask import jsonify
+from pycaw.pycaw import (AudioUtilities, IAudioEndpointVolume,
+                         ISimpleAudioVolume)
 
+
+from ..utils.settings.get_config import get_port, get_config
+from ..utils.settings.save_config import save_config
 
 from app.utils.logger import log
-from app.utils.global_variables import get_global_variable
-from app.utils.kill_nircmd import kill_nircmd
 
-from app.utils.firewall import fix_firewall_permission
-from .usage import extract_asked_device, get_usage
-from . import audio
 from . import window
-from . import exec
-from . import soundboard
-from . import spotify
-from . import obs
-from . import color_picker
-from . import system
+from .usage import extract_asked_device, get_usage
+
 
 def restart_explorer():
     subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
@@ -52,7 +47,7 @@ def handle_device_usage(message):
 
 
 def killtask(message):
-    window_name = message.split(maxsplit=1)[-1]  # Extrae el nombre del proceso/ventana
+    window_name = message.split(maxsplit=1)[-1]
     hwnd = window.get_by_name(window_name)
 
     if hwnd:
@@ -116,16 +111,15 @@ def adjust_app_volume(message):
 
 def clipboard_action(message):
     if message.startswith("/copy") or message.startswith("/paste"):
-        action = message.split(" ")[0][1:]  # Obtener 'copy' o 'paste'
-        msg = message[len(f"/{action}"):].strip()  # Obtener el mensaje después del comando
-        
+        action = message.split(" ")[0][1:]  
+        msg = message[len(f"/{action}"):].strip()        
         if not msg:
-            pyautogui.hotkey("ctrl", "c" if action == "copy" else "v")  # Ejecutar Ctrl+C o Ctrl+V
+            pyautogui.hotkey("ctrl", "c" if action == "copy" else "v")  
         else:
             if msg.startswith(f"/{action}"):
-                msg = msg[len(f"/{action}"):]  # Eliminar el comando adicional
-            pyperclip.copy(msg)  # Copiar al portapapeles
-            pyautogui.hotkey("ctrl", "c" if action == "copy" else "v")  # Ejecutar Ctrl+C o Ctrl+V
+                msg = msg[len(f"/{action}"):]  
+            pyperclip.copy(msg)  
+            pyautogui.hotkey("ctrl", "c" if action == "copy" else "v")
 
 
 def bring_window_to_foreground(message):
@@ -140,3 +134,20 @@ def bring_window_to_foreground(message):
         log.error(f"Window '{window_name}' not found")
         raise RuntimeError(f"Window '{window_name}' not found")
 
+
+def delete_folder(message):
+    config = get_config()
+    folders = config["front"]["buttons"]
+    
+    for folder_name,buttons in folders.copy().items():
+        if folder_name == message:
+            folders.pop(folder_name)
+            log.info(f"Removed folder {folder_name}")
+        else:
+            for id,button in enumerate(buttons):             
+                if "message" in button and button["message"] == f"/folder {message}":                    
+                    folders[folder_name][id] = {"VOID": "VOID"}
+                    log.info(f"Removed {message} button reference from folder {folder_name}")
+
+    config["front"]["buttons"] = folders
+    save_config(config)

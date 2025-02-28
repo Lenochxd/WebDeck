@@ -229,7 +229,7 @@
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% set folder_id = folder_id.replace('"', '&quot;') %}
         <div style="display: inline-block; margin-right: 10px;">
-          <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)">
+          <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)" style="display: flex; justify-content: center;align-items: center;">
             {{ folder_id }}
             <svg class="delete-icon" onclick="event.stopPropagation() ; DeleteFolder('{{ folder_id }}')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
               <path d="M11.742 4.258a1 1 0 0 0-1.414 0L8 6.586 5.672 4.258a1 1 0 1 0-1.414 1.414L6.586 8 4.258 10.328a1 1 0 0 0 1.414 1.414L8 9.414l2.328 2.328a1 1 0 0 0 1.414-1.414L9.414 8l2.328-2.328a1 1 0 0 0 0-1.414z"/>
@@ -1277,26 +1277,24 @@
             }
           }
       }
-      function showNotification(message) {
-        // Crear el div de notificación
+function showNotification(message) {        
         let notification = document.createElement("div");
         notification.className = "notification";
         notification.innerText = message;
-        
-        // Añadirlo al body
-        document.body.appendChild(notification);
+        //notification z-index
+        notification.style.zIndex = "10";
 
-        // Mostrar con opacidad 1
+      
+        document.body.appendChild(notification);
         setTimeout(() => {
             notification.style.opacity = "1";
         }, 100); 
-
-        // Ocultar después de 3 segundos
+        
         setTimeout(() => {
             notification.style.opacity = "0";
             setTimeout(() => {
-                notification.remove(); // Eliminar el div
-            }, 500); // Espera a que termine la transición
+                notification.remove(); 
+            }, 500); 
         }, 3000);
     }
     
@@ -1357,17 +1355,18 @@ function folder(folder_id) {
 function DeleteFolder(folder_id) {
         var folderElement = document.getElementById('folder-' + folder_id);                
         if (folderElement) {
-          customConfirm("¿Quieres borrar la carpeta?", function (resultado) {
+          customConfirm("{{text('delete_folder_confirm')}}", function (resultado) {
             if (resultado) {
               folderElement.remove();
-              showNotification("folder deleted");
+              send_data("/delete_folder " + folder_id,)
+              showNotification("{{text('delete_folder')}}");
               setTimeout('', 5000);
               location.reload();
               }            
 });
 
         } else {
-            showNotification("folder not found")
+            showNotification("{{text('folder_not_found')}}")
         }
     }
 

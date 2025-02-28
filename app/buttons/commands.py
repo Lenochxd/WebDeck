@@ -60,7 +60,8 @@ def handle_command(message: str = None):
         "/clipboard":               lambda: pyautogui.hotkey("win", "v"),
         "/restartexplorer":         lambda: command_actions.restart_explorer(),
 
-        "/key":                     lambda message: pyautogui.press(message.replace("/key", "", 1).strip()),        
+        "/key":                     lambda message: pyautogui.press(message.replace("/key", "", 1).strip()),
+        "/delete_folder":           lambda message: command_actions.delete_folder(message.replace("/delete_folder ", "")),
         "/writeandsend":            lambda message: (keyboard.write(message.replace("/writeandsend ","")) or keyboard.press("ENTER")),
         "/write":                   lambda message: keyboard.write(message.replace("/write ", "")),
         "/setmicrophone":           lambda message: audio.set_microphone_by_name(message.replace("/setmicrophone", "").strip()),
@@ -80,6 +81,8 @@ def handle_command(message: str = None):
         ("/appvolume +", "/appvolume -", "/appvolume set"):     lambda message: command_actions.adjust_app_volume(message),
         ("/copy","/paste"):                                     lambda message: command_actions.clipboard_action(message),
         ("/openfolder", "/opendir","/openfile", "/start"):      lambda message: system.handle_command(message),
+
+
 
         "/screensaver": lambda message: (
             subprocess.Popen("%windir%\system32\scrnsave.scr /s", shell=True) if message.endswith(("on", "/screensaver", "start")) else
