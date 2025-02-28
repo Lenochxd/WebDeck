@@ -62,15 +62,15 @@ import app.utils.languages as languages
 
 
 def run_server_thread():
-    from app.server import run_server
     try:
+        from app.server import run_server
         run_server()
     except Exception as e:
         show_error(exception=e)
 
 def initialize_tray_icon():
-    from app.tray import create_tray_icon
     try:
+        from app.tray import create_tray_icon
         if is_linux and not os.environ.get('DISPLAY'):
             log.warning("No display available. Skipping tray icon initialization.")
             return False

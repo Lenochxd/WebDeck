@@ -19,6 +19,12 @@ with open("resources/version.json", encoding="utf-8") as f:
     version_info = json.load(f)
     version = version_info["versions"][0]["version"]
 
+app_description_short = "WebDeck is an open-source software that provides a customizable virtual control deck."
+app_description_long = (
+    "WebDeck is an open-source virtual control deck that launch applications and manage system functions"
+    "from a customizable web-based interface. Designed for flexibility, it adapts to various workflows,"
+    "making it a powerful tool for productivity and control."
+)
 
 
 def get_ignored_files():
@@ -66,6 +72,14 @@ def is_excluded(file_path):
     # print(f"NOT EXCLUDED: {file_path}")
     return False
 
+missing_dependencies = []
+dependencies = [
+    "xdotool",       # /superAltF4
+    "copyq",         # /clipboard
+    "xclip",         # /clearclipboard
+    "libnotify",     # /colorpicker (notify-send)
+    "libnotify-bin", # /colorpicker (notify-send) (Debian based)
+]
 def get_include_files():
     include_files = []
     for root, dirs, files in os.walk("."):
@@ -85,18 +99,13 @@ def get_include_files():
     
     # Include necessary dependencies for Linux
     if sys.platform != "win32":
-        dependencies = [
-            "xdotool",       # /superAltF4
-            "copyq",         # /clipboard
-            "xclip",         # /clearclipboard
-            "notify-send",   # /colorpicker
-        ]
         for dep in dependencies:
             result = subprocess.run(["which", dep], capture_output=True, text=True)
             if result.returncode == 0:
                 dep_path = result.stdout.strip()
                 include_files.append((dep_path, os.path.join("lib", os.path.basename(dep_path))))
             else:
+                missing_dependencies.append(dep)
                 print(f"Warning: {dep} not found in system path.")
         
         # Fix for missing Tcl/Tk libraries on some systems
@@ -173,12 +182,12 @@ def sign_executable(file_path):
 def zip_build(build_dir):
     # Create a temporary directory outside the build directory to hold the build directory with the desired structure
     temp_dir = os.path.join("temp", "PortableBuild")
-    if os.path.exists(temp_dir):
+    if os.path.exists(temp_dir) and os.path.isdir(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir, exist_ok=True)
 
     # Move the build directory into the temporary directory
-    shutil.move(build_dir, temp_dir)
+    shutil.copytree(build_dir, temp_dir, dirs_exist_ok=True)
 
     # Rename the directory inside PortableBuild to "WebDeck"
     final_dir = os.path.join("temp", "PortableBuild")
@@ -246,9 +255,26 @@ if __name__ == "__main__":
         "install_icon": "static/icons/icon.ico",
         "summary_data": {
             "author": "webdeck.app",
-            "comments": "WebDeck is an open-source app for managing custom shortcuts.",
+            "comments": app_description_short,
             "keywords": "WebDeck, remote control, web application",
         }
+    }
+
+    bdist_rpm_options = {
+        "distribution_name": "WebDeck",
+        "packager": "Lenoch <contact.lenoch@gmail.com>",
+        "vendor": "webdeck.app",
+        "icon": "static/icons/icon.xpm",
+        "group": "System/Utilities",
+        # "requires": ["python3", "python3-tk", "gtk-update-icon-cache"] + dependencies,
+        "requires": dependencies + [
+            "libayatana-appindicator-gtk3", # pystray
+            "portaudio-devel", # pyaudio
+        ],
+        "build_requires": dependencies,
+        "post_install": "resources/build/rpm/post_install.sh",
+        "post_uninstall": "resources/build/rpm/post_uninstall.sh",
+        "no_autoreq": True,
     }
 
     base = "Win32GUI" if sys.platform == "win32" else None
@@ -258,7 +284,7 @@ if __name__ == "__main__":
             script="run.py",
             base=base,
             target_name="WebDeck" if sys.platform == "win32" else "webdeck",
-            icon="static/icons/icon.ico",
+            icon="static/icons/icon.ico" if sys.platform == "win32" else "static/icons/icon.png",
             shortcut_name="WebDeck",
             shortcut_dir="ProgramMenuFolder" if sys.platform == "win32" else None,
             copyright="WebDeck",
@@ -277,12 +303,14 @@ if __name__ == "__main__":
             trademarks="WebDeck",
             manifest=None,
             uac_admin=False,
-        ),
+        ) if sys.platform == 'win32' else None,
     ]
-
+    executables = [e for e in executables if e is not None]
+    
     setup(
-        name="WebDeck",
-        description="WebDeck",
+        name="WebDeck" if sys.platform == "win32" else "webdeck",
+        description="WebDeck" if sys.platform == "win32" else app_description_short,
+        long_description=app_description_long,
         author="webdeck.app",
         author_email="contact.lenoch@gmail.com",
         url="https://webdeck.app/",
@@ -291,6 +319,7 @@ if __name__ == "__main__":
         options={
             "build_exe": build_options,
             "bdist_msi": bdist_msi_options if sys.platform == "win32" else {},
+            "bdist_rpm": bdist_rpm_options if sys.platform != "win32" else {},
         },
         executables=executables,
     )
@@ -311,7 +340,32 @@ if __name__ == "__main__":
 
     # Zip the build directory
     zip_build(build_dir)
+    
+    # Rename the RPM file to match the application name
+    if sys.platform != "win32":
+        print("Renaming RPM file...")
+        rpm_file = next((f for f in os.listdir("dist") if f.endswith(".rpm")), None)
+        if rpm_file:
+            rpm_file_path = os.path.join("dist", rpm_file)
+            os.rename(rpm_file_path, rpm_file_path.replace("webdeck", "WebDeck-linux"))
 
+    # Print missing dependencies
+    if missing_dependencies:
+        # Don't show libnotify and libnotify-bin as separate dependencies
+        if "libnotify" in missing_dependencies and "libnotify-bin" not in missing_dependencies:
+            missing_dependencies.remove("libnotify")
+        elif "libnotify-bin" in missing_dependencies and "libnotify" not in missing_dependencies:
+            missing_dependencies.remove("libnotify-bin")
+        
+        if "libnotify" in missing_dependencies and "libnotify-bin" in missing_dependencies:
+            missing_dependencies.remove("libnotify")
+            missing_dependencies.remove("libnotify-bin")
+            missing_dependencies.append("libnotify/libnotify-bin")
+            
+        
+        print(f"WARNING: Missing dependencies: {', '.join(missing_dependencies)}")
+        print("          Please install the missing dependencies before running the build script again.")
+    
     end_time = time.time()
     elapsed_time = end_time - start_time
     minutes, seconds = divmod(int(elapsed_time), 60)

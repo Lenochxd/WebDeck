@@ -17,7 +17,8 @@ fi
 echo "Choose the build type:"
 echo "1. ALL"
 echo "2. Standalone package (cx_Freeze)"
-# echo "3. Flatpak"
+echo "3. RPM package (bdist_rpm)"
+# echo "4. Flatpak"
 read -p "Enter your choice (number): " choice
 
 
@@ -59,6 +60,34 @@ function build_cx_freeze {
     python setup.py build
 }
 
+function build_bdist_rpm {
+    # Execute the bdist_rpm command
+    if [ -f "venv/bin/activate" ]; then
+        . venv/bin/activate
+    elif [ -f "venv/bin/activate.fish" ]; then
+        . venv/bin/activate.fish
+    else
+        echo "Error: virtual environment not found. Please set up the virtual environment first."
+        exit 1
+    fi
+
+    echo "Building RPM package using bdist_rpm..."
+    if [ ! -f "/usr/bin/rpmbuild" ]; then
+        echo "Error: rpmbuild not found. Please install the rpm-build package."
+        echo "    sudo apt install rpm"
+        exit 1
+    fi
+
+    chmod +x resources/build/rpm/post_install.sh
+    chmod +x resources/build/rpm/post_uninstall.sh
+
+    if [ ! -d "build/exe."* ]; then
+        python setup.py build
+    fi
+    
+    python setup.py bdist_rpm
+}
+
 # Set default choice to 1 if no input is provided
 choice=${choice:-1}
 
@@ -67,6 +96,7 @@ case $choice in
         echo "You selected ALL."
         echo "----------------------------------"
         build_cx_freeze
+        build_bdist_rpm
         # build_flatpak
         ;;
     2)
@@ -74,7 +104,12 @@ case $choice in
         echo "----------------------------------"
         build_cx_freeze
         ;;
-    # 3)
+    3)
+        echo "You selected RPM package (bdist_rpm)."
+        echo "----------------------------------"
+        build_bdist_rpm
+        ;;
+    # 4)
     #     echo "You selected Flatpak."
     #     echo "----------------------------------"
     #     build_flatpak

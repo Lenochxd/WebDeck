@@ -5,8 +5,6 @@ import os
 import json
 if is_win: import win32gui, win32con
 import webbrowser
-if not is_linux or os.environ.get("DISPLAY"):
-    import pystray
 import tkinter as tk
 import random
 import qrcode
@@ -22,6 +20,19 @@ from .utils.get_local_ip import get_local_ip
 from .utils.settings.get_config import get_port
 from .utils.languages import text, get_languages_info, get_language, set_default_language
 from .utils.logger import log
+
+if not is_linux or os.environ.get("DISPLAY"):
+    try:
+        import pystray
+    except Exception as e:
+        log.exception(e,
+            message=(
+            "Failed to import pystray. "
+            "This may occur on some Linux systems that are missing the AyatanaAppIndicator3 library. "
+            "Please install libayatana-appindicator3 and try again."
+            ),
+            expected=False
+        )
 
 
 def reload_config():

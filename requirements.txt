@@ -1,7 +1,7 @@
 Flask==3.0.3
 Flask-SocketIO==5.4.1
 Flask-Minify==0.48
-numpy==2.1.2
+numpy==2.2.3
 gevent==24.10.3
 win10toast; sys_platform == 'win32'
 notify_py==0.3.43

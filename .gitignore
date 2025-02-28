@@ -12,6 +12,7 @@ venv
 
 # compiled files
 build/
+!resources/build
 dist/
 *.dll
 *.exe
