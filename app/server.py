@@ -340,10 +340,13 @@ def save_buttons_only():
     config = get_config()
 
     # Retrieve form data
-    new_config = request.get_json()
+    new_config = request.get_json()["front"]["buttons"]
 
-    new_config = new_config["front"]["buttons"]
-
+    for folder in new_config:
+        for button in new_config[folder]:
+            #check if button key value is VOID
+            if button != {"VOID": "VOID"}:
+                print(button)
     temp_order_list = [key for key, value in config["front"]["buttons"].items()]
 
     sorted_buttons = {}
@@ -443,6 +446,13 @@ def create_folder():
     else:
         log.error("Folder already exists")
         return jsonify({"success": False, "message": "Folder already exists"})
+
+
+@app.route("/delete_folder", methods=["POST"])
+def delete_folder():
+    pass
+    
+
 
 
 # https://stackoverflow.com/a/70555525/17100464

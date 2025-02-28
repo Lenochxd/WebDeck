@@ -28,266 +28,87 @@ from . import spotify
 from . import obs
 from . import color_picker
 from . import system
+from . import command_actions
 
 
 
-def handle_command(message=None):
+def handle_command(message: str = None):
     global all_func
 
     command_arguments = message
-    message = message.replace("<|§|>", " ")
-
-    if message == "/bypass-windows-firewall":
-        fix_firewall_permission()
-
-    if not message.strip().replace("\n", "").replace("\r", "") == "":
-        log.info(f"Command received: {message}")
-    if message.startswith("/debug-send"):
-        data = {"message": "Hello, world!"}
-        data = json.loads(message.replace("'", '"').replace("/debug-send", ""))
-        # send(data)
-
-    elif message.startswith("/exit"):
-        sys.exit("/exit received")
-        
-    elif message.startswith("/usage"): # this is useless btw
-        asked_device = []
-        
-        device = extract_asked_device(message)
-        if device is not None:
-            asked_device.append(device)
-        
-        log.debug(f"Asked device: {asked_device}")
-        usage = get_usage(False, asked_device)
-        log.debug(f"Usage data: {usage}")
-        return jsonify(usage)
-
-    elif message.startswith("/stop_sound"):
-        return soundboard.stopsound()
+    message = message.replace("<|§|>", " ").replace("\n", "").replace("\r", "")
+    if message: log.info(f"Command received: {message}")
     
-    elif message.startswith(("/playsound ", "/playlocalsound ")):
-        return soundboard.playsound(*soundboard.get_params(message))
+    command_map ={
+        "/debug-send":              lambda: log.info("Debug message sent"),
+        "/bypass-windows-firewall": lambda: fix_firewall_permission(),
+        "/exit" :                   lambda: sys.exit("/exit received"),
+        "/stop_sound":              lambda: soundboard.stopsound(),
+        "/PCshutdown":              lambda: subprocess.Popen("shutdown /s /f /t 0", shell=True),
+        "/PCrestart":               lambda: subprocess.Popen("shutdown /r /f /t 0", shell=True),
+        "/PCsleep":                 lambda: subprocess.Popen("rundll32.exe powrprof.dll,SetSuspendState 0,1,0", shell=True),
+        "/PChibernate":             lambda: subprocess.Popen("shutdown /h /t 0", shell=True),
+        "/locksession":             lambda: subprocess.Popen("Rundll32.exe user32.dll,LockWorkStation", shell=True),
+        "/screensaversettings" :    lambda: subprocess.Popen("rundll32.exe desk.cpl,InstallScreenSaver toasters.scr", shell=True),
+        "/clearclipboard":          lambda: subprocess.Popen('cmd /c "echo off | clip"', shell=True),
+        "/soundcontrol mute":       lambda: pyautogui.press("volumemute"),
+        "/mediacontrol playpause":  lambda: pyautogui.press("playpause"),
+        "/mediacontrol previous":   lambda: pyautogui.press("prevtrack"),
+        "/mediacontrol next":       lambda: pyautogui.press("nexttrack"),
+        "/speechrecognition":       lambda: pyautogui.hotkey("win", "h"),
+        "/cut":                     lambda: pyautogui.hotkey("ctrl", "x"),
+        "/clipboard":               lambda: pyautogui.hotkey("win", "v"),
+        "/restartexplorer":         lambda: command_actions.restart_explorer(),
 
+        "/key":                     lambda message: pyautogui.press(message.replace("/key", "", 1).strip()),        
+        "/writeandsend":            lambda message: (keyboard.write(message.replace("/writeandsend ","")) or keyboard.press("ENTER")),
+        "/write":                   lambda message: keyboard.write(message.replace("/write ", "")),
+        "/setmicrophone":           lambda message: audio.set_microphone_by_name(message.replace("/setmicrophone", "").strip()),
+        "/setoutputdevice":         lambda message: audio.set_speakers_by_name(message.replace("/setoutputdevice", "").strip()),
+        "/usage" :                  lambda message: command_actions.handle_device_usage(message),
+        "/restart":                 lambda message: command_actions.restarttask(message),
+        "/volume":                  lambda message: audio.change_volume(message),
+        "/spotify":                 lambda message: spotify.handle_command(message),
+        "/obs":                     lambda message: obs.handle_command(message),
+        "/colorpicker":             lambda message: color_picker.handle_command(message),
+        "/exec":                    lambda message: exec.python(message),
+        "/batch":                   lambda message: exec.batch(message),
+        "/firstplan":               lambda message: command_actions.bring_window_to_foreground(message),
 
-    elif message.startswith("/PCshutdown"):
-        subprocess.Popen("shutdown /s /f /t 0", shell=True)
+        ("/playsound", "/playlocalsound"):                      lambda message : soundboard.playsound(*soundboard.get_params(message)),
+        ("/kill", "/taskill", "/taskkill", "/forceclose"):      lambda message: command_actions.killtask(message),
+        ("/appvolume +", "/appvolume -", "/appvolume set"):     lambda message: command_actions.adjust_app_volume(message),
+        ("/copy","/paste"):                                     lambda message: command_actions.clipboard_action(message),
+        ("/openfolder", "/opendir","/openfile", "/start"):      lambda message: system.handle_command(message),
 
-    elif message.startswith("/PCrestart"):
-        subprocess.Popen("shutdown /r /f /t 0", shell=True)
-
-    elif message.startswith("/PCsleep"):
-        subprocess.Popen("rundll32.exe powrprof.dll,SetSuspendState 0,1,0", shell=True)
-
-    elif message.startswith("/PChibernate"):
-        subprocess.Popen("shutdown /h /t 0", shell=True)
-
-    elif message.startswith("/locksession"):
-        subprocess.Popen("Rundll32.exe user32.dll,LockWorkStation", shell=True)
-
-    elif message.startswith("/screensaversettings"):
-        subprocess.Popen(
-            "rundll32.exe desk.cpl,InstallScreenSaver toasters.scr", shell=True
-        )
-
-    elif message.startswith("/screensaver") and not message.startswith("/screensaversettings"):
-        if message.endswith(("on", "/screensaver", "start")):
-            subprocess.Popen("%windir%\system32\scrnsave.scr /s", shell=True)
-
-        elif message.endswith(("hard", "full", "black")):
-            subprocess.Popen('"lib/nircmd.exe" monitor off', shell=True)
-            kill_nircmd()
-
-        elif message.endswith(("off", "false")):
-            pyautogui.press("CTRL")
-
-    elif message.startswith("/key"):
-        key = message.replace("/key", "", 1).strip()
-        pyautogui.press(key)
-
-    elif message.startswith("/restartexplorer"):
-        subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
-        time.sleep(0.5)
-        subprocess.Popen("explorer.exe", shell=True)
-        hwnd = window.get_by_name("explorer.exe")
-        if hwnd:
-            window.close(hwnd)
-
-    elif message.startswith(("/kill", "/taskill", "/taskkill", "/forceclose")):
-        window_name = (
-            message.replace("/kill", "")
-            .replace("/taskill", "")
-            .replace("/taskkill", "")
-            .replace("/forceclose", "")
-        )
-        hwnd = window.get_by_name(window_name)
-        if hwnd:
-            log.debug(f"Window '{window_name}' found with handle : {hwnd}")
-        else:
-            log.debug(f"Window '{window_name}' not found")
-        try:
-            window.close(hwnd)
-        except:
-            if not "." in window_name:
-                window_name += ".exe"
-            subprocess.Popen(f"taskkill /f /im {window_name}", shell=True)
-
-    elif message.startswith("/restart"):
-        exe = message.replace("/restart", "")
-        if not "." in exe:
-            exe += ".exe"
-        subprocess.Popen(f"taskkill /f /im {exe}", shell=True)
-        subprocess.Popen(f"start {exe}", shell=True)
-
-    elif message.startswith("/clearclipboard"):
-        subprocess.Popen('cmd /c "echo off | clip"', shell=True)
-
-    elif message.startswith("/write "):
-        keyboard.write(message.replace("/write ", ""))
-
-    elif message.startswith("/writeandsend "):
-        keyboard.write(message.replace("/writeandsend ", ""))
-        keyboard.press("ENTER")
-
-
-    elif message.startswith(("/appvolume +", "/appvolume -", "/appvolume set")):
-        comtypes.CoInitialize()
-        command = message.replace("/appvolume ", "").replace("set ", "set").split()
-        sessions = AudioUtilities.GetAllSessions()
-        for session in sessions:
-            volume = session._ctl.QueryInterface(ISimpleAudioVolume)
-            if session.Process and session.Process.name().lower() == command[1].lower():
-                log.debug("Current volume: %s" % volume.GetMasterVolume())
-                old_volume = volume.GetMasterVolume()
-                old_volume_percent = round(old_volume * 100)
-
-                if command[0].startswith("set"):
-                    target_volume = int(command[0].replace("set", ""))
-                    if target_volume > 100:
-                        target_volume = 100
-                    if target_volume < 0:
-                        target_volume = 0
-                elif command[0].startswith("+"):
-                    if command[0].replace("+", "") == "":
-                        target_volume = old_volume_percent + 1
-                    else:
-                        target_volume = old_volume_percent + int(
-                            command[0].replace("+", "")
-                        )
-                elif command[0].startswith("-"):
-                    if command[0].replace("-", "") == "":
-                        target_volume = old_volume_percent - 1
-                    else:
-                        target_volume = old_volume_percent - int(
-                            command[0].replace("-", "")
-                        )
-                target_volume_float = target_volume / 100.0
-
-                volume.SetMasterVolume(target_volume_float, None)
-                log.debug("New volume: %s" % volume.GetMasterVolume())
-
-        comtypes.CoUninitialize()
-
-    elif message.startswith("/soundcontrol mute"):
-        pyautogui.press("volumemute")
-    elif message.startswith("/mediacontrol playpause"):
-        pyautogui.press("playpause")
-    elif message.startswith("/mediacontrol previous"):
-        pyautogui.press("prevtrack")
-    elif message.startswith("/mediacontrol next"):
-        pyautogui.press("nexttrack")
-
-    elif message.startswith("/speechrecognition"):
-        pyautogui.hotkey("win", "h")
-
-    elif message.startswith("/superAltF4"):
-        hwnd = window.get_focused()
-        if hwnd:
-            window.close(hwnd)
-            subprocess.Popen(f"taskkill /f /im {hwnd}", shell=True)
-            subprocess.Popen(f"taskkill /f /im {hwnd}.exe", shell=True)
-
-    # FIXME: fix /firstplan
-    elif message.startswith("/firstplan"):
-        window_name = message.replace("/firstplan", "").strip()
-
-        hwnd = window.get_by_name(window_name)
-        if hwnd:
-            win32gui.SetForegroundWindow(hwnd)
-            keyboard.press("ENTER")
-            log.success(f"Window '{window_name}' has been brought to the foreground")
-        else:
-            log.error(f"Window '{window_name}' not found")
-            raise RuntimeError(f"Window '{window_name}' not found")
-
-    elif message.startswith("/setmicrophone"):
-        audio.set_microphone_by_name(message.replace("/setmicrophone", "").strip())
-        # PAS FINI
-    elif message.startswith("/setoutputdevice"):
-        audio.set_speakers_by_name(message.replace("/setoutputdevice", "").strip())
-        # PAS FINI
-
-    elif message.startswith("/copy"):
-        if message.strip() == "/copy":
-            pyautogui.hotkey("ctrl", "c")
-        else:
-            msg = message.replace("/copy ", "", 1)
-            if msg.startswith("/copy"):
-                msg = message.replace("/copy", "", 1)
-            pyperclip.copy(msg)
-
-    elif message.startswith("/paste"):
-        if message.strip() == "/paste":
-            pyautogui.hotkey("ctrl", "v")
-        else:
-            msg = message.replace("/paste ", "", 1)
-            if msg.startswith("/paste"):
-                msg = message.replace("/paste", "", 1)
-            pyperclip.copy(msg)
-            pyautogui.hotkey("ctrl", "v")
-
-    elif message.startswith("/cut"):
-        pyautogui.hotkey("ctrl", "x")
-
-    elif message.startswith("/clipboard"):
-        pyautogui.hotkey("win", "v")
-
-    else:
-        if message.startswith("/volume"):
-            audio.change_volume(message)
-            
-        elif message.startswith("/spotify"):
-            return spotify.handle_command(message)
-            
-        elif message.startswith("/obs"):
-            return obs.handle_command(message)
-        
-        # /colorpicker lang:en type:text|name;text-original|name-original;hex;rgb;hsl copy:text;hex;rgb;hsl copy_type:raw|list displaytype:raw|list remove_hex_sharp:false
-        elif message.startswith("/colorpicker"):
-            color_picker.handle_command(message)
-        
-        elif message.startswith(("/openfolder", "/opendir",
-                                "/openfile", "/start")):
-            system.handle_command(message)
-            
-        elif message.startswith("/exec"):
-            exec.python(message)
-
-        elif message.startswith("/batch"):
-            exec.batch(message)
+        "/screensaver": lambda message: (
+            subprocess.Popen("%windir%\system32\scrnsave.scr /s", shell=True) if message.endswith(("on", "/screensaver", "start")) else
+            (subprocess.Popen('"lib/nircmd.exe" monitor off', shell=True) and kill_nircmd() if message.endswith(("hard", "full", "black")) else
+            pyautogui.press("CTRL") if message.endswith(("off", "false")) else None)
+        ),
+        "/superAltF4":lambda:(
+            window.close(window.get_focused()), 
+            subprocess.Popen(f"taskkill /f /im {window.get_focused()}",shell=True),
+            subprocess.Popen(f"taskkill /f /im {window.get_focused()}.exe", shell=True)) if window.get_focused() else None,
+    }
+    
+    for command, func in command_map.items():
+        if isinstance(command, (str, tuple)):
+            if isinstance(command, str) and message.startswith(command) or isinstance(command, tuple) and any(cmd in message for cmd in command):
+                result = func(message) if 'message' in func.__code__.co_varnames else func()
+                return result if result is not None else ""
 
         
         for commands in get_global_variable('all_func').values():
             for command, func in commands.items():
-                if message.replace('/', '').startswith(command):
-                    params = inspect.signature(func).parameters
-                    param_names = [param for param in params]
-                    
-                    command_arguments = command_arguments.replace(f"/{command} ", '', 1)
+                if message.lstrip('/').startswith(command):
+                    command_arguments = message[len(command)+1:].strip()
                     commandArgs = command_arguments.split("<|§|>")
-                    
-                    if param_names == []:
-                        func()
-                    else:
+
+                    if inspect.signature(func).parameters:
                         func(*commandArgs)
+                    else:
+                        func()
+                    break
                         
     return jsonify({"success": True})

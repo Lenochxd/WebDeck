@@ -29,6 +29,17 @@
       div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
       .ui-dialog .ui-state-error { padding: .3em; }
       .validateTips { border: 1px solid transparent; padding: 0.3em; }
+      .notification {z-index: 2;position: fixed;bottom: 20px;right: 20px;background-color: rgb(0, 211, 0);color: black;padding: 15px;border-radius: 5px;opacity: 0;transition: opacity 0.5s ease-in-out;}
+       .confirm-overlay {z-index: 2;position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);display: flex;justify-content: center;align-items: center;}
+        .confirm-box {background: white;padding: 15px;text-align: center;border-radius: 5px;}
+        .confirm-buttons {margin-top: 10px;}
+        .confirm-button {margin: 5px;padding: 5px 10px;cursor: pointer;}
+
+
+
+
+        .search-bar {width: 100%;padding: 10px;margin-bottom: 10px;border: 1px solid #ccc;border-radius: 4px;font-size: 16px;}
+        .search-bar:focus {outline: none;border-color: #007bff;}
     </style>
 
 
@@ -214,14 +225,19 @@
     </style>
 
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
-      {{text('open_folder')}}: 
+      {{text('open_folder')}}:
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% set folder_id = folder_id.replace('"', '&quot;') %}
-        <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)">
-          {{ folder_id }}
-        </button>
+        <div style="display: inline-block; margin-right: 10px;">
+          <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)">
+            {{ folder_id }}
+            <svg class="delete-icon" onclick="event.stopPropagation() ; DeleteFolder('{{ folder_id }}')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M11.742 4.258a1 1 0 0 0-1.414 0L8 6.586 5.672 4.258a1 1 0 1 0-1.414 1.414L6.586 8 4.258 10.328a1 1 0 0 0 1.414 1.414L8 9.414l2.328 2.328a1 1 0 0 0 1.414-1.414L9.414 8l2.328-2.328a1 1 0 0 0 0-1.414z"/>
+            </svg>
+          </button>
+        </div>
       {% endfor %}
-    </div>
+    </div>    
 
     {% for folder_id, value in config["front"]["buttons"].items() %}
       <div id="folder-{{ folder_id }}" class="buttons-center invisible">
@@ -267,43 +283,26 @@
                 {% endif %}
 
                 {% if config["front"]["buttons"][folder_id][button_id]["message"] %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/fullscreen' %}
-                    {% set class = class + " fullscreen-btn" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom in' %}
-                    {% set class = class + " zoom-in-btn" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/zoom out' %}
-                    {% set class = class + " zoom-out-btn" %}
-                    {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div expand' %}
-                    {% set class = class + " expand-btn" %}
-                    {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/buttons-div shrink' %}
-                    {% set class = class + " shrink-btn" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-out' %}
-                    {% set class = class + " box-zoom-out" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/box-zoom-in' %}
-                    {% set class = class + " box-zoom-in" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-dezoom' %}
-                    {% set class = class + " dezoom-btn" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/page-zoom' %}
-                    {% set class = class + " zoom-btn" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-modal' %}
-                    {% set class = class + " open-config-modal" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config' %}
-                    {% set class = class + " open-config-modal" %}
-                  {% endif %}
-                  {% if config["front"]["buttons"][folder_id][button_id]["message"].strip() == '/open-config-modal' %}
-                    {% set class = class + " open-config-modal" %}
-                  {% endif %}
+                {% set message = config["front"]["buttons"][folder_id][button_id]["message"].strip() %}
+                {% set class_map = {
+                    '/fullscreen': 'fullscreen-btn',
+                    '/zoom in': 'zoom-in-btn',
+                    '/zoom out': 'zoom-out-btn',
+                    '/buttons-div expand': 'expand-btn',
+                    '/buttons-div shrink': 'shrink-btn',
+                    '/box-zoom-out': 'box-zoom-out',
+                    '/box-zoom-in': 'box-zoom-in',
+                    '/page-dezoom': 'dezoom-btn',
+                    '/page-zoom': 'zoom-btn',
+                    '/open-modal': 'open-config-modal',
+                    '/open-config': 'open-config-modal',
+                    '/open-config-modal': 'open-config-modal'
+                } %}
+                
+                {% if message in class_map %}
+                    {% set class = class + " " + class_map[message] %}
                 {% endif %}
+            {% endif %}
 
                 {% if button_config["message"] and button_config["message"].startswith("/folder") %}
                   {% set onclick = "onclick=\"folder(`" + button_config['message'].replace('/folder ', '').replace('"','') + "`)\" onclickhandler=\"folder(`" + button_config['message'].replace('/folder ', '').replace('"','') + "`)\"" %}
@@ -1101,7 +1100,7 @@
                   {% for command, command_value in category_value.items() %}
                     {% if not command == "CATEGORY-SETTINGS" %}
                       {% set arg_modal_ID = str(arg_modal_ID1) + "X" + str(loop.index0) %}
-                      {# {{ mdebug(command) }} #}
+                      
                       <div class="dropdown-item-container">
                         {% set command_name = command %}
                         {% set command_id = command_value["command"] %}
@@ -1278,8 +1277,66 @@
             }
           }
       }
+      function showNotification(message) {
+        // Crear el div de notificación
+        let notification = document.createElement("div");
+        notification.className = "notification";
+        notification.innerText = message;
+        
+        // Añadirlo al body
+        document.body.appendChild(notification);
 
-      function folder(folder_id) {
+        // Mostrar con opacidad 1
+        setTimeout(() => {
+            notification.style.opacity = "1";
+        }, 100); 
+
+        // Ocultar después de 3 segundos
+        setTimeout(() => {
+            notification.style.opacity = "0";
+            setTimeout(() => {
+                notification.remove(); // Eliminar el div
+            }, 500); // Espera a que termine la transición
+        }, 3000);
+    }
+    
+    function customConfirm(message, callback) {
+    let overlay = document.createElement("div");
+    overlay.className = "confirm-overlay";
+
+    let confirmBox = document.createElement("div");
+    confirmBox.className = "confirm-box";
+    confirmBox.innerHTML = `<p>${message}</p>`;
+
+    let buttons = document.createElement("div");
+    buttons.className = "confirm-buttons";
+
+    let yesButton = document.createElement("button");
+    yesButton.className = "confirm-button";
+    yesButton.innerText = "Aceptar";
+
+    let noButton = document.createElement("button");
+    noButton.className = "confirm-button";
+    noButton.innerText = "Cancelar";
+
+    yesButton.onclick = function () {
+        document.body.removeChild(overlay);
+        callback(true);
+    };
+
+    noButton.onclick = function () {
+        document.body.removeChild(overlay);
+        callback(false);
+    };
+
+    buttons.appendChild(yesButton);
+    buttons.appendChild(noButton);
+    confirmBox.appendChild(buttons);
+    overlay.appendChild(confirmBox);
+    document.body.appendChild(overlay);
+}
+
+function folder(folder_id) {
         var elements = document.querySelectorAll('.buttons-center');
 
         // Parcourt chaque élément
@@ -1296,6 +1353,26 @@
           folderElement.classList.add('invisible');
         }
       }
+
+function DeleteFolder(folder_id) {
+        var folderElement = document.getElementById('folder-' + folder_id);                
+        if (folderElement) {
+          customConfirm("¿Quieres borrar la carpeta?", function (resultado) {
+            if (resultado) {
+              folderElement.remove();
+              showNotification("folder deleted");
+              setTimeout('', 5000);
+              location.reload();
+              }            
+});
+
+        } else {
+            showNotification("folder not found")
+        }
+    }
+
+
+
 
 
       function togglePasswordVisibility(id, iconid) {
@@ -1646,71 +1723,77 @@
       
         // Fonction pour afficher la boîte de dialogue de confirmation de suppression
         function showDeleteConfirmation(event) {
-            if (editorMode === 1 && confirm(`{{text("button_delete_confirmation")}}`)) {
-                ifModif = 1;
-                
-                let closest_form = event.target.closest('form.form');
-                if (closest_form === null) {
-                    closest_form = event.target.closest('div.void');
-                }
+            if (editorMode === 1) {
+    customConfirm(`{{text("button_delete_confirmation")}}`, function(response) {
+        if (response) {
+            ifModif = 1;
 
-                const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
-                const formClass = closest_form.className;
-                const formClassMatch = formClass.match(/form-(\d+)/);
-                const formNumber = formClassMatch ? formClassMatch[1] : '';
-                const formIndex = parseInt(formNumber) - 1;
-
-                const voidDiv = document.createElement('div');
-                voidDiv.classList.add('void');
-                voidDiv.classList.add(`form-${formNumber}`);
-                voidDiv.id = closest_form.id;
-                const addButtonDiv = document.createElement('div');
-                addButtonDiv.classList.add('add-button');
-                addButtonDiv.style.display = 'flex';
-                addButtonDiv.style.top = '40.3675';
-                const checkboxDiv = document.createElement('div');
-                checkboxDiv.classList.add('checkbox');
-                checkboxDiv.style.display = 'none';
-                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-                svg.setAttribute('width', '20');
-                svg.setAttribute('height', '20');
-                svg.setAttribute('viewBox', '0 0 24 24');
-                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('d', 'M12 4v16m8-8H4');
-                path.setAttribute('stroke', 'currentColor');
-                path.setAttribute('stroke-width', '2');
-                path.setAttribute('stroke-linecap', 'round');
-                path.setAttribute('stroke-linejoin', 'round');
-      
-                svg.appendChild(path);
-                addButtonDiv.appendChild(svg);
-                voidDiv.appendChild(checkboxDiv);
-                voidDiv.appendChild(addButtonDiv);
-                
-                console.log(`${parentId} > ${formNumber}`);
-                
-                addButtonDiv.setAttribute('add_FOLDER', parentId);
-                addButtonDiv.setAttribute('add_ID', formNumber);
-
-                if (tempEditorConfig === null || tempEditorConfig == {}) {
-                  loadConfig().then((config) => {
-                    var tempEditorConfig = loadConfig();
-                  });
-                  console.log(tempEditorConfig);
-                }
-                tempEditorConfig['front']['buttons'][parentId][formNumber] = {
-                  "VOID": "VOID"
-                };
-                closest_form.parentNode.replaceChild(voidDiv, closest_form);
-
-                console.log("The button has been removed.");
-                console.log(tempEditorConfig);
-                config = tempEditorConfig;
-
-                reloadEditorEvents();
-
+            let closest_form = event.target.closest('form.form');
+            if (closest_form === null) {
+                closest_form = event.target.closest('div.void');
             }
+
+            const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
+            const formClass = closest_form.className;
+            const formClassMatch = formClass.match(/form-(\d+)/);
+            const formNumber = formClassMatch ? formClassMatch[1] : '';
+            const formIndex = parseInt(formNumber) - 1;
+
+            const voidDiv = document.createElement('div');
+            voidDiv.classList.add('void');
+            voidDiv.classList.add(`form-${formNumber}`);
+            voidDiv.id = closest_form.id;
+            const addButtonDiv = document.createElement('div');
+            addButtonDiv.classList.add('add-button');
+            addButtonDiv.style.display = 'flex';
+            addButtonDiv.style.top = '40.3675';
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.classList.add('checkbox');
+            checkboxDiv.style.display = 'none';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            svg.setAttribute('width', '20');
+            svg.setAttribute('height', '20');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M12 4v16m8-8H4');
+            path.setAttribute('stroke', 'currentColor');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+
+            svg.appendChild(path);
+            addButtonDiv.appendChild(svg);
+            voidDiv.appendChild(checkboxDiv);
+            voidDiv.appendChild(addButtonDiv);
+
+            console.log(`${parentId} > ${formNumber}`);
+
+            addButtonDiv.setAttribute('add_FOLDER', parentId);
+            addButtonDiv.setAttribute('add_ID', formNumber);
+
+            if (tempEditorConfig === null || tempEditorConfig == {}) {
+                loadConfig().then((config) => {
+                    var tempEditorConfig = loadConfig();
+                });
+                console.log(tempEditorConfig);
+            }
+            tempEditorConfig['front']['buttons'][parentId][formNumber] = {
+                "VOID": "VOID"
+            };
+            closest_form.parentNode.replaceChild(voidDiv, closest_form);
+
+            console.log("The button has been removed.");
+            console.log(tempEditorConfig);
+            config = tempEditorConfig;
+
+            reloadEditorEvents();
+        } else {
+            console.log("Action cancelled");
+        }
+    });
+}
+
         }
       
         function showEditWindow(event) {
@@ -1935,8 +2018,8 @@
               })
               .then(function(response) {
                   if (response.success) {
-                      // Le serveur a enregistré les données avec succès
-                      alert(`{{text("settings_save_success")}}`);
+                      // Le serveur a enregistré les données avec succès                      
+                      showNotification('{{text("settings_save_success")}}');
                       location.reload();
                   } else {
                       // Le serveur a retourné une erreur
@@ -1947,7 +2030,6 @@
               .catch(function(error) {
                   // Une erreur s'est produite
                   showError(error.message);
-                  {# alert(error.message); #}
               });
           }
           console.log('La valeur de editorMode a été modifiée :', editorMode);
@@ -2337,15 +2419,15 @@
                     }
                   })
                   .then(function(response) {
-                    if (response.success) {
-                      alert(`{{text("settings_save_success")}}`);
+                    if (response.success) {                      
+                      showNotification(`{{text("settings_save_success")}}`);
                     } else {
                       if (response.message && response.message !== '') {
-                        showError(response.message);
-                        alert(response.message);
+                        showError(response.message);                        
+                        showNotification(response.message)
                       } else {
-                        showError('Error :/');
-                        alert(`{{text("settings_save_error")}}`);
+                        showError('Error :/');                        
+                        showNotification(`{{text("settings_save_error")}}`);
                       }
                     }
                   })
@@ -2379,19 +2461,22 @@
                       const otherClass = divElement.classList[1];
                       if (otherClass !== undefined || eval(otherClass) !== '-') {
                         try {
-                          let newValue;
-                          if (otherClass.includes('percent')) {
-                            newValue = eval(otherClass) + '%';
-                          } else if (otherClass.includes('_gb')) {
-                            newValue = eval(otherClass) + ' gb';
-                          } else if (otherClass.includes('_mb')) {
-                            newValue = eval(otherClass) + ' mb';
-                          } else if (otherClass.includes('bytes')) {
-                            newValue = eval(otherClass) + ' bytes';
-                          } else {
-                            newValue = eval(otherClass);
+                          const suffixes = {
+                            'percent': '%',
+                            '_gb': ' gb',
+                            '_mb': ' mb',
+                            'bytes': ' bytes'
+                          };
+
+                          let newValue = eval(otherClass);
+                          for (const key in suffixes) {
+                            if (otherClass.includes(key)) {
+                              newValue += suffixes[key];
+                              break;
+                            }
                           }
-                          if (!newValue.includes('undefined')) {
+
+                          if (!String(newValue).includes('undefined')) {
                             divElement.textContent = newValue;
                           }
                         } catch (error) {
