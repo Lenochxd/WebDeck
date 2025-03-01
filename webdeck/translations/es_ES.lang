@@ -139,6 +139,9 @@ delete_folder=Eliminar Carpeta
 delete_folder_confirm=¿Estas seguro de eliminar esta carpeta?
 folder_not_found=Carpeta no encontrada
 
+generic_accept=Aceptar
+generic_cancel=Cancelar
+
 quit_without_saving=Salir sin guardar
 save_and_exit=Guardar y salir
 swap_buttons=Intercambiar 2 botones

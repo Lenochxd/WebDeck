@@ -1311,11 +1311,11 @@ function showNotification(message) {
 
     let yesButton = document.createElement("button");
     yesButton.className = "confirm-button";
-    yesButton.innerText = "Aceptar";
+    yesButton.innerText = "{{ text('generic_accept') }}";
 
     let noButton = document.createElement("button");
     noButton.className = "confirm-button";
-    noButton.innerText = "Cancelar";
+    noButton.innerText = '{{ text("generic_cancel") }}';
 
     yesButton.onclick = function () {
         document.body.removeChild(overlay);
