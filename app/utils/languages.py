@@ -145,4 +145,4 @@ def text(text=None, lang=None) -> str:
             raise KeyError(f"Language '{lang}' not found in lang_files")
         # raise KeyError(f"Language '{lang}' not found in lang_files")
     
-    return lang_files[lang].get(text, lang_files.get("en_US", {}).get(text, text))
+    return lang_files[lang].get(text, text)
