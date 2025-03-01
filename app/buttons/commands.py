@@ -28,6 +28,7 @@ from . import spotify
 from . import obs
 from . import color_picker
 from . import system
+from . import command_actions
 
 
 
@@ -103,6 +104,10 @@ def handle_command(message=None):
     elif message.startswith("/key"):
         key = message.replace("/key", "", 1).strip()
         pyautogui.press(key)
+
+    elif message.startswith("/delete_folder"):
+        command_actions.delete_folder(message.replace("/delete_folder ", "")),
+        
 
     elif message.startswith("/restartexplorer"):
         subprocess.Popen("taskkill /f /im explorer.exe", shell=True)
