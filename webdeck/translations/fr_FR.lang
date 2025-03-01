@@ -135,6 +135,13 @@ exit_editor_mode=Quitter le mode éditeur
 
 open_folder=Ouvrir le dossier
 
+delete_folder=Supprimer le dossier
+delete_folder_confirm=Êtes-vous sûr de vouloir supprimer le dossier ?
+folder_not_found=Dossier introuvable
+
+generic_accept=Accepter
+generic_cancel=Annuler
+
 quit_without_saving=Quitter sans sauvegarder
 save_and_exit=Sauvegarder et quitter
 swap_buttons=Échanger des boutons

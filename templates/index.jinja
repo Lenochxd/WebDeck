@@ -214,12 +214,17 @@
     </style>
 
     <div id="EditorButtons-Folders" style="color: white; display: none; position: fixed; top: 0; left: 0;">
-      {{text('open_folder')}}: 
+      {{text('open_folder')}}:
       {% for folder_id, value in config["front"]["buttons"].items() %}
         {% set folder_id = folder_id.replace('"', '&quot;') %}
-        <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)">
-          {{ folder_id }}
-        </button>
+        <div style="display: inline-block; margin-right: 10px;">
+          <button class="button EditorButtons-Folder" onclick="folder(`{{ folder_id }}`)" style="display: flex; justify-content: center;align-items: center;">
+            {{ folder_id }}
+            <svg class="delete-icon" onclick="event.stopPropagation(); deleteFolder('{{ folder_id }}')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M11.742 4.258a1 1 0 0 0-1.414 0L8 6.586 5.672 4.258a1 1 0 1 0-1.414 1.414L6.586 8 4.258 10.328a1 1 0 0 0 1.414 1.414L8 9.414l2.328 2.328a1 1 0 0 0 1.414-1.414L9.414 8l2.328-2.328a1 1 0 0 0 0-1.414z"/>
+            </svg>
+          </button>
+        </div>
       {% endfor %}
     </div>
 
@@ -1260,7 +1265,6 @@
     {% endif %}
 
     <script type="text/javascript">
-
       if (window.location !== window.parent.location) {
           console.log("La page est chargée dans un iframe.");
           var goFullscreen = window.parent.goFullscreenIFRAME;
@@ -1569,7 +1573,7 @@
 
         fetch('/get_config')
           .then(function (response) {
-            var tempEditorConfig = {};
+            tempEditorConfig = {};
             if (response.ok) {
               return response.json();
             } else {
@@ -1599,6 +1603,108 @@
         });
 
         // =========== EDITORMODE ======== START
+        function createVoidButton(event = null, form = null) {
+            ifModif = 1;
+            
+            let closest_form;
+            if (form === null && event !== null) {
+                closest_form = event.target.closest('form.form');
+                if (closest_form === null) {
+                    closest_form = event.target.closest('div.void');
+                }
+            } else {
+                closest_form = form;
+            }
+    
+            const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
+            const formClass = closest_form.className;
+            const formClassMatch = formClass.match(/form-(\d+)/);
+            const formNumber = formClassMatch ? formClassMatch[1] : '';
+            const formIndex = parseInt(formNumber) - 1;
+    
+            const voidDiv = document.createElement('div');
+            voidDiv.classList.add('void');
+            voidDiv.classList.add(`form-${formNumber}`);
+            voidDiv.id = closest_form.id;
+            const addButtonDiv = document.createElement('div');
+            addButtonDiv.classList.add('add-button');
+            addButtonDiv.style.display = 'flex';
+            addButtonDiv.style.top = '40.3675';
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.classList.add('checkbox');
+            checkboxDiv.style.display = 'none';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            svg.setAttribute('width', '20');
+            svg.setAttribute('height', '20');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M12 4v16m8-8H4');
+            path.setAttribute('stroke', 'currentColor');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+    
+            svg.appendChild(path);
+            addButtonDiv.appendChild(svg);
+            voidDiv.appendChild(checkboxDiv);
+            voidDiv.appendChild(addButtonDiv);
+            
+            console.log(`${parentId} > ${formNumber}`);
+            
+            addButtonDiv.setAttribute('add_FOLDER', parentId);
+            addButtonDiv.setAttribute('add_ID', formNumber);
+    
+            if (tempEditorConfig === null || tempEditorConfig == {}) {
+                loadConfig().then((config) => {
+                    tempEditorConfig = loadConfig();
+                });
+                console.log(tempEditorConfig);
+            }
+            tempEditorConfig['front']['buttons'][parentId][formNumber] = {
+                "VOID": "VOID"
+            };
+            closest_form.parentNode.replaceChild(voidDiv, closest_form);
+    
+            console.log("The button has been removed.");
+            console.log(tempEditorConfig);
+            config = tempEditorConfig;
+    
+            reloadEditorEvents();
+        }
+
+        window.deleteFolder = function(folder_name) {
+          const folderElement = document.getElementById('folder-' + folder_name);                
+          if (folderElement) {
+            if (confirm("{{text('delete_folder_confirm')}}")) {
+              // Remove the folder content
+              folderElement.remove();
+
+              // Remove the folder buttons
+              const folderButtons = document.querySelectorAll(`button[onclick="folder(\`${folder_name}\`)"]`);
+              for (let i = 0; i < folderButtons.length; i++) {
+                if (folderButtons[i].classList.contains('wd_button')) {
+                  createVoidButton(null, folderButtons[i].parentNode);
+
+                } else {
+                  folderButtons[i].remove();
+                }
+              }
+
+              // Remove the folder from the config
+              // fetch("/delete_folder", {
+              //  method: 'POST',
+              //  headers: {
+              //    'Content-Type': 'application/json'
+              //  },
+              //  body: JSON.stringify({ folder_name: folder_name })
+              //})
+              setTimeout('', 5000);
+              // location.reload();
+            }
+          }
+        }
+
         var openFolderDivs = document.querySelectorAll('.swapMode-open-folder');
         var isMouseOverOpenFolder = false;
         
@@ -1646,70 +1752,8 @@
       
         // Fonction pour afficher la boîte de dialogue de confirmation de suppression
         function showDeleteConfirmation(event) {
-            if (editorMode === 1 && confirm(`{{text("button_delete_confirmation")}}`)) {
-                ifModif = 1;
-                
-                let closest_form = event.target.closest('form.form');
-                if (closest_form === null) {
-                    closest_form = event.target.closest('div.void');
-                }
-
-                const parentId = closest_form.parentNode.id.replace(/^folder-/, '');
-                const formClass = closest_form.className;
-                const formClassMatch = formClass.match(/form-(\d+)/);
-                const formNumber = formClassMatch ? formClassMatch[1] : '';
-                const formIndex = parseInt(formNumber) - 1;
-
-                const voidDiv = document.createElement('div');
-                voidDiv.classList.add('void');
-                voidDiv.classList.add(`form-${formNumber}`);
-                voidDiv.id = closest_form.id;
-                const addButtonDiv = document.createElement('div');
-                addButtonDiv.classList.add('add-button');
-                addButtonDiv.style.display = 'flex';
-                addButtonDiv.style.top = '40.3675';
-                const checkboxDiv = document.createElement('div');
-                checkboxDiv.classList.add('checkbox');
-                checkboxDiv.style.display = 'none';
-                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-                svg.setAttribute('width', '20');
-                svg.setAttribute('height', '20');
-                svg.setAttribute('viewBox', '0 0 24 24');
-                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('d', 'M12 4v16m8-8H4');
-                path.setAttribute('stroke', 'currentColor');
-                path.setAttribute('stroke-width', '2');
-                path.setAttribute('stroke-linecap', 'round');
-                path.setAttribute('stroke-linejoin', 'round');
-      
-                svg.appendChild(path);
-                addButtonDiv.appendChild(svg);
-                voidDiv.appendChild(checkboxDiv);
-                voidDiv.appendChild(addButtonDiv);
-                
-                console.log(`${parentId} > ${formNumber}`);
-                
-                addButtonDiv.setAttribute('add_FOLDER', parentId);
-                addButtonDiv.setAttribute('add_ID', formNumber);
-
-                if (tempEditorConfig === null || tempEditorConfig == {}) {
-                  loadConfig().then((config) => {
-                    var tempEditorConfig = loadConfig();
-                  });
-                  console.log(tempEditorConfig);
-                }
-                tempEditorConfig['front']['buttons'][parentId][formNumber] = {
-                  "VOID": "VOID"
-                };
-                closest_form.parentNode.replaceChild(voidDiv, closest_form);
-
-                console.log("The button has been removed.");
-                console.log(tempEditorConfig);
-                config = tempEditorConfig;
-
-                reloadEditorEvents();
-
+            if (editorMode === 1 && (confirm(`{{text("button_delete_confirmation")}}`) || force)) {
+                createVoidButton(event = event, form = null);
             }
         }
       
@@ -1871,7 +1915,7 @@
             if (editorMode === 1) {
                 fetch('/get_config')
                     .then(function (response) {
-                        var tempEditorConfig = {};
+                        tempEditorConfig = {};
                         if (response.ok) {
                             return response.json();
                         } else {

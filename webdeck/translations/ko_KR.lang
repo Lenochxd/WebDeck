@@ -135,6 +135,13 @@ exit_editor_mode=편집 모드 종료
 
 open_folder=폴더 열기
 
+delete_folder=폴더 삭제
+delete_folder_confirm=폴더를 정말 삭제하시겠습니까?
+folder_not_found=폴더를 찾을 수 없습니다
+
+generic_accept=수락
+generic_cancel=취소
+
 quit_without_saving=저장하지 않고 종료
 save_and_exit=저장 후 종료
 swap_buttons=버튼간 스왑
