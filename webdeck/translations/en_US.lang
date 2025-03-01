@@ -135,10 +135,6 @@ exit_editor_mode=Exit editor mode
 
 open_folder=Open Folder
 
-delete_folder=Delete Folder
-delete_folder_confirm=Are you sure you want to delete the folder?
-folder_not_found=Folder not found
-
 quit_without_saving=Quit without saving
 save_and_exit=Save and exit
 swap_buttons=Swap 2 Buttons
