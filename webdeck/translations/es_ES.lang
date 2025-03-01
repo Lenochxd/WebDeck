@@ -1,5 +1,5 @@
-# Translation file: en_US.lang
-# Author: Lenoch — Feel free to submit a PR for any corrections:
+# Translation file: es_ES.lang
+# Author: Dalinnar — Feel free to submit a PR for any corrections:
 # GitHub: https://github.com/Lenochxd/WebDeck/pulls
 # Discord: https://discord.gg/tUPsYHAGfm
 
@@ -19,217 +19,217 @@
 
 
 
-native_name=English
-english_name=English
-lang_code=en
-author_name=Lenoch
-author_github_username=Lenochxd
+native_name=Español
+english_name=Spanish
+lang_code=es
+author_name=Dalinnar
+author_github_username=Dalinnar
 
 
 // -- Welcome Message --
 
-welcome_message_window_title=Welcome
-welcome_message_label_1=Welcome to WebDeck!
-welcome_message_label_2=You can find the tray icon here for quick access.
-welcome_message_button_dont_show_again=Don't show again
-welcome_message_button_ok=OK
+welcome_message_window_title=Bienvenido
+welcome_message_label_1=¡Bienvenido a WebDeck!
+welcome_message_label_2=Aquí puedes encontrar el icono de la bandeja para un acceso rápido.
+welcome_message_button_dont_show_again=No mostrar de nuevo
+welcome_message_button_ok=Ok
 
 
 // -- Tray icon --
 
-qr_code=QR Code
-options=Options
-open_config=Open Config
-restart_application=Restart WebDeck
-edit_port=Edit port
-randomize=Randomize
-change_server_port=Change server port
-enter_new_port=Enter new port:
-fix_firewall=Fix firewall
-server_status=Server Status:
-server_online=🟢 Online
-server_offline=🔴 Offline
-server_loading=Loading...
-report_issue=Report an Issue
-exit=Quit
+qr_code=Código QR
+options=Opciones
+open_config=Abrir configuración
+restart_application=Reiniciar WebDeck
+edit_port=Editar puerto
+randomize=Aleatorizar
+change_server_port=Cambiar puerto del servidor
+enter_new_port=Introducir nuevo puerto:
+fix_firewall=Reparar firewall
+server_status=Estado del servidor:
+server_online=🟢 En línea
+server_offline=🔴 Fuera de línea
+server_loading=Cargando...
+report_issue=Reportar un problema
+exit=Salir
 
 
 // -- Errors --
 
-open_github_issue_prompt_title=Open GitHub Issue
-open_github_issue_prompt_message=Do you want to open a GitHub issue for this error? (Recommended)
+open_github_issue_prompt_title=Abrir un problema en GitHub
+open_github_issue_prompt_message=¿Quieres abrir un problema en GitHub para este error? (Recomendado)
 
-copy_to_clipboard_prompt_title=Copy to Clipboard
-copy_to_clipboard_prompt_message=Do you want to copy the error message to the clipboard?
+copy_to_clipboard_prompt_title=Copiar al portapapeles
+copy_to_clipboard_prompt_message=¿Quieres copiar el mensaje de error al portapapeles?
 
-server_disconnected=Server Disconnected
-failed=Failed
+server_disconnected=Servidor Desconectado
+failed=Fallido
 error=Error
-error_occurred=An error has occurred
+error_occurred=Ha ocurrido un error
 
-settings_load_error=An error occurred while loading settings.
-settings_save_error=An error occurred while saving settings.
+settings_load_error=Ha ocurrido un error al cargar la configuración.
+settings_save_error=Ha ocurrido un error al guardar la configuración.
 
-auto_update_error=Error while updating WebDeck, please update it manually from https://github.com/Lenochxd/WebDeck/releases/latest
+auto_update_error=Error al actualizar WebDeck, por favor actualízalo manualmente desde https://github.com/Lenochxd/WebDeck/releases/latest
 
-no_files_found_error=No files were found
+no_files_found_error=No se encontraron archivos
 
-ffmpeg_not_installed_error=Installing FFMPEG...
-vlc_not_installed_error=VLC is not installed!
-mp3_loading_error=Error while loading MP3 file named.
+ffmpeg_not_installed_error=Instalando FFMPEG...
+vlc_not_installed_error=¡VLC no está instalado!
+mp3_loading_error=Error al cargar el archivo MP3 llamado.
 
-obs_failed_connection_error=Failed connection to obs.
-obs_error_10061=The websocket server cannot be found. (WinError 10061)
-obs_error_incorrect_password=Password may be incorrect.
-obs_already_recording=OBS is already recording.
-obs_already_streaming=OBS is already streaming.
-obs_already_vcam=Virtual cam is already started.
-obs_not_recording=OBS is not recording.
-obs_not_streaming=OBS is not streaming.
-obs_no_vcam=Virtual cam is already stopped.
-obs_no_recording_can_be_paused=No recording can be paused.
-obs_no_recording_is_paused=No recording is paused.
+obs_failed_connection_error=Conexión fallida con obs.
+obs_error_10061=No se puede encontrar el servidor websocket. (WinError 10061)
+obs_error_incorrect_password=La contraseña puede ser incorrecta.
+obs_already_recording=OBS ya está grabando.
+obs_already_streaming=OBS ya está transmitiendo.
+obs_already_vcam=La cámara virtual ya está iniciada.
+obs_not_recording=OBS no está grabando.
+obs_not_streaming=OBS no está transmitiendo.
+obs_no_vcam=La cámara virtual ya está detenida.
+obs_no_recording_can_be_paused=No se puede pausar ninguna grabación.
+obs_no_recording_is_paused=No hay grabación pausada.
 
-spotify_not_initialized=Spotify token is not initialized. Please check if the client ID and client secret are set correctly.
-spotify_apply_volume_error=Error, unable to apply volume
-spotify_volume_prenium_error=Error, unable to apply volume because Spotify Prenium is required
-spotify_no_active_device_error=No active Spotify device found. Please ensure that Spotify is running and active.
-spotify_no_track_playing_error=No track currently playing.
-spotify_playlist_not_found_error=Playlist named '%playlist_name%' not found.
+spotify_not_initialized=El token de Spotify no está inicializado. Por favor, revisa si el ID de cliente y el secreto de cliente están configurados correctamente.
+spotify_apply_volume_error=Error, no se puede aplicar el volumen
+spotify_volume_prenium_error=Error, no se puede aplicar el volumen porque se requiere Spotify Premium
+spotify_no_active_device_error=No se encontró un dispositivo activo de Spotify. Por favor, asegúrate de que Spotify esté en ejecución y activo.
+spotify_no_track_playing_error=No se está reproduciendo ninguna pista actualmente.
+spotify_playlist_not_found_error=No se encontró la lista de reproducción llamada '%playlist_name%'.
 
 
 // -- Success messages --
 
-settings_save_success=Settings saved successfully.
-downloaded_successfully=File downloaded successfully
-folder_created_successfully=Folder created successfully!
+settings_save_success=Configuración guardada con éxito.
+downloaded_successfully=Archivo descargado con éxito.
+folder_created_successfully=Carpeta creada con éxito.
 
-spotify_follow_artist_success=Subscribed to %artist_name%.
-spotify_unfollow_artist_success=Unsubscribed from %artist_name%.
+spotify_follow_artist_success=Suscrito a %artist_name%.
+spotify_unfollow_artist_success=No suscrito de %artist_name%.
 
 
 // -- Button configuration --
 
-add_a_button=Add a button
-configure_your_button=Configure your button
+add_a_button=Agregar un botón
+configure_your_button=Configura tu botón
 
-image=Image
-image_size=Image Size
-background_color=Background Color
-background_color_hex=Background Color (HEX)
-button_title=Button Title
-edit_command=Command (experimental)
+image=Imagen
+image_size=Tamaño de la imagen
+background_color=Color de fondo
+background_color_hex=Color de fondo (HEX)
+button_title=Título del botón
+edit_command=Comando (experimental)
 
-select_your_file=Select your file
-no_file_chosen=No file chosen
+select_your_file=Selecciona tu archivo
+no_file_chosen=Ningún archivo seleccionado
 
-choose_option=Choose an option
+choose_option=Elige una opción
 
-button_delete_confirmation=Do you really want to remove this button?
+button_delete_confirmation=¿Realmente quieres eliminar este botón?
 
 
 // -- Editor --
 
-enter_editor_mode=Enter editor mode
-exit_editor_mode=Exit editor mode
+enter_editor_mode=Entrar en modo editor
+exit_editor_mode=Salir del modo editor
 
-open_folder=Open Folder
+open_folder=Abrir carpeta
 
-delete_folder=Delete Folder
-delete_folder_confirm=Are you sure you want to delete the folder?
-folder_not_found=Folder not found
+delete_folder=Eliminar Carpeta
+delete_folder_confirm=¿Estas seguro de eliminar esta carpeta?
+folder_not_found=Carpeta no encontrada
 
-generic_accept=Accept
-generic_cancel=Cancel
+generic_accept=Aceptar
+generic_cancel=Cancelar
 
-quit_without_saving=Quit without saving
-save_and_exit=Save and exit
-swap_buttons=Swap 2 Buttons
-stop_swap_mode=Stop Swap Mode
-no_changes_to_undo=There are no changes to undo.
+quit_without_saving=Salir sin guardar
+save_and_exit=Guardar y salir
+swap_buttons=Intercambiar 2 botones
+stop_swap_mode=Detener modo de intercambio
+no_changes_to_undo=No hay cambios para deshacer.
 
 
 // Settings tab
-configuration=Configuration
-settings=Settings
+// Pestaña de Configuración
+configuration=Configuración
+settings=Ajustes
 
-see_patchnotes=See patchnotes
-github_issue=Report an issue on GitHub
+see_patchnotes=Ver notas de la versión
+github_issue=Reportar un problema en GitHub
 
-language=Language
-config-windows_startup=Start on Windows startup
-auto_updates=Auto updates
+language=Idioma
+config-windows_startup=Iniciar al iniciar Windows
+auto_updates=Actualizaciones automáticas
 
-soundboard=Soundboard
-input_device=Input device
-output_device=Output device (vbcable)
-toggle_soundboard=Soundboard enabled
-ear_soundboard=Ear Soundboard
+soundboard= soundboard
+input_device=Dispositivo de entrada
+output_device=Dispositivo de salida (vbcable)
+toggle_soundboard=Activar/Desactivar soundboard
+ear_soundboard=Activar/Desactivar retorno de sonido
 
-spotify_api=Spotify API
-username=Username
+spotify_api=API de Spotify
+username=Nombre de usuario
 
 obs_studio=OBS Studio
 host=Host
-port=Port
-password=Password
+port=Puerto
+password=Contraseña
 
+visuals=Visuales
 
-visuals=Visuals
+gridsize=Tamaño de la cuadrícula
+height=Altura
+width=Ancho
 
-gridsize=Grid-size
-height=height
-width=width
+portrait_rotate=Grados de rotación en modo retrato
 
-portrait_rotate=Portrait mode rotation degrees
+themes=Temas
+open_theme_menu=Abrir el menú de temas
 
-themes=Themes
-open_theme_menu=Open the themes menu
+backgrounds=Imágenes de fondo
+open_background_image_menu=Abrir el menú de imágenes de fondo
 
-backgrounds=Background images
-open_background_image_menu=Open the backgrounds menu
+dark_theme=Tema oscuro
 
-dark_theme=Dark theme
+show_btn_names=Mostrar nombres de botones
 
-show_btn_names=Show button names
-
-edit_btn_color=Change the default button color
-
+edit_btn_color=Cambiar el color predeterminado del botón
 
 experimental=Experimental
 
-usage_btn_reload_time=Usage buttons reload time (ms)
+usage_btn_reload_time=Tiempo de recarga de botones de uso (ms)
 
-optimized_usage_display=Optimized usage display buttons
+optimized_usage_display=Botones de visualización de uso optimizados
 
-gpu_usage_method=GPU usage method (if the gpu usage does not show)
-doesnt_work=doesn't work
+gpu_usage_method=Método de uso de GPU (si el uso de GPU no se muestra)
+doesnt_work=no funciona
 lmao=lmao
-none=None
+none=Ninguno
 
-open_settings_in_integrated_browser=Open settings in a dedicated browser
+open_settings_in_integrated_browser=Abrir la configuración en un navegador dedicado
 
-show_console=Show console
-dev_mode=Dev mode
-authorize_windows_firewall=Authorize WebDeck via Windows Firewall
-automatic_firewall_bypass=Automatic firewall bypass at startup
-fix_stop_soundboard=Fix stop soundboard button issue (may be unstable)
+show_console=Mostrar consola
+dev_mode=Modo de desarrollo
+authorize_windows_firewall=Autorizar WebDeck a través del Firewall de Windows
+automatic_firewall_bypass=Bypass automático del firewall al iniciar
+fix_stop_soundboard=Arreglar el problema del botón de detener el tablón de sonido (puede ser inestable)
 
-server=Server
+server=Servidor
 
-themes_menu_title=Themes list
-random_bg_menu_title=Random backgrounds list
+themes_menu_title=Lista de temas
+random_bg_menu_title=Lista de fondos aleatorios
 
-disabled_themes=Available
-enabled_themes=Selected
+disabled_themes=Disponibles
+enabled_themes=Seleccionados
 
-open_themes_folder=Open themes folder
+open_themes_folder=Abrir carpeta de temas
 
-wallpaper_color=Background Color
-add_background_color=Add a color backgroud
-or=or
+wallpaper_color=Color de fondo
+add_background_color=Agregar un color de fondo
+or=o
 
-remove_background=Remove this background
+remove_background=Eliminar este fondo
+
 
 
 // Links
