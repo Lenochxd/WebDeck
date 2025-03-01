@@ -139,6 +139,9 @@ def delete_folder(message):
     config = get_config()
     folders = config["front"]["buttons"]
     
+    if len(folders) == 1 and message in folders:
+        log.warning(f"No se puede eliminar {message}, ya que es la única carpeta restante.")
+        return
     for folder_name,buttons in folders.copy().items():
         if folder_name == message:
             folders.pop(folder_name)
