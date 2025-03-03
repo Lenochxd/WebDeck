@@ -267,11 +267,11 @@ if __name__ == "__main__":
         "icon": "static/icons/icon.xpm",
         "group": "System/Utilities",
         # "requires": ["python3", "python3-tk", "gtk-update-icon-cache"] + dependencies,
-        "requires": dependencies + [
+        "requires": [dep for dep in dependencies if dep != "libnotify-bin"] + [
             "libayatana-appindicator-gtk3", # pystray
             "portaudio-devel", # pyaudio
         ],
-        "build_requires": dependencies,
+        # "build_requires": dependencies,
         "post_install": "resources/build/rpm/post_install.sh",
         "post_uninstall": "resources/build/rpm/post_uninstall.sh",
         "no_autoreq": True,
