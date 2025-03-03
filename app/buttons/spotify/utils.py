@@ -1,12 +1,11 @@
 import spotipy.util as util
-import json
 from app.utils.logger import log
+from app.utils.settings.get_config import get_config
 
 
 def initialize():
     # Reload config before assuming it's not set
-    with open('.config/config.json', encoding= "utf-8") as f:
-        config = json.load(f)
+    config = get_config()
 
     # Check if client id and client secret are set in the config
     if not config["settings"]["spotify_api"].get("client_id") or not config["settings"]["spotify_api"].get("client_secret"):

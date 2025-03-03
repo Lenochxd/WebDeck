@@ -12,7 +12,7 @@ import webview
 from PIL import Image, ImageTk
 from io import BytesIO
 
-from .utils.settings.get_config import get_config
+from .utils.settings.get_config import get_config, save_config
 from .utils.exit import exit_program
 from .utils.restart import restart_program
 from .utils.firewall import fix_firewall_permission
@@ -202,11 +202,9 @@ def change_port_prompt():
         if validate_port_input(new_port) and new_port not in ['', str(get_port())]:
             prompt_window.destroy()  # Close the window if save is successful
             
-            with open('.config/config.json', 'r') as config_file:
-                config = json.load(config_file)
+            config = get_config()
             config['url']['port'] = int(new_port)
-            with open('.config/config.json', 'w') as config_file:
-                json.dump(config, config_file, indent=4)
+            save_config(config)
             
             restart_program()
 
@@ -275,13 +273,11 @@ def update_language(new_lang):
     set_default_language(new_lang)
     change_tray_language(new_lang)
 
-    with open('.config/config.json', 'r') as config_file:
-        config = json.load(config_file)
+    config = get_config()
     
     config['settings']['language'] = new_lang
     
-    with open('.config/config.json', 'w') as config_file:
-        json.dump(config, config_file, indent=4)
+    save_config(config)
 
 def change_server_state(new_state):
     global icon

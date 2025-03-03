@@ -1,8 +1,9 @@
 import json
 import os
-from app.utils.args import get_arg
-from app.utils.settings.check_config_update import check_config_update
-from app.utils.working_dir import get_base_dir
+from ..args import get_arg
+from ..working_dir import get_base_dir
+from .check_config_update import check_config_update
+from .save_config import save_config
 
 base_dir = get_base_dir()
 config_path = os.path.join(base_dir, ".config/config.json")
@@ -44,8 +45,3 @@ def get_port():
 
 def get_config_path():
     return config_path
-
-
-def save_config(config):
-    with open(config_path, "w", encoding="utf-8") as f:
-        json.dump(config, f, ensure_ascii=False, indent=4)
