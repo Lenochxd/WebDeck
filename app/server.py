@@ -342,15 +342,11 @@ def save_buttons_only():
     # Retrieve form data
     new_config = request.get_json()
 
-    new_config = new_config["front"]["buttons"]
+    new_buttons = new_config["front"]["buttons"]
 
-    temp_order_list = [key for key, value in config["front"]["buttons"].items()]
+    # Remove folders that are not in the new config
+    config["front"]["buttons"] = {k: v for k, v in new_buttons.items()}
 
-    sorted_buttons = {}
-    for folder in temp_order_list:
-        sorted_buttons[folder] = new_config.get(folder)
-
-    config["front"]["buttons"] = sorted_buttons
     config = create_folders(config, folders_to_create)
     folders_to_create = []
     config = save_config(config)

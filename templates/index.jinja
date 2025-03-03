@@ -1674,6 +1674,7 @@
         }
 
         window.deleteFolder = function(folder_name) {
+          ifModif = 1;
           const folderElement = document.getElementById('folder-' + folder_name);                
           if (folderElement) {
             if (confirm("{{text('delete_folder_confirm')}}")) {
@@ -1692,15 +1693,7 @@
               }
 
               // Remove the folder from the config
-              // fetch("/delete_folder", {
-              //  method: 'POST',
-              //  headers: {
-              //    'Content-Type': 'application/json'
-              //  },
-              //  body: JSON.stringify({ folder_name: folder_name })
-              //})
-              setTimeout('', 5000);
-              // location.reload();
+              delete tempEditorConfig['front']['buttons'][folder_name];
             }
           }
         }
