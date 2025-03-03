@@ -135,6 +135,13 @@ exit_editor_mode=Editor-Modus beenden
 
 open_folder=Ordner öffnen
 
+ordner_löschen=Ordner löschen
+ordner_löschen_bestätigen=Sind Sie sicher, dass Sie den Ordner löschen möchten?
+ordner_nicht_gefunden=Ordner nicht gefunden
+
+allgemein_akzeptieren=Akzeptieren
+allgemein_abbrechen=Abbrechen
+
 quit_without_saving=Beenden ohne zu speichern
 save_and_exit=Speichern und beenden
 swap_buttons=2 Schaltflächen tauschen

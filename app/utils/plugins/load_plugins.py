@@ -14,7 +14,10 @@ def load_plugins(commands):
     temp_dir = "temp/plugins"
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
-    os.makedirs(temp_dir)
+    try:
+        os.makedirs(temp_dir)
+    except FileExistsError as e:
+        log.exception(e, f"Error creating temp plugins directory '{temp_dir}'", expected=False, print_log=False)
 
     for root, dirs, files in os.walk(plugins_path):
         for file in files:

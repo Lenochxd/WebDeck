@@ -14,6 +14,7 @@ if is_win: from win32com.client import Dispatch
 
 from app.updater import check_files, check_for_updates
 from app.utils.settings.get_config import get_config
+from app.utils.settings.save_config import save_config
 from app.utils.global_variables import set_global_variable
 from app.utils.plugins.load_plugins import load_plugins
 from app.utils.get_local_ip import get_local_ip
@@ -63,8 +64,7 @@ def sort_colorsjson():
             json.dump(sorted_colors, f, indent=4)
             
 def get_gpu_method():
-    with open(".config/config.json", "r", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
     
     if not "gpu_method" in config["settings"]:
         config["settings"]["gpu_method"] = "nvidia (pynvml)"
@@ -74,8 +74,8 @@ def get_gpu_method():
         except pynvml.NVMLError:
             config["settings"]["gpu_method"] = "AMD"
                 
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
+                
+    save_config(config)
         
     return config
 
@@ -188,8 +188,7 @@ def on_start():
     if config["url"]["ip"] == "local_ip":
         config["url"]["ip"] = local_ip
         
-        with open(".config/config.json", "w", encoding="utf-8") as json_file:
-            json.dump(config, json_file, indent=4)
+        save_config(config)
     
     # Run threaded tasks
     on_start_threaded(config)

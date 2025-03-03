@@ -13,6 +13,7 @@ Thank you for considering contributing to WebDeck! Here are some guidelines to h
 - [Website](#website)
 - [Reporting Issues](#reporting-issues)
 - [Submitting a Pull Request](#submitting-a-pull-request)
+- [Discord Community](#discord-community)
 
 ## Code of Conduct
 
@@ -135,6 +136,11 @@ To submit a pull request, follow these steps:
     - Make necessary updates to your pull request as requested.
 
 > **Tip**: If your branch has multiple commits for a single feature, consider squashing them before submitting your PR.
+
+
+## Discord Community
+
+Join our [Discord community](https://discord.gg/tUPsYHAGfm) to discuss anything related to WebDeck. Contributors can also help users and collaborate on new features or bug fixes.
 
 ---
 

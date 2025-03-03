@@ -135,6 +135,13 @@ exit_editor_mode=Закрыть режим редактора
 
 open_folder=Открыть папку
 
+delete_folder=Удалить папку
+delete_folder_confirm=Вы уверены, что хотите удалить папку?
+folder_not_found=Папка не найдена
+
+generic_accept=Принять
+generic_cancel=Отмена
+
 quit_without_saving=Закрыть без сохранения
 save_and_exit=Сохранить и закрыть
 swap_buttons=Поменять 2 кнопки местами

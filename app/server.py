@@ -183,8 +183,7 @@ def home():
 def saveconfig():
     global config, folders_to_create
 
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
 
     # Retrieve form data
     new_config = request.get_json()
@@ -260,9 +259,7 @@ def saveconfig():
         except (TypeError, ValueError):
             pass
 
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-
+    save_config(config)
 
     if obs_reload:
         reload_obs()
@@ -305,8 +302,8 @@ def complete_save_config():
     config = update_gridsize(config, new_height, new_width)
     config["front"]["height"] = new_height
     config["front"]["width"] = new_width
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
+
+    save_config(config)
 
     log.success("Config saved successfully")
     return jsonify({"success": True})
@@ -319,8 +316,7 @@ def save_single_button():
     button_index = int(data.get("location_Id"))
     button_content = data.get("content")
 
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
 
     button_folderName = list(config["front"]["buttons"])[button_folder]
     log.debug(
@@ -333,9 +329,7 @@ def save_single_button():
         + str(config["front"]["buttons"][button_folderName][button_index])
     )
 
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-        set_global_variable("config", config)
+    save_config(config)
 
     log.success("Button saved successfully")
     return jsonify({"success": True})
@@ -347,21 +341,16 @@ def save_buttons_only():
     global folders_to_create
 
     # Get current config first
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
 
     # Retrieve form data
     new_config = request.get_json()
 
-    new_config = new_config["front"]["buttons"]
+    new_buttons = new_config["front"]["buttons"]
 
-    temp_order_list = [key for key, value in config["front"]["buttons"].items()]
+    # Remove folders that are not in the new config
+    config["front"]["buttons"] = {k: v for k, v in new_buttons.items()}
 
-    sorted_buttons = {}
-    for folder in temp_order_list:
-        sorted_buttons[folder] = new_config.get(folder)
-
-    config["front"]["buttons"] = sorted_buttons
     config = create_folders(config, folders_to_create)
     folders_to_create = []
     config = save_config(config)
@@ -374,16 +363,13 @@ def save_buttons_only():
 def get_config_route():
     global folders_to_create, config
 
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
+    config = get_config()
 
     config = create_folders(config, folders_to_create)
     folders_to_create = []
     set_global_variable("config", config)
 
-    with open(".config/config.json", "w", encoding="utf-8") as json_file:
-        json.dump(config, json_file, indent=4)
-        set_global_variable("config", config)
+    save_config(config)
 
     return jsonify(config)
 
@@ -481,8 +467,6 @@ def get_config_file(directory, filename):
 @socketio.on("connect")
 def socketio_connect():
     log.info("Socketio client connected")
-    with open(".config/config.json", encoding="utf-8") as f:
-        config = json.load(f)
 
 @socketio.event
 def send(data):
