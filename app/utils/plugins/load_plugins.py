@@ -2,6 +2,7 @@ import os
 import importlib
 import shutil
 from ..logger import log
+from ..paths import CONFIG_DIR, TEMP_DIR
 
 
 modules = {}
@@ -9,9 +10,10 @@ def load_plugins(commands):
     global all_func
     dict_func = {}
     all_func = {}
-    plugins_path = ".config/plugins"
     
-    temp_dir = "temp/plugins"
+    plugins_path = CONFIG_DIR + "/plugins"
+    temp_dir = TEMP_DIR + "/plugins"
+    
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     try:

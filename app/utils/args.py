@@ -7,8 +7,9 @@ from .show_error import show_error
 from .platform import is_windows
 from .logger import log
 from .exit import exit_program
+from .paths import TEMP_DIR
 
-temp_file = os.path.join("temp", "webdeck_args.json")
+temp_file = os.path.join(TEMP_DIR, "args.json")
 args = {}
 raw_args = [arg for arg in sorted(sys.argv[1:]) if not (arg.endswith('.pyc') or arg.endswith('library.zip'))]
 # log.debug(f"{raw_args=}")

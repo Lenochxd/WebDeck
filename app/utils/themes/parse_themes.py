@@ -1,5 +1,8 @@
 import os
-from app.utils.languages import text
+from ..languages import text
+from ..paths import THEMES_DIR
+from ..working_dir import get_base_dir
+
 
 def parse_css_file(css_file_path):
     css_data = {}
@@ -36,10 +39,12 @@ def parse_css_file(css_file_path):
 
 def parse_themes():
     parsed_themes = {}
-    for file_name in os.listdir(".config/themes/"):
+    for file_name in os.listdir(THEMES_DIR):
         if file_name.endswith(".css"):
-            parsed_themes[file_name] = parse_css_file(f".config/themes/{file_name}")
+            parsed_themes[file_name] = parse_css_file(os.path.join(THEMES_DIR, file_name))
     
-    parsed_themes["static/css/style.css"] = parse_css_file("static/css/style.css")
-            
+    parsed_themes["static/css/style.css"] = parse_css_file(
+        os.path.join(get_base_dir(), "static/css/style.css")
+    )
+    
     return parsed_themes

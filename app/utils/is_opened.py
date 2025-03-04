@@ -3,6 +3,7 @@ import sys
 import json
 from .logger import log
 from .platform import is_windows
+from .paths import TEMP_FILE
 
 
 def is_opened():
@@ -12,19 +13,19 @@ def is_opened():
 
     # Check and modify temp.json
     try:
-        with open('temp.json', 'r', encoding='utf-8') as file:
+        with open(TEMP_FILE, 'r', encoding='utf-8') as file:
             data = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         data = {}
-        log.error("temp.json not found or invalid, creating a new one")
+        log.info(f"{TEMP_FILE} file not found or invalid, creating a new one")
 
     if data.get('allow_multiple_instances', False):
         data['allow_multiple_instances'] = False
         try:
-            with open('temp.json', 'w', encoding='utf-8') as file:
+            with open(TEMP_FILE, 'w', encoding='utf-8') as file:
                 json.dump(data, file, ensure_ascii=False, indent=4)
         except Exception as e:
-            log.exception(e, "Error writing to temp.json")
+            log.exception(e, f"Error writing to {TEMP_FILE}")
         return False
 
     # Check running processes

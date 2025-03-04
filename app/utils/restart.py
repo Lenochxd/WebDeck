@@ -3,6 +3,7 @@ import sys
 import json
 from .exit import exit_program
 from .logger import log
+from .paths import TEMP_FILE
 
 
 def restart_program():
@@ -10,11 +11,11 @@ def restart_program():
     try:
         if getattr(sys, 'frozen', False):  # Check if the script is frozen
             # If frozen, restart using the bundled executable
-            with open('temp.json', 'r') as temp_file:
-                temp_data = json.load(temp_file)
+            with open(TEMP_FILE, 'r') as f:
+                temp_data = json.load(f)
             temp_data["allow_multiple_instances"] = True
-            with open('temp.json', 'w') as temp_file:
-                json.dump(temp_data, temp_file, indent=4)
+            with open(TEMP_FILE, 'w') as f:
+                json.dump(temp_data, f, indent=4)
                 
             os.startfile(sys.executable)
         else:

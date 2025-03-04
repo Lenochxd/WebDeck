@@ -2,7 +2,7 @@ import os
 import traceback
 from datetime import datetime
 from colorama import init, Fore
-from app.utils.working_dir import get_base_dir
+from app.utils.paths import LOG_DIR
 
 # Initialize colorama
 init(autoreset=True)
@@ -14,14 +14,13 @@ class Logger:
         
         This method creates a log directory if it doesn't exist and sets the log file path.
         """
-        log_dir = os.path.join(get_base_dir(), ".logs")
-        if not os.path.exists(log_dir):
-            os.makedirs(log_dir)
+        if not os.path.exists(LOG_DIR):
+            os.makedirs(LOG_DIR)
         date_str = datetime.now().date().isoformat()
         if from_updater:
-            self.log_file = f"{log_dir}/{date_str}-updater.log"
+            self.log_file = f"{LOG_DIR}/{date_str}-updater.log"
         else:
-            self.log_file = f"{log_dir}/{date_str}.log"
+            self.log_file = f"{LOG_DIR}/{date_str}.log"
         self.debug_enabled = True  # Add this line
 
     def _write_log(self, level, message):

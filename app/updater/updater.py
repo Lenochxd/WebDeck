@@ -12,6 +12,7 @@ from app.utils.working_dir import get_base_dir, get_update_dir, chdir_base, chdi
 from app.utils.settings.get_config import get_config
 from app.utils.show_error import show_error
 from app.utils.logger import Logger
+from app.utils.paths import TEMP_FILE
 from app.utils.args import parse_args, raw_args, get_arg
 
 log = Logger(from_updater=True)
@@ -22,7 +23,7 @@ settings = config["settings"]
 def check_files():
     wd_dir = get_base_dir()
     version_path = os.path.join(wd_dir, "resources/version.json")
-    temp_json_path = os.path.join(wd_dir, "temp.json")
+    temp_json_path = TEMP_FILE
 
     # Get version from the versions JSON file
     with open(version_path, encoding="utf-8") as f:
