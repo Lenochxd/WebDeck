@@ -107,6 +107,22 @@ def check_local_network():
         return jsonify({"success": False, "message": "Access denied: IP not in local network"}), 403
 
 
+@app.before_request
+def cache_request():
+    request._cached_request = request
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    log.exception(e, "An error occurred during a request", expected=False)
+    
+    response = jsonify({"success": False, "message": str(e)})
+    response.status_code = 500
+    if hasattr(request, '_cached_request'):
+        log.httprequest(request._cached_request, response)
+    
+    if not config["settings"].get("flask_debug"):
+        return response
+
 @app.after_request
 def after_request(response):
     if request.path != "/usage":
@@ -506,15 +522,6 @@ def send_data_route():
         return jsonify({"success": True})
     
     return jsonify(result)
-
-
-@app.errorhandler(Exception)
-def handle_exception(e):
-    log.exception(e, "An error occurred during a request")
-    if not config["settings"].get("flask_debug"):
-        response = jsonify({"success": False, "message": str(e)})
-        response.status_code = 500
-        return response
 
 
 if (
