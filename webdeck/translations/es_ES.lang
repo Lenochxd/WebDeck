@@ -30,7 +30,7 @@ author_github_username=cbidea-github
 
 welcome_message_window_title=Bienvenido
 welcome_message_label_1=¡Bienvenido a WebDeck!
-welcome_message_label_2=Para un acceso rápido puedes encontrar aquí el icono de la barra de tareas.
+welcome_message_label_2=Para un acceso rápido puedes encontrar un icono en la bandeja del sistema de la barra de tareas.
 welcome_message_button_dont_show_again=No mostrar de nuevo
 welcome_message_button_ok=OK
 
@@ -41,11 +41,11 @@ qr_code=Código QR
 options=Opciones
 open_config=Abrir Configuración
 restart_application=Reiniciar WebDeck
-edit_port=Modificar el puerto
+edit_port=Modificar Puerto
 randomize=Aleatorizar
 change_server_port=Cambiar el puerto del servidor
 enter_new_port=Introduce el nuevo puerto:
-fix_firewall=Reparar firewall
+fix_firewall=Reparar Firewall
 server_status=Estado del Servidor:
 server_online=🟢 En línea
 server_offline=🔴 Fuera de línea
@@ -247,7 +247,7 @@ themes_tutorial=Tutorial de creación de temas
 not_specified=Sin especificar
 
 save=Guardar
-back=Retroceder
+back=Atrás
 
 
 // -- Buttons --
@@ -371,7 +371,7 @@ DISPLAY_network_sub2__arg_1_name=Texto del botón
 SYSTEM_CATEGORY_NAME=Sistema
 
 SYSTEM_volume__category_name=Control de volumen
-SYSTEM_volume__category_description=Gestionar el volumen del sistema
+SYSTEM_volume__category_description=Gestiona el volumen del sistema
 
 SYSTEM_volume_sub1__btn_name=Subir el volumen
 SYSTEM_volume_sub1__btn_default_display_name=
@@ -395,7 +395,7 @@ SYSTEM_volume_sub4__btn_default_display_name=
 SYSTEM_volume_sub4__btn_description=Silencia el ordenador
 
 SYSTEM_media_control__category_name=Control de medios
-SYSTEM_media_control__category_description=Gestionar los medios del sistema
+SYSTEM_media_control__category_description=Gestiona los medios del sistema
 
 SYSTEM_media_control_sub1__btn_name=Anterior
 SYSTEM_media_control_sub1__btn_default_display_name=
