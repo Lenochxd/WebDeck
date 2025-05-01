@@ -1,0 +1,681 @@
+# Translation file: pl_PL.lang
+# Author: rini — Feel free to submit a PR for any corrections:
+# GitHub: https://github.com/Lenochxd/WebDeck/pulls
+# Discord: https://discord.gg/tUPsYHAGfm
+
+
+# TRANSLATION INSTRUCTIONS:
+# 1. Update the first line with the filename and your username if you're editing.
+# 2. Do NOT translate lines starting with '//' — these are comments.
+# 3. Lines starting with '#' are optional to translate, but it's encouraged for consistency.
+# 4. Only translate the values (text after '='); do not modify the keys (text before '=').
+# 5. Keep variable placeholders like '%example_var%' unchanged.
+# 6. Edit the following fields to match your translation:
+#    - native_name: The name of the language in its native form (e.g., 'Français').
+#    - english_name: The name of the language in English (e.g., 'French').
+#    - lang_code: The ISO code of the language (e.g., 'fr' for French).
+#    - author_name: Your name or the contributor's name.
+#    - author_github_username: Your GitHub username or the contributor's.
+
+
+
+native_name=Polski
+english_name=Polish
+lang_code=pl
+author_name=rini
+author_github_username=11rini
+
+
+// -- Welcome Message --
+
+welcome_message_window_title=Witaj
+welcome_message_label_1=Witamy w WebDeck!
+welcome_message_label_2=Tu możesz znależć ikonę zasobnika systemowego dla szybkiego dostępu
+welcome_message_button_dont_show_again=Nie pokazuj ponownie
+welcome_message_button_ok=OK
+
+
+// -- Tray icon --
+
+qr_code=Kod QR
+options=Opcje
+open_config=Otwórz konfigurację
+restart_application=Zrestartuj WebDeck
+edit_port=Zmień port
+randomize=Losuj
+change_server_port=Zmień port serwera
+enter_new_port=Wpisz nowy port
+fix_firewall=Napraw zaporę 
+server_status=Status serwera:
+server_online=🟢 Online
+server_offline=🔴 Offline
+server_loading=Ładowanie...
+report_issue=Zgłoś błąd
+exit=Wyjdź
+
+
+// -- Errors --
+
+open_github_issue_prompt_title=Zgłoś błąd na GitHub
+open_github_issue_prompt_message=Czy chcesz zgłosić ten błąd na GitHub? (Zalecane)
+
+copy_to_clipboard_prompt_title=Skopiuj do schowka
+copy_to_clipboard_prompt_message=Czy chcesz skopiować wiadomość błędu do schowka?
+
+server_disconnected=Serwer został rozłączony
+failed=Niepowodzenie
+error=Błąd
+error_occurred=Wystąpił błąd
+
+settings_load_error=Wystąpił błąd poczas ładowania ustawień.
+settings_save_error=Wystąpił błąd poczas zapisywania ustawień.
+
+auto_update_error=Wystąpił błąd podczas aktualizowania WebDeck, zaktualizuj manualnie z https://github.com/Lenochxd/WebDeck/releases/latest
+
+no_files_found_error=Nie znaleziono plików
+
+ffmpeg_not_installed_error=Instalowanie FFMPEG...
+vlc_not_installed_error=VLC nie jest zainstalowane!
+mp3_loading_error=Błąd podczas ładowania pliku MP3 nazwanego.
+
+obs_failed_connection_error=Nie udało się połączyć z OBS.
+obs_error_10061=Nie można znaleźć serwera WebSocket. (WinError 10061)
+obs_error_incorrect_password=Hasło może być nieprawidłowe.
+obs_already_recording=OBS już nagrywa.
+obs_already_streaming=OBS już transmituje
+obs_already_vcam=Kamera wirtualna jest już uruchomiona.
+obs_not_recording=OBS nie nagrywa.
+obs_not_streaming=OBS nie transmituje.
+obs_no_vcam=Wirtualna kamera jest już zatrzymana.
+obs_no_recording_can_be_paused=Nie można wstrzymać żadnego nagrywania.
+obs_no_recording_is_paused=Żadne nagrywanie nie jest wstrzymane.
+
+spotify_not_initialized=Token Spotify nie został zainicjalizowany. Sprawdź, czy identyfikator klienta (client ID) i klucz tajny klienta (client secret) zostały poprawnie ustawione.
+spotify_apply_volume_error=Błąd, nie można ustawić głośności
+spotify_volume_prenium_error=Błąd, nie można dostosować głośności ponieważ wymagane jest Spotify Premium
+spotify_no_active_device_error=Nie znaleziono aktywnego odtwarzacza Spotify. Upewnij się, że Spotify jest uruchomione.
+spotify_no_track_playing_error=Żaden utwór nie jest aktualnie odtwarzany.
+spotify_playlist_not_found_error=Nie znaleziono playlisty o nazwie '%playlist_name%'.
+
+
+// -- Success messages --
+
+settings_save_success=Ustawienia zapisane poprawnie!
+download_successfully=Plik pobrany pomyślnie!
+folder_created_successfully=Folder utworzony pomyślnie!
+
+spotify_follow_artist_success=Zasubskrybowano %artist_name%.
+spotify_unfollow_artist_success=Odsubskrybowano %artist_name%.
+
+
+// -- Button configuration --
+
+add_a_button=Dodaj przycisk
+configure_your_button=Skonfiguruj przycisk
+
+image=Obraz
+image_size=Rozmiar obrazu
+background_color=Kolor tła
+background_color_hex=Kolor tła (HEX)
+button_title=Nazwa przycisku
+edit_command=Komenda (eksperymentalne)
+
+select_your_file=Wybierz plik
+no_file_chosen=Nie wybrano pliku
+
+choose_option=Wybierz opcję
+
+button_delete_confirmation=Czy napewno chcesz usunąć ten przycisk?
+
+// -- Editor --
+
+enter_editor_mode=Tryb edycji
+exit_editor_mode=Wyjdź z trybu edycji
+
+open_folder=Otwórz folder
+
+delete_folder=Usuń folder
+delete_folder_confirm=Czy jesteś pewien że chcesz usunąć ten folder?
+folder_not_found=Nie znaleziono folderu.
+
+generic_accept=Akceptuj
+generic_cancel=Anuluj
+
+quit_without_saving=Wyjdź bez zapisywania
+save_and_exit=Zapisz i wyjdź
+swap_buttons=Przemieść przyciski
+stop_swap_mode=Wyjdź z trybu przemieszczania
+no_changes_to_undo=Brak zmian do cofnięcia
+
+
+
+// Settings tab
+configuration=Konfiguracja
+settings=Ustawienia
+
+see_patchnotes=Zobacz listę zmian
+github_issue=Zgłoś błąd na GitHub
+
+language=Język
+config-windows_startup=Uruchamiaj razem z Windows
+auto_updates=Automatyczne aktualizacje
+
+soundboard=Soundboard
+input_device=Urządzenie wejścia
+output_device=Urządzenia wyjścia (vbcable)
+toggle_soundboard=Soundboard włączony
+ear_soundboard=Ear Soundboard
+
+spotify_api=Spotify API
+username=Nazwa
+
+obs_studio=OBS Studio
+host=Host
+port=Port
+password=Hasło
+
+
+visuals=Efekty
+
+gridsize=Rozmiar siatki
+height=wys.
+width=szer.
+
+portrait_rotate=Stopnie obrotu w trybie portretowym
+
+themes=Motywy
+open_theme_menu=Otwórz menu motywów
+
+backgrounds=Obrazy tła
+open_background_image_menu=Otwórz menu teł
+
+dark_theme=Ciemny motyw
+
+show_btn_names=Pokaż nazwy przycisków
+
+edit_btn_color=Zmień domyślny kolor przycisków
+
+
+experimental=Eksperymentalne
+
+usage_btn_reload_time=Czas ponownego ładowania przycisków (ms)
+
+optimized_usage_display=Zoptymalizowane użycie przycisków
+
+gpu_usage_method=Metoda zużycia GPU (jeśli miernik GPU nie pokazuje się)
+doesnt_work=nie działa
+lmao=guwno
+none=Żadne
+
+open_settings_in_integrated_browser=Otwórz ustawienia w dedykowanej przeglądarce
+
+show_console=Pokaż konsole
+dev_mode=Tryb dewelopera
+authorize_windows_firewall=Autoryzuj WebDeck przez zaporę Windows Defender
+automatic_firewall_bypass=Automatyczne obejście zapory przy uruchomieniu
+fix_stop_soundboard=Napraw przycisk zatrzymania Soundboard (może być niestabilne)
+
+server=Serwer
+
+themes_menu_title=Lista motywów
+random_bg_menu_title=Lista losowych teł
+
+disabled_themes=Dostępne
+enabled_themes=Wybrane
+
+open_themes_folder=Otwórz folder motywów
+
+wallpaper_color=Kolor tła
+add_background_color=Dodaj kolor tła
+or=lub
+
+remove_background=Usuń tło
+
+
+// Links
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+
+soundboard_tutorial=Poradnik konfiguracji Soundboarda
+spotify_tutorial=Poradnik konfiguracji Spotify
+obs_tutorial=Poradnik konfiguracji OBS
+themes_tutorial=Poradnik tworzenia motywów
+
+
+not_specified=Nie określono
+
+save=Zapisz
+back=Wstecz
+
+
+// -- Buttons --
+
+WEBDECK_fullscreen__btn_name=Pełny ekran
+WEBDECK_fullscreen__btn_default_display_name=
+WEBDECK_fullscreen__btn_description=Przełącz tryb pełnoekranowy
+
+WEBDECK_reload_page__btn_name=Odśwież stronę
+WEBDECK_reload_page__btn_default_display_name=Odśwież
+WEBDECK_reload_page__btn_description=
+
+WEBDECK_open_a_folder__btn_name=Otwórz folder
+WEBDECK_open_a_folder__btn_default_display_name=Otwórz folder
+WEBDECK_open_a_folder__btn_description=Otwiera wskazany folder WebDecka
+WEBDECK_open_a_folder__arg_1_name=Nazwa folderu
+
+WEBDECK_config__btn_name=Konfiguracja
+WEBDECK_config__btn_default_display_name=Ustawienia
+WEBDECK_config__btn_description=Otwórz ustawienia
+
+
+DISPLAY_CATEGORY_NAME=Wyświetlanie
+
+DISPLAY_cpu__btn_name=Użycie CPU (%)
+DISPLAY_cpu__btn_default_display_name=Użycie CPU
+DISPLAY_cpu__btn_description=
+DISPLAY_cpu__arg_1_name=Tekst przycisku
+
+DISPLAY_memory__category_name=Pamięć (RAM)
+DISPLAY_memory__category_description=
+
+DISPLAY_memory_sub1__btn_name=Użycie RAM (%)
+DISPLAY_memory_sub1__btn_default_display_name=Użycie RAM
+DISPLAY_memory_sub1__btn_description=
+DISPLAY_memory_sub1__arg_1_name=Tekst przycisku
+
+DISPLAY_memory_sub2__btn_name=Użycie RAM (GB)
+DISPLAY_memory_sub2__btn_default_display_name=Użycie RAM
+DISPLAY_memory_sub2__btn_description=
+DISPLAY_memory_sub2__arg_1_name=Tekst przycisku
+
+DISPLAY_memory_sub3__btn_name=Dostępna pamięć RAM (GB)
+DISPLAY_memory_sub3__btn_default_display_name=Dostępna pamięć RAM
+DISPLAY_memory_sub3__btn_description=
+DISPLAY_memory_sub3__arg_1_name=Tekst przycisku
+
+DISPLAY_memory_sub4__btn_name=Całkowita pamięć RAM (GB)
+DISPLAY_memory_sub4__btn_default_display_name=Całkowita pamięć RAM
+DISPLAY_memory_sub4__btn_description=
+DISPLAY_memory_sub4__arg_1_name=Tekst przycisku
+
+DISPLAY_disks__category_name=Dyski
+DISPLAY_disks__category_description=
+
+DISPLAY_disks_sub1__btn_name=Użycie dysku (%)
+DISPLAY_disks_sub1__btn_default_display_name=Użycie dysku
+DISPLAY_disks_sub1__btn_description=
+DISPLAY_disks_sub1__arg_1_name=Tekst przycisku
+DISPLAY_disks_sub1__arg_2_name=Litera dysku
+
+DISPLAY_disks_sub2__btn_name=Dostępne miejsce (GB)
+DISPLAY_disks_sub2__btn_default_display_name=Dostępne miejsce
+DISPLAY_disks_sub2__btn_description=
+DISPLAY_disks_sub2__arg_1_name=Tekst przycisku
+DISPLAY_disks_sub2__arg_2_name=Litera dysku
+
+DISPLAY_disks_sub3__btn_name=Użycie dysku (GB)
+DISPLAY_disks_sub3__btn_default_display_name=Użycie dysku
+DISPLAY_disks_sub3__btn_description=
+DISPLAY_disks_sub3__arg_1_name=Tekst przycisku
+DISPLAY_disks_sub3__arg_2_name=Litera dysku
+
+DISPLAY_disks_sub4__btn_name=Całkowita pojemność dysku (GB)
+DISPLAY_disks_sub4__btn_default_display_name=Całkowita pojemność dysku
+DISPLAY_disks_sub4__btn_description=
+DISPLAY_disks_sub4__arg_1_name=Tekst przycisku
+DISPLAY_disks_sub4__arg_2_name=Litera dysku
+
+DISPLAY_gpu__category_name=GPU
+DISPLAY_gpu__category_description=
+
+DISPLAY_gpu_sub1__btn_name=Użycie GPU (%)
+DISPLAY_gpu_sub1__btn_default_display_name=Użycie GPU
+DISPLAY_gpu_sub1__btn_description=
+DISPLAY_gpu_sub1__arg_1_name=Tekst przycisku
+DISPLAY_gpu_sub1__arg_2_name=Wybierz GPU
+
+DISPLAY_gpu_sub2__btn_name=Użycie VRAM (MB)
+DISPLAY_gpu_sub2__btn_default_display_name=Użycie VRAM
+DISPLAY_gpu_sub2__btn_description=
+DISPLAY_gpu_sub2__arg_1_name=Tekst przycisku
+DISPLAY_gpu_sub2__arg_2_name=Wybierz GPU
+
+DISPLAY_gpu_sub3__btn_name=Dostępna pamięć VRAM (MB)
+DISPLAY_gpu_sub3__btn_default_display_name=Dostępna pamięć VRAM
+DISPLAY_gpu_sub3__btn_description=
+DISPLAY_gpu_sub3__arg_1_name=Tekst przycisku
+DISPLAY_gpu_sub3__arg_2_name=Wybierz GPU
+
+DISPLAY_gpu_sub4__btn_name=Całkowita pamięć VRAM (MB)
+DISPLAY_gpu_sub4__btn_default_display_name=Całkowita pamięć VRAM
+DISPLAY_gpu_sub4__btn_description=
+DISPLAY_gpu_sub4__arg_1_name=Tekst przycisku
+DISPLAY_gpu_sub4__arg_2_name=Wybierz GPU
+
+DISPLAY_network__category_name=Sieć
+DISPLAY_network__category_description=
+
+DISPLAY_network_sub1__btn_name=Wysyłanie (bajty)
+DISPLAY_network_sub1__btn_default_display_name=Wysyłanie danych
+DISPLAY_network_sub1__btn_description=
+DISPLAY_network_sub1__arg_1_name=Tekst przycisku
+
+DISPLAY_network_sub2__btn_name=Pobieranie (bajty)
+DISPLAY_network_sub2__btn_default_display_name=Pobieranie danych
+DISPLAY_network_sub2__btn_description=
+DISPLAY_network_sub2__arg_1_name=Tekst przycisku
+
+
+SYSTEM_CATEGORY_NAME=System
+
+SYSTEM_volume__category_name=Sterowanie głośnością
+SYSTEM_volume__category_description=Zarządzaj głośnością systemu
+
+SYSTEM_volume_sub1__btn_name=Podgłoś
+SYSTEM_volume_sub1__btn_default_display_name=
+SYSTEM_volume_sub1__btn_description=Podgłasza komputer
+SYSTEM_volume_sub1__arg_1_name=Zwiększ o 1
+SYSTEM_volume_sub1__arg_2_name=Zwiększ o ...
+
+SYSTEM_volume_sub2__btn_name=Przycisz
+SYSTEM_volume_sub2__btn_default_display_name=
+SYSTEM_volume_sub2__btn_description=Podgłasza komputer
+SYSTEM_volume_sub2__arg_1_name=Zmniejsz o 1
+SYSTEM_volume_sub2__arg_2_name=Zmniejsz o ...
+
+SYSTEM_volume_sub3__btn_name=Ustaw głośność
+SYSTEM_volume_sub3__btn_default_display_name=
+SYSTEM_volume_sub3__btn_description=Ustaw głośność komputera
+SYSTEM_volume_sub3__arg_1_name=Ustaw na ...
+
+SYSTEM_volume_sub4__btn_name=Wycisz
+SYSTEM_volume_sub4__btn_default_display_name=
+SYSTEM_volume_sub4__btn_description=Wycisz głośność komputera
+
+SYSTEM_media_control__category_name=Sterowanie multimediami
+SYSTEM_media_control__category_description=Zarządzaj multimediami systemu
+
+SYSTEM_media_control_sub1__btn_name=Poprzedni
+SYSTEM_media_control_sub1__btn_default_display_name=
+SYSTEM_media_control_sub1__btn_description=Odtwórz poprzedni dźwięk
+
+SYSTEM_media_control_sub2__btn_name=Włącz/wyłącz odtwarzanie
+SYSTEM_media_control_sub2__btn_default_display_name=
+SYSTEM_media_control_sub2__btn_description=
+
+SYSTEM_media_control_sub3__btn_name=Pomiń
+SYSTEM_media_control_sub3__btn_default_display_name=
+SYSTEM_media_control_sub3__btn_description=Pomiń aktualny utwór
+
+SYSTEM_open__btn_name=Otwórz ...
+SYSTEM_open__btn_default_display_name=Otwórz
+SYSTEM_open__btn_description=Otwórz wskazany plik lub program
+SYSTEM_open__arg_1_name=Lokalizacja pliku
+
+SYSTEM_opendir__btn_name=Otwórz folder
+SYSTEM_opendir__btn_default_display_name=Otwórz folder
+SYSTEM_opendir__btn_description=Otwórz wskazany folder w Eksploratorze
+SYSTEM_opendir__arg_1_name=Lokalizacja folderu
+
+SYSTEM_open_a_website__btn_name=Otwórz stronę internetową
+SYSTEM_open_a_website__btn_default_display_name=Otwórz stronę
+SYSTEM_open_a_website__btn_description=
+SYSTEM_open_a_website__arg_1_name=URL
+
+SYSTEM_lock_session__btn_name=Zablokuj sesję
+SYSTEM_lock_session__btn_default_display_name=
+SYSTEM_lock_session__btn_description=
+
+SYSTEM_shutdown_pc__btn_name=Wyłącz komputer
+SYSTEM_shutdown_pc__btn_default_display_name=
+SYSTEM_shutdown_pc__btn_description=
+
+SYSTEM_restart_pc__btn_name=Uruchom ponownie komputer
+SYSTEM_restart_pc__btn_default_display_name=
+SYSTEM_restart_pc__btn_description=
+
+SYSTEM_sleep_pc__btn_name=Uśpij komputer
+SYSTEM_sleep_pc__btn_default_display_name=
+SYSTEM_sleep_pc__btn_description=
+
+SYSTEM_hibernate_pc__btn_name=Zahibernuj komputer
+SYSTEM_hibernate_pc__btn_default_display_name=
+SYSTEM_hibernate_pc__btn_description=
+
+SYSTEM_screensaver__btn_name=Wygaszacz ekranu
+SYSTEM_screensaver__btn_default_display_name=
+SYSTEM_screensaver__btn_description=
+SYSTEM_screensaver__arg_1_name=Wygaszacz ekranu
+SYSTEM_screensaver__arg_1_option_1_name=Włącz wygaszacz ekranu
+SYSTEM_screensaver__arg_1_option_2_name=Włącz wygaszacz ekranu na pełnym ekranie
+SYSTEM_screensaver__arg_1_option_3_name=Wyłącz wygaszacz ekranu
+
+SYSTEM_restart_explorer__btn_name=Uruchom ponownie Eksplorator
+SYSTEM_restart_explorer__btn_default_display_name=
+SYSTEM_restart_explorer__btn_description=
+
+SYSTEM_superaltf4__btn_name=SuperAltF4
+SYSTEM_superaltf4__btn_default_display_name=
+SYSTEM_superaltf4__btn_description=Wymuś zamknięcie okna na pierwszym planie
+
+SYSTEM_kill_a_task__btn_name=Zakończ zadanie
+SYSTEM_kill_a_task__btn_default_display_name=Zakończ zadanie
+SYSTEM_kill_a_task__btn_description=
+SYSTEM_kill_a_task__arg_1_name=Zadanie (app.exe)
+
+SYSTEM_restart_a_task__btn_name=Uruchom ponownie zadanie
+SYSTEM_restart_a_task__btn_default_display_name=Uruchom zadanie
+SYSTEM_restart_a_task__btn_description=
+SYSTEM_restart_a_task__arg_1_name=Zadanie (app.exe)
+
+SYSTEM_execute_python_code__btn_name=Uruchom kod Python
+SYSTEM_execute_python_code__btn_default_display_name=
+SYSTEM_execute_python_code__btn_description=Uruchom kod Python z programu WebDeck
+SYSTEM_execute_python_code__arg_1_name=Opcja
+SYSTEM_execute_python_code__arg_1_option_1_name=Plik Python (wczytaj)
+SYSTEM_execute_python_code__arg_1_option_2_name=Plik Python (ścieżka)
+SYSTEM_execute_python_code__arg_1_option_3_name=Kod Python (jedna linia)
+
+SYSTEM_execute_batch_code__btn_name=Uruchom kod Batch
+SYSTEM_execute_batch_code__btn_default_display_name=
+SYSTEM_execute_batch_code__btn_description=Uruchom kod Batch z programu WebDeck
+SYSTEM_execute_batch_code__arg_1_name=Kod Batch
+
+
+TEXT_CATEGORY_NAME=Tekst
+
+TEXT_press_a_key__btn_name=Klawisz
+TEXT_press_a_key__btn_default_display_name=Wciśnij klawisz
+TEXT_press_a_key__btn_description=
+TEXT_press_a_key__arg_1_name=Klawisz
+
+TEXT_write_text__btn_name=Tekst
+TEXT_write_text__btn_default_display_name=Wpisz tekst
+TEXT_write_text__btn_description=Wpisz tekst natychmiast
+TEXT_write_text__arg_1_name=Tekst
+
+TEXT_write_text_and_press_enter__btn_name=Wpisz tekst i wciśnij Enter
+TEXT_write_text_and_press_enter__btn_default_display_name=Wpisz tekst (i Enter)
+TEXT_write_text_and_press_enter__btn_description=Wpisz tekst natychmiast i wciśnij Enter
+TEXT_write_text_and_press_enter__arg_1_name=Tekst
+
+TEXT_speech_recognition__btn_name=Rozpoznawanie mowy
+TEXT_speech_recognition__btn_default_display_name=
+TEXT_speech_recognition__btn_description=Aktywuj rozpoznawanie mowy Windows, aby pisać mówiąc
+
+TEXT_copy__btn_name=Kopiuj
+TEXT_copy__btn_default_display_name=
+TEXT_copy__btn_description=
+TEXT_copy__arg_1_name=Opcja
+TEXT_copy__arg_1_option_1_name=Kopiuj (ctrl+c)
+TEXT_copy__arg_1_option_2_name=Kopiuj tekst ze schowka
+
+TEXT_paste__btn_name=Wklej
+TEXT_paste__btn_default_display_name=
+TEXT_paste__btn_description=
+TEXT_paste__arg_1_name=Opcja
+TEXT_paste__arg_1_option_1_name=Wklej (ctrl+v)
+TEXT_paste__arg_1_option_2_name=Wklej tekst
+
+TEXT_cut_(ctrl+x)__btn_name=Wytnij (ctrl+x)
+TEXT_cut_(ctrl+x)__btn_default_display_name=Wytnij
+TEXT_cut_(ctrl+x)__btn_description=
+
+TEXT_open_clipboard__btn_name=Otwórz schowek
+TEXT_open_clipboard__btn_default_display_name=Schowek
+TEXT_open_clipboard__btn_description=
+
+TEXT_clear_clipboard__btn_name=Wyczyść schowek
+TEXT_clear_clipboard__btn_default_display_name=
+TEXT_clear_clipboard__btn_description=
+
+
+UTILITIES_CATEGORY_NAME=Narzędzia
+
+UTILITIES_color_picker__btn_name=Próbnik kolorów
+UTILITIES_color_picker__btn_default_display_name=
+UTILITIES_color_picker__btn_description=Wyświetla w powiadomieniu systemowym kolor wskazywany przez kursor myszy
+
+
+SOUNDBOARD_CATEGORY_NAME=Soundboard
+
+SOUNDBOARD_playsound__btn_name=Odtwórz dźwięk
+SOUNDBOARD_playsound__btn_default_display_name=Soundboard
+SOUNDBOARD_playsound__btn_description=Odtwórz dźwięk z soundboardu
+SOUNDBOARD_playsound__arg_1_name=Plik audio (.mp3)
+SOUNDBOARD_playsound__arg_2_name=Głośność (0-100%)
+
+SOUNDBOARD_stopsound__btn_name=Zatrzymaj dźwięki
+SOUNDBOARD_stopsound__btn_default_display_name=Zatrzymaj soundboard
+SOUNDBOARD_stopsound__btn_description=Zatrzymaj wszystkie dźwięki aktualnie odtwarzane przez soundboard
+
+
+OBSSTUDIO_hotkey__btn_name=Skrót klawiszowy
+OBSSTUDIO_hotkey__btn_default_display_name=Skrót OBS
+OBSSTUDIO_hotkey__btn_description=Wyzwól hotkey w OBS
+OBSSTUDIO_hotkey__arg_1_name=Nazwa klawisza
+
+OBSSTUDIO_changescene__btn_name=Zmień scenę
+OBSSTUDIO_changescene__btn_default_display_name=
+OBSSTUDIO_changescene__btn_description=Ustaw aktualną scenę po nazwie w OBS
+OBSSTUDIO_changescene__arg_1_name=Nazwa sceny
+
+OBSSTUDIO_togglerecording__btn_name=Przełącz nagrywanie
+OBSSTUDIO_togglerecording__btn_default_display_name=
+OBSSTUDIO_togglerecording__btn_description=
+
+OBSSTUDIO_startrecording__btn_name=Rozpocznij nagrywanie
+OBSSTUDIO_startrecording__btn_default_display_name=
+OBSSTUDIO_startrecording__btn_description=
+
+OBSSTUDIO_stoprecording__btn_name=Zatrzymaj nagrywanie
+OBSSTUDIO_stoprecording__btn_default_display_name=
+OBSSTUDIO_stoprecording__btn_description=Zatrzymaj nagrywanie OBS
+
+OBSSTUDIO_togglerecordingpause__btn_name=Pauza/wznów
+OBSSTUDIO_togglerecordingpause__btn_default_display_name=
+OBSSTUDIO_togglerecordingpause__btn_description=
+
+OBSSTUDIO_pauserecording__btn_name=Wstrzymaj nagrywanie
+OBSSTUDIO_pauserecording__btn_default_display_name=
+OBSSTUDIO_pauserecording__btn_description=
+
+OBSSTUDIO_resumerecording__btn_name=Wznów nagrywanie
+OBSSTUDIO_resumerecording__btn_default_display_name=
+OBSSTUDIO_resumerecording__btn_description=
+
+OBSSTUDIO_togglestreaming__btn_name=Włącz/wyłącz streamowanie
+OBSSTUDIO_togglestreaming__btn_default_display_name=
+OBSSTUDIO_togglestreaming__btn_description=
+
+OBSSTUDIO_startstreaming__btn_name=Rozpocznij streamowanie
+OBSSTUDIO_startstreaming__btn_default_display_name=
+OBSSTUDIO_startstreaming__btn_description=
+
+OBSSTUDIO_stopstreaming__btn_name=Zatrzymaj streamowanie
+OBSSTUDIO_stopstreaming__btn_default_display_name=
+OBSSTUDIO_stopstreaming__btn_description=
+
+OBSSTUDIO_togglevirtualcam__btn_name=Włącz/wyłącz kamerę wirtualną
+OBSSTUDIO_togglevirtualcam__btn_default_display_name=
+OBSSTUDIO_togglevirtualcam__btn_description=
+
+OBSSTUDIO_startvirtualcam__btn_name=Włącz kamerę wirtualną
+OBSSTUDIO_startvirtualcam__btn_default_display_name=
+OBSSTUDIO_startvirtualcam__btn_description=
+
+OBSSTUDIO_stopvirtualcam__btn_name=Wyłącz kamerę wirtualną
+OBSSTUDIO_stopvirtualcam__btn_default_display_name=
+OBSSTUDIO_stopvirtualcam__btn_description=
+
+
+SPOTIFY_volume_(only_with_spotify_premium)__category_name=Sterowanie głośnością Spotify
+SPOTIFY_volume_(only_with_spotify_premium)__category_description=Zarządzaj głośnością Spotify (TYLKO Z SPOTIFY PREMIUM)
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_name=Podgłoś
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_description=Podgłoś Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_1_name=Podgłoś o 1
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_2_name=Podgłoś o ...
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_name=Przycisz
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_description=Przycisz Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_1_name=Przycisz o 1
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_2_name=Przycisz o ...
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_name=Ustaw głośność
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_description=Ustaw głośność Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__arg_1_name=Ustaw na ...
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_name=Wycisz
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_description=Wycisz komputer
+
+SPOTIFY_play_song__btn_name=Odtwórz utwór
+SPOTIFY_play_song__btn_default_display_name=Odtwórz utwór
+SPOTIFY_play_song__btn_description=Odtwórz konkretny utwór (TYLKO Z SPOTIFY PREMIUM)
+SPOTIFY_play_song__arg_1_name=Nazwa utworu
+
+SPOTIFY_play_playlist__btn_name=Odtwórz playlistę
+SPOTIFY_play_playlist__btn_default_display_name=Odtwórz playlistę
+SPOTIFY_play_playlist__btn_description=Odtwórz konkretną playlistę (TYLKO Z SPOTIFY PREMIUM)
+SPOTIFY_play_playlist__arg_1_name=Nazwa playlisty
+
+SPOTIFY_like_the_played_song__btn_name=Dodaj utwór do ulubionych
+SPOTIFY_like_the_played_song__btn_default_display_name=
+SPOTIFY_like_the_played_song__btn_description=Dodaj aktualnie odtwarzany utwór do ulubionych
+
+SPOTIFY_save_the_played_album__btn_name=Zapisz album
+SPOTIFY_save_the_played_album__btn_default_display_name=
+SPOTIFY_save_the_played_album__btn_description=Zapisz aktualnie odtwarzany album
+
+SPOTIFY_toggle_playlist_inclusion__btn_name=Dodaj/usuń z playlisty
+SPOTIFY_toggle_playlist_inclusion__btn_default_display_name=
+SPOTIFY_toggle_playlist_inclusion__btn_description=Dodaj lub usuń aktualny utwór z określonej playlisty
+SPOTIFY_toggle_playlist_inclusion__arg_1_name=Nazwa playlisty
+
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_name=Dodaj do playlisty
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_default_display_name=
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_description=Dodaj aktualny utwór do określonej playlisty
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__arg_1_name=Nazwa playlisty
+
+SPOTIFY_remove_current_song_from_a_playlist__btn_name=Usuń z playlisty
+SPOTIFY_remove_current_song_from_a_playlist__btn_default_display_name=
+SPOTIFY_remove_current_song_from_a_playlist__btn_description=Usuń aktualny utwór z określonej playlisty
+SPOTIFY_remove_current_song_from_a_playlist__arg_1_name=Nazwa playlisty
+
+SPOTIFY_toggle_follow_artist__btn_name=Obserwuj/Przestań obserwować wykonawcę
+SPOTIFY_toggle_follow_artist__btn_default_display_name=
+SPOTIFY_toggle_follow_artist__btn_description=Zacznij/Przestań obserwować wykonawcę aktualnie odtwarzanego utworu
+
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_name=Obserwuj wykonawcę
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_default_display_name=
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_description=Obserwuj wykonawcę aktualnie odtwarzanego utworu
+
+SPOTIFY_unfollow_current_played_artist__btn_name=Przestań obserwować wykonawcę
+SPOTIFY_unfollow_current_played_artist__btn_default_display_name=
+SPOTIFY_unfollow_current_played_artist__btn_description=Przestań obserwować wykonawcę aktualnie odtwarzanego utworu
