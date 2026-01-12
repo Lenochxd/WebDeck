@@ -1,5 +1,5 @@
 # Translation file: ru_RU.lang
-# Author: Asuma228 — Feel free to submit a PR for any corrections:
+# Author: BigFloppa9 — Feel free to submit a PR for any corrections:
 # GitHub: https://github.com/Lenochxd/WebDeck/pulls
 # Discord: https://discord.gg/tUPsYHAGfm
 
@@ -22,27 +22,27 @@
 native_name=Русский
 english_name=Russian
 lang_code=ru
-author_name=Asuma228
-author_github_username=Asuma228
+author_name=BigFloppa9,Asuma228
+author_github_username=BigFloppa9,Asuma228
 
 
 // -- Welcome Message --
 
-welcome_message_window_title=Welcome
-welcome_message_label_1=Welcome to WebDeck!
-welcome_message_label_2=You can find the tray icon here for quick access.
-welcome_message_button_dont_show_again=Don't show again
+welcome_message_window_title=Добро пожаловать
+welcome_message_label_1=Добро пожаловать в WebDeck!
+welcome_message_label_2=Здесь вы можете найти значок в трее для быстрого доступа.
+welcome_message_button_dont_show_again=Больше не покаызвать
 welcome_message_button_ok=OK
 
 
 // -- Tray icon --
 
-qr_code=QR Code
-options=настройки
+qr_code=QR Код
+options=Настройки
 open_config=Открыть конфиг
 restart_application=Перезапустить WebDeck
 edit_port=Отредактировать порт
-randomize=Слуйчайно
+randomize=Рандомизировать
 change_server_port=Изменить порт сервера
 enter_new_port=Введите новый порт:
 fix_firewall=Исправить правила брандмауэра
@@ -57,7 +57,7 @@ exit=Выход
 // -- Errors --
 
 open_github_issue_prompt_title=Открыть GitHub Issue
-open_github_issue_prompt_message=Вы хотите открыть новый GitHub issue по этой ошибке? (Recommended)
+open_github_issue_prompt_message=Вы хотите открыть новый GitHub issue по этой ошибке? (Рекомендовано)
 
 copy_to_clipboard_prompt_title=Копировать в буфер обмена
 copy_to_clipboard_prompt_message=Вы хотите скопировать текст ошибки в буфер обмена?
@@ -72,14 +72,14 @@ settings_save_error=Произошла ошибка при сохранении 
 
 auto_update_error=Ошибка при обновлении WebDeck, пожалуйста загрузите обновление вручную с https://github.com/Lenochxd/WebDeck/releases/latest
 
-no_files_found_error=Файлов не найдено
+no_files_found_error=Файлы не найдены
 
 ffmpeg_not_installed_error=Установка FFMPEG...
 vlc_not_installed_error=VLC не установлен!
 mp3_loading_error=Произошла ошибка при загрузке имени MP3 файла.
 
 obs_failed_connection_error=Не удалось подключиться к OBS.
-obs_error_10061=Сервер websocket не найден. (WinError 10061)
+obs_error_10061=Websocket сервер не найден. (WinError 10061)
 obs_error_incorrect_password=Неверный пароль.
 obs_already_recording=OBS уже осуществляет запись.
 obs_already_streaming=OBS уже осуществляет трансляцию.
@@ -88,7 +88,7 @@ obs_not_recording=OBS не осуществляет запись.
 obs_not_streaming=OBS не осуществляет трансляцию.
 obs_no_vcam=Виртуальная камера уже остановлена.
 obs_no_recording_can_be_paused=Запись не может быть остановлена.
-obs_no_recording_is_paused=Запись не остановлена.
+obs_no_recording_is_paused=Запись не приостановлена.
 
 spotify_not_initialized=Токен авторизации Spotify не инициализирован. Проверьте значения client ID и client secret.
 spotify_apply_volume_error=Ошибка при попытке установить громкость Spotify
@@ -130,8 +130,8 @@ button_delete_confirmation=Вы уверены, что хотите удалит
 
 // -- Editor --
 
-enter_editor_mode=Открыть режим редактора
-exit_editor_mode=Закрыть режим редактора
+enter_editor_mode=Войти в режим редактирования
+exit_editor_mode=Закрыть режим редактирования
 
 open_folder=Открыть папку
 
@@ -200,12 +200,12 @@ experimental=Экспериментально
 
 usage_btn_reload_time=Автообновление страницы (ms)
 
-optimized_usage_display=Оптимизировать использование пространства дисплея
+optimized_usage_display=Оптимизированное отображение кнопок
 
-gpu_usage_method=Метод использования GPU (if the gpu usage does not show)
+gpu_usage_method=Метод использования GPU (если использование GPU не отображается)
 doesnt_work=не работает
-lmao=лмао
-none=Нет
+lmao=лол
+none=Никакой
 
 open_settings_in_integrated_browser=Открыть настройки в отдельном браузере
 
@@ -227,7 +227,7 @@ open_themes_folder=Открыть папку с темами
 
 wallpaper_color=Цвет фона
 add_background_color=Добавить цвет фона
-or=or
+or=или
 
 remove_background=Убрать этот фон
 
@@ -238,10 +238,10 @@ link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-
 link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-obs-studio
 link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
 
-soundboard_tutorial=Обучение установки звуковой панели
-spotify_tutorial=Обучение установки Spotify
-obs_tutorial=Обучение установки OBS
-themes_tutorial=Обучение создания тем
+soundboard_tutorial=Руководство по настройке звуковой панели
+spotify_tutorial=Руководство по настройке Spotify
+obs_tutorial=Руководство по настройке OBS
+themes_tutorial=Руководство по настройке тем
 
 
 not_specified=Не указано
@@ -254,428 +254,428 @@ back=Вернуться
 
 WEBDECK_fullscreen__btn_name=Fullscreen
 WEBDECK_fullscreen__btn_default_display_name=
-WEBDECK_fullscreen__btn_description=Toggle full screen mode on the device
+WEBDECK_fullscreen__btn_description=Переключить полноэкранный режим на устройстве
 
-WEBDECK_reload_page__btn_name=Reload page
-WEBDECK_reload_page__btn_default_display_name=Reload
+WEBDECK_reload_page__btn_name=Обновить страницу
+WEBDECK_reload_page__btn_default_display_name=Обновить
 WEBDECK_reload_page__btn_description=
 
-WEBDECK_open_a_folder__btn_name=Open a folder
-WEBDECK_open_a_folder__btn_default_display_name=Open folder
-WEBDECK_open_a_folder__btn_description=Opens the specified webdeck folder
-WEBDECK_open_a_folder__arg_1_name=Folder name
+WEBDECK_open_a_folder__btn_name=Открыть папку
+WEBDECK_open_a_folder__btn_default_display_name=Открыть папку
+WEBDECK_open_a_folder__btn_description=Открывает указанную папку webdeck.
+WEBDECK_open_a_folder__arg_1_name=Имя папки
 
-WEBDECK_config__btn_name=Configuration
-WEBDECK_config__btn_default_display_name=Settings
-WEBDECK_config__btn_description=Open settings menu
+WEBDECK_config__btn_name=Конфигурация
+WEBDECK_config__btn_default_display_name=Настройки
+WEBDECK_config__btn_description=Открыть меню настроек
 
 
-DISPLAY_CATEGORY_NAME=Display
+DISPLAY_CATEGORY_NAME=Дисплей
 
-DISPLAY_cpu__btn_name=CPU usage %
-DISPLAY_cpu__btn_default_display_name=CPU usage
+DISPLAY_cpu__btn_name=Использование CPU %
+DISPLAY_cpu__btn_default_display_name=Использование CPU
 DISPLAY_cpu__btn_description=
-DISPLAY_cpu__arg_1_name=Button text
+DISPLAY_cpu__arg_1_name=Текст кнопки
 
-DISPLAY_memory__category_name=Memory (RAM)
+DISPLAY_memory__category_name=Память (RAM)
 DISPLAY_memory__category_description=
 
 DISPLAY_memory_sub1__btn_name=RAM usage (%)
-DISPLAY_memory_sub1__btn_default_display_name=RAM usage
+DISPLAY_memory_sub1__btn_default_display_name=Использование RAM
 DISPLAY_memory_sub1__btn_description=
-DISPLAY_memory_sub1__arg_1_name=Button text
+DISPLAY_memory_sub1__arg_1_name=Текст кнопки
 
-DISPLAY_memory_sub2__btn_name=RAM usage (gb)
-DISPLAY_memory_sub2__btn_default_display_name=RAM usage
+DISPLAY_memory_sub2__btn_name=Использование RAM (gb)
+DISPLAY_memory_sub2__btn_default_display_name=Использование RAM
 DISPLAY_memory_sub2__btn_description=
-DISPLAY_memory_sub2__arg_1_name=Button text
+DISPLAY_memory_sub2__arg_1_name=Текст кнопки
 
-DISPLAY_memory_sub3__btn_name=Available RAM (gb)
-DISPLAY_memory_sub3__btn_default_display_name=Available RAM
+DISPLAY_memory_sub3__btn_name=Доступная RAM (gb)
+DISPLAY_memory_sub3__btn_default_display_name=Доступная RAM
 DISPLAY_memory_sub3__btn_description=
-DISPLAY_memory_sub3__arg_1_name=Button text
+DISPLAY_memory_sub3__arg_1_name=Текст кнопки
 
-DISPLAY_memory_sub4__btn_name=total RAM (gb)
-DISPLAY_memory_sub4__btn_default_display_name=total RAM
+DISPLAY_memory_sub4__btn_name=общий RAM (gb)
+DISPLAY_memory_sub4__btn_default_display_name=общий RAM
 DISPLAY_memory_sub4__btn_description=
-DISPLAY_memory_sub4__arg_1_name=Button text
+DISPLAY_memory_sub4__arg_1_name=Текст кнопки
 
-DISPLAY_disks__category_name=Disks
+DISPLAY_disks__category_name=Диски
 DISPLAY_disks__category_description=
 
-DISPLAY_disks_sub1__btn_name=Disk usage (%)
-DISPLAY_disks_sub1__btn_default_display_name=Disk usage
+DISPLAY_disks_sub1__btn_name=Использование дисков (%)
+DISPLAY_disks_sub1__btn_default_display_name=Использование дисков
 DISPLAY_disks_sub1__btn_description=
-DISPLAY_disks_sub1__arg_1_name=Button text
-DISPLAY_disks_sub1__arg_2_name=Disk letter
+DISPLAY_disks_sub1__arg_1_name=Текст кнопки
+DISPLAY_disks_sub1__arg_2_name=Буква диска
 
-DISPLAY_disks_sub2__btn_name=Storage available (gb)
-DISPLAY_disks_sub2__btn_default_display_name=Storage available
+DISPLAY_disks_sub2__btn_name=Доступное хранилище (gb)
+DISPLAY_disks_sub2__btn_default_display_name=Доступное хранилище
 DISPLAY_disks_sub2__btn_description=
-DISPLAY_disks_sub2__arg_1_name=Button text
-DISPLAY_disks_sub2__arg_2_name=Disk letter
+DISPLAY_disks_sub2__arg_1_name=Текст кнопки
+DISPLAY_disks_sub2__arg_2_name=Буква диска
 
-DISPLAY_disks_sub3__btn_name=Disk usage (gb)
-DISPLAY_disks_sub3__btn_default_display_name=Disk usage
+DISPLAY_disks_sub3__btn_name=Использование диска (gb)
+DISPLAY_disks_sub3__btn_default_display_name=Использование диска
 DISPLAY_disks_sub3__btn_description=
-DISPLAY_disks_sub3__arg_1_name=Button text
-DISPLAY_disks_sub3__arg_2_name=Disk letter
+DISPLAY_disks_sub3__arg_1_name=Текст кнопки
+DISPLAY_disks_sub3__arg_2_name=Буква диска
 
-DISPLAY_disks_sub4__btn_name=Total disk storage (gb)
-DISPLAY_disks_sub4__btn_default_display_name=Total disk storage
+DISPLAY_disks_sub4__btn_name=Общий объем дискового пространства (gb)
+DISPLAY_disks_sub4__btn_default_display_name=Общий объем дискового пространства
 DISPLAY_disks_sub4__btn_description=
-DISPLAY_disks_sub4__arg_1_name=Button text
-DISPLAY_disks_sub4__arg_2_name=Disk letter
+DISPLAY_disks_sub4__arg_1_name=Текст кнопки
+DISPLAY_disks_sub4__arg_2_name=Буква диска
 
 DISPLAY_gpu__category_name=GPU
 DISPLAY_gpu__category_description=
 
-DISPLAY_gpu_sub1__btn_name=GPU usage %
-DISPLAY_gpu_sub1__btn_default_display_name=GPU usage
+DISPLAY_gpu_sub1__btn_name=Использование GPU %
+DISPLAY_gpu_sub1__btn_default_display_name=Использование GPU
 DISPLAY_gpu_sub1__btn_description=
-DISPLAY_gpu_sub1__arg_1_name=Button text
-DISPLAY_gpu_sub1__arg_2_name=Select GPU
+DISPLAY_gpu_sub1__arg_1_name=Текст кнопки
+DISPLAY_gpu_sub1__arg_2_name=Выбор GPU
 
-DISPLAY_gpu_sub2__btn_name=VRAM usage (mb)
-DISPLAY_gpu_sub2__btn_default_display_name=VRAM usage
+DISPLAY_gpu_sub2__btn_name=Использование VRAM (mb)
+DISPLAY_gpu_sub2__btn_default_display_name=Использование VRAM
 DISPLAY_gpu_sub2__btn_description=
-DISPLAY_gpu_sub2__arg_1_name=Button text
-DISPLAY_gpu_sub2__arg_2_name=Select GPU
+DISPLAY_gpu_sub2__arg_1_name=Текст кнопки
+DISPLAY_gpu_sub2__arg_2_name=Выбор GPU
 
-DISPLAY_gpu_sub3__btn_name=Available VRAM (mb)
-DISPLAY_gpu_sub3__btn_default_display_name=Available VRAM
+DISPLAY_gpu_sub3__btn_name=Доступно VRAM (mb)
+DISPLAY_gpu_sub3__btn_default_display_name=Доступно VRAM
 DISPLAY_gpu_sub3__btn_description=
-DISPLAY_gpu_sub3__arg_1_name=Button text
-DISPLAY_gpu_sub3__arg_2_name=Select GPU
+DISPLAY_gpu_sub3__arg_1_name=Текст кнопки
+DISPLAY_gpu_sub3__arg_2_name=Выбор GPU
 
-DISPLAY_gpu_sub4__btn_name=total VRAM (mb)
-DISPLAY_gpu_sub4__btn_default_display_name=total VRAM
+DISPLAY_gpu_sub4__btn_name=Всего VRAM (mb)
+DISPLAY_gpu_sub4__btn_default_display_name=Всего VRAM
 DISPLAY_gpu_sub4__btn_description=
-DISPLAY_gpu_sub4__arg_1_name=Button text
-DISPLAY_gpu_sub4__arg_2_name=Select GPU
+DISPLAY_gpu_sub4__arg_1_name=Текст кнопки
+DISPLAY_gpu_sub4__arg_2_name=Выбор GPU
 
-DISPLAY_network__category_name=Network
+DISPLAY_network__category_name=Сеть
 DISPLAY_network__category_description=
 
-DISPLAY_network_sub1__btn_name=Network upload (bytes)
+DISPLAY_network_sub1__btn_name=Сетевая загрузка (байт)
 DISPLAY_network_sub1__btn_default_display_name=Network upload
 DISPLAY_network_sub1__btn_description=
-DISPLAY_network_sub1__arg_1_name=Button text
+DISPLAY_network_sub1__arg_1_name=Текст кнопки
 
-DISPLAY_network_sub2__btn_name=Network download (bytes)
-DISPLAY_network_sub2__btn_default_display_name=Network download
+DISPLAY_network_sub2__btn_name=Сетевое скачивание (байт)
+DISPLAY_network_sub2__btn_default_display_name=Сетевое скачивание
 DISPLAY_network_sub2__btn_description=
-DISPLAY_network_sub2__arg_1_name=Button text
+DISPLAY_network_sub2__arg_1_name=Текст кнопки
 
 
-SYSTEM_CATEGORY_NAME=System
+SYSTEM_CATEGORY_NAME=Система
 
-SYSTEM_volume__category_name=Volume control
-SYSTEM_volume__category_description=Manage system volume
+SYSTEM_volume__category_name=Регулятор громкости
+SYSTEM_volume__category_description=Управление громкостью системы
 
-SYSTEM_volume_sub1__btn_name=Increase volume
+SYSTEM_volume_sub1__btn_name=Увеличение громкости
 SYSTEM_volume_sub1__btn_default_display_name=
-SYSTEM_volume_sub1__btn_description=Increase computer volume
-SYSTEM_volume_sub1__arg_1_name=Increase by 1
-SYSTEM_volume_sub1__arg_2_name=Increase by ...
+SYSTEM_volume_sub1__btn_description=Увеличьте громкость компьютера
+SYSTEM_volume_sub1__arg_1_name=Увеличение на 1
+SYSTEM_volume_sub1__arg_2_name=Увеличение на ...
 
-SYSTEM_volume_sub2__btn_name=Decrease volume
+SYSTEM_volume_sub2__btn_name=Уменьшить громкость
 SYSTEM_volume_sub2__btn_default_display_name=
-SYSTEM_volume_sub2__btn_description=Decrease computer volume
-SYSTEM_volume_sub2__arg_1_name=Decrease by 1
-SYSTEM_volume_sub2__arg_2_name=Decrease by ...
+SYSTEM_volume_sub2__btn_description=Уменьшить громкость компьютера
+SYSTEM_volume_sub2__arg_1_name=Уменьшить на 1
+SYSTEM_volume_sub2__arg_2_name=Уменьшить на ...
 
-SYSTEM_volume_sub3__btn_name=Set volume
+SYSTEM_volume_sub3__btn_name=Установить громкость
 SYSTEM_volume_sub3__btn_default_display_name=
-SYSTEM_volume_sub3__btn_description=Set computer volume
-SYSTEM_volume_sub3__arg_1_name=Set to ...
+SYSTEM_volume_sub3__btn_description=Установить громкость компьютера
+SYSTEM_volume_sub3__arg_1_name=Установить на ...
 
-SYSTEM_volume_sub4__btn_name=Mute the volume
+SYSTEM_volume_sub4__btn_name=Отключить звук
 SYSTEM_volume_sub4__btn_default_display_name=
-SYSTEM_volume_sub4__btn_description=Mute computer volume
+SYSTEM_volume_sub4__btn_description=Отключить звук компьютера
 
-SYSTEM_media_control__category_name=Media control
-SYSTEM_media_control__category_description=Manage system media
+SYSTEM_media_control__category_name=Управление мультимедиа
+SYSTEM_media_control__category_description=Управление системным мультимедиа
 
-SYSTEM_media_control_sub1__btn_name=Previous
+SYSTEM_media_control_sub1__btn_name=Предыдущий
 SYSTEM_media_control_sub1__btn_default_display_name=
-SYSTEM_media_control_sub1__btn_description=Play the previous sound
+SYSTEM_media_control_sub1__btn_description=Воспроизвести предыдущий трек
 
-SYSTEM_media_control_sub2__btn_name=Toggle play/pause
+SYSTEM_media_control_sub2__btn_name=Переключить воспроизведение/паузу
 SYSTEM_media_control_sub2__btn_default_display_name=
 SYSTEM_media_control_sub2__btn_description=
 
-SYSTEM_media_control_sub3__btn_name=Skip
+SYSTEM_media_control_sub3__btn_name=Пропустить
 SYSTEM_media_control_sub3__btn_default_display_name=
-SYSTEM_media_control_sub3__btn_description=Skip the actual song
+SYSTEM_media_control_sub3__btn_description=Пропустить текущую песню
 
-SYSTEM_open__btn_name=Open ...
-SYSTEM_open__btn_default_display_name=Open
-SYSTEM_open__btn_description=Open the specified file or software
-SYSTEM_open__arg_1_name=File location
+SYSTEM_open__btn_name=Открыть ...
+SYSTEM_open__btn_default_display_name=Открыть
+SYSTEM_open__btn_description=Откройте указанный файл или программное обеспечение
+SYSTEM_open__arg_1_name=Местоположение файла
 
-SYSTEM_opendir__btn_name=Open a directory
-SYSTEM_opendir__btn_default_display_name=Open directory
-SYSTEM_opendir__btn_description=Open the specified directory on the explorer
-SYSTEM_opendir__arg_1_name=Folder location
+SYSTEM_opendir__btn_name=Открыть каталог
+SYSTEM_opendir__btn_default_display_name=Открыть каталог
+SYSTEM_opendir__btn_description=Открыть указанный каталог в проводнике
+SYSTEM_opendir__arg_1_name=Расположение папки
 
-SYSTEM_open_a_website__btn_name=Open a website
-SYSTEM_open_a_website__btn_default_display_name=Open website
+SYSTEM_open_a_website__btn_name=Открыть вебсайт
+SYSTEM_open_a_website__btn_default_display_name=Открыть вебсайт
 SYSTEM_open_a_website__btn_description=
-SYSTEM_open_a_website__arg_1_name=url
+SYSTEM_open_a_website__arg_1_name=Ссылка
 
-SYSTEM_lock_session__btn_name=Lock session
+SYSTEM_lock_session__btn_name=Блокировать сессию
 SYSTEM_lock_session__btn_default_display_name=
-SYSTEM_lock_session__btn_description=
+SYSTEM_lock_session__btn_description=Возвращает к экрану входа в систему
 
-SYSTEM_shutdown_pc__btn_name=Shutdown PC
+SYSTEM_shutdown_pc__btn_name=Выключить компьютер
 SYSTEM_shutdown_pc__btn_default_display_name=
 SYSTEM_shutdown_pc__btn_description=
 
-SYSTEM_restart_pc__btn_name=Restart PC
+SYSTEM_restart_pc__btn_name=Перезагрузить компьютер
 SYSTEM_restart_pc__btn_default_display_name=
 SYSTEM_restart_pc__btn_description=
 
-SYSTEM_sleep_pc__btn_name=Sleep PC
+SYSTEM_sleep_pc__btn_name=Перейти в спящий режим
 SYSTEM_sleep_pc__btn_default_display_name=
 SYSTEM_sleep_pc__btn_description=
 
-SYSTEM_hibernate_pc__btn_name=Hibernate PC
+SYSTEM_hibernate_pc__btn_name=Перейти в режим гибернации
 SYSTEM_hibernate_pc__btn_default_display_name=
 SYSTEM_hibernate_pc__btn_description=
 
-SYSTEM_screensaver__btn_name=ScreenSaver
+SYSTEM_screensaver__btn_name=Заставка (ScreenSaver)
 SYSTEM_screensaver__btn_default_display_name=
 SYSTEM_screensaver__btn_description=
-SYSTEM_screensaver__arg_1_name=Screen saver
-SYSTEM_screensaver__arg_1_option_1_name=Enable screen saver
-SYSTEM_screensaver__arg_1_option_2_name=Enable full screen saver
-SYSTEM_screensaver__arg_1_option_3_name=Disable screen saver
+SYSTEM_screensaver__arg_1_name=Заставка 
+SYSTEM_screensaver__arg_1_option_1_name=Включить заставку
+SYSTEM_screensaver__arg_1_option_2_name=Включить полноэкранную заставку
+SYSTEM_screensaver__arg_1_option_3_name=Выключить заставку
 
-SYSTEM_restart_explorer__btn_name=Restart explorer
+SYSTEM_restart_explorer__btn_name=Перезапустить проводник
 SYSTEM_restart_explorer__btn_default_display_name=
 SYSTEM_restart_explorer__btn_description=
 
 SYSTEM_superaltf4__btn_name=SuperAltF4
 SYSTEM_superaltf4__btn_default_display_name=
-SYSTEM_superaltf4__btn_description=Force close the foreground window
+SYSTEM_superaltf4__btn_description=Принудительно закрыть окно на переднем плане
 
-SYSTEM_kill_a_task__btn_name=Kill a task
-SYSTEM_kill_a_task__btn_default_display_name=Kill task
+SYSTEM_kill_a_task__btn_name=Убить задачу
+SYSTEM_kill_a_task__btn_default_display_name=Убить задачу
 SYSTEM_kill_a_task__btn_description=
-SYSTEM_kill_a_task__arg_1_name=Task (app.exe)
+SYSTEM_kill_a_task__arg_1_name=Задача (app.exe)
 
-SYSTEM_restart_a_task__btn_name=Restart a task
-SYSTEM_restart_a_task__btn_default_display_name=Restart task
+SYSTEM_restart_a_task__btn_name=Перезапустить задачу
+SYSTEM_restart_a_task__btn_default_display_name=Перезапустить задачу
 SYSTEM_restart_a_task__btn_description=
-SYSTEM_restart_a_task__arg_1_name=Task (app.exe)
+SYSTEM_restart_a_task__arg_1_name=Задача (app.exe)
 
-SYSTEM_execute_python_code__btn_name=Execute python code
+SYSTEM_execute_python_code__btn_name=Выполнить код Python
 SYSTEM_execute_python_code__btn_default_display_name=
-SYSTEM_execute_python_code__btn_description=Execute python code from the webdeck program
-SYSTEM_execute_python_code__arg_1_name=Option
-SYSTEM_execute_python_code__arg_1_option_1_name=Python file (upload)
-SYSTEM_execute_python_code__arg_1_option_2_name=Python file (path)
-SYSTEM_execute_python_code__arg_1_option_3_name=Python code (single line)
+SYSTEM_execute_python_code__btn_description=Выполнить код Python из программы webdeck
+SYSTEM_execute_python_code__arg_1_name=Вариант
+SYSTEM_execute_python_code__arg_1_option_1_name=Файл Python (загрузить)
+SYSTEM_execute_python_code__arg_1_option_2_name=Файл Python (путь)
+SYSTEM_execute_python_code__arg_1_option_3_name=Код Python (одна строка)
 
-SYSTEM_execute_batch_code__btn_name=Execute batch code
+SYSTEM_execute_batch_code__btn_name=Выполнить батник (.bat)
 SYSTEM_execute_batch_code__btn_default_display_name=
-SYSTEM_execute_batch_code__btn_description=Execute batch from the webdeck program
-SYSTEM_execute_batch_code__arg_1_name=Batch code
+SYSTEM_execute_batch_code__btn_description=Выполнить батник (.bat) из программы webdeck
+SYSTEM_execute_batch_code__arg_1_name=Код батника
 
 
-TEXT_CATEGORY_NAME=Text
+TEXT_CATEGORY_NAME=Текст
 
-TEXT_press_a_key__btn_name=Keyboard key
-TEXT_press_a_key__btn_default_display_name=Press key
+TEXT_press_a_key__btn_name=Кнопка клавиатуры
+TEXT_press_a_key__btn_default_display_name=Нажать на кнопку
 TEXT_press_a_key__btn_description=
-TEXT_press_a_key__arg_1_name=Key
+TEXT_press_a_key__arg_1_name=Кнопка
 
-TEXT_write_text__btn_name=Text
-TEXT_write_text__btn_default_display_name=Write text
-TEXT_write_text__btn_description=Write text instantly
-TEXT_write_text__arg_1_name=Text
+TEXT_write_text__btn_name=Текст
+TEXT_write_text__btn_default_display_name=Написать текст
+TEXT_write_text__btn_description=Мгновенно написать текст
+TEXT_write_text__arg_1_name=Текст
 
-TEXT_write_text_and_press_enter__btn_name=Write text and press Enter
-TEXT_write_text_and_press_enter__btn_default_display_name=Write text (then enter)
-TEXT_write_text_and_press_enter__btn_description=Write text instantly and press Enter
-TEXT_write_text_and_press_enter__arg_1_name=Text
+TEXT_write_text_and_press_enter__btn_name=Вписать текст и нажать Enter
+TEXT_write_text_and_press_enter__btn_default_display_name=Вписать текст (потом нажать Enter)
+TEXT_write_text_and_press_enter__btn_description=Вписать текст и нажать Enter
+TEXT_write_text_and_press_enter__arg_1_name=Текст
 
-TEXT_speech_recognition__btn_name=Speech recognition
+TEXT_speech_recognition__btn_name=Распознавание речи
 TEXT_speech_recognition__btn_default_display_name=
-TEXT_speech_recognition__btn_description=Activate Windows speech recognition to write while speaking
+TEXT_speech_recognition__btn_description=Включить распознавание речи Windows для ввода текста голосом
 
-TEXT_copy__btn_name=Copy
+TEXT_copy__btn_name=Копировать
 TEXT_copy__btn_default_display_name=
 TEXT_copy__btn_description=
 TEXT_copy__arg_1_name=Option
-TEXT_copy__arg_1_option_1_name=Copy (ctrl+c)
-TEXT_copy__arg_1_option_2_name=Copy text in the clipboard
+TEXT_copy__arg_1_option_1_name=Копировать (ctrl+c)
+TEXT_copy__arg_1_option_2_name=Копировать текст в буфер обмена
 
-TEXT_paste__btn_name=Paste
+TEXT_paste__btn_name=Вставить
 TEXT_paste__btn_default_display_name=
 TEXT_paste__btn_description=
 TEXT_paste__arg_1_name=Option
-TEXT_paste__arg_1_option_1_name=Paste (ctrl+v)
-TEXT_paste__arg_1_option_2_name=Paste text
+TEXT_paste__arg_1_option_1_name=Вставить (ctrl+v)
+TEXT_paste__arg_1_option_2_name=Вставить текст
 
-TEXT_cut_(ctrl+x)__btn_name=Cut (ctrl+x)
-TEXT_cut_(ctrl+x)__btn_default_display_name=Cut
+TEXT_cut_(ctrl+x)__btn_name=Вырезать (ctrl+x)
+TEXT_cut_(ctrl+x)__btn_default_display_name=Вырезать
 TEXT_cut_(ctrl+x)__btn_description=
 
-TEXT_open_clipboard__btn_name=Open clipboard
-TEXT_open_clipboard__btn_default_display_name=Clipboard
+TEXT_open_clipboard__btn_name=Открыть буфер обмена
+TEXT_open_clipboard__btn_default_display_name=Буфер обмена
 TEXT_open_clipboard__btn_description=
 
-TEXT_clear_clipboard__btn_name=Clear clipboard
+TEXT_clear_clipboard__btn_name=Очистить буфер обмена
 TEXT_clear_clipboard__btn_default_display_name=
 TEXT_clear_clipboard__btn_description=
 
 
-UTILITIES_CATEGORY_NAME=Utilities
+UTILITIES_CATEGORY_NAME=Утилиты
 
-UTILITIES_color_picker__btn_name=Color picker
+UTILITIES_color_picker__btn_name=Выбор цвета
 UTILITIES_color_picker__btn_default_display_name=
-UTILITIES_color_picker__btn_description=Indicates in a system notification the color pointed by your mouse
+UTILITIES_color_picker__btn_description=Указывает в системном уведомлении цвет, на который указывает курсор.
 
 
-SOUNDBOARD_CATEGORY_NAME=Soundboard
+SOUNDBOARD_CATEGORY_NAME=Звуковая панель
 
-SOUNDBOARD_playsound__btn_name=Play a sound
-SOUNDBOARD_playsound__btn_default_display_name=Soundboard
-SOUNDBOARD_playsound__btn_description=Play a sound on the soundboard
-SOUNDBOARD_playsound__arg_1_name=Audio file (.mp3)
-SOUNDBOARD_playsound__arg_2_name=Audio volume (0-100%)
+SOUNDBOARD_playsound__btn_name=Воспроизвести звук
+SOUNDBOARD_playsound__btn_default_display_name=Звуковая панель
+SOUNDBOARD_playsound__btn_description=Воспроизвести звук на звуковой панели
+SOUNDBOARD_playsound__arg_1_name=Аудио файл (.mp3)
+SOUNDBOARD_playsound__arg_2_name=Громкость аудио (0-100%)
 
-SOUNDBOARD_stopsound__btn_name=Stop sounds
-SOUNDBOARD_stopsound__btn_default_display_name=stop soundboard
-SOUNDBOARD_stopsound__btn_description=Stop all sounds currently playing by the soundboard
+SOUNDBOARD_stopsound__btn_name=Остановить звуки
+SOUNDBOARD_stopsound__btn_default_display_name=Остановить звуковую панель
+SOUNDBOARD_stopsound__btn_description=Остановить все звуки, воспроизводимые в данный момент звуковой панели
 
 
-OBSSTUDIO_hotkey__btn_name=Hotkey
-OBSSTUDIO_hotkey__btn_default_display_name=OBS Hotkey
-OBSSTUDIO_hotkey__btn_description=Trigger a hotkey in OBS
-OBSSTUDIO_hotkey__arg_1_name=Key name
+OBSSTUDIO_hotkey__btn_name=Горячая клавиша
+OBSSTUDIO_hotkey__btn_default_display_name=Горячая клавиша для OBS
+OBSSTUDIO_hotkey__btn_description=Запуск горячей клавиши в OBS
+OBSSTUDIO_hotkey__arg_1_name=Название клавиши
 
-OBSSTUDIO_changescene__btn_name=Change scene
+OBSSTUDIO_changescene__btn_name=Изменить сцену
 OBSSTUDIO_changescene__btn_default_display_name=
-OBSSTUDIO_changescene__btn_description=Set current scene by name on OBS
-OBSSTUDIO_changescene__arg_1_name=Scene name
+OBSSTUDIO_changescene__btn_description=Установить текущую сцену по имени в OBS
+OBSSTUDIO_changescene__arg_1_name=Имя сцены
 
-OBSSTUDIO_togglerecording__btn_name=Toggle recording
+OBSSTUDIO_togglerecording__btn_name=Переключить запись
 OBSSTUDIO_togglerecording__btn_default_display_name=
-OBSSTUDIO_togglerecording__btn_description=
+OBSSTUDIO_togglerecording__btn_description=Вкл/выкл запись OBS
 
-OBSSTUDIO_startrecording__btn_name=Start recording
+OBSSTUDIO_startrecording__btn_name=Начать запись
 OBSSTUDIO_startrecording__btn_default_display_name=
-OBSSTUDIO_startrecording__btn_description=
+OBSSTUDIO_startrecording__btn_description=Начать запись OBS
 
-OBSSTUDIO_stoprecording__btn_name=Stop recording
+OBSSTUDIO_stoprecording__btn_name=Остановить запись
 OBSSTUDIO_stoprecording__btn_default_display_name=
-OBSSTUDIO_stoprecording__btn_description=Stop OBS recording
+OBSSTUDIO_stoprecording__btn_description=Остановить запись OBS
 
-OBSSTUDIO_togglerecordingpause__btn_name=Pause/resume toggle
+OBSSTUDIO_togglerecordingpause__btn_name=Переключатель паузы/возобновления
 OBSSTUDIO_togglerecordingpause__btn_default_display_name=
 OBSSTUDIO_togglerecordingpause__btn_description=
 
-OBSSTUDIO_pauserecording__btn_name=Pause recording
+OBSSTUDIO_pauserecording__btn_name=Приостановить запись
 OBSSTUDIO_pauserecording__btn_default_display_name=
 OBSSTUDIO_pauserecording__btn_description=
 
-OBSSTUDIO_resumerecording__btn_name=Resume recording
+OBSSTUDIO_resumerecording__btn_name=Возобновить запись
 OBSSTUDIO_resumerecording__btn_default_display_name=
 OBSSTUDIO_resumerecording__btn_description=
 
-OBSSTUDIO_togglestreaming__btn_name=Toggle streaming
+OBSSTUDIO_togglestreaming__btn_name=Переключить трансляцию
 OBSSTUDIO_togglestreaming__btn_default_display_name=
 OBSSTUDIO_togglestreaming__btn_description=
 
-OBSSTUDIO_startstreaming__btn_name=Start streaming
+OBSSTUDIO_startstreaming__btn_name=Начать трансляцию
 OBSSTUDIO_startstreaming__btn_default_display_name=
 OBSSTUDIO_startstreaming__btn_description=
 
-OBSSTUDIO_stopstreaming__btn_name=Stop streaming
+OBSSTUDIO_stopstreaming__btn_name=Прекратить трансляцию
 OBSSTUDIO_stopstreaming__btn_default_display_name=
 OBSSTUDIO_stopstreaming__btn_description=
 
-OBSSTUDIO_togglevirtualcam__btn_name=Toggle virtual cam
+OBSSTUDIO_togglevirtualcam__btn_name=Переключить виртуальную камеру
 OBSSTUDIO_togglevirtualcam__btn_default_display_name=
 OBSSTUDIO_togglevirtualcam__btn_description=
 
-OBSSTUDIO_startvirtualcam__btn_name=Start virtual cam
+OBSSTUDIO_startvirtualcam__btn_name=Запустить виртуальную камеру
 OBSSTUDIO_startvirtualcam__btn_default_display_name=
 OBSSTUDIO_startvirtualcam__btn_description=
 
-OBSSTUDIO_stopvirtualcam__btn_name=Stop virtual cam
+OBSSTUDIO_stopvirtualcam__btn_name=Остановить виртуальную камеру
 OBSSTUDIO_stopvirtualcam__btn_default_display_name=
 OBSSTUDIO_stopvirtualcam__btn_description=
 
 
-SPOTIFY_volume_(only_with_spotify_premium)__category_name=Spotify volume control
-SPOTIFY_volume_(only_with_spotify_premium)__category_description=Manage spotify volume (ONLY WITH SPOTIFY PREMIUM)
+SPOTIFY_volume_(only_with_spotify_premium)__category_name=Регулятор громкости Spotify
+SPOTIFY_volume_(only_with_spotify_premium)__category_description=Управление громкостью Spotify (ТОЛЬКО СО SPOTIFY PREMIUM)
 
-SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_name=Increase volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_name=Увеличить громкость
 SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_default_display_name=
-SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_description=Increase spotiy volume
-SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_1_name=Increase by 1
-SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_2_name=Increase by ...
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_description=Увеличить громкость Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_1_name=Увеличить на 1
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_2_name=Увеличить на ...
 
-SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_name=Decrease volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_name=Уменьшить громкость
 SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_default_display_name=
-SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_description=Decrease spotify volume
-SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_1_name=Decrease by 1
-SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_2_name=Decrease by ...
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_description=Уменьшить громкость Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_1_name=Уменьшить на 1
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_2_name=Уменьшить на ...
 
-SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_name=Set volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_name=Установить громкость
 SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_default_display_name=
-SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_description=Set spotify volume
-SPOTIFY_volume_(only_with_spotify_premium)_sub3__arg_1_name=Set to ...
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_description=Установить громкость Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__arg_1_name=Установить на ...
 
-SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_name=Mute the volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_name=Отключить звук
 SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_default_display_name=
-SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_description=Mute computer volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_description=Отключить звук компьютера
 
-SPOTIFY_play_song__btn_name=Play a specific music
-SPOTIFY_play_song__btn_default_display_name=Play the specified sound
-SPOTIFY_play_song__btn_description=Plays specific music from a name (ONLY WITH SPOTIFY PREMIUM)
-SPOTIFY_play_song__arg_1_name=Song name
+SPOTIFY_play_song__btn_name=Воспроизвести определенную музыку
+SPOTIFY_play_song__btn_default_display_name=PВоспроизвести определенную музыку
+SPOTIFY_play_song__btn_description=Воспроизведение определенной музыки по названию (ТОЛЬКО С SPOTIFY PREMIUM)
+SPOTIFY_play_song__arg_1_name=Название песни
 
-SPOTIFY_play_playlist__btn_name=Play a specific playlist
-SPOTIFY_play_playlist__btn_default_display_name=Play the specified playlist
-SPOTIFY_play_playlist__btn_description=Plays specific playlist from a name (ONLY WITH SPOTIFY PREMIUM)
-SPOTIFY_play_playlist__arg_1_name=Playlist name
+SPOTIFY_play_playlist__btn_name=Воспроизвести определенный плейлист
+SPOTIFY_play_playlist__btn_default_display_name=Воспроизвести указанный плейлист
+SPOTIFY_play_playlist__btn_description=Воспроизведение определенного плейлиста по названию (ТОЛЬКО С SPOTIFY PREMIUM)
+SPOTIFY_play_playlist__arg_1_name=Название плейлиста
 
-SPOTIFY_like_the_played_song__btn_name=Add song to favorites
+SPOTIFY_like_the_played_song__btn_name=Добавить песню в избранное
 SPOTIFY_like_the_played_song__btn_default_display_name=
-SPOTIFY_like_the_played_song__btn_description=Add the sound currently playing on spotify to favorites
+SPOTIFY_like_the_played_song__btn_description=Добавить звук, который сейчас воспроизводится в Spotify, в избранное
 
-SPOTIFY_save_the_played_album__btn_name=Save the played album
+SPOTIFY_save_the_played_album__btn_name=Сохранить воспроизведенный альбом
 SPOTIFY_save_the_played_album__btn_default_display_name=
-SPOTIFY_save_the_played_album__btn_description=Add the currently playing album on spotify to favorites
+SPOTIFY_save_the_played_album__btn_description=Добавить текущий альбом, воспроизводимый в Spotify, в избранное
 
-SPOTIFY_toggle_playlist_inclusion__btn_name=Toggle playlist inclusion
+SPOTIFY_toggle_playlist_inclusion__btn_name=Добавить/удалить в список воспроизведения
 SPOTIFY_toggle_playlist_inclusion__btn_default_display_name=
-SPOTIFY_toggle_playlist_inclusion__btn_description=Add or remove the current song from the specified playlist
-SPOTIFY_toggle_playlist_inclusion__arg_1_name=Playlist name
+SPOTIFY_toggle_playlist_inclusion__btn_description=Добавить или удалить текущую песню из указанного списка воспроизведения
+SPOTIFY_toggle_playlist_inclusion__arg_1_name=Название плейлиста
 
-SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_name=Add to playlist
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_name=Добавить в плейлист
 SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_default_display_name=
-SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_description=Add current song to the specified playlist
-SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__arg_1_name=Playlist name
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_description=Добавить текущую песню в указанный плейлист
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__arg_1_name=Название плейлиста
 
-SPOTIFY_remove_current_song_from_a_playlist__btn_name=Remove from playlist
+SPOTIFY_remove_current_song_from_a_playlist__btn_name=Удалить из плейлиста
 SPOTIFY_remove_current_song_from_a_playlist__btn_default_display_name=
-SPOTIFY_remove_current_song_from_a_playlist__btn_description=Removes the current song from the specified playlist
-SPOTIFY_remove_current_song_from_a_playlist__arg_1_name=Playlist name
+SPOTIFY_remove_current_song_from_a_playlist__btn_description=Удаляет текущую песню из указанного списка воспроизведения
+SPOTIFY_remove_current_song_from_a_playlist__arg_1_name=Название плейлиста
 
-SPOTIFY_toggle_follow_artist__btn_name=Toggle follow artist
+SPOTIFY_toggle_follow_artist__btn_name=Переключение подписки на исполнителя
 SPOTIFY_toggle_follow_artist__btn_default_display_name=
-SPOTIFY_toggle_follow_artist__btn_description=Toggle following the artist of the currently playing song
+SPOTIFY_toggle_follow_artist__btn_description=Добавить/удалить подписку на исполнителя текущей песни
 
-SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_name=Follow artist
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_name=Подписаться на исполнителя
 SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_default_display_name=
-SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_description=Follow the artist of the currently played song
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_description=Подписаться на исполнителя текущей песни
 
-SPOTIFY_unfollow_current_played_artist__btn_name=Unfollow artist
+SPOTIFY_unfollow_current_played_artist__btn_name=Отписаться от артиста
 SPOTIFY_unfollow_current_played_artist__btn_default_display_name=
-SPOTIFY_unfollow_current_played_artist__btn_description=Unfollow the artist of the currently played song
+SPOTIFY_unfollow_current_played_artist__btn_description=Отписаться от исполнителя текущей песни
