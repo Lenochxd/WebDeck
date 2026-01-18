@@ -1,8 +1,11 @@
-import subprocess
-
+import comtypes
+from pycaw.pycaw import AudioUtilities
+from pycaw.constants import EDataFlow, ERole
 
 def set_microphone_by_name(name):
-    # TODO: (not working rn)
-    # Find the recording device with the specified name
-    command = f"PowerShell -Command \"Get-WmiObject Win32_SoundDevice | Where-Object {{ $_.Name -like '*{name}*' -and $_.ConfigManagerErrorCode -eq 0 }} | Select-Object -First 1 | Invoke-CimMethod -MethodName SetDefault\""
-    subprocess.run(command, shell=True)
+    comtypes.CoInitialize()
+    devices = AudioUtilities.GetAllDevices(data_flow=EDataFlow.eCapture.value)
+    for device in devices:
+        if device.FriendlyName == name:
+            AudioUtilities.SetDefaultDevice(device.id, roles=[ERole.eCommunications])
+            return None
