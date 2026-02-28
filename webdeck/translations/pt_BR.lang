@@ -1,19 +1,67 @@
-# pt_BR.lang file translated by Brunomas1 / github.com/Brunomas1
-# https://github.com/Lenochxd/WebDeck/pulls
-# ou nos avise no discord: https://discord.gg/tUPsYHAGfm
+# Translation file: pt_BR.lang
+# Author: Bruno Monteiro — Feel free to submit a PR for any corrections:
+# GitHub: https://github.com/Lenochxd/WebDeck/pulls
+# Discord: https://discord.gg/tUPsYHAGfm
 
-lang_name=Português (Brasil)
-lang_short=pt
-credits=Brunomas1
 
-// -- Ícone da bandeja --
+# TRANSLATION INSTRUCTIONS:
+# 1. Update the first line with the filename and your username if you're editing.
+# 2. Do NOT translate lines starting with '//' — these are comments.
+# 3. Lines starting with '#' are optional to translate, but it's encouraged for consistency.
+# 4. Only translate the values (text after '='); do not modify the keys (text before '=').
+# 5. Keep variable placeholders like '%example_var%' unchanged.
+# 6. Edit the following fields to match your translation:
+#    - native_name: The name of the language in its native form (e.g., 'Français').
+#    - english_name: The name of the language in English (e.g., 'French').
+#    - lang_code: The ISO code of the language (e.g., 'fr' for French).
+#    - author_name: Your name or the contributor's name.
+#    - author_github_username: Your GitHub username or the contributor's.
+
+
+
+native_name=Português (Brasil)
+english_name=Portuguese (Brazil)
+lang_code=pt_BR
+author_name=Bruno Monteiro
+author_github_username=Brunomas1
+
+
+// -- Welcome Message --
+
+welcome_message_window_title=Bem-vindo
+welcome_message_label_1=Bem-vindo ao WebDeck!
+welcome_message_label_2=Você pode encontrar o ícone da bandeja aqui para acesso rápido.
+welcome_message_button_dont_show_again=Não mostrar novamente
+welcome_message_button_ok=OK
+
+
+// -- Tray icon --
 
 qr_code=Código QR
-open_config=Abrir Configurações
-fix_firewall=Corrigir Firewall
+options=Opções
+open_config=Abrir configurações
+restart_application=Reiniciar WebDeck
+edit_port=Editar porta
+randomize=Sortear
+change_server_port=Alterar porta do servidor
+enter_new_port=Digite a nova porta:
+fix_firewall=Corrigir firewall
+server_status=Status do Servidor:
+server_online=🟢 Online
+server_offline=🔴 Offline
+server_loading=Carregando...
+report_issue=Reportar um problema
 exit=Sair
 
-// -- Erros --
+
+// -- Errors --
+
+open_github_issue_prompt_title=Abrir Issue no GitHub
+open_github_issue_prompt_message=Deseja abrir uma issue no GitHub para este erro? (Recomendado)
+
+copy_to_clipboard_prompt_title=Copiar para Área de Transferência
+copy_to_clipboard_prompt_message=Deseja copiar a mensagem de erro para a área de transferência?
+
 server_disconnected=Servidor Desconectado
 failed=Falhou
 error=Erro
@@ -22,7 +70,7 @@ error_occurred=Ocorreu um erro
 settings_load_error=Ocorreu um erro ao carregar as configurações.
 settings_save_error=Ocorreu um erro ao salvar as configurações.
 
-auto_update_error=Erro ao atualizar o WebDeck. Por favor, atualize manualmente em: https://github.com/Lenochxd/WebDeck/releases/latest
+auto_update_error=Erro ao atualizar o WebDeck. Por favor, atualize manualmente em https://github.com/Lenochxd/WebDeck/releases/latest
 
 no_files_found_error=Nenhum arquivo encontrado
 
@@ -31,7 +79,7 @@ vlc_not_installed_error=O VLC não está instalado!
 mp3_loading_error=Erro ao carregar o arquivo MP3.
 
 obs_failed_connection_error=Falha na conexão com o OBS.
-obs_error_10061=O servidor websocket não foi encontrado. (WinError 10061)
+obs_error_10061=O servidor WebSocket não pôde ser encontrado. (WinError 10061)
 obs_error_incorrect_password=A senha pode estar incorreta.
 obs_already_recording=O OBS já está gravando.
 obs_already_streaming=O OBS já está transmitindo.
@@ -42,17 +90,26 @@ obs_no_vcam=A Câmera Virtual já está parada.
 obs_no_recording_can_be_paused=Nenhuma gravação pode ser pausada.
 obs_no_recording_is_paused=Nenhuma gravação está pausada.
 
-spotify_apply_volume_error=Erro: não foi possível ajustar o volume.
-spotify_volume_prenium_error=Erro: necessário Spotify Premium para ajustar o volume.
+spotify_not_initialized=O token do Spotify não foi inicializado. Verifique se o Client ID e o Client Secret estão configurados corretamente.
+spotify_apply_volume_error=Erro: não foi possível aplicar o volume.
+spotify_volume_prenium_error=Erro: não foi possível aplicar o volume porque o Spotify Premium é necessário.
+spotify_no_active_device_error=Nenhum dispositivo Spotify ativo encontrado. Certifique-se de que o Spotify esteja aberto e ativo.
+spotify_no_track_playing_error=Nenhuma música tocando no momento.
+spotify_playlist_not_found_error=Playlist chamada '%playlist_name%' não encontrada.
 
 
-// -- Mensagens de Sucesso --
+// -- Success messages --
+
 settings_save_success=Configurações salvas com sucesso.
 downloaded_successfully=Arquivo baixado com sucesso.
 folder_created_successfully=Pasta criada com sucesso!
 
+spotify_follow_artist_success=Inscrito em %artist_name%.
+spotify_unfollow_artist_success=Inscrição cancelada de %artist_name%.
 
-// -- Configuração de botões --
+
+// -- Button configuration --
+
 add_a_button=Adicionar um botão
 configure_your_button=Configure seu botão
 
@@ -72,19 +129,27 @@ button_delete_confirmation=Você realmente deseja remover este botão?
 
 
 // -- Editor --
+
 enter_editor_mode=Entrar no modo de edição
 exit_editor_mode=Sair do modo de edição
 
 open_folder=Abrir Pasta
 
+delete_folder=Excluir Pasta
+delete_folder_confirm=Tem certeza que deseja excluir a pasta?
+folder_not_found=Pasta não encontrada
+
+generic_accept=Aceitar
+generic_cancel=Cancelar
+
 quit_without_saving=Sair sem salvar
 save_and_exit=Salvar e sair
-swap_buttons=Trocar 2 Botões
+swap_buttons=Inverter Botões
 stop_swap_mode=Parar Modo de Troca
 no_changes_to_undo=Não há alterações para desfazer.
 
 
-// Aba de Configurações
+// Settings tab
 configuration=Configuração
 settings=Configurações
 
@@ -99,10 +164,10 @@ soundboard=Soundboard
 input_device=Dispositivo de entrada
 output_device=Dispositivo de saída (vbcable)
 toggle_soundboard=Soundboard ativado
-ear_soundboard=Monitoramento de Áudio (Ear Soundboard)
+ear_soundboard=Retorno de Áudio (Ear Soundboard)
 
 spotify_api=API do Spotify
-username=Usuário
+username=Nome de usuário
 
 obs_studio=OBS Studio
 host=Host
@@ -113,27 +178,27 @@ password=Senha
 visuals=Visual
 
 gridsize=Tamanho da grade
-height=altura
-width=largura
+height=Altura
+width=Largura
 
-portrait_rotate=Rotação do modo retrato (graus)
+portrait_rotate=Rotação do Modo Retrato
 
 themes=Temas
-open_theme_menu=Abrir menu de temas
+open_theme_menu=Abrir o menu de temas
 
 backgrounds=Imagens de fundo
-open_background_image_menu=Abrir menu de fundos
+open_background_image_menu=Abrir o menu de fundos
 
 dark_theme=Tema escuro
 
 show_btn_names=Mostrar nomes dos botões
 
-edit_btn_color=Alterar cor padrão do botão
+edit_btn_color=Alterar a cor padrão do botão
 
 
 experimental=Experimental
 
-usage_btn_reload_time=Tempo de recarga dos botões de uso (ms)
+usage_btn_reload_time=Intervalo de atualização dos botões de uso (ms)
 
 optimized_usage_display=Otimizar exibição de uso nos botões
 
@@ -142,15 +207,17 @@ doesnt_work=não funciona
 lmao=lmao
 none=Nenhum
 
-open_settings_in_integrated_browser=Abrir configurações em um navegador dedicado
+open_settings_in_integrated_browser=Abrir configurações em um navegador separado
 
 show_console=Mostrar console
 dev_mode=Modo desenvolvedor
-authorize_windows_firewall=Autorizar WebDeck no Firewall do Windows
+authorize_windows_firewall=Autorizar WebDeck via Firewall do Windows
 automatic_firewall_bypass=Ignorar firewall automaticamente ao iniciar
 fix_stop_soundboard=Corrigir problema do botão de parar soundboard (pode ser instável)
 
-themes_menu_title=Lista de Temas
+server=Servidor
+
+themes_menu_title=Lista de temas
 random_bg_menu_title=Lista de fundos aleatórios
 
 disabled_themes=Disponíveis
@@ -165,15 +232,15 @@ or=ou
 remove_background=Remover este fundo
 
 
-// Links (Recomendo manter ou traduzir apenas o texto do link se o repo tiver versões em PT)
-link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard
-link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account
-link_obs=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-obs-studio
-link_themes=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+// Links
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/docs/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
 
 soundboard_tutorial=Tutorial de configuração do Soundboard
 spotify_tutorial=Tutorial de configuração do Spotify
-obs_tutorial=Tutorial de configuração do OBS
+obs_tutorial=Tutorial de configuração do OBS Studio
 themes_tutorial=Tutorial de criação de temas
 
 
@@ -181,3 +248,434 @@ not_specified=Não especificado
 
 save=Salvar
 back=Voltar
+
+
+// -- Buttons --
+
+WEBDECK_fullscreen__btn_name=Tela Cheia
+WEBDECK_fullscreen__btn_default_display_name=
+WEBDECK_fullscreen__btn_description=Alternar modo de tela cheia no dispositivo
+
+WEBDECK_reload_page__btn_name=Recarregar página
+WEBDECK_reload_page__btn_default_display_name=Recarregar
+WEBDECK_reload_page__btn_description=
+
+WEBDECK_open_a_folder__btn_name=Abrir uma pasta
+WEBDECK_open_a_folder__btn_default_display_name=Abrir pasta
+WEBDECK_open_a_folder__btn_description=Abre a pasta especificada do WebDeck
+WEBDECK_open_a_folder__arg_1_name=Nome da pasta
+
+WEBDECK_config__btn_name=Configuração
+WEBDECK_config__btn_default_display_name=Configurações
+WEBDECK_config__btn_description=Abrir menu de configurações
+
+
+DISPLAY_CATEGORY_NAME=Exibição
+
+DISPLAY_cpu__btn_name=Uso de CPU %
+DISPLAY_cpu__btn_default_display_name=Uso de CPU
+DISPLAY_cpu__btn_description=
+DISPLAY_cpu__arg_1_name=Texto do botão
+
+DISPLAY_memory__category_name=Memória (RAM)
+DISPLAY_memory__category_description=
+
+DISPLAY_memory_sub1__btn_name=Uso de RAM (%)
+DISPLAY_memory_sub1__btn_default_display_name=Uso de RAM
+DISPLAY_memory_sub1__btn_description=
+DISPLAY_memory_sub1__arg_1_name=Texto do botão
+
+DISPLAY_memory_sub2__btn_name=Uso de RAM (gb)
+DISPLAY_memory_sub2__btn_default_display_name=Uso de RAM
+DISPLAY_memory_sub2__btn_description=
+DISPLAY_memory_sub2__arg_1_name=Texto do botão
+
+DISPLAY_memory_sub3__btn_name=RAM Disponível (gb)
+DISPLAY_memory_sub3__btn_default_display_name=RAM Disponível
+DISPLAY_memory_sub3__btn_description=
+DISPLAY_memory_sub3__arg_1_name=Texto do botão
+
+DISPLAY_memory_sub4__btn_name=RAM Total (gb)
+DISPLAY_memory_sub4__btn_default_display_name=RAM Total
+DISPLAY_memory_sub4__btn_description=
+DISPLAY_memory_sub4__arg_1_name=Texto do botão
+
+DISPLAY_disks__category_name=Discos
+DISPLAY_disks__category_description=
+
+DISPLAY_disks_sub1__btn_name=Uso de Disco (%)
+DISPLAY_disks_sub1__btn_default_display_name=Uso de Disco
+DISPLAY_disks_sub1__btn_description=
+DISPLAY_disks_sub1__arg_1_name=Texto do botão
+DISPLAY_disks_sub1__arg_2_name=Letra do disco
+
+DISPLAY_disks_sub2__btn_name=Armazenamento disponível (gb)
+DISPLAY_disks_sub2__btn_default_display_name=Armazenamento disponível
+DISPLAY_disks_sub2__btn_description=
+DISPLAY_disks_sub2__arg_1_name=Texto do botão
+DISPLAY_disks_sub2__arg_2_name=Letra do disco
+
+DISPLAY_disks_sub3__btn_name=Uso de Disco (gb)
+DISPLAY_disks_sub3__btn_default_display_name=Uso de Disco
+DISPLAY_disks_sub3__btn_description=
+DISPLAY_disks_sub3__arg_1_name=Texto do botão
+DISPLAY_disks_sub3__arg_2_name=Letra do disco
+
+DISPLAY_disks_sub4__btn_name=Capacidade Total (gb)
+DISPLAY_disks_sub4__btn_default_display_name=Capacidade Total
+DISPLAY_disks_sub4__btn_description=
+DISPLAY_disks_sub4__arg_1_name=Texto do botão
+DISPLAY_disks_sub4__arg_2_name=Letra do disco
+
+DISPLAY_gpu__category_name=GPU
+DISPLAY_gpu__category_description=
+
+DISPLAY_gpu_sub1__btn_name=Uso de GPU %
+DISPLAY_gpu_sub1__btn_default_display_name=Uso de GPU
+DISPLAY_gpu_sub1__btn_description=
+DISPLAY_gpu_sub1__arg_1_name=Texto do botão
+DISPLAY_gpu_sub1__arg_2_name=Selecionar GPU
+
+DISPLAY_gpu_sub2__btn_name=Uso de VRAM (mb)
+DISPLAY_gpu_sub2__btn_default_display_name=Uso de VRAM
+DISPLAY_gpu_sub2__btn_description=
+DISPLAY_gpu_sub2__arg_1_name=Texto do botão
+DISPLAY_gpu_sub2__arg_2_name=Selecionar GPU
+
+DISPLAY_gpu_sub3__btn_name=VRAM Disponível (mb)
+DISPLAY_gpu_sub3__btn_default_display_name=VRAM Disponível
+DISPLAY_gpu_sub3__btn_description=
+DISPLAY_gpu_sub3__arg_1_name=Texto do botão
+DISPLAY_gpu_sub3__arg_2_name=Selecionar GPU
+
+DISPLAY_gpu_sub4__btn_name=VRAM Total (mb)
+DISPLAY_gpu_sub4__btn_default_display_name=VRAM Total
+DISPLAY_gpu_sub4__btn_description=
+DISPLAY_gpu_sub4__arg_1_name=Texto do botão
+DISPLAY_gpu_sub4__arg_2_name=Selecionar GPU
+
+DISPLAY_network__category_name=Rede
+DISPLAY_network__category_description=
+
+DISPLAY_network_sub1__btn_name=Upload de rede (bytes)
+DISPLAY_network_sub1__btn_default_display_name=Upload de rede
+DISPLAY_network_sub1__btn_description=
+DISPLAY_network_sub1__arg_1_name=Texto do botão
+
+DISPLAY_network_sub2__btn_name=Download de rede (bytes)
+DISPLAY_network_sub2__btn_default_display_name=Download de rede
+DISPLAY_network_sub2__btn_description=
+DISPLAY_network_sub2__arg_1_name=Texto do botão
+
+
+SYSTEM_CATEGORY_NAME=Sistema
+
+SYSTEM_volume__category_name=Controle de volume
+SYSTEM_volume__category_description=Gerenciar volume do sistema
+
+SYSTEM_volume_sub1__btn_name=Aumentar volume
+SYSTEM_volume_sub1__btn_default_display_name=
+SYSTEM_volume_sub1__btn_description=Aumenta o volume do computador
+SYSTEM_volume_sub1__arg_1_name=Aumentar em 1
+SYSTEM_volume_sub1__arg_2_name=Aumentar em ...
+
+SYSTEM_volume_sub2__btn_name=Diminuir volume
+SYSTEM_volume_sub2__btn_default_display_name=
+SYSTEM_volume_sub2__btn_description=Diminui o volume do computador
+SYSTEM_volume_sub2__arg_1_name=Diminuir em 1
+SYSTEM_volume_sub2__arg_2_name=Diminuir em ...
+
+SYSTEM_volume_sub3__btn_name=Definir volume
+SYSTEM_volume_sub3__btn_default_display_name=
+SYSTEM_volume_sub3__btn_description=Define o volume do computador
+SYSTEM_volume_sub3__arg_1_name=Definir para ...
+
+SYSTEM_volume_sub4__btn_name=Silenciar
+SYSTEM_volume_sub4__btn_default_display_name=
+SYSTEM_volume_sub4__btn_description=Silencia o volume do computador
+
+SYSTEM_media_control__category_name=Controle de mídia
+SYSTEM_media_control__category_description=Gerenciar mídia do sistema
+
+SYSTEM_media_control_sub1__btn_name=Anterior
+SYSTEM_media_control_sub1__btn_default_display_name=
+SYSTEM_media_control_sub1__btn_description=Reproduzir faixa anterior
+
+SYSTEM_media_control_sub2__btn_name=Alternar reproduzir/pausar
+SYSTEM_media_control_sub2__btn_default_display_name=
+SYSTEM_media_control_sub2__btn_description=
+
+SYSTEM_media_control_sub3__btn_name=Próxima
+SYSTEM_media_control_sub3__btn_default_display_name=
+SYSTEM_media_control_sub3__btn_description=Reproduzir próxima faixa
+
+SYSTEM_open__btn_name=Abrir ...
+SYSTEM_open__btn_default_display_name=Abrir
+SYSTEM_open__btn_description=Abre o arquivo ou software especificado
+SYSTEM_open__arg_1_name=Localização do arquivo
+
+SYSTEM_opendir__btn_name=Abrir um diretório
+SYSTEM_opendir__btn_default_display_name=Abrir pasta
+SYSTEM_opendir__btn_description=Abre o diretório especificado no explorador de arquivos
+SYSTEM_opendir__arg_1_name=Localização da pasta
+
+SYSTEM_open_a_website__btn_name=Abrir um site
+SYSTEM_open_a_website__btn_default_display_name=Abrir site
+SYSTEM_open_a_website__btn_description=
+SYSTEM_open_a_website__arg_1_name=url
+
+SYSTEM_lock_session__btn_name=Bloquear sessão
+SYSTEM_lock_session__btn_default_display_name=
+SYSTEM_lock_session__btn_description=
+
+SYSTEM_shutdown_pc__btn_name=Desligar PC
+SYSTEM_shutdown_pc__btn_default_display_name=
+SYSTEM_shutdown_pc__btn_description=
+
+SYSTEM_restart_pc__btn_name=Reiniciar PC
+SYSTEM_restart_pc__btn_default_display_name=
+SYSTEM_restart_pc__btn_description=
+
+SYSTEM_sleep_pc__btn_name=Suspender PC
+SYSTEM_sleep_pc__btn_default_display_name=
+SYSTEM_sleep_pc__btn_description=
+
+SYSTEM_hibernate_pc__btn_name=Hibernar PC
+SYSTEM_hibernate_pc__btn_default_display_name=
+SYSTEM_hibernate_pc__btn_description=
+
+SYSTEM_screensaver__btn_name=Protetor de Tela
+SYSTEM_screensaver__btn_default_display_name=
+SYSTEM_screensaver__btn_description=
+SYSTEM_screensaver__arg_1_name=Protetor de tela
+SYSTEM_screensaver__arg_1_option_1_name=Habilitar protetor de tela
+SYSTEM_screensaver__arg_1_option_2_name=Habilitar protetor de tela cheia
+SYSTEM_screensaver__arg_1_option_3_name=Desabilitar protetor de tela
+
+SYSTEM_restart_explorer__btn_name=Reiniciar o Windows Explorer
+SYSTEM_restart_explorer__btn_default_display_name=
+SYSTEM_restart_explorer__btn_description=
+
+SYSTEM_superaltf4__btn_name=SuperAltF4
+SYSTEM_superaltf4__btn_default_display_name=
+SYSTEM_superaltf4__btn_description=Forçar o fechamento da janela em primeiro plano
+
+SYSTEM_kill_a_task__btn_name=Finalizar tarefa
+SYSTEM_kill_a_task__btn_default_display_name=Finalizar tarefa
+SYSTEM_kill_a_task__btn_description=
+SYSTEM_kill_a_task__arg_1_name=Tarefa (app.exe)
+
+SYSTEM_restart_a_task__btn_name=Reiniciar tarefa
+SYSTEM_restart_a_task__btn_default_display_name=Reiniciar tarefa
+SYSTEM_restart_a_task__btn_description=
+SYSTEM_restart_a_task__arg_1_name=Tarefa (app.exe)
+
+SYSTEM_execute_python_code__btn_name=Executar código Python
+SYSTEM_execute_python_code__btn_default_display_name=
+SYSTEM_execute_python_code__btn_description=Executar código Python a partir do WebDeck
+SYSTEM_execute_python_code__arg_1_name=Opção
+SYSTEM_execute_python_code__arg_1_option_1_name=Arquivo Python (upload)
+SYSTEM_execute_python_code__arg_1_option_2_name=Arquivo Python (caminho)
+SYSTEM_execute_python_code__arg_1_option_3_name=Código Python (linha única)
+
+SYSTEM_execute_batch_code__btn_name=Executar código Batch
+SYSTEM_execute_batch_code__btn_default_display_name=
+SYSTEM_execute_batch_code__btn_description=Executar arquivo batch a partir do WebDeck
+SYSTEM_execute_batch_code__arg_1_name=Código Batch
+
+
+TEXT_CATEGORY_NAME=Texto
+
+TEXT_press_a_key__btn_name=Tecla do teclado
+TEXT_press_a_key__btn_default_display_name=Pressionar tecla
+TEXT_press_a_key__btn_description=
+TEXT_press_a_key__arg_1_name=Tecla
+
+TEXT_write_text__btn_name=Texto
+TEXT_write_text__btn_default_display_name=Escrever texto
+TEXT_write_text__btn_description=Escreve o texto instantaneamente
+TEXT_write_text__arg_1_name=Texto
+
+TEXT_write_text_and_press_enter__btn_name=Digitar e enviar
+TEXT_write_text_and_press_enter__btn_default_display_name=Digitar e enviar
+TEXT_write_text_and_press_enter__btn_description=Escreve o texto instantaneamente e pressiona Enter
+TEXT_write_text_and_press_enter__arg_1_name=Texto
+
+TEXT_speech_recognition__btn_name=Reconhecimento de fala
+TEXT_speech_recognition__btn_default_display_name=
+TEXT_speech_recognition__btn_description=Ativar reconhecimento de fala do Windows para escrever enquanto fala
+
+TEXT_copy__btn_name=Copiar
+TEXT_copy__btn_default_display_name=
+TEXT_copy__btn_description=
+TEXT_copy__arg_1_name=Opção
+TEXT_copy__arg_1_option_1_name=Copiar (ctrl+c)
+TEXT_copy__arg_1_option_2_name=Copiar texto para área de transferência
+
+TEXT_paste__btn_name=Colar
+TEXT_paste__btn_default_display_name=
+TEXT_paste__btn_description=
+TEXT_paste__arg_1_name=Opção
+TEXT_paste__arg_1_option_1_name=Colar (ctrl+v)
+TEXT_paste__arg_1_option_2_name=Colar texto
+
+TEXT_cut_(ctrl+x)__btn_name=Recortar (ctrl+x)
+TEXT_cut_(ctrl+x)__btn_default_display_name=Recortar
+TEXT_cut_(ctrl+x)__btn_description=
+
+TEXT_open_clipboard__btn_name=Abrir área de transferência
+TEXT_open_clipboard__btn_default_display_name=Área de Transf.
+TEXT_open_clipboard__btn_description=
+
+TEXT_clear_clipboard__btn_name=Limpar área de transferência
+TEXT_clear_clipboard__btn_default_display_name=
+TEXT_clear_clipboard__btn_description=
+
+
+UTILITIES_CATEGORY_NAME=Utilitários
+
+UTILITIES_color_picker__btn_name=Seletor de cores
+UTILITIES_color_picker__btn_default_display_name=
+UTILITIES_color_picker__btn_description=Indica em uma notificação do sistema a cor apontada pelo mouse
+
+
+SOUNDBOARD_CATEGORY_NAME=Soundboard
+
+SOUNDBOARD_playsound__btn_name=Reproduzir um som
+SOUNDBOARD_playsound__btn_default_display_name=Soundboard
+SOUNDBOARD_playsound__btn_description=Reproduz um som no soundboard
+SOUNDBOARD_playsound__arg_1_name=Arquivo de áudio (.mp3)
+SOUNDBOARD_playsound__arg_2_name=Volume do áudio (0-100%)
+
+SOUNDBOARD_stopsound__btn_name=Parar sons
+SOUNDBOARD_stopsound__btn_default_display_name=Parar soundboard
+SOUNDBOARD_stopsound__btn_description=Para todos os sons sendo reproduzidos no momento
+
+
+OBSSTUDIO_hotkey__btn_name=Atalho
+OBSSTUDIO_hotkey__btn_default_display_name=Atalho OBS
+OBSSTUDIO_hotkey__btn_description=Acionar um atalho no OBS Studio
+OBSSTUDIO_hotkey__arg_1_name=Nome da tecla
+
+OBSSTUDIO_changescene__btn_name=Alterar cena
+OBSSTUDIO_changescene__btn_default_display_name=
+OBSSTUDIO_changescene__btn_description=Define a cena atual pelo nome no OBS Studio
+OBSSTUDIO_changescene__arg_1_name=Nome da cena
+
+OBSSTUDIO_togglerecording__btn_name=Alternar gravação
+OBSSTUDIO_togglerecording__btn_default_display_name=
+OBSSTUDIO_togglerecording__btn_description=
+
+OBSSTUDIO_startrecording__btn_name=Iniciar gravação
+OBSSTUDIO_startrecording__btn_default_display_name=
+OBSSTUDIO_startrecording__btn_description=
+
+OBSSTUDIO_stoprecording__btn_name=Parar gravação
+OBSSTUDIO_stoprecording__btn_default_display_name=
+OBSSTUDIO_stoprecording__btn_description=Parar a gravação no OBS Studio
+
+OBSSTUDIO_togglerecordingpause__btn_name=Alternar pausar/retomar
+OBSSTUDIO_togglerecordingpause__btn_default_display_name=
+OBSSTUDIO_togglerecordingpause__btn_description=
+
+OBSSTUDIO_pauserecording__btn_name=Pausar gravação
+OBSSTUDIO_pauserecording__btn_default_display_name=
+OBSSTUDIO_pauserecording__btn_description=
+
+OBSSTUDIO_resumerecording__btn_name=Retomar gravação
+OBSSTUDIO_resumerecording__btn_default_display_name=
+OBSSTUDIO_resumerecording__btn_description=
+
+OBSSTUDIO_togglestreaming__btn_name=Alternar transmissão
+OBSSTUDIO_togglestreaming__btn_default_display_name=
+OBSSTUDIO_togglestreaming__btn_description=
+
+OBSSTUDIO_startstreaming__btn_name=Iniciar transmissão
+OBSSTUDIO_startstreaming__btn_default_display_name=
+OBSSTUDIO_startstreaming__btn_description=
+
+OBSSTUDIO_stopstreaming__btn_name=Parar transmissão
+OBSSTUDIO_stopstreaming__btn_default_display_name=
+OBSSTUDIO_stopstreaming__btn_description=
+
+OBSSTUDIO_togglevirtualcam__btn_name=Alternar câmera virtual
+OBSSTUDIO_togglevirtualcam__btn_default_display_name=
+OBSSTUDIO_togglevirtualcam__btn_description=
+
+OBSSTUDIO_startvirtualcam__btn_name=Iniciar câmera virtual
+OBSSTUDIO_startvirtualcam__btn_default_display_name=
+OBSSTUDIO_startvirtualcam__btn_description=
+
+OBSSTUDIO_stopvirtualcam__btn_name=Parar câmera virtual
+OBSSTUDIO_stopvirtualcam__btn_default_display_name=
+OBSSTUDIO_stopvirtualcam__btn_description=
+
+
+SPOTIFY_volume_(only_with_spotify_premium)__category_name=Controle de volume do Spotify
+SPOTIFY_volume_(only_with_spotify_premium)__category_description=Gerenciar o volume do Spotify (APENAS COM SPOTIFY PREMIUM)
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_name=Aumentar volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__btn_description=Aumentar o volume do Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_1_name=Aumentar em 1
+SPOTIFY_volume_(only_with_spotify_premium)_sub1__arg_2_name=Aumentar em ...
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_name=Diminuir volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__btn_description=Diminuir o volume do Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_1_name=Diminuir em 1
+SPOTIFY_volume_(only_with_spotify_premium)_sub2__arg_2_name=Diminuir em ...
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_name=Definir volume
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__btn_description=Definir o volume do Spotify
+SPOTIFY_volume_(only_with_spotify_premium)_sub3__arg_1_name=Definir para ...
+
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_name=Silenciar
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_default_display_name=
+SPOTIFY_volume_(only_with_spotify_premium)_sub4__btn_description=Silencia o Spotify no computador
+
+SPOTIFY_play_song__btn_name=Reproduzir música específica
+SPOTIFY_play_song__btn_default_display_name=Reproduzir música
+SPOTIFY_play_song__btn_description=Reproduz uma música específica por nome (APENAS COM SPOTIFY PREMIUM)
+SPOTIFY_play_song__arg_1_name=Nome da música
+
+SPOTIFY_play_playlist__btn_name=Reproduzir playlist específica
+SPOTIFY_play_playlist__btn_default_display_name=Reproduzir playlist especificada
+SPOTIFY_play_playlist__btn_description=Reproduz uma playlist específica por nome (APENAS COM SPOTIFY PREMIUM)
+SPOTIFY_play_playlist__arg_1_name=Nome da playlist
+
+SPOTIFY_like_the_played_song__btn_name=Adicionar música aos favoritos
+SPOTIFY_like_the_played_song__btn_default_display_name=
+SPOTIFY_like_the_played_song__btn_description=Adiciona a música que está tocando no Spotify aos favoritos
+
+SPOTIFY_save_the_played_album__btn_name=Salvar o álbum atual
+SPOTIFY_save_the_played_album__btn_default_display_name=
+SPOTIFY_save_the_played_album__btn_description=Adiciona o álbum que está tocando no Spotify aos favoritos
+
+SPOTIFY_toggle_playlist_inclusion__btn_name=Alternar inclusão em playlist
+SPOTIFY_toggle_playlist_inclusion__btn_default_display_name=
+SPOTIFY_toggle_playlist_inclusion__btn_description=Adiciona ou remove a música atual da playlist especificada
+SPOTIFY_toggle_playlist_inclusion__arg_1_name=Nome da playlist
+
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_name=Adicionar à playlist
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_default_display_name=
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__btn_description=Adiciona a música atual à playlist especificada
+SPOTIFY_add_current_song_to_a_playlist_(do_not_remove_if_already)__arg_1_name=Nome da playlist
+
+SPOTIFY_remove_current_song_from_a_playlist__btn_name=Remover da playlist
+SPOTIFY_remove_current_song_from_a_playlist__btn_default_display_name=
+SPOTIFY_remove_current_song_from_a_playlist__btn_description=Remove a música atual da playlist especificada
+SPOTIFY_remove_current_song_from_a_playlist__arg_1_name=Nome da playlist
+
+SPOTIFY_toggle_follow_artist__btn_name=Seguir/Deixar de seguir
+SPOTIFY_toggle_follow_artist__btn_default_display_name=
+SPOTIFY_toggle_follow_artist__btn_description=Alterna seguir ou deixar de seguir o artista da música atual
+
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_name=Seguir artista
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_default_display_name=
+SPOTIFY_follow_current_played_artist_(doesnt_unfollow_if_already)__btn_description=Seguir o artista da música tocada no momento
+
+SPOTIFY_unfollow_current_played_artist__btn_name=Deixar de seguir artista
+SPOTIFY_unfollow_current_played_artist__btn_default_display_name=
+SPOTIFY_unfollow_current_played_artist__btn_description=Deixar de seguir o artista da música tocada no momento
