@@ -1,0 +1,183 @@
+# pt_BR.lang file translated by Brunomas1 / github.com/Brunomas1
+# https://github.com/Lenochxd/WebDeck/pulls
+# ou nos avise no discord: https://discord.gg/tUPsYHAGfm
+
+lang_name=Português (Brasil)
+lang_short=pt
+credits=Brunomas1
+
+// -- Ícone da bandeja --
+
+qr_code=Código QR
+open_config=Abrir Configurações
+fix_firewall=Corrigir Firewall
+exit=Sair
+
+// -- Erros --
+server_disconnected=Servidor Desconectado
+failed=Falhou
+error=Erro
+error_occurred=Ocorreu um erro
+
+settings_load_error=Ocorreu um erro ao carregar as configurações.
+settings_save_error=Ocorreu um erro ao salvar as configurações.
+
+auto_update_error=Erro ao atualizar o WebDeck. Por favor, atualize manualmente em: https://github.com/Lenochxd/WebDeck/releases/latest
+
+no_files_found_error=Nenhum arquivo encontrado
+
+ffmpeg_not_installed_error=Instalando FFMPEG...
+vlc_not_installed_error=O VLC não está instalado!
+mp3_loading_error=Erro ao carregar o arquivo MP3.
+
+obs_failed_connection_error=Falha na conexão com o OBS.
+obs_error_10061=O servidor websocket não foi encontrado. (WinError 10061)
+obs_error_incorrect_password=A senha pode estar incorreta.
+obs_already_recording=O OBS já está gravando.
+obs_already_streaming=O OBS já está transmitindo.
+obs_already_vcam=A Câmera Virtual já está ativa.
+obs_not_recording=O OBS não está gravando.
+obs_not_streaming=O OBS não está transmitindo.
+obs_no_vcam=A Câmera Virtual já está parada.
+obs_no_recording_can_be_paused=Nenhuma gravação pode ser pausada.
+obs_no_recording_is_paused=Nenhuma gravação está pausada.
+
+spotify_apply_volume_error=Erro: não foi possível ajustar o volume.
+spotify_volume_prenium_error=Erro: necessário Spotify Premium para ajustar o volume.
+
+
+// -- Mensagens de Sucesso --
+settings_save_success=Configurações salvas com sucesso.
+downloaded_successfully=Arquivo baixado com sucesso.
+folder_created_successfully=Pasta criada com sucesso!
+
+
+// -- Configuração de botões --
+add_a_button=Adicionar um botão
+configure_your_button=Configure seu botão
+
+image=Imagem
+image_size=Tamanho da Imagem
+background_color=Cor de Fundo
+background_color_hex=Cor de Fundo (HEX)
+button_title=Título do Botão
+edit_command=Comando (experimental)
+
+select_your_file=Selecione seu arquivo
+no_file_chosen=Nenhum arquivo selecionado
+
+choose_option=Escolha uma opção
+
+button_delete_confirmation=Você realmente deseja remover este botão?
+
+
+// -- Editor --
+enter_editor_mode=Entrar no modo de edição
+exit_editor_mode=Sair do modo de edição
+
+open_folder=Abrir Pasta
+
+quit_without_saving=Sair sem salvar
+save_and_exit=Salvar e sair
+swap_buttons=Trocar 2 Botões
+stop_swap_mode=Parar Modo de Troca
+no_changes_to_undo=Não há alterações para desfazer.
+
+
+// Aba de Configurações
+configuration=Configuração
+settings=Configurações
+
+see_patchnotes=Ver notas de atualização
+github_issue=Reportar um problema no GitHub
+
+language=Idioma
+config-windows_startup=Iniciar com o Windows
+auto_updates=Atualizações automáticas
+
+soundboard=Soundboard
+input_device=Dispositivo de entrada
+output_device=Dispositivo de saída (vbcable)
+toggle_soundboard=Soundboard ativado
+ear_soundboard=Monitoramento de Áudio (Ear Soundboard)
+
+spotify_api=API do Spotify
+username=Usuário
+
+obs_studio=OBS Studio
+host=Host
+port=Porta
+password=Senha
+
+
+visuals=Visual
+
+gridsize=Tamanho da grade
+height=altura
+width=largura
+
+portrait_rotate=Rotação do modo retrato (graus)
+
+themes=Temas
+open_theme_menu=Abrir menu de temas
+
+backgrounds=Imagens de fundo
+open_background_image_menu=Abrir menu de fundos
+
+dark_theme=Tema escuro
+
+show_btn_names=Mostrar nomes dos botões
+
+edit_btn_color=Alterar cor padrão do botão
+
+
+experimental=Experimental
+
+usage_btn_reload_time=Tempo de recarga dos botões de uso (ms)
+
+optimized_usage_display=Otimizar exibição de uso nos botões
+
+gpu_usage_method=Método de uso da GPU (se o uso não aparecer)
+doesnt_work=não funciona
+lmao=lmao
+none=Nenhum
+
+open_settings_in_integrated_browser=Abrir configurações em um navegador dedicado
+
+show_console=Mostrar console
+dev_mode=Modo desenvolvedor
+authorize_windows_firewall=Autorizar WebDeck no Firewall do Windows
+automatic_firewall_bypass=Ignorar firewall automaticamente ao iniciar
+fix_stop_soundboard=Corrigir problema do botão de parar soundboard (pode ser instável)
+
+themes_menu_title=Lista de Temas
+random_bg_menu_title=Lista de fundos aleatórios
+
+disabled_themes=Disponíveis
+enabled_themes=Selecionados
+
+open_themes_folder=Abrir pasta de temas
+
+wallpaper_color=Cor de Fundo
+add_background_color=Adicionar uma cor de fundo
+or=ou
+
+remove_background=Remover este fundo
+
+
+// Links (Recomendo manter ou traduzir apenas o texto do link se o repo tiver versões em PT)
+link_soundboard=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-my-soundboard
+link_spotify=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-connect-your-spotify-account
+link_obs=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#how-to-set-up-obs-studio
+link_themes=https://github.com/Lenochxd/WebDeck/blob/master/static/files/FAQ-en.md#im-a-developer-how-can-i-customize-the-pages-css
+
+soundboard_tutorial=Tutorial de configuração do Soundboard
+spotify_tutorial=Tutorial de configuração do Spotify
+obs_tutorial=Tutorial de configuração do OBS
+themes_tutorial=Tutorial de criação de temas
+
+
+not_specified=Não especificado
+
+save=Salvar
+back=Voltar
