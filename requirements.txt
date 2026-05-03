@@ -1,39 +1,42 @@
-Flask==3.0.3
-Flask-SocketIO==5.4.1
-Flask-Minify==0.48
-numpy==2.2.3
-gevent==24.10.3
+Flask==3.1.3
+Flask-SocketIO==5.6.1
+Flask-Minify==0.50
+numpy==2.4.4
+gevent==26.4.0
 win10toast; sys_platform == 'win32'
-notify_py==0.3.43
+notify-py==0.3.43
 keyboard==0.13.5; sys_platform == 'win32'
 PyAutoGUI==0.9.54
-pynput
 pywin32; sys_platform == 'win32'
-pycaw==20240210; sys_platform == 'win32'
-pulsectl==24.11.0; sys_platform == 'linux'
-pillow==11.0.0
-PyAudio==0.2.14
-webcolors==24.11.1
-deep-translator
-mss==10.0.0
-pyperclip==1.9.0
+pycaw==20251023; sys_platform == 'win32'
+pulsectl==24.12.0; sys_platform == 'linux'
+pillow==12.2.0
+webcolors==25.10.0
+deep-translator==1.11.4
+mss==10.2.0
+pyperclip==1.11.0
 GPUtil==1.4.0
-psutil==6.1.0
-pynvml==12.0.0
-spotipy==2.24.0
+psutil==7.2.2
+pynvml==13.0.1
+spotipy==2.26.0
 simple-websocket==1.1.0
-pystray
-pycairo; sys_platform == 'linux'
-PyGObject; sys_platform == 'linux'
+pystray==0.19.5
 customtkinter==5.2.2
 easygui==0.98.3
-qrcode==8.0
-pywebview==5.3.2
-cx_Freeze==7.2.8
-pathspec==0.12.1
+qrcode==8.2
+pywebview==6.2.1
+cx_Freeze==8.6.4
+pathspec==1.1.1
 python-vlc==3.0.21203
-nava==0.7
+nava==0.8
 obs-websocket-py==1.0
-tqdm==4.67.1
-pydub==0.25.1
+tqdm==4.67.3
+pydub==0.25.1; python_version < '3.14'
 colorama==0.4.6
+
+# Optional native extras on Linux. These are loaded lazily in code because they
+# require system packages and do not install reliably via pip alone:
+# PyAudio
+# pycairo
+# PyGObject
+# pydub on Python 3.14+ (still depends on the removed stdlib audioop module)

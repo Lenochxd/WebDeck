@@ -228,8 +228,6 @@ if __name__ == "__main__":
         "packages": [
             "tkinter",
             "Xlib" if sys.platform != "win32" else None,
-            "pynput.keyboard._xorg" if sys.platform != "win32" else None,
-            "pynput.mouse._xorg" if sys.platform != "win32" else None,
         ],
         "zip_exclude_packages": [
             "_sounddevice_data",

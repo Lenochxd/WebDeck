@@ -5,15 +5,13 @@ if is_windows:
     import keyboard
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
-    from pynput.keyboard import Controller
-    pynput = Controller()
 
 
 def write(text):
     if is_windows:
         keyboard.write(text)
     else:
-        pynput.type(text)
+        pyautogui.write(text)
 
 
 def handle_command(message):

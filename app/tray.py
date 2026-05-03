@@ -8,7 +8,6 @@ import webbrowser
 import tkinter as tk
 import random
 import qrcode
-import webview
 from PIL import Image, ImageTk
 from io import BytesIO
 
@@ -56,8 +55,15 @@ def open_config():
     config_url = f"http://{local_ip}:{get_port()}?config=show"
     
     if open_in_integrated_browser:
-        webview.create_window('WebDeck Config', url=config_url, background_color='#141414')
-        webview.start()
+        try:
+            import webview
+
+            webview.create_window('WebDeck Config', url=config_url, background_color='#141414')
+            webview.start()
+        except Exception as e:
+            log.exception(e, "Failed to open the integrated browser. Falling back to the default browser.")
+            webbrowser.open(config_url)
+            return
         
         if not is_win:
             return

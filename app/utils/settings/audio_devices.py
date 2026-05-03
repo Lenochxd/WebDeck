@@ -1,7 +1,15 @@
-import pyaudio
 from ..logger import log
 
+try:
+    import pyaudio
+except ImportError:
+    pyaudio = None
+
 def get_audio_devices(channels_type="input"):
+    if pyaudio is None:
+        log.warning("PyAudio is not installed. Audio device discovery is unavailable.")
+        return []
+
     p = pyaudio.PyAudio()
     all_devices = []
 

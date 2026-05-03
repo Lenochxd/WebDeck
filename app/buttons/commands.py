@@ -12,8 +12,6 @@ if is_win: import win32gui
 import pyperclip
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
-    from pynput.keyboard import Controller
-    keyboard = Controller()
 
 if is_win: from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 if is_win: import comtypes
@@ -177,7 +175,7 @@ def handle_command(message=None):
         hwnd = window.get_by_name(window_name)
         if hwnd:
             win32gui.SetForegroundWindow(hwnd)
-            keyboard.tap("ENTER")
+            pyautogui.press("enter")
             log.success(f"Window '{window_name}' has been brought to the foreground")
         else:
             log.error(f"Window '{window_name}' not found")

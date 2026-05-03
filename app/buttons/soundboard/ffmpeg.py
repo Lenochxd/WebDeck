@@ -1,15 +1,28 @@
 import os
 from pathlib import Path
-from pydub import AudioSegment
 import urllib.request
 import zipfile
 import subprocess
 import shutil
 from app.utils.logger import log
 
+try:
+    from pydub import AudioSegment
+except Exception as e:
+    AudioSegment = None
+    pydub_import_error = e
+else:
+    pydub_import_error = None
+
 
 is_downloading = False
 ffmpeg_path = ""
+
+
+def require_audiosegment():
+    if AudioSegment is None:
+        message = "pydub is unavailable on this Python runtime. Soundboard audio conversion is disabled."
+        raise RuntimeError(message) from pydub_import_error
 
 def install_ffmpeg():
     global is_downloading, ffmpeg_path
@@ -81,6 +94,8 @@ def install_ffmpeg():
     return None
 
 def get_ffmpeg():
+    require_audiosegment()
+
     ffmpeg_path = install_ffmpeg()
     
     if ffmpeg_path is not None:
@@ -112,6 +127,7 @@ def replace_last_element(string, old_element, new_element):
 
 def add_silence_to_end(input_file, output_file, silence_duration_ms=2000):
     global ffmpeg_path
+    require_audiosegment()
     
     try:
         audio = AudioSegment.from_mp3(os.path.abspath(input_file))
@@ -145,6 +161,7 @@ def silence_path(input_file, remove_previous=False):
 
 def to_wav(input_file: str, output_file: str=None, volume: float=0.5):
     global ffmpeg_path
+    require_audiosegment()
     ffmpeg_path = get_ffmpeg()
     
     # Set default output file name if not provided

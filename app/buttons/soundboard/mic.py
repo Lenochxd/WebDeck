@@ -1,4 +1,3 @@
-import pyaudio
 import time
 import threading
 
@@ -6,9 +5,22 @@ from .devices import get_device
 from app.utils.settings.get_config import get_config
 from app.utils.logger import log
 
+try:
+    import pyaudio
+except ImportError:
+    pyaudio = None
+
 
 sb_on = True
+def require_pyaudio():
+    if pyaudio is None:
+        message = "PyAudio is not installed. Soundboard microphone passthrough is unavailable."
+        log.error(message)
+        raise RuntimeError(message)
+
 def soundboard():
+    require_pyaudio()
+
     global sb_on
     sb_on = True
     config = get_config()
@@ -110,6 +122,8 @@ def stop():
     sb_on = False
 
 def restart():
+    require_pyaudio()
+
     global soundboard_thread,cable_input_device, sb_on
     config = get_config()
     cable_input_device = get_device(config["settings"]["soundboard"]["vbcable"])
@@ -124,5 +138,8 @@ def restart():
 # mic thread
 config = get_config()
 if config["settings"]["soundboard"]["enabled"]:
-    soundboard_thread = threading.Thread(target=soundboard, daemon=True)
-    soundboard_thread.start()
+    if pyaudio is None:
+        log.warning("PyAudio is not installed. Soundboard microphone passthrough is disabled.")
+    else:
+        soundboard_thread = threading.Thread(target=soundboard, daemon=True)
+        soundboard_thread.start()

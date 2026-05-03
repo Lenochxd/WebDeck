@@ -7,8 +7,6 @@ import os
 import subprocess
 if not is_linux or os.environ.get("DISPLAY"):
     import pyautogui
-    from pynput.keyboard import Controller, Key
-    keyboard = Controller()
 if is_windows:
     import win32api
     import win32con
@@ -120,9 +118,12 @@ def decrease_volume(delta=1):
 
 
 def mute_volume():
-    try:
-        keyboard.tap(Key.media_volume_mute)
-    except Exception:
+    if is_linux:
+        test_pulseaudio()
+        with Pulse('volume') as pulse:
+            sink = pulse.sink_list()[0]
+            pulse.mute(sink, not sink.mute)
+    else:
         pyautogui.press("volumemute")
 
 
