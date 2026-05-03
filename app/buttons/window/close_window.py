@@ -25,6 +25,9 @@ def close_window(window):
         # While using Linux, the window name is the window ID
         window_id = window
         if not is_wayland:
+            if xdotool is None:
+                log.error("xdotool is required to close windows on Linux.")
+                raise RuntimeError("xdotool is required to close windows on Linux.")
             if subprocess.run([xdotool, "windowclose", window_id]).returncode != 0:
                 log.warning(f"Window with ID '{window_id}' not found or already closed")
                 raise RuntimeError(f"Window with ID '{window_id}' not found or already closed")

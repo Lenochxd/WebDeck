@@ -39,10 +39,15 @@ def toast(display_type, typestocopy, color_names_final):
         return
         
     elif is_linux:
+        notify_send = get_process_path('notify-send')
+        if notify_send is None:
+            log.warning("notify-send not found. Skipping color picker notification.")
+            return
+
         icon_path = os.path.join(get_base_dir(), icon.replace('.ico', '.png'))
         log.debug(f"Icon path: {icon_path}")
         subprocess.Popen([
-            get_process_path('notify-send'), 
+            notify_send,
             title, 
             message, 
             '-a', title,

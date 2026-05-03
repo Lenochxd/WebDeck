@@ -25,17 +25,22 @@ def open_clipboard():
 
         # Check for common clipboard managers and open them if installed
         clipboard_managers = {
-            "copyq": f"{get_process_path('copyq')} show",
-            "gpaste-client": f"{get_process_path('gpaste-client')} ui",
-            "clipman": f"{get_process_path('clipman')} show-history",
-            "parcellite": f"{get_process_path('parcellite')}",
-            "xfce4-clipman": f"{get_process_path('xfce4-clipman-history')}",
-            "klipper": f"{get_process_path('qdbus')} org.kde.klipper /klipper org.kde.klipper.klipper.showHistory",
-            "diodon": f"{get_process_path('diodon')} --indicator",
+            "copyq": ("copyq", "show"),
+            "gpaste-client": ("gpaste-client", "ui"),
+            "clipman": ("clipman", "show-history"),
+            "parcellite": ("parcellite",),
+            "xfce4-clipman": ("xfce4-clipman-history",),
+            "klipper": ("qdbus", "org.kde.klipper", "/klipper", "org.kde.klipper.klipper.showHistory"),
+            "diodon": ("diodon", "--indicator"),
         }
 
-        for manager, command in clipboard_managers.items():
+        for manager, command_parts in clipboard_managers.items():
             if is_command_available(manager):
+                process_path = get_process_path(command_parts[0])
+                if process_path is None:
+                    continue
+
+                command = " ".join([process_path, *command_parts[1:]])
                 if subprocess.run(command, shell=True).returncode == 0:
                     log.success(f"Opened clipboard manager: '{manager}' Using command: '{command}'")
                 else:

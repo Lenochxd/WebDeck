@@ -7,7 +7,7 @@ from .logger import log
 
 def get_process_path(process_name):
     if not is_linux:
-        return
+        return None
     
     result = subprocess.run(["which", process_name], capture_output=True, text=True)
     if result.returncode == 0:
@@ -16,8 +16,14 @@ def get_process_path(process_name):
     lib_path = os.path.join(get_base_dir(), "lib", process_name)
     if os.path.exists(lib_path):
         return os.path.abspath(lib_path)
-    else:
-        raise NotImplementedError("This function is not implemented for this platform")
+    return None
+
+
+def require_process_path(process_name):
+    process_path = get_process_path(process_name)
+    if process_path is None:
+        raise RuntimeError(f"Required process not found: {process_name}")
+    return process_path
 
 
 if not is_wayland:

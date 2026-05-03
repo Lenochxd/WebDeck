@@ -19,6 +19,10 @@ def get_focused_window():
             return window_title
     
     elif is_linux:
+        if is_wayland or xdotool is None:
+            log.error("xdotool is required to inspect the focused window on Linux.")
+            raise RuntimeError("xdotool is required to inspect the focused window on Linux.")
+
         try:
             window_id = subprocess.check_output([xdotool, "getwindowfocus"], universal_newlines=True).strip()
             window_title = subprocess.check_output([xdotool, "getwindowname", window_id], universal_newlines=True).strip()
